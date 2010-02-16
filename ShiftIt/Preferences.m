@@ -67,11 +67,6 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 
 -(void)registerDefaults{
 	_userDefaultsValuesDict = [NSMutableDictionary dictionary];
-    
-	[_userDefaultsValuesDict setObject:[NSNumber numberWithInt:11] forKey:@"Q"];
-	[_userDefaultsValuesDict setObject:[NSNumber numberWithInt:13] forKey:@"hkcq"];
-	[_userDefaultsValuesDict setObject:[NSNumber numberWithInt:cmdKey] forKey:@"hkmQ"];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:11 keyCode:13 modCombo:(cmdKey)]];
 	
 	[_userDefaultsValuesDict setObject:[NSNumber numberWithInt:1] forKey:@"L"];
 	[_userDefaultsValuesDict setObject:[NSNumber numberWithInt:123] forKey:@"hkcL"];
