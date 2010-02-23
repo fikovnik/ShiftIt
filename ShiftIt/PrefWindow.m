@@ -11,6 +11,11 @@
 
 @implementation PrefWindow
 
+-(BOOL)canBecomeKeyWindow{
+    return YES;   
+}
+
+
 -(IBAction)openAtLogin:(id)sender{
     if([sender state] == NSOnState){
         [self registerForLogin:YES];

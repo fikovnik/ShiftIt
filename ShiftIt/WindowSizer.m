@@ -11,292 +11,380 @@
 
 @implementation WindowSizer
 
--(void)getWindowParameters{
-	NSScreen * screen = [NSScreen mainScreen];
-	_fullScreenSize = screen.frame.size;
-	_startPosition = screen.visibleFrame;
-	_screenRectSize = screen.visibleFrame.size;
+-(void)chooseScreen{
+    CGDirectDisplayID tempId[2];
+    CGDisplayCount tempCount;
+    CGError error = CGGetDisplaysWithRect(CGRectMake(_windowPosition.x, _windowPosition.y, _windowSize.width, _windowSize.height), 2, tempId, &tempCount);
+    if(error == kCGErrorSuccess){
+        CGRect screenBounds = CGDisplayBounds(tempId[0]);
+        if(tempCount == 1){
+            _screenPosition.x = screenBounds.origin.x;
+            _screenPosition.y = screenBounds.origin.y;
+            _screenSize.width = screenBounds.size.width;
+            _screenSize.height = screenBounds.size.height;
+        }else if (tempCount == 2) {
+            CGRect screenBounds1 = CGDisplayBounds(tempId[1]);
+            int screenChosen = 0;
+            int delta = abs(screenBounds.origin.x - (_windowPosition.x+_windowSize.width));
+            int delta2 = 0;
+            if(delta > screenBounds.size.width){
+                delta = abs(_windowPosition.x - (screenBounds.origin.x+screenBounds.size.width));
+                delta2 = abs(_windowPosition.x+_windowSize.width - screenBounds1.origin.x);
+            }else {
+                delta2 = abs(_windowPosition.x - (screenBounds1.origin.x+screenBounds1.size.width));
+            }
+            if (delta2> delta) {
+                screenChosen = 1;
+            }
+            if(screenChosen == 0){
+                _screenPosition.x = screenBounds.origin.x;
+                _screenPosition.y = screenBounds.origin.y;
+                _screenSize.width = screenBounds.size.width;
+                _screenSize.height = screenBounds.size.height;
+            }else {
+                _screenPosition.x = screenBounds1.origin.x;
+                _screenPosition.y = screenBounds1.origin.y;
+                _screenSize.width = screenBounds1.size.width;
+                _screenSize.height = screenBounds1.size.height;
+            }
+        }       
+    }
+}
+
+-(void)getVisibleScreenParams{
+    NSArray * tempArray = [NSScreen screens];
+    if ([tempArray count] ==1) {
+        NSScreen * tempScreen = (NSScreen*)[tempArray objectAtIndex:0];
+        _screenVisibleSize = tempScreen.visibleFrame.size;
+        _screenVisiblePosition = tempScreen.visibleFrame.origin;
+    }else {
+        for(int i = 0;i<[tempArray count]; i++){
+            NSScreen * tempScreen = (NSScreen*)[tempArray objectAtIndex:i];
+            if (tempScreen.frame.origin.x == _screenPosition.x) {
+                _screenVisibleSize = tempScreen.visibleFrame.size;
+                _screenVisiblePosition = tempScreen.visibleFrame.origin;
+                break;
+            }
+        }
+    }
+
+    
+}
+
+-(BOOL)getWindowParameters{
+    NSLog(@"Get Window Parameter");
+    BOOL error = FALSE;
+	AXUIElementRef _focusedApp;
+	CFTypeRef _position;
+	CFTypeRef _size;
+    
 	AXUIElementCopyAttributeValue(_systemWideElement,(CFStringRef)kAXFocusedApplicationAttribute,(CFTypeRef*)&_focusedApp);
 	if(AXUIElementCopyAttributeValue((AXUIElementRef)_focusedApp,(CFStringRef)NSAccessibilityFocusedWindowAttribute,(CFTypeRef*)&_focusedWindow) == kAXErrorSuccess) {
 		if(CFGetTypeID(_focusedWindow) == AXUIElementGetTypeID()) {
 			if(AXUIElementCopyAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)&_position) != kAXErrorSuccess) {
 				NSLog(@"Can't Retrieve Window Position");
-			}
+                error = TRUE;
+			}else {
+                if(AXValueGetType(_position) == kAXValueCGPointType) {
+                    AXValueGetValue(_position, kAXValueCGPointType, (void*)&_windowPosition);
+                    NSLog(@"Window Position: x:%f y:%f",_windowPosition.x,_windowPosition.y);
+                }else {
+                    error = TRUE;
+                }                
+            }
+
 			if(AXUIElementCopyAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)&_size) != kAXErrorSuccess) {
 				NSLog(@"Can't Retrieve Window Size");
-			}
+                error = TRUE;
+			}else {
+                if(AXValueGetType(_size) == kAXValueCGSizeType) {
+                    AXValueGetValue(_size, kAXValueCGSizeType, (void*)&_windowSize);
+                }else {
+                    error = TRUE;
+                }
+            }
 		}
 	}else {
 		NSLog(@"Problem with App");
 	}
-	
+    if(!error){
+        [self chooseScreen];
+        NSLog(@"Get Window Parameter Success");
+    }else {
+        NSLog(@"Get Window Parameter Failed");
+    }
+    return !error;
 }
 
 -(IBAction)shiftToLeftHalf:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = 0;
-		thePoint.y = 0;
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Left Half");
+	if([self getWindowParameters]){
+        CFTypeRef _position;
+        CFTypeRef _size;
+        
+		_windowPosition.x = _screenPosition.x;
+		_windowPosition.y = 0;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = ((_screenRectSize.width)/2);
-			theSize.height = _fullScreenSize.height;
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+			_windowSize.width = ((_screenSize.width)/2);
+			_windowSize.height = _screenSize.height;
+			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
+        
+    }
+    NSLog(@"Shifted To Left Half");
+    _focusedWindow = NULL;
+    
 }
 
 -(IBAction)shiftToRightHalf:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = (_screenRectSize.width/2);
-		thePoint.y = 0;
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Right Half");
+	if([self getWindowParameters]){
+        
+        CFTypeRef _position;
+        CFTypeRef _size;
+		_windowPosition.x = _screenPosition.x +(_screenSize.width/2);
+		_windowPosition.y = 0;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = (_screenRectSize.width/2);
-			theSize.height = _fullScreenSize.height;
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+        _windowSize.width = ((_screenSize.width)/2);
+        _windowSize.height = _screenSize.height;
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
-	
+    }
+    NSLog(@"Shifted To Right Half");
+    _focusedWindow = NULL;
+    
 }
 
 -(IBAction)shiftToTopHalf:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = 0;
-		thePoint.y = 0;
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Top Half");
+	if([self getWindowParameters]){
+        
+        CFTypeRef _position;
+        CFTypeRef _size;
+		_windowPosition.x = _screenPosition.x;
+		_windowPosition.y = 0;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = _screenRectSize.width;
-			theSize.height = (_fullScreenSize.height/2);
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+        _windowSize.width = _screenSize.width;
+        _windowSize.height = (_screenSize.height/2);
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
+    }
+    NSLog(@"Shifted To Top Half");
+    _focusedWindow = NULL;
+    
 }
 
 -(IBAction)shiftToBottomHalf:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = 0;
-		thePoint.y = ((_fullScreenSize.height/2)-(_startPosition.origin.y));
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Bottom Half");
+	if([self getWindowParameters]){
+        [self getVisibleScreenParams];
+        
+        CFTypeRef _position;
+        CFTypeRef _size;
+        NSSize toolBarSize;
+        toolBarSize.width = _screenVisibleSize.width;
+        toolBarSize.height = (_screenPosition.y - _screenVisiblePosition.y);
+        
+		_windowPosition.x = _screenVisiblePosition.x;
+		_windowPosition.y = (_screenSize.height/2)+toolBarSize.height;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = _screenRectSize.width;
-			theSize.height = (_fullScreenSize.height/2);
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+        _windowSize.width = _screenSize.width;
+        _windowSize.height = (_screenSize.height/2);
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
+    }
+    NSLog(@"Shifted To Bottom Half");
+    _focusedWindow = NULL;
 }
 
 -(IBAction)shiftToTopLeft:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = 0;
-		thePoint.y = 0;
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Top Left");
+	if([self getWindowParameters]){
+        [self getVisibleScreenParams];
+        CFTypeRef _position;
+        CFTypeRef _size;
+        
+		_windowPosition.x = _screenPosition.x;
+		_windowPosition.y = _screenPosition.y;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = (_screenRectSize.width/2);
-			theSize.height = (_fullScreenSize.height/2);
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+        _windowSize.width = (_screenVisibleSize.width/2);
+        _windowSize.height = (_screenVisibleSize.height/2);
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
+    }
+    NSLog(@"Shifted To Top Left");
+    _focusedWindow = NULL;
+    
 }
 
 -(IBAction)shiftToTopRight:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = (_screenRectSize.width/2);
-		thePoint.y = 0;
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Top Right");
+	if([self getWindowParameters]){
+        [self getVisibleScreenParams];
+        
+        CFTypeRef _position;
+        CFTypeRef _size;
+        
+		_windowPosition.x = _screenPosition.x +(_screenSize.width/2);
+		_windowPosition.y = _screenPosition.y;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = (_screenRectSize.width/2);
-			theSize.height = (_fullScreenSize.height/2);
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+        _windowSize.width = (_screenVisibleSize.width/2);
+        _windowSize.height = (_screenVisibleSize.height/2);
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
+    }
+    NSLog(@"Shifted To Top Right");
+    _focusedWindow = NULL;
+    
 }
 
 -(IBAction)shiftToBottomLeft:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = 0;
-		thePoint.y = ((_fullScreenSize.height/2)-(_startPosition.origin.y));
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Botom Left");
+	if([self getWindowParameters]){
+        [self getVisibleScreenParams];
+        
+        CFTypeRef _position;
+        CFTypeRef _size;
+        NSSize toolBarSize;
+        toolBarSize.width = _screenVisibleSize.width;
+        toolBarSize.height = (_screenPosition.y - _screenVisiblePosition.y);
+        
+		_windowPosition.x = _screenVisiblePosition.x;
+		_windowPosition.y = (_screenSize.height/2)+toolBarSize.height;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = (_screenRectSize.width/2);
-			theSize.height = ((_fullScreenSize.height/2));
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+        _windowSize.width = (_screenSize.width/2);
+        _windowSize.height = (_screenSize.height/2);
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
+    }
+    NSLog(@"Shifted To Bottom Left");
+    _focusedWindow = NULL;
+    
 }
 
 -(IBAction)shiftToBottomRight:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = (_screenRectSize.width/2);
-		thePoint.y = ((_fullScreenSize.height/2)-(_startPosition.origin.y));
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Botom Right");
+	if([self getWindowParameters]){
+        [self getVisibleScreenParams];
+        
+        CFTypeRef _position;
+        CFTypeRef _size;
+        NSSize toolBarSize;
+        toolBarSize.width = _screenVisibleSize.width;
+        toolBarSize.height = (_screenPosition.y - _screenVisiblePosition.y);
+        
+		_windowPosition.x = _screenPosition.x +(_screenSize.width/2);
+		_windowPosition.y = (_screenSize.height/2)+toolBarSize.height;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = (_screenRectSize.width/2);
-			theSize.height = ((_fullScreenSize.height/2));
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+        _windowSize.width = (_screenSize.width/2);
+        _windowSize.height = (_screenSize.height/2);
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
+    }
+    NSLog(@"Shifted To Bottom Right");
+    _focusedWindow = NULL;
+    
 }
 
 -(IBAction)shiftToCenter:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize originalSize;
-		AXValueGetValue((AXValueRef)_size, kAXValueCGSizeType, &originalSize);
-		NSLog(@"%d, %d",originalSize.width,originalSize.height);
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			thePoint.x = ((_screenRectSize.width/2) - (originalSize.width/2));
-			thePoint.y = ((_screenRectSize.height/2) - (originalSize.height/2));
-			NSLog(@"%d, %d",thePoint.x,thePoint.y);
-			_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
-		}
+    NSLog(@"Shifting To Center");
+	if([self getWindowParameters]){
+        [self getVisibleScreenParams];
+        
+        CFTypeRef _position;
+        
+		_windowPosition.x = (_screenVisibleSize.width/2)-(_windowSize.width/2);
+		_windowPosition.y = (_screenVisibleSize.height/2)-(_windowSize.height/2);
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;	
+    }
+    NSLog(@"Shifted To Center");
+    _focusedWindow = NULL;
 }
 
 -(IBAction)fullScreen:(id)sender{
-	[self getWindowParameters];
-	if(AXValueGetType(_position) == kAXValueCGPointType) {
-		NSPoint thePoint;
-		NSSize theSize;
-		thePoint.x = 0;
-		thePoint.y = 0;
-		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&thePoint));
+    NSLog(@"Shifting To Full Screen");
+	if([self getWindowParameters]){
+        
+        CFTypeRef _position;
+        CFTypeRef _size;
+        
+		_windowPosition.x = _screenPosition.x;
+		_windowPosition.y = _screenPosition.y;
+		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-		if(AXValueGetType(_size) == kAXValueCGSizeType) {
-			theSize.width = _screenRectSize.width;
-			theSize.height = _screenRectSize.height;
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&theSize));					
-		}
+        _windowSize.width = _screenVisibleSize.width;
+        _windowSize.height = _screenVisibleSize.height;
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)_size) != kAXErrorSuccess){
 			NSLog(@"Size cannot be modified");
 		}
-	}
-	_focusedApp = NULL;
-	_focusedWindow = NULL;
-	_position = NULL;
-	_size = NULL;
+    }
+    NSLog(@"Shifted To Full Screen");
+    _focusedWindow = NULL;
 }
 
 -(WindowSizer *)init{
