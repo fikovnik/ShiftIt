@@ -12,13 +12,29 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		F2520B641133874D00DB826F /* PrefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PrefWindowController.m */; };
+		F2BCBA281134D16D006961AA /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2BCBA271134D16D006961AA /* Sparkle.framework */; };
+		F2BCBA441134D214006961AA /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2BCBA271134D16D006961AA /* Sparkle.framework */; };
 		F2C54EA31128AADB00E7DAC5 /* hKController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2C54EA21128AADB00E7DAC5 /* hKController.m */; };
-		F2DC61141127ABBE000E1A5B /* PrefWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61131127ABBE000E1A5B /* PrefWindow.m */; };
+		F2DC1A321133829D009BDCA5 /* PrefWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DC1A311133829D009BDCA5 /* PrefWindow.xib */; };
 		F2DC61251127ACDE000E1A5B /* WindowSizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61241127ACDE000E1A5B /* WindowSizer.m */; };
 		F2DC615E1127BB42000E1A5B /* SIHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC615D1127BB42000E1A5B /* SIHotKey.m */; };
 		F2DC61991127C15F000E1A5B /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61981127C15F000E1A5B /* Preferences.m */; };
 		F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DC61EE1127C862000E1A5B /* Carbon.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F2BCBA481134D21C006961AA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F2BCBA441134D214006961AA /* Sparkle.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -31,10 +47,12 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F2520B621133874D00DB826F /* PrefWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefWindowController.h; sourceTree = "<group>"; };
+		F2520B631133874D00DB826F /* PrefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefWindowController.m; sourceTree = "<group>"; };
+		F2BCBA271134D16D006961AA /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		F2C54EA11128AADB00E7DAC5 /* hKController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hKController.h; sourceTree = "<group>"; };
 		F2C54EA21128AADB00E7DAC5 /* hKController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hKController.m; sourceTree = "<group>"; };
-		F2DC61121127ABBE000E1A5B /* PrefWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefWindow.h; sourceTree = "<group>"; };
-		F2DC61131127ABBE000E1A5B /* PrefWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefWindow.m; sourceTree = "<group>"; };
+		F2DC1A311133829D009BDCA5 /* PrefWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefWindow.xib; sourceTree = "<group>"; };
 		F2DC61231127ACDE000E1A5B /* WindowSizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowSizer.h; sourceTree = "<group>"; };
 		F2DC61241127ACDE000E1A5B /* WindowSizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowSizer.m; sourceTree = "<group>"; };
 		F2DC615C1127BB42000E1A5B /* SIHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIHotKey.h; sourceTree = "<group>"; };
@@ -51,6 +69,7 @@
 			files = (
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
+				F2BCBA281134D16D006961AA /* Sparkle.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +92,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F2BCBA271134D16D006961AA /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
 			name = "Linked Frameworks";
@@ -122,6 +142,7 @@
 				8D1107310486CEB800E47090 /* ShiftIt-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
+				F2DC1A311133829D009BDCA5 /* PrefWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -151,8 +172,8 @@
 			children = (
 				F2DC61971127C15F000E1A5B /* Preferences.h */,
 				F2DC61981127C15F000E1A5B /* Preferences.m */,
-				F2DC61121127ABBE000E1A5B /* PrefWindow.h */,
-				F2DC61131127ABBE000E1A5B /* PrefWindow.m */,
+				F2520B621133874D00DB826F /* PrefWindowController.h */,
+				F2520B631133874D00DB826F /* PrefWindowController.m */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -167,6 +188,7 @@
 				8D1107290486CEB800E47090 /* Resources */,
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
+				F2BCBA481134D21C006961AA /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -202,6 +224,7 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
+				F2DC1A321133829D009BDCA5 /* PrefWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,11 +237,11 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */,
-				F2DC61141127ABBE000E1A5B /* PrefWindow.m in Sources */,
 				F2DC61251127ACDE000E1A5B /* WindowSizer.m in Sources */,
 				F2DC615E1127BB42000E1A5B /* SIHotKey.m in Sources */,
 				F2DC61991127C15F000E1A5B /* Preferences.m in Sources */,
 				F2C54EA31128AADB00E7DAC5 /* hKController.m in Sources */,
+				F2520B641133874D00DB826F /* PrefWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,10 +271,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../Downloads/BWToolkit\"",
+					"\"$(SRCROOT)/../../../Downloads/Sparkle 1.5b6\"",
+					"\"$(SRCROOT)/build/Release\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
@@ -271,10 +298,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../../Downloads/BWToolkit\"",
+					"\"$(SRCROOT)/../../../Downloads/Sparkle 1.5b6\"",
+					"\"$(SRCROOT)/build/Release\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

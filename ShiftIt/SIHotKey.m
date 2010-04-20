@@ -11,7 +11,7 @@
 
 @implementation SIHotKey
 
--(id)initWithIdentifier:(NSInteger)identifier keyCode:(NSInteger)keyCode modCombo:(NSUInteger)modCombo{
+-(id)initWithIdentifier:(NSInteger)identifier keyCode:(NSInteger)keyCode modCombo:(NSNumber*)modCombo{
 	if(self ==[super init]){
 		_hotKeyId = identifier;
 		_keyCode = keyCode;
@@ -36,11 +36,11 @@
 	return _hotKeyId;
 }
 
--(void)setModifierCombo:(NSUInteger)mCombo{
+-(void)setModifierCombo:(NSNumber*)mCombo{
 	_modifierCombi = mCombo;
 }
 
--(NSUInteger)modifierCombo{
+-(NSNumber*)modifierCombo{
 	return _modifierCombi;
 }
 

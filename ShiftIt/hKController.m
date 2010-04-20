@@ -33,15 +33,35 @@ static id _hkController = nil;
 }
 
 
+UInt32 convertToCarbon(NSUInteger inCocoaModifiers) {
+    UInt32 carbModifiers = 0;
+    if (inCocoaModifiers & NSAlphaShiftKeyMask){
+        carbModifiers |= alphaLock;
+    }
+    if (inCocoaModifiers & NSShiftKeyMask){
+        carbModifiers |= shiftKey;
+    }
+    if (inCocoaModifiers & NSControlKeyMask){
+        carbModifiers |= controlKey;
+    }
+    if (inCocoaModifiers & NSAlternateKeyMask){
+        carbModifiers |= optionKey;
+    }
+    if (inCocoaModifiers & NSCommandKeyMask){
+        carbModifiers |= cmdKey;
+    }
+    return carbModifiers;
+}
+
 -(BOOL)registerHotKey:(SIHotKey*)hotKey{
 	OSStatus error;
 	EventHotKeyID hotKeyID;
 	EventHotKeyRef hotKeyRef;
 	
-	hotKeyID.signature='SI';
+	hotKeyID.signature='SIHK';
 	hotKeyID.id	= hotKey.hotKeyId;
 	
-	error = RegisterEventHotKey([hotKey keyCode], [hotKey modifierCombo], hotKeyID, GetEventDispatcherTarget(), 0, &hotKeyRef);
+	error = RegisterEventHotKey([hotKey keyCode], convertToCarbon([[hotKey modifierCombo] unsignedIntValue]), hotKeyID, GetEventDispatcherTarget(), 0, &hotKeyRef);
 	
 	if(error){
 		return FALSE;

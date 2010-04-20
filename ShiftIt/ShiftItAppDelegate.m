@@ -10,8 +10,6 @@
 
 @implementation ShiftItAppDelegate
 
-@synthesize window;
-
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	if (!AXAPIEnabled()){
         int ret = NSRunAlertPanel (@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel",NULL);
@@ -28,9 +26,7 @@
             default:
                 break;
         }
-    }
-    [window registerForLogin:YES];
-    
+    }    
     _pref = [[Preferences alloc] init];
 }
 
@@ -42,12 +38,11 @@
 }
 
 -(IBAction)showPreferences:(id)sender{
-    [window makeKeyAndOrderFront:sender];
+    if (!prefController) {
+        prefController = [[PrefWindowController alloc]init];
+    }
+    [prefController showPreferences:sender];
     [NSApp activateIgnoringOtherApps:YES];
-}
-
--(IBAction)hidePreferences:(id)sender{
-    [window performClose:sender];
 }
 
 @end

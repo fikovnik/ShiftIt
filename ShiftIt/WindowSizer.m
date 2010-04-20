@@ -87,7 +87,6 @@
 			}else {
                 if(AXValueGetType(_position) == kAXValueCGPointType) {
                     AXValueGetValue(_position, kAXValueCGPointType, (void*)&_windowPosition);
-                    NSLog(@"Window Position: x:%f y:%f",_windowPosition.x,_windowPosition.y);
                 }else {
                     error = TRUE;
                 }                
@@ -364,7 +363,7 @@
 -(IBAction)fullScreen:(id)sender{
     NSLog(@"Shifting To Full Screen");
 	if([self getWindowParameters]){
-        
+        [self getVisibleScreenParams];
         CFTypeRef _position;
         CFTypeRef _size;
         
