@@ -9,7 +9,6 @@
 #import <Cocoa/Cocoa.h>
 
 #include "Preferences.h"
-#include "GTMHotKeyTextField.h"
 
 @interface PrefWindowController : NSWindowController {
     IBOutlet NSTextField * _top;

@@ -47,14 +47,4 @@
     [[self window] performClose:sender];
 }
 
-
-- (id)windowWillReturnFieldEditor:(NSWindow *)sender toObject:(id)client {
-    if ([client isKindOfClass:[GTMHotKeyTextField class]]) {
-        return [GTMHotKeyFieldEditor sharedHotKeyFieldEditor];
-    } else {
-        return nil;
-    }
-}
-
-
 @end
