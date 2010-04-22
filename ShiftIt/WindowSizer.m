@@ -87,6 +87,7 @@
 			}else {
                 if(AXValueGetType(_position) == kAXValueCGPointType) {
                     AXValueGetValue(_position, kAXValueCGPointType, (void*)&_windowPosition);
+                    NSLog(@"position x:%f, y:%f", _windowPosition.x, _windowPosition.y);
                 }else {
                     error = TRUE;
                 }                
@@ -98,6 +99,7 @@
 			}else {
                 if(AXValueGetType(_size) == kAXValueCGSizeType) {
                     AXValueGetValue(_size, kAXValueCGSizeType, (void*)&_windowSize);
+                    NSLog(@"size width:%f, height:%f", _windowSize.width, _windowSize.height);
                 }else {
                     error = TRUE;
                 }
@@ -125,9 +127,11 @@
 		_windowPosition.y = 0;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-			_windowSize.width = ((_screenSize.width)/2);
-			_windowSize.height = _screenSize.height;
-			_size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        _windowSize.width = ((_screenSize.width)/2);
+        _windowSize.height = _screenSize.height;
+        _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
+        NSLog(@"size2 width:%f, height:%f", _windowSize.width, _windowSize.height);
+        
         
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");

@@ -151,7 +151,7 @@
 					</object>
 					<object class="NSMenuItem" id="216909775">
 						<reference key="NSMenu" ref="981997696"/>
-						<string key="NSTitle">Full Screen</string>
+						<string key="NSTitle">Maximize</string>
 						<string key="NSKeyEquiv">f</string>
 						<int key="NSKeyEquivModMask">1572864</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -179,7 +179,6 @@
 					</object>
 					<object class="NSMenuItem" id="652513975">
 						<reference key="NSMenu" ref="981997696"/>
-						<bool key="NSIsHidden">YES</bool>
 						<string key="NSTitle">Preferences</string>
 						<string key="NSKeyEquiv">,</string>
 						<int key="NSKeyEquivModMask">1048576</int>
@@ -189,7 +188,6 @@
 					</object>
 					<object class="NSMenuItem" id="480841369">
 						<reference key="NSMenu" ref="981997696"/>
-						<bool key="NSIsHidden">YES</bool>
 						<string key="NSTitle">Check for Updates</string>
 						<string key="NSKeyEquiv"/>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -332,7 +330,7 @@
 						<reference key="source" ref="268658829"/>
 						<reference key="destination" ref="480841369"/>
 					</object>
-					<int key="connectionID">762</int>
+					<int key="connectionID">763</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -553,7 +551,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">762</int>
+			<int key="maxID">763</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
