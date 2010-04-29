@@ -17,6 +17,7 @@
     NSPoint _screenPosition;
     NSPoint _windowPosition;
     NSSize _windowSize;
+	int _menuBarHeight;
 }
 
 -(IBAction)shiftToLeftHalf:(id)sender;

@@ -7,7 +7,7 @@
 //
 
 #import "WindowSizer.h"
-
+#import <Carbon/Carbon.h>
 
 @implementation WindowSizer
 
@@ -109,6 +109,7 @@
 		NSLog(@"Problem with App");
 	}
     if(!error){
+		_menuBarHeight = GetMBarHeight();
         [self chooseScreen];
         NSLog(@"Get Window Parameter Success");
     }else {
@@ -120,15 +121,16 @@
 -(IBAction)shiftToLeftHalf:(id)sender{
     NSLog(@"Shifting To Left Half");
 	if([self getWindowParameters]){
+		[self getVisibleScreenParams];
         CFTypeRef _position;
         CFTypeRef _size;
         
-		_windowPosition.x = _screenPosition.x;
-		_windowPosition.y = 0;
+		_windowPosition.x = _screenVisiblePosition.x;
+		_windowPosition.y = _menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-        _windowSize.width = ((_screenSize.width)/2);
-        _windowSize.height = _screenSize.height;
+        _windowSize.width = ((_screenVisibleSize.width)/2);
+        _windowSize.height = _screenVisibleSize.height;
         _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
         NSLog(@"size2 width:%f, height:%f", _windowSize.width, _windowSize.height);
         
@@ -149,15 +151,15 @@
 -(IBAction)shiftToRightHalf:(id)sender{
     NSLog(@"Shifting To Right Half");
 	if([self getWindowParameters]){
-        
+		[self getVisibleScreenParams];        
         CFTypeRef _position;
         CFTypeRef _size;
-		_windowPosition.x = _screenPosition.x +(_screenSize.width/2);
-		_windowPosition.y = 0;
+		_windowPosition.x = _screenVisiblePosition.x +(_screenVisibleSize.width/2);
+		_windowPosition.y = _menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-        _windowSize.width = ((_screenSize.width)/2);
-        _windowSize.height = _screenSize.height;
+        _windowSize.width = ((_screenVisibleSize.width)/2);
+        _windowSize.height = _screenVisibleSize.height;
         _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
         
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
@@ -175,15 +177,15 @@
 -(IBAction)shiftToTopHalf:(id)sender{
     NSLog(@"Shifting To Top Half");
 	if([self getWindowParameters]){
-        
+		[self getVisibleScreenParams];        
         CFTypeRef _position;
         CFTypeRef _size;
-		_windowPosition.x = _screenPosition.x;
-		_windowPosition.y = 0;
+		_windowPosition.x = _screenVisiblePosition.x;
+		_windowPosition.y = _menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-        _windowSize.width = _screenSize.width;
-        _windowSize.height = (_screenSize.height/2);
+        _windowSize.width = _screenVisibleSize.width;
+        _windowSize.height = (_screenVisibleSize.height/2);
         _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
         
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
@@ -201,20 +203,17 @@
 -(IBAction)shiftToBottomHalf:(id)sender{
     NSLog(@"Shifting To Bottom Half");
 	if([self getWindowParameters]){
-        [self getVisibleScreenParams];
+		[self getVisibleScreenParams];
         
         CFTypeRef _position;
         CFTypeRef _size;
-        NSSize toolBarSize;
-        toolBarSize.width = _screenVisibleSize.width;
-        toolBarSize.height = (_screenPosition.y - _screenVisiblePosition.y);
         
 		_windowPosition.x = _screenVisiblePosition.x;
-		_windowPosition.y = (_screenSize.height/2)+toolBarSize.height;
+		_windowPosition.y = (_screenVisibleSize.height/2)+_menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-        _windowSize.width = _screenSize.width;
-        _windowSize.height = (_screenSize.height/2);
+        _windowSize.width = _screenVisibleSize.width;
+        _windowSize.height = (_screenVisibleSize.height/2);
         _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
         
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
@@ -235,8 +234,8 @@
         CFTypeRef _position;
         CFTypeRef _size;
         
-		_windowPosition.x = _screenPosition.x;
-		_windowPosition.y = _screenPosition.y;
+		_windowPosition.x = _screenVisiblePosition.x;
+		_windowPosition.y = _menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
         _windowSize.width = (_screenVisibleSize.width/2);
@@ -263,8 +262,8 @@
         CFTypeRef _position;
         CFTypeRef _size;
         
-		_windowPosition.x = _screenPosition.x +(_screenSize.width/2);
-		_windowPosition.y = _screenPosition.y;
+		_windowPosition.x = _screenVisiblePosition.x +(_screenVisibleSize.width/2);
+		_windowPosition.y = _menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
         _windowSize.width = (_screenVisibleSize.width/2);
@@ -290,16 +289,13 @@
         
         CFTypeRef _position;
         CFTypeRef _size;
-        NSSize toolBarSize;
-        toolBarSize.width = _screenVisibleSize.width;
-        toolBarSize.height = (_screenPosition.y - _screenVisiblePosition.y);
         
 		_windowPosition.x = _screenVisiblePosition.x;
-		_windowPosition.y = (_screenSize.height/2)+toolBarSize.height;
+		_windowPosition.y = (_screenVisibleSize.height/2)+_menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-        _windowSize.width = (_screenSize.width/2);
-        _windowSize.height = (_screenSize.height/2);
+        _windowSize.width = (_screenVisibleSize.width/2);
+        _windowSize.height = (_screenVisibleSize.height/2);
         _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
         
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
@@ -321,16 +317,13 @@
         
         CFTypeRef _position;
         CFTypeRef _size;
-        NSSize toolBarSize;
-        toolBarSize.width = _screenVisibleSize.width;
-        toolBarSize.height = (_screenPosition.y - _screenVisiblePosition.y);
         
-		_windowPosition.x = _screenPosition.x +(_screenSize.width/2);
-		_windowPosition.y = (_screenSize.height/2)+toolBarSize.height;
+		_windowPosition.x = _screenVisiblePosition.x +(_screenVisibleSize.width/2);
+		_windowPosition.y = (_screenVisibleSize.height/2)+_menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
-        _windowSize.width = (_screenSize.width/2);
-        _windowSize.height = (_screenSize.height/2);
+        _windowSize.width = (_screenVisibleSize.width/2);
+        _windowSize.height = (_screenVisibleSize.height/2);
         _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
         
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
@@ -352,8 +345,8 @@
         
         CFTypeRef _position;
         
-		_windowPosition.x = (_screenVisibleSize.width/2)-(_windowSize.width/2);
-		_windowPosition.y = (_screenVisibleSize.height/2)-(_windowSize.height/2);
+		_windowPosition.x = _screenVisiblePosition.x+(_screenVisibleSize.width/2)-(_windowSize.width/2);
+		_windowPosition.y = _menuBarHeight+(_screenVisibleSize.height/2)-(_windowSize.height/2);
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
         
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
@@ -371,8 +364,8 @@
         CFTypeRef _position;
         CFTypeRef _size;
         
-		_windowPosition.x = _screenPosition.x;
-		_windowPosition.y = _screenPosition.y;
+		_windowPosition.x = _screenVisiblePosition.x;
+		_windowPosition.y = _menuBarHeight;
 		_position = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&_windowPosition));
 		
         _windowSize.width = _screenVisibleSize.width;
