@@ -17,8 +17,9 @@
 	NSMutableDictionary * _userDefaultsValuesDict;
     WindowSizer * _winSizer;
     EventTypeSpec _eventType;
+
 }
 -(void)modifyHotKey:(NSInteger)newKey modiferKeys:(NSInteger)modKeys key:(NSString*)keyCode;
 -(void)registerDefaults;
-+(void)registerForLogin:(BOOL)login;
+
 @end

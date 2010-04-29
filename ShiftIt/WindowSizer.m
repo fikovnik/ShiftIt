@@ -133,8 +133,7 @@
         _windowSize.height = _screenVisibleSize.height;
         _size = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&_windowSize));					
         NSLog(@"size2 width:%f, height:%f", _windowSize.width, _windowSize.height);
-        
-        
+
 		if(AXUIElementSetAttributeValue((AXUIElementRef)_focusedWindow,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)_position) != kAXErrorSuccess){
 			NSLog(@"Position cannot be changed");
 		}

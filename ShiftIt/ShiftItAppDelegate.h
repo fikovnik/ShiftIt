@@ -11,10 +11,12 @@
 
 @interface ShiftItAppDelegate : NSObject {
     PrefWindowController * prefController;
-    IBOutlet NSMenu *statusMenu;
-	NSStatusItem *statusItem;
     Preferences * _pref;
+	IBOutlet NSMenu *statusMenu;
+	NSStatusItem *statusItem;
 }
 
 -(IBAction)showPreferences:(id)sender;
+-(void)updateMenuBarIcon;
+-(void)registerForLogin;
 @end

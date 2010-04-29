@@ -136,18 +136,21 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:9 keyCode:8 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask)]]];
 	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:10 keyCode:3 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask)]]];
 	
-    [_userDefaultsValuesDict setObject:[NSNumber numberWithInt:1] forKey:@"shiftItstartLogin"];
-    
+    [_userDefaultsValuesDict setObject:[NSNumber numberWithBool:YES] forKey:@"shiftItstartLogin"];
+    [_userDefaultsValuesDict setObject:[NSNumber numberWithBool:YES] forKey:@"shiftItshowMenu"];
+	
 	[[NSUserDefaults standardUserDefaults] registerDefaults:_userDefaultsValuesDict];
 	[[NSUserDefaults standardUserDefaults] synchronize];
     
     NSArray *resettableUserDefaultsKeys;
     NSDictionary * initialValuesDict;
     resettableUserDefaultsKeys=[NSArray arrayWithObjects:@"leftHalf",@"topHalf",@"bottomHalf",@"rightHalf",@"bottomLeft",@"bottomRight",@"topLeft",@"topRight",@"fullScreen",@"center",nil];
+	
     initialValuesDict=[[NSUserDefaults standardUserDefaults] dictionaryWithValuesForKeys:resettableUserDefaultsKeys];
     
     // Set the initial values in the shared user defaults controller
     [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:initialValuesDict];
+	
     
 }
 
@@ -157,64 +160,6 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 	[_hKeyController modifyHotKey:[[SIHotKey alloc]initWithIdentifier:[[_userDefaultsValuesDict objectForKey:keyCode] intValue] keyCode:newKey modCombo:[NSNumber numberWithUnsignedInt:modKeys]]];
 	[[NSUserDefaults standardUserDefaults] synchronize];	
 }
-
-+(void)registerForLogin:(BOOL)login{
-    if(login){
-        NSString * appPath = [[NSBundle mainBundle] bundlePath];
-        
-        // This will retrieve the path for the application
-        // For example, /Applications/test.app
-        CFURLRef url = (CFURLRef)[NSURL fileURLWithPath:appPath]; 
-        
-        // Create a reference to the shared file list.
-        // We are adding it to the current user only.
-        // If we want to add it all users, use
-        // kLSSharedFileListGlobalLoginItems instead of
-        //kLSSharedFileListSessionLoginItems
-        LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL,kLSSharedFileListSessionLoginItems, NULL);
-        if (loginItems) {
-            //Insert an item to the list.
-            LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,kLSSharedFileListItemLast, NULL, NULL,url, NULL, NULL);
-            if (item){
-                CFRelease(item);
-            }
-        }	
-        CFRelease(loginItems);
-    }else {
-        NSString * appPath = [[NSBundle mainBundle] bundlePath];
-        
-        // This will retrieve the path for the application
-        // For example, /Applications/test.app
-        CFURLRef url = (CFURLRef)[NSURL fileURLWithPath:appPath]; 
-        
-        // Create a reference to the shared file list.
-        LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL,
-                                                                kLSSharedFileListSessionLoginItems, NULL);
-        
-        if (loginItems) {
-            UInt32 seedValue;
-            //Retrieve the list of Login Items and cast them to
-            // a NSArray so that it will be easier to iterate.
-            NSArray  *loginItemsArray = (NSArray *)LSSharedFileListCopySnapshot(loginItems, &seedValue);
-            int i = 0;
-            for(i ; i< [loginItemsArray count]; i++){
-                LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)[loginItemsArray
-                                                                            objectAtIndex:i];
-                //Resolve the item with URL
-                if (LSSharedFileListItemResolve(itemRef, 0, (CFURLRef*) &url, NULL) == noErr) {
-                    NSString * urlPath = [(NSURL*)url path];
-                    if ([urlPath compare:appPath] == NSOrderedSame){
-                        LSSharedFileListItemRemove(loginItems,itemRef);
-                    }
-                }
-            }
-            [loginItemsArray release];
-        }
-    }
-    
-    
-}
-
 
 -(void)dealloc{
     [_winSizer release];

@@ -23,14 +23,6 @@
     [tabView selectTabViewItemAtIndex:0];
 }
 
--(IBAction)openAtLogin:(id)sender{
-    if([sender state] == NSOnState){
-        [Preferences registerForLogin:YES];
-    }else {
-        [Preferences registerForLogin:NO];
-    }
-}
-
 -(IBAction)savePreferences:(id)sender{
     
     

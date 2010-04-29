@@ -28,7 +28,6 @@
     IBOutlet NSTabView * tabView;
 }
 
--(IBAction)openAtLogin:(id)sender;
 -(IBAction)savePreferences:(id)sender;
 -(IBAction)closePreferences:(id)sender;
 -(IBAction)showPreferences:(id)sender;
