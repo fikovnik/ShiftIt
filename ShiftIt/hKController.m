@@ -61,7 +61,7 @@ UInt32 convertToCarbon(NSUInteger inCocoaModifiers) {
 	hotKeyID.signature='SIHK';
 	hotKeyID.id	= hotKey.hotKeyId;
 	
-	error = RegisterEventHotKey([hotKey keyCode], convertToCarbon([[hotKey modifierCombo] unsignedIntValue]), hotKeyID, GetEventDispatcherTarget(), 0, &hotKeyRef);
+	error = RegisterEventHotKey([hotKey keyCode], convertToCarbon([[hotKey modifierCombo] unsignedIntValue]), hotKeyID, GetApplicationEventTarget(), 0, &hotKeyRef);
 	
 	if(error){
 		return FALSE;
