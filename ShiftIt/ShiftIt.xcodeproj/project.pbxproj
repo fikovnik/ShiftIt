@@ -301,9 +301,6 @@
 				ARCHS = i386;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../Downloads/BWToolkit\"",
-					"\"$(SRCROOT)/../../../Downloads/Sparkle 1.5b6\"",
 					"\"$(SRCROOT)/build/Release\"",
 					"\"$(SRCROOT)\"",
 				);
