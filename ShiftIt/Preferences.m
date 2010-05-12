@@ -19,7 +19,6 @@
 
 
 #import "Preferences.h"
-#import "HotKeyController.h"
 
 OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userData){
 	//Do something once the key is pressed
