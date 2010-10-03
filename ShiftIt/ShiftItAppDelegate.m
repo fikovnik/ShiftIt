@@ -19,6 +19,11 @@
 
 #import "ShiftItAppDelegate.h"
 
+NSString *const kSIIconName = @"shift-it-menu-icon";
+NSString *const kSIIconType = @"png";
+NSString *const kSIMenuItemTitle = @"Shift";
+int const kSIMenuItemSize = 30;
+
 @implementation ShiftItAppDelegate
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
@@ -46,14 +51,29 @@
 		[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.shiftItshowMenu" options:0 context:self];
 		[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.shiftItstartLogin" options:0 context:self];
 	}
+	
+	NSString *iconPath = [[NSBundle mainBundle] pathForResource:kSIIconName ofType:kSIIconType];
+	statusMenuItemIcon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+	if (!statusMenuItemIcon) {
+		NSLog(@"No icon");
+		// TODO: assert fail
+	}
+	
 	return self;
 }
+
+- (void) dealloc {
+	[statusMenuItemIcon release];
+	
+	[super dealloc];
+}
+
 - (void) awakeFromNib{
 	[self updateMenuBarIcon];
 	[self registerForLogin];
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
 	if([keyPath compare:@"values.shiftItshowMenu"] == NSOrderedSame){
 		[self updateMenuBarIcon];
 	}else if ([keyPath compare:@"values.shiftItstartLogin"]== NSOrderedSame) {
@@ -62,22 +82,25 @@
 
 }
 
-//DO NOT USE YET! THERE IS NO WAY TO TURN THE ICON ON!
--(void)updateMenuBarIcon{
+- (void) updateMenuBarIcon{
 	BOOL showIconInMenuBar = [[NSUserDefaults standardUserDefaults] boolForKey:@"shiftItshowMenu"];
-	NSStatusBar * temp = [NSStatusBar systemStatusBar];
+	NSStatusBar * statusBar = [NSStatusBar systemStatusBar];
 	if(showIconInMenuBar){
 		if(!statusItem){
-			statusItem = [[temp statusItemWithLength:NSVariableStatusItemLength] retain];
+			statusItem = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
 			[statusItem setMenu:statusMenu];
-			[statusItem setTitle:@"Shift"];
+			if (statusMenuItemIcon) {
+				[statusItem setImage:statusMenuItemIcon];
+			} else {
+				[statusItem setTitle:kSIMenuItemTitle];
+			}
 			[statusItem setHighlightMode:YES];
 		}
-	}else {
-/*		[temp removeStatusItem:statusItem];
+	} else {
+		[statusBar removeStatusItem:statusItem];
 		[statusItem autorelease];
 		statusItem = nil;
-*/	}
+	}
 }
 
 -(void)registerForLogin{

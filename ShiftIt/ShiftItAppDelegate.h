@@ -25,6 +25,8 @@
     Preferences * _pref;
 	IBOutlet NSMenu *statusMenu;
 	NSStatusItem *statusItem;
+	
+	NSImage *statusMenuItemIcon;
 }
 
 -(IBAction)showPreferences:(id)sender;
