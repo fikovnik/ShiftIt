@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>leftKeyCode</string>
+	<string>rightKeyCode</string>
+	<string>topKeyCode</string>
+	<string>bottomKeyCode</string>
+	<string>tlKeyCode</string>
+	<string>trKeyCode</string>
+	<string>blKeyCode</string>
+	<string>brKeyCode</string>
+	<string>fullscreenKeyCode</string>
+	<string>centerKeyCode</string>
+</array>
+</plist>

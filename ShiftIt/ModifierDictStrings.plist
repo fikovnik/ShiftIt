@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<string>leftModifiers</string>
+	<string>rightModifiers</string>
+	<string>topModifiers</string>
+	<string>bottomModifiers</string>
+	<string>tlModifiers</string>
+	<string>trModifiers</string>
+	<string>blModifiers</string>
+	<string>brModifiers</string>
+	<string>fullscreenModifiers</string>
+	<string>centerModifiers</string>
+</array>
+</plist>
