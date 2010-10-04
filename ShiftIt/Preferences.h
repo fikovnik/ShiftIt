@@ -31,5 +31,6 @@
 }
 -(void)modifyHotKey:(NSInteger)newKey modiferKeys:(NSInteger)modKeys key:(NSString*)keyCode;
 -(void)registerHotKeys;
+-(void)clearUserDefaults;
 
 @end

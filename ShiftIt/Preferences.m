@@ -72,33 +72,37 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 		_eventType.eventKind = kEventHotKeyPressed;
 		InstallApplicationEventHandler(&winSizer,1,&_eventType,_winSizer,NULL);
 		
+		if ( ![[NSUserDefaults standardUserDefaults] boolForKey:@"userDefaultsCleared"] ) {
+			[self clearUserDefaults];
+			[[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"userDefaultsCleared"];
+		}	
+		
 		[self registerHotKeys];
 	}
+	
+
+	
 	return self;
 }
 
 -(void)registerHotKeys{
 	NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
-	//Uncomment these lines to clear out the NSUserDefaults
-	//[storage removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
-	//[storage synchronize];
-	
+
 	if (![storage boolForKey:@"defaultsRegistered"]) {
-		
 		[NSUserDefaults resetStandardUserDefaults];
 		NSLog(@"Registering default");
 		
 		[storage setInteger:kVK_LeftArrow forKey:@"leftKeyCode"];
-		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"leftModifiers"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSNumericPadKeyMask) forKey:@"leftModifiers"];
 		
 		[storage setInteger:kVK_RightArrow forKey:@"rightKeyCode"];
-		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"rightModifiers"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSNumericPadKeyMask) forKey:@"rightModifiers"];
 
 		[storage setInteger:kVK_UpArrow forKey:@"topKeyCode"];
-		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"topModifiers"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSNumericPadKeyMask) forKey:@"topModifiers"];
 
 		[storage setInteger:kVK_DownArrow forKey:@"bottomKeyCode"];
-		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"bottomModifiers"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSNumericPadKeyMask) forKey:@"bottomModifiers"];
 
 		
 		[storage setInteger:kVK_ANSI_1 forKey:@"tlKeyCode"];
@@ -147,6 +151,12 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 	[[NSUserDefaults standardUserDefaults] setInteger:modKeys forKey:[@"hkm" stringByAppendingString:keyCode]];
 	[_hKeyController modifyHotKey:[[SIHotKey alloc]initWithIdentifier:[[_userDefaultsValuesDict objectForKey:keyCode] intValue] keyCode:newKey modCombo:modKeys]];
 	[[NSUserDefaults standardUserDefaults] synchronize];	
+}
+
+-(void)clearUserDefaults{
+	//Uncomment these lines to clear out the NSUserDefaults
+	[[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+	[[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 -(void)dealloc{

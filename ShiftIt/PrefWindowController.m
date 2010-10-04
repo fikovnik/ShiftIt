@@ -54,31 +54,6 @@
 	
 	buttonPressed = -1;
 	[self updateTextFields];
-	
-//	for(int i=0; i < [textFieldArray count]; i++)
-//	{
-//		int menuIndex = i;
-//		if(menuIndex > 3)
-//			menuIndex++;
-//		if(menuIndex > 8)
-//			menuIndex++;
-//		
-//		NSUInteger modifierFlags = [[statusMenu itemAtIndex:menuIndex] keyEquivalentModifierMask];
-//		NSMutableString *hotKeyString = [NSMutableString stringWithString:[self modifierKeysStringForFlags:modifierFlags]];
-//		NSString *keyEq = [[statusMenu itemAtIndex:menuIndex] keyEquivalent];
-//		NSLog(@"keyEquivalent: '%c'",[keyEq characterAtIndex:0]);
-//		if([keyEq characterAtIndex:0] == 0xF700)
-//			keyEq = @"↑";
-//		if([keyEq characterAtIndex:0] == 0xF701)
-//			keyEq = @"↓";
-//		if([keyEq characterAtIndex:0] == 0xF702)
-//			keyEq = @"←";
-//		if([keyEq characterAtIndex:0] == 0xF703)
-//			keyEq = @"→";
-//			
-//		[hotKeyString appendString:[keyEq uppercaseString]];
-//		[[textFieldArray objectAtIndex:i] setStringValue:hotKeyString];
-//	}
 }
 
 -(BOOL)acceptsFirstResponder{
@@ -243,16 +218,19 @@
 		
 		//arrows don't count as characters-- they're technically modifiers
 		// --must check the modifiers flags for the arrow keys
-		NSInteger keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:keycodeKey];
-		if (modifiers & NSNumericPadKeyMask && keyCode == kVK_LeftArrow ) 
-			[hotKeyString appendString:@"←"];
-		else if (modifiers & NSNumericPadKeyMask && keyCode == kVK_RightArrow ) 
-			[hotKeyString appendString:@"→"];
-		else if (modifiers & NSNumericPadKeyMask && keyCode == kVK_UpArrow ) 
-			[hotKeyString appendString:@"↑"];
-		else if (modifiers & NSNumericPadKeyMask && keyCode == kVK_DownArrow ) 
-			[hotKeyString appendString:@"↓"];
-		else 
+		[[NSUserDefaults standardUserDefaults] synchronize];
+		if (modifiers & NSNumericPadKeyMask) {
+			NSInteger keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:keycodeKey];
+			
+			if (keyCode == kVK_LeftArrow ) 
+				[hotKeyString appendString:@"←"];
+			else if (keyCode == kVK_RightArrow ) 
+				[hotKeyString appendString:@"→"];
+			else if (keyCode == kVK_UpArrow ) 
+				[hotKeyString appendString:@"↑"];
+			else if (keyCode == kVK_DownArrow ) 
+				[hotKeyString appendString:@"↓"];
+		}else 
 			[hotKeyString appendFormat:@"%c",baseChar];
 		
 		//append key equivalent character
