@@ -190,7 +190,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="234869761">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">top_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -222,7 +222,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="223662410">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">bot_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -238,7 +238,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="1059016332">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">left_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -254,7 +254,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="609615508">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">rght_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -270,7 +270,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="1038078945">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">BL_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -286,7 +286,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="433610574">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">BR_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -302,7 +302,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="85564211">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">FS_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -318,7 +318,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="666190966">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">cnt_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -334,7 +334,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="169153973">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">TR_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -350,7 +350,7 @@
 												<reference key="NSSuperview" ref="41894700"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="253205040">
-													<int key="NSCellFlags">-2077098431</int>
+													<int key="NSCellFlags">-2079195584</int>
 													<int key="NSCellFlags2">71308288</int>
 													<string key="NSContents">TL_hotkey</string>
 													<reference key="NSSupport" ref="38519159"/>
@@ -459,7 +459,7 @@
 														<int key="NSCellFlags">67239424</int>
 														<int key="NSCellFlags2">134348800</int>
 														<string key="NSContents">Bottom Right</string>
-														<object class="NSFont" key="NSSupport">
+														<object class="NSFont" key="NSSupport" id="202804781">
 															<string key="NSName">LucidaGrande</string>
 															<double key="NSSize">11</double>
 															<int key="NSfFlags">16</int>
@@ -512,6 +512,26 @@
 												<reference key="NSBackgroundColor" ref="925788107"/>
 												<reference key="NSCellBackgroundColor" ref="809265187"/>
 												<reference key="NSFont" ref="38519159"/>
+											</object>
+											<object class="NSButton" id="961325955">
+												<reference key="NSNextResponder" ref="41894700"/>
+												<int key="NSvFlags">268</int>
+												<string key="NSFrame">{{63, -3}, {130, 18}}</string>
+												<reference key="NSSuperview" ref="41894700"/>
+												<bool key="NSEnabled">YES</bool>
+												<object class="NSButtonCell" key="NSCell" id="88556253">
+													<int key="NSCellFlags">67239424</int>
+													<int key="NSCellFlags2">134217728</int>
+													<string key="NSContents">Esc to Cancel</string>
+													<reference key="NSSupport" ref="202804781"/>
+													<reference key="NSControlView" ref="961325955"/>
+													<int key="NSButtonFlags">-2046639873</int>
+													<int key="NSButtonFlags2">129</int>
+													<string key="NSAlternateContents"/>
+													<string type="base64-UTF8" key="NSKeyEquivalent">Gw</string>
+													<int key="NSPeriodicDelay">200</int>
+													<int key="NSPeriodicInterval">25</int>
+												</object>
 											</object>
 										</object>
 										<string key="NSFrame">{{10, 33}, {257, 266}}</string>
@@ -757,6 +777,22 @@
 					</object>
 					<int key="connectionID">506</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">cancelHotkey:</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="961325955"/>
+					</object>
+					<int key="connectionID">511</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">cancelHotkeyButton</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="961325955"/>
+					</object>
+					<int key="connectionID">512</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -925,6 +961,7 @@
 							<reference ref="760759073"/>
 							<reference ref="514775882"/>
 							<reference ref="166313567"/>
+							<reference ref="961325955"/>
 						</object>
 						<reference key="parent" ref="406584626"/>
 					</object>
@@ -1142,6 +1179,20 @@
 						<reference key="object" ref="234869761"/>
 						<reference key="parent" ref="334577222"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">509</int>
+						<reference key="object" ref="961325955"/>
+						<object class="NSMutableArray" key="children">
+							<bool key="EncodedWithXMLCoder">YES</bool>
+							<reference ref="88556253"/>
+						</object>
+						<reference key="parent" ref="41894700"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">510</int>
+						<reference key="object" ref="88556253"/>
+						<reference key="parent" ref="961325955"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -1183,6 +1234,8 @@
 					<string>493.IBPluginDependency</string>
 					<string>494.IBPluginDependency</string>
 					<string>5.IBPluginDependency</string>
+					<string>509.IBPluginDependency</string>
+					<string>510.IBPluginDependency</string>
 					<string>6.IBPluginDependency</string>
 					<string>62.IBPluginDependency</string>
 					<string>63.IBPluginDependency</string>
@@ -1200,6 +1253,8 @@
 					<integer value="1"/>
 					<string>{196, 240}</string>
 					<string>{{202, 428}, {480, 270}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -1255,7 +1310,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">506</int>
+			<int key="maxID">512</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1267,12 +1322,14 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>cancelHotkey:</string>
 							<string>changeHotkey:</string>
 							<string>savePreferences:</string>
 							<string>showPreferences:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -1282,12 +1339,17 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>cancelHotkey:</string>
 							<string>changeHotkey:</string>
 							<string>savePreferences:</string>
 							<string>showPreferences:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBActionInfo">
+								<string key="name">cancelHotkey:</string>
+								<string key="candidateClassName">id</string>
+							</object>
 							<object class="IBActionInfo">
 								<string key="name">changeHotkey:</string>
 								<string key="candidateClassName">id</string>
@@ -1310,6 +1372,7 @@
 							<string>blField</string>
 							<string>bottomField</string>
 							<string>brField</string>
+							<string>cancelHotkeyButton</string>
 							<string>centerField</string>
 							<string>fullScreenField</string>
 							<string>hotKeyButtonMatrix</string>
@@ -1326,6 +1389,7 @@
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
+							<string>NSButton</string>
 							<string>NSTextField</string>
 							<string>NSTextField</string>
 							<string>NSMatrix</string>
@@ -1345,6 +1409,7 @@
 							<string>blField</string>
 							<string>bottomField</string>
 							<string>brField</string>
+							<string>cancelHotkeyButton</string>
 							<string>centerField</string>
 							<string>fullScreenField</string>
 							<string>hotKeyButtonMatrix</string>
@@ -1372,6 +1437,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">brField</string>
 								<string key="candidateClassName">NSTextField</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">cancelHotkeyButton</string>
+								<string key="candidateClassName">NSButton</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">centerField</string>

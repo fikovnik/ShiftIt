@@ -39,12 +39,14 @@
 	NSTextField * brField;
 	NSTextField * fullScreenField;
 	NSTextField * centerField;
+	NSButton *cancelHotkeyButton;
 	NSArray *textFieldArray;
 	
 	IBOutlet NSMatrix *hotKeyButtonMatrix;
 	NSMutableString *modifiersString;
 	NSInteger buttonPressed;
 	NSMenu *statusMenu;
+	NSString *oldHotkeyString;
 
 }
 
@@ -52,13 +54,14 @@
 -(IBAction)showPreferences:(id)sender;
 
 -(IBAction)changeHotkey:(id)sender;
+- (IBAction)cancelHotkey:(id)sender;
 
 -(NSMutableString *)modifierKeysStringForFlags:(NSUInteger)modifierFlags;
 -(void)disableButtons;
 -(void)enableButtons;
 -(void)updateTextFields;
 
-@property (nonatomic,retain) IBOutlet NSTextField * topField;
+@property (assign) IBOutlet NSTextField * topField;
 @property (assign) IBOutlet NSTextField * bottomField;
 @property (assign) IBOutlet NSTextField * leftField;
 @property (assign) IBOutlet NSTextField * rightField;
@@ -68,11 +71,13 @@
 @property (assign) IBOutlet NSTextField * brField;
 @property (assign) IBOutlet NSTextField * fullScreenField;
 @property (assign) IBOutlet NSTextField * centerField;
+@property (assign) IBOutlet NSButton *cancelHotkeyButton;
 @property (nonatomic, retain) NSArray *textFieldArray;
 
 @property (nonatomic, retain) NSMatrix *hotKeyButtonMatrix;
 @property (nonatomic, retain) NSMutableString *modifiersString;
 @property (nonatomic) NSInteger buttonPressed;
 @property (nonatomic, retain) NSMenu *statusMenu;
+@property (nonatomic, retain) NSString *oldHotkeyString;
 
 @end

@@ -24,8 +24,8 @@
 
 @synthesize hotKeyButtonMatrix, modifiersString, textFieldArray, buttonPressed;
 @synthesize topField,bottomField,leftField,rightField;
-@synthesize tlField,trField,blField,brField,fullScreenField,centerField;
-@synthesize statusMenu;
+@synthesize tlField,trField,blField,brField,fullScreenField,centerField,cancelHotkeyButton;
+@synthesize statusMenu, oldHotkeyString;
 
 
 
@@ -79,7 +79,7 @@
 - (void)flagsChanged:(NSEvent *)theEvent{
 	if(buttonPressed == -1)
 		return;
-	
+
 	self.modifiersString = [self modifierKeysStringForFlags:[theEvent modifierFlags]];
 	
 	if(buttonPressed >= 0)
@@ -143,16 +143,31 @@
 	[hotKeyString release];
 }
 
-
 -(IBAction)changeHotkey:(id)sender{
+	[cancelHotkeyButton setTransparent:NO];
 	buttonPressed = [hotKeyButtonMatrix selectedRow];
-	
+	self.oldHotkeyString = [[textFieldArray objectAtIndex:buttonPressed] stringValue];
+
 	//Unregister old hotkey incase user wants to use the same one
-	[hkContObject unregisterHotKey:[[hkContObject _hotKeys] objectForKey:[NSNumber numberWithInt:buttonPressed]]];
+	//[hkContObject unregisterHotKey:[[hkContObject _hotKeys] objectForKey:[NSNumber numberWithInt:buttonPressed]]];
 	
 	[[textFieldArray objectAtIndex:buttonPressed] setStringValue:@"Press Keys..."];
 	[self disableButtons];
 }
+
+- (IBAction)cancelHotkey:(id)sender {
+	if(buttonPressed == -1)
+		return;
+	else {
+		[[textFieldArray objectAtIndex:buttonPressed] setStringValue:oldHotkeyString];
+		[self enableButtons];
+		buttonPressed = -1;
+		[cancelHotkeyButton setTransparent:YES];
+		return;
+	}
+	
+}
+
 
 -(NSMutableString *)modifierKeysStringForFlags:(NSUInteger)modifierFlags{
 	NSMutableString *modifierKeysString = [[[NSMutableString alloc] initWithString:@""] autorelease];
@@ -241,7 +256,9 @@
 -(void)dealloc{
 	[hotKeyButtonMatrix release];
 	[modifiersString release];	
-	[textFieldArray release];	
+	[textFieldArray release];
+	[statusMenu release];
+	[oldHotkeyString release];
 	[super dealloc];
 }
 
