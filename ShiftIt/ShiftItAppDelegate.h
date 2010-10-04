@@ -23,7 +23,7 @@
 @interface ShiftItAppDelegate : NSObject {
     PrefWindowController * prefController;
     Preferences * _pref;
-	IBOutlet NSMenu *statusMenu;
+	NSMenu *statusMenu;
 	NSStatusItem *statusItem;
 	
 	NSImage *statusMenuItemIcon;
@@ -32,4 +32,9 @@
 -(IBAction)showPreferences:(id)sender;
 -(void)updateMenuBarIcon;
 -(void)registerForLogin;
+-(void)updateStatusMenuShortcuts;
+
+@property (assign) IBOutlet NSMenu *statusMenu;
+
+
 @end

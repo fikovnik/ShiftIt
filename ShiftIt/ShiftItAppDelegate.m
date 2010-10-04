@@ -25,6 +25,7 @@ NSString *const kSIMenuItemTitle = @"Shift";
 int const kSIMenuItemSize = 30;
 
 @implementation ShiftItAppDelegate
+@synthesize statusMenu;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	if (!AXAPIEnabled()){
@@ -42,7 +43,8 @@ int const kSIMenuItemSize = 30;
             default:
                 break;
         }
-    }    
+    }   
+	[self updateStatusMenuShortcuts];
 }
 
 -(id)init{
@@ -73,7 +75,7 @@ int const kSIMenuItemSize = 30;
 	[self registerForLogin];
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
 	if([keyPath compare:@"values.shiftItshowMenu"] == NSOrderedSame){
 		[self updateMenuBarIcon];
 	}else if ([keyPath compare:@"values.shiftItstartLogin"]== NSOrderedSame) {
@@ -158,15 +160,59 @@ int const kSIMenuItemSize = 30;
         }
     }
     
-    
 }
 
 -(IBAction)showPreferences:(id)sender{
     if (!prefController) {
         prefController = [[PrefWindowController alloc]init];
+		prefController.statusMenu = self.statusMenu;
     }
     [prefController showPreferences:sender];
     [NSApp activateIgnoringOtherApps:YES];
+}
+
+-(void)updateStatusMenuShortcuts{	
+	NSString* modifiersPath = [[NSBundle mainBundle] pathForResource:@"ModifierDictStrings" ofType:@"plist"];
+	NSArray *modifierKeys = [NSArray arrayWithContentsOfFile:modifiersPath];
+	NSString* keycodesPath = [[NSBundle mainBundle] pathForResource:@"KeycodeDictKeys" ofType:@"plist"];
+	NSArray *keycodeKeys = [NSArray arrayWithContentsOfFile:keycodesPath];
+	
+	for(int i=0; i < [modifierKeys count]; i++){
+		NSString *modifierKey = [modifierKeys objectAtIndex:i];
+		NSString *keycodeKey = [keycodeKeys objectAtIndex:i];
+		
+		//convert virtual keycode to character--
+		// strange code but I can't seem to find any other way to do it
+		UInt32 deadKeyState = 0;
+		UniCharCount actualCount = 0;
+		UniChar baseChar;
+		TISInputSourceRef sourceRef = TISCopyCurrentKeyboardLayoutInputSource();
+		CFDataRef keyLayoutPtr = (CFDataRef)TISGetInputSourceProperty( sourceRef, kTISPropertyUnicodeKeyLayoutData); 
+		CFRelease( sourceRef);
+		UCKeyTranslate( (UCKeyboardLayout*)CFDataGetBytePtr(keyLayoutPtr),
+					   [[NSUserDefaults standardUserDefaults] integerForKey:keycodeKey], //<--virtual keycode
+					   kUCKeyActionDown,
+					   0,
+					   LMGetKbdLast(),
+					   kUCKeyTranslateNoDeadKeysBit,
+					   &deadKeyState,
+					   1,
+					   &actualCount,
+					   &baseChar);
+		
+		NSString *keyEq = [NSString stringWithFormat:@"%c",baseChar];		
+		
+		//we have to account for the horizonal breaks in the status menu
+		int j = i;
+		if(j>3)
+			j++;
+		if(j>7)
+			j++;
+		
+		[[statusMenu itemAtIndex:j] setKeyEquivalent:keyEq];
+		[[statusMenu itemAtIndex:j] setKeyEquivalentModifierMask:[[NSUserDefaults standardUserDefaults] integerForKey:modifierKey]];
+	}
+
 }
 
 @end

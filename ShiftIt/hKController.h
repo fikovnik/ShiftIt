@@ -29,4 +29,7 @@
 -(BOOL)registerHotKey:(SIHotKey*)hotKey;
 -(BOOL)unregisterHotKey:(SIHotKey*)hotKey;
 -(BOOL)modifyHotKey:(SIHotKey*)hotKey;
+
+@property (nonatomic, retain) NSMutableDictionary * _hotKeys;
+
 @end

@@ -22,12 +22,13 @@
 
 
 @implementation hKController
+@synthesize _hotKeys;
 
 static id _hkController = nil;
 
 +(id)getInstance{
 	if(_hkController == nil){
-		_hkController = [[hKController alloc]init];
+		_hkController = [[hKController alloc] init];
 	}
 	return _hkController;
 }
@@ -40,7 +41,6 @@ static id _hkController = nil;
 }
 
 -(void)dealloc{
-	[_hotKeys release];
 	[super dealloc];
 }
 
@@ -73,7 +73,8 @@ UInt32 convertToCarbon(NSUInteger inCocoaModifiers) {
 	hotKeyID.signature='SIHK';
 	hotKeyID.id	= hotKey.hotKeyId;
 	
-	error = RegisterEventHotKey([hotKey keyCode], convertToCarbon([[hotKey modifierCombo] unsignedIntValue]), hotKeyID, GetApplicationEventTarget(), 0, &hotKeyRef);
+	error = RegisterEventHotKey([hotKey keyCode], convertToCarbon([hotKey modifierCombo]), hotKeyID, GetApplicationEventTarget(), 0, &hotKeyRef);
+	
 	
 	if(error){
 		return FALSE;

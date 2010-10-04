@@ -26,35 +26,35 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 	GetEventParameter(theEvent,kEventParamDirectObject,typeEventHotKeyID,NULL,sizeof(hotKeyID),NULL,&hotKeyID);
 	int temphotKeyId = hotKeyID.id;
 	switch (temphotKeyId) {
-		case 1:
+		case 0:
 			[(WindowSizer*)userData shiftToLeftHalf:NULL];
 			break;
-		case 2:
+		case 1:
 			[(WindowSizer*)userData shiftToRightHalf:NULL];
 			break;
-		case 3:
+		case 2:
 			[(WindowSizer*)userData shiftToTopHalf:NULL];
 			break;
-		case 4:
+		case 3:
 			[(WindowSizer*)userData shiftToBottomHalf:NULL];
 			break;
-		case 5:
+		case 4:
 			[(WindowSizer*)userData shiftToTopLeft:NULL];
 			break;
-		case 6:
+		case 5:
 			[(WindowSizer*)userData shiftToTopRight:NULL];
 			break;
-		case 7:
+		case 6:
 			[(WindowSizer*)userData shiftToBottomLeft:NULL];
 			break;
-		case 8:
+		case 7:
 			[(WindowSizer*)userData shiftToBottomRight:NULL];
+			break;
+		case 8:
+			[(WindowSizer*)userData fullScreen:NULL];
 			break;
 		case 9:
 			[(WindowSizer*)userData shiftToCenter:NULL];
-			break;
-		case 10:
-			[(WindowSizer*)userData fullScreen:NULL];
 			break;
 		default:
 			break;
@@ -71,104 +71,81 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 		_eventType.eventClass = kEventClassKeyboard;
 		_eventType.eventKind = kEventHotKeyPressed;
 		InstallApplicationEventHandler(&winSizer,1,&_eventType,_winSizer,NULL);
-        [self registerDefaults];
+		
+		[self registerHotKeys];
 	}
 	return self;
 }
 
--(void)registerDefaults{
-    [NSUserDefaults resetStandardUserDefaults];
-    NSLog(@"Registering default");
-	_userDefaultsValuesDict = [NSMutableDictionary dictionary];
-	NSDictionary * leftHalf = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)],HotKeyModifers,
-                                                [NSNumber numberWithUnsignedInt:123],HotKeyCodes,
-                                                nil];
-    
-    [_userDefaultsValuesDict setObject:leftHalf forKey:@"leftHalf"];
-
-    NSDictionary * rightHalf = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)],HotKeyModifers,
-                               [NSNumber numberWithUnsignedInt:124],HotKeyCodes,
-                               nil];
-    
-    [_userDefaultsValuesDict setObject:rightHalf forKey:@"rightHalf"];
-
-    
-    NSDictionary * topHalf = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)],HotKeyModifers,
-                               [NSNumber numberWithUnsignedInt:126],HotKeyCodes,
-                               nil];
-    
-    [_userDefaultsValuesDict setObject:topHalf forKey:@"topHalf"];
-
-    
-    NSDictionary * bottomhalf = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)],HotKeyModifers,
-                               [NSNumber numberWithUnsignedInt:125],HotKeyCodes,
-                               nil];
-    
-    [_userDefaultsValuesDict setObject:bottomhalf forKey:@"bottomHalf"];
-
-    NSDictionary * topLeft = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSShiftKeyMask)],HotKeyModifers,
-                                 [NSNumber numberWithUnsignedInt:123],HotKeyCodes,
-                                 nil];
-    [_userDefaultsValuesDict setObject:topLeft forKey:@"topLeft"];
-
-    NSDictionary * topRight = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSShiftKeyMask)],HotKeyModifers,
-                              [NSNumber numberWithUnsignedInt:126],HotKeyCodes,
-                              nil];
-    [_userDefaultsValuesDict setObject:topRight forKey:@"topRight"];
-
-    NSDictionary * bottomLeft = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSShiftKeyMask)],HotKeyModifers,
-                              [NSNumber numberWithUnsignedInt:125],HotKeyCodes,
-                              nil];
-    [_userDefaultsValuesDict setObject:bottomLeft forKey:@"bottomLeft"];
-    
-    NSDictionary * bottomRight = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSShiftKeyMask)],HotKeyModifers,
-                              [NSNumber numberWithUnsignedInt:124],HotKeyCodes,
-                              nil];
-    [_userDefaultsValuesDict setObject:bottomRight forKey:@"bottomRight"];
-
-    NSDictionary * fullScreen = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)],HotKeyModifers,
-                                  [NSNumber numberWithUnsignedInt:3],HotKeyCodes,
-                                  nil];
-    [_userDefaultsValuesDict setObject:fullScreen forKey:@"fullScreen"];
-    
-    NSDictionary * center = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)],HotKeyModifers,
-                                  [NSNumber numberWithUnsignedInt:8],HotKeyCodes,
-                                  nil];
-    [_userDefaultsValuesDict setObject:center forKey:@"center"];
-    
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:1 keyCode:123 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:2 keyCode:124 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:3 keyCode:126 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:4 keyCode:125 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:5 keyCode:123 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSShiftKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:6 keyCode:126 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSShiftKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:7 keyCode:125 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSShiftKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:8 keyCode:124 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask+NSShiftKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:9 keyCode:8 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)]]];
-	[_hKeyController registerHotKey:[[SIHotKey alloc]initWithIdentifier:10 keyCode:3 modCombo:[NSNumber numberWithUnsignedInt:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask)]]];
+-(void)registerHotKeys{
+	NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
+	//Uncomment these lines to clear out the NSUserDefaults
+	//[storage removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+	//[storage synchronize];
 	
-    [_userDefaultsValuesDict setObject:[NSNumber numberWithBool:YES] forKey:@"shiftItstartLogin"];
-    [_userDefaultsValuesDict setObject:[NSNumber numberWithBool:YES] forKey:@"shiftItshowMenu"];
+	if (![storage boolForKey:@"defaultsRegistered"]) {
+		
+		[NSUserDefaults resetStandardUserDefaults];
+		NSLog(@"Registering default");
+		
+		[storage setInteger:kVK_LeftArrow forKey:@"leftKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"leftModifiers"];
+		
+		[storage setInteger:kVK_RightArrow forKey:@"rightKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"rightModifiers"];
+
+		[storage setInteger:kVK_UpArrow forKey:@"topKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"topModifiers"];
+
+		[storage setInteger:kVK_DownArrow forKey:@"bottomKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"bottomModifiers"];
+
+		
+		[storage setInteger:kVK_ANSI_1 forKey:@"tlKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"tlModifiers"];
+
+		[storage setInteger:kVK_ANSI_2 forKey:@"trKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"trModifiers"];
+
+		[storage setInteger:kVK_ANSI_3 forKey:@"blKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"blModifiers"];
+
+		[storage setInteger:kVK_ANSI_4 forKey:@"brKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"brModifiers"];
+
+		
+		[storage setInteger:kVK_ANSI_F forKey:@"fullscreenKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"fullscreenModifiers"];
+
+		[storage setInteger:kVK_ANSI_C forKey:@"centerKeyCode"];
+		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"centerModifiers"];
 	
-	[[NSUserDefaults standardUserDefaults] registerDefaults:_userDefaultsValuesDict];
-	[[NSUserDefaults standardUserDefaults] synchronize];
-    
-    NSArray *resettableUserDefaultsKeys;
-    NSDictionary * initialValuesDict;
-    resettableUserDefaultsKeys=[NSArray arrayWithObjects:@"leftHalf",@"topHalf",@"bottomHalf",@"rightHalf",@"bottomLeft",@"bottomRight",@"topLeft",@"topRight",@"fullScreen",@"center",nil];
+		[storage setBool:YES forKey:@"shiftItstartLogin"];
+		[storage setBool:YES forKey:@"shiftItshowMenu"];
+		
+		[storage setBool:YES forKey:@"defaultsRegistered"];
+		
+	}	
 	
-    initialValuesDict=[[NSUserDefaults standardUserDefaults] dictionaryWithValuesForKeys:resettableUserDefaultsKeys];
-    
-    // Set the initial values in the shared user defaults controller
-    [[NSUserDefaultsController sharedUserDefaultsController] setInitialValues:initialValuesDict];
+	[storage synchronize];
 	
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:0 keyCode:[storage integerForKey:@"leftKeyCode"] modCombo:[storage integerForKey:@"leftModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:1 keyCode:[storage integerForKey:@"rightKeyCode"] modCombo:[storage integerForKey:@"rightModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:2 keyCode:[storage integerForKey:@"topKeyCode"] modCombo:[storage integerForKey:@"topModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:3 keyCode:[storage integerForKey:@"bottomKeyCode"] modCombo:[storage integerForKey:@"bottomModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:4 keyCode:[storage integerForKey:@"tlKeyCode"] modCombo:[storage integerForKey:@"tlModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:5 keyCode:[storage integerForKey:@"trKeyCode"] modCombo:[storage integerForKey:@"trModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:6 keyCode:[storage integerForKey:@"blKeyCode"] modCombo:[storage integerForKey:@"blModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:7 keyCode:[storage integerForKey:@"brKeyCode"] modCombo:[storage integerForKey:@"brModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:8 keyCode:[storage integerForKey:@"fullscreenKeyCode"] modCombo:[storage integerForKey:@"fullscreenModifiers"]] autorelease]];
+	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:9 keyCode:[storage integerForKey:@"centerKeyCode"] modCombo:[storage integerForKey:@"centerModifiers"]] autorelease]];
     
 }
 
 -(void)modifyHotKey:(NSInteger)newKey modiferKeys:(NSInteger)modKeys key:(NSString*)keyCode{
-	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:newKey] forKey:[@"hkc" stringByAppendingString:keyCode]];
-	[[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithInt:modKeys] forKey:[@"hkm" stringByAppendingString:keyCode]];
-	[_hKeyController modifyHotKey:[[SIHotKey alloc]initWithIdentifier:[[_userDefaultsValuesDict objectForKey:keyCode] intValue] keyCode:newKey modCombo:[NSNumber numberWithUnsignedInt:modKeys]]];
+	[[NSUserDefaults standardUserDefaults] setInteger:newKey forKey:[@"hkc" stringByAppendingString:keyCode]];
+	[[NSUserDefaults standardUserDefaults] setInteger:modKeys forKey:[@"hkm" stringByAppendingString:keyCode]];
+	[_hKeyController modifyHotKey:[[SIHotKey alloc]initWithIdentifier:[[_userDefaultsValuesDict objectForKey:keyCode] intValue] keyCode:newKey modCombo:modKeys]];
 	[[NSUserDefaults standardUserDefaults] synchronize];	
 }
 

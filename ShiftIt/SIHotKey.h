@@ -22,12 +22,12 @@
 
 @interface SIHotKey : NSObject {
     NSInteger _keyCode;
-	NSNumber* _modifierCombi;
+	NSInteger _modifierCombi;
 	NSInteger _hotKeyId;
 	
 	EventHotKeyRef _eventHotKeyRef;
 }
--(id)initWithIdentifier:(NSInteger)identifier keyCode:(NSInteger)keyCode modCombo:(NSNumber*)modCombo;
+-(id)initWithIdentifier:(NSInteger)identifier keyCode:(NSInteger)keyCode modCombo:(NSInteger)modCombo;
 
 -(void)setHotKeyId:(NSInteger)hotKeyId;
 -(NSInteger)hotKeyId;
@@ -35,8 +35,8 @@
 -(void)setKeyCode:(NSInteger) keyCode;
 -(NSInteger)keyCode;
 
--(void)setModifierCombo:(NSNumber*)mCombo;
--(NSNumber*)modifierCombo;
+-(void)setModifierCombo:(NSInteger)mCombo;
+-(NSInteger)modifierCombo;
 
 -(void)setHotKeyRef:(EventHotKeyRef)eventRef;
 -(EventHotKeyRef)hotKeyRef;

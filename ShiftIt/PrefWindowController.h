@@ -21,26 +21,58 @@
 #import <Cocoa/Cocoa.h>
 
 #include "Preferences.h"
+#include "SIHotKey.h"
+#include "hKController.h"
 
 @interface PrefWindowController : NSWindowController {
-    IBOutlet NSTextField * _top;
-    IBOutlet NSTextField * _bottom;
-    IBOutlet NSTextField * _left;
-    IBOutlet NSTextField * _right;
-    
-    IBOutlet NSTextField * _topLeft;
-    IBOutlet NSTextField * _topRight;
-    IBOutlet NSTextField * _bottomLeft;
-    IBOutlet NSTextField * _bottomRight;
-    
-    IBOutlet NSTextField * _fullScreen;
-    IBOutlet NSTextField * _center;
-    
+    hKController *hkContObject;
     IBOutlet NSButton * _openAtLogin;
     IBOutlet NSTabView * tabView;
+	
+	NSTextField * topField;
+	NSTextField * bottomField;
+	NSTextField * leftField;
+	NSTextField * rightField;
+	NSTextField * tlField;
+	NSTextField * trField;
+	NSTextField * blField;
+	NSTextField * brField;
+	NSTextField * fullScreenField;
+	NSTextField * centerField;
+	NSArray *textFieldArray;
+	
+	IBOutlet NSMatrix *hotKeyButtonMatrix;
+	NSMutableString *modifiersString;
+	NSInteger buttonPressed;
+	NSMenu *statusMenu;
+
 }
 
 -(IBAction)savePreferences:(id)sender;
--(IBAction)closePreferences:(id)sender;
 -(IBAction)showPreferences:(id)sender;
+
+-(IBAction)changeHotkey:(id)sender;
+
+-(NSMutableString *)modifierKeysStringForFlags:(NSUInteger)modifierFlags;
+-(void)disableButtons;
+-(void)enableButtons;
+-(void)updateTextFields;
+
+@property (nonatomic,retain) IBOutlet NSTextField * topField;
+@property (assign) IBOutlet NSTextField * bottomField;
+@property (assign) IBOutlet NSTextField * leftField;
+@property (assign) IBOutlet NSTextField * rightField;
+@property (assign) IBOutlet NSTextField * tlField;
+@property (assign) IBOutlet NSTextField * trField;
+@property (assign) IBOutlet NSTextField * blField;
+@property (assign) IBOutlet NSTextField * brField;
+@property (assign) IBOutlet NSTextField * fullScreenField;
+@property (assign) IBOutlet NSTextField * centerField;
+@property (nonatomic, retain) NSArray *textFieldArray;
+
+@property (nonatomic, retain) NSMatrix *hotKeyButtonMatrix;
+@property (nonatomic, retain) NSMutableString *modifiersString;
+@property (nonatomic) NSInteger buttonPressed;
+@property (nonatomic, retain) NSMenu *statusMenu;
+
 @end
