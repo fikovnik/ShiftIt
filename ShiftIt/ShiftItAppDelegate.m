@@ -171,48 +171,26 @@ int const kSIMenuItemSize = 30;
     [NSApp activateIgnoringOtherApps:YES];
 }
 
--(void)updateStatusMenuShortcuts{	
-	NSString* modifiersPath = [[NSBundle mainBundle] pathForResource:@"ModifierDictStrings" ofType:@"plist"];
-	NSArray *modifierKeys = [NSArray arrayWithContentsOfFile:modifiersPath];
+//new version after adding shortcut recorder
+-(void)updateStatusMenuShortcuts{
+	NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
 	NSString* keycodesPath = [[NSBundle mainBundle] pathForResource:@"KeycodeDictKeys" ofType:@"plist"];
 	NSArray *keycodeKeys = [NSArray arrayWithContentsOfFile:keycodesPath];
+	NSString* modifiersPath = [[NSBundle mainBundle] pathForResource:@"ModifierDictStrings" ofType:@"plist"];
+	NSArray *modifierKeys = [NSArray arrayWithContentsOfFile:modifiersPath];
 	
+	NSString *keycodeString;
 	for(int i=0; i < [modifierKeys count]; i++){
-		NSString *modifierKey = [modifierKeys objectAtIndex:i];
-		NSString *keycodeKey = [keycodeKeys objectAtIndex:i];
+		int menuIndex = i;
+		if(menuIndex > 3)
+			menuIndex++;
+		if(menuIndex > 8)
+			menuIndex++;
 		
-		//convert virtual keycode to character--
-		// strange code but I can't seem to find any other way to do it
-		UInt32 deadKeyState = 0;
-		UniCharCount actualCount = 0;
-		UniChar baseChar;
-		TISInputSourceRef sourceRef = TISCopyCurrentKeyboardLayoutInputSource();
-		CFDataRef keyLayoutPtr = (CFDataRef)TISGetInputSourceProperty( sourceRef, kTISPropertyUnicodeKeyLayoutData); 
-		CFRelease( sourceRef);
-		UCKeyTranslate( (UCKeyboardLayout*)CFDataGetBytePtr(keyLayoutPtr),
-					   [[NSUserDefaults standardUserDefaults] integerForKey:keycodeKey], //<--virtual keycode
-					   kUCKeyActionDown,
-					   0,
-					   LMGetKbdLast(),
-					   kUCKeyTranslateNoDeadKeysBit,
-					   &deadKeyState,
-					   1,
-					   &actualCount,
-					   &baseChar);
-		
-		NSString *keyEq = [NSString stringWithFormat:@"%c",baseChar];		
-		
-		//we have to account for the horizonal breaks in the status menu
-		int j = i;
-		if(j>3)
-			j++;
-		if(j>7)
-			j++;
-		
-		[[statusMenu itemAtIndex:j] setKeyEquivalent:keyEq];
-		[[statusMenu itemAtIndex:j] setKeyEquivalentModifierMask:[[NSUserDefaults standardUserDefaults] integerForKey:modifierKey]];
+		keycodeString = SRStringForKeyCode([storage integerForKey:[keycodeKeys objectAtIndex:i]]);
+		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalent:[keycodeString lowercaseString]];
+		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalentModifierMask:[storage integerForKey:[modifierKeys objectAtIndex:i]]];
 	}
-
 }
 
 @end

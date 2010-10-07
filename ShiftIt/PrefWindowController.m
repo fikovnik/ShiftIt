@@ -19,14 +19,8 @@
 
 #import "PrefWindowController.h"
 
-
 @implementation PrefWindowController
-
-@synthesize hotKeyButtonMatrix, modifiersString, textFieldArray, buttonPressed;
-@synthesize topField,bottomField,leftField,rightField;
-@synthesize tlField,trField,blField,brField,fullScreenField,centerField,cancelHotkeyButton;
-@synthesize statusMenu, oldHotkeyString;
-
+@synthesize recorderCtlArray, buttonPressed, statusMenu;
 
 
 -(id)init{
@@ -39,21 +33,24 @@
 }
 
 -(void)windowDidLoad{
-	self.textFieldArray = [[NSArray alloc] initWithObjects:
-						   self.leftField,
-						   self.rightField,
-						   self.topField,
-						   self.bottomField,
-						   self.tlField,
-						   self.trField,
-						   self.blField,
-						   self.brField,
-						   self.fullScreenField,
-						   self.centerField,
-						   nil];
+	self.recorderCtlArray = [[NSArray alloc] initWithObjects:
+							 leftRecorderCtrl,
+							 rightRecorderCtrl,
+							 topRecorderCtrl,
+							 bottomRecorderCtrl,
+							 tlRecorderCtrl,
+							 trRecorderCtrl,
+							 blRecorderCtrl,
+							 brRecorderCtrl,
+							 fullScreenRecorderCtrl,
+							 centerRecorderCtrl,
+							 nil];
 	
 	buttonPressed = -1;
-	[self updateTextFields];
+	[self updateRecorderCombos];
+
+	NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
+	[versionLabel setStringValue:versionString];
 }
 
 -(BOOL)acceptsFirstResponder{
@@ -64,201 +61,76 @@
     [tabView selectTabViewItemAtIndex:0];
 }
 
--(IBAction)savePreferences:(id)sender{
-    
-}
-
 -(IBAction)showPreferences:(id)sender{
     [[self window] center];
     [NSApp activateIgnoringOtherApps:YES];
-    [[self window] makeKeyAndOrderFront:sender];
-    
-    
+    [[self window] makeKeyAndOrderFront:sender];    
 }
 
-- (void)flagsChanged:(NSEvent *)theEvent{
-	if(buttonPressed == -1)
-		return;
+#pragma mark -
+#pragma mark Shortcut Recorder methods
+//-(BOOL)shortcutRecorder:(SRRecorderControl *)aRecorder isKeyCode:(NSInteger)keyCode andFlagsTaken:(NSUInteger)flags reason:(NSString **)aReason{
+//	
+//	return YES;
+//}
 
-	self.modifiersString = [self modifierKeysStringForFlags:[theEvent modifierFlags]];
-	
-	if(buttonPressed >= 0)
-		[[textFieldArray objectAtIndex:buttonPressed] setStringValue:self.modifiersString];
-}
-
-- (void)keyDown:(NSEvent *)theEvent {
-	NSUInteger modifiers = [theEvent modifierFlags];
-	if(modifiers == 0 || buttonPressed == -1)
-		return;
-	
-	NSMutableString *hotKeyString = [[NSMutableString alloc] initWithString:self.modifiersString];
-	
-	unichar keyChar = [[theEvent charactersIgnoringModifiers] characterAtIndex:0];
-	if (modifiers & NSNumericPadKeyMask && keyChar == NSLeftArrowFunctionKey ) 
-		[hotKeyString appendString:@"←"];
-	else if (modifiers & NSNumericPadKeyMask && keyChar == NSRightArrowFunctionKey ) 
-		[hotKeyString appendString:@"→"];
-	else if (modifiers & NSNumericPadKeyMask && keyChar == NSUpArrowFunctionKey ) 
-		[hotKeyString appendString:@"↑"];
-	else if (modifiers & NSNumericPadKeyMask && keyChar == NSDownArrowFunctionKey ) 
-		[hotKeyString appendString:@"↓"];
-	else 
-		[hotKeyString appendString:[theEvent charactersIgnoringModifiers]];
+- (void)shortcutRecorder:(SRRecorderControl *)aRecorder keyComboDidChange:(KeyCombo)newKeyCombo{
+	NSLog(@"%@", SRStringForCocoaModifierFlagsAndKeyCode(newKeyCombo.flags, newKeyCombo.code));
+	buttonPressed = [recorderCtlArray indexOfObject:aRecorder];
 	
 	if(buttonPressed >= 0){
-		[[textFieldArray objectAtIndex:buttonPressed] setStringValue:[hotKeyString uppercaseString]];
-
+	
 		//change the hotkey in NSUserDefaults
 		NSString* modifiersPath = [[NSBundle mainBundle] pathForResource:@"ModifierDictStrings" ofType:@"plist"];
 		NSArray *modifierKeys = [NSArray arrayWithContentsOfFile:modifiersPath];
 		NSString* keycodesPath = [[NSBundle mainBundle] pathForResource:@"KeycodeDictKeys" ofType:@"plist"];
 		NSArray *keycodeKeys = [NSArray arrayWithContentsOfFile:keycodesPath];
 		
-		[[NSUserDefaults standardUserDefaults] setInteger:modifiers forKey:[modifierKeys objectAtIndex:buttonPressed]];
-		[[NSUserDefaults standardUserDefaults] setInteger:theEvent.keyCode forKey:[keycodeKeys objectAtIndex:buttonPressed]];
+		[[NSUserDefaults standardUserDefaults] setInteger:newKeyCombo.flags forKey:[modifierKeys objectAtIndex:buttonPressed]];
+		[[NSUserDefaults standardUserDefaults] setInteger:newKeyCombo.code forKey:[keycodeKeys objectAtIndex:buttonPressed]];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
-		//register the new hotkey
+		//modify the hotkey
 		SIHotKey *newHotKey = [[SIHotKey alloc] initWithIdentifier:buttonPressed 
-														   keyCode:theEvent.keyCode
-														  modCombo:modifiers];
+														   keyCode:newKeyCombo.code
+														  modCombo:newKeyCombo.flags];
 		
-		[hkContObject registerHotKey:newHotKey];
+		[hkContObject modifyHotKey:newHotKey];
 		[newHotKey release];
 		
 		//set the key equivalent on the status menu item
 		//must account for the horizontal lines in menu
-		if(buttonPressed > 3)
-			buttonPressed++;
-		if(buttonPressed > 7)
-			buttonPressed++;
+		int menuIndex = buttonPressed;
+		if(menuIndex > 3)
+			menuIndex++;
+		if(menuIndex > 8)
+			menuIndex++;	
 		
-		[[statusMenu itemAtIndex:buttonPressed] setKeyEquivalent:[hotKeyString substringWithRange:NSMakeRange([hotKeyString length]-1, 1)] ];
-		[[statusMenu itemAtIndex:buttonPressed] setKeyEquivalentModifierMask:modifiers];
+		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalent:[SRStringForKeyCode(newKeyCombo.code) lowercaseString]];
+		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalentModifierMask:newKeyCombo.flags];
 		
 		buttonPressed = -1;
 	}
-	
-	[self enableButtons];
-	[hotKeyString release];
 }
 
--(IBAction)changeHotkey:(id)sender{
-	[cancelHotkeyButton setTransparent:NO];
-	buttonPressed = [hotKeyButtonMatrix selectedRow];
-	self.oldHotkeyString = [[textFieldArray objectAtIndex:buttonPressed] stringValue];
-
-	//Unregister old hotkey incase user wants to use the same one
-	//[hkContObject unregisterHotKey:[[hkContObject _hotKeys] objectForKey:[NSNumber numberWithInt:buttonPressed]]];
-	
-	[[textFieldArray objectAtIndex:buttonPressed] setStringValue:@"Press Keys..."];
-	[self disableButtons];
-}
-
-- (IBAction)cancelHotkey:(id)sender {
-	if(buttonPressed == -1)
-		return;
-	else {
-		[[textFieldArray objectAtIndex:buttonPressed] setStringValue:oldHotkeyString];
-		[self enableButtons];
-		buttonPressed = -1;
-		[cancelHotkeyButton setTransparent:YES];
-		return;
-	}
-	
-}
-
-
--(NSMutableString *)modifierKeysStringForFlags:(NSUInteger)modifierFlags{
-	NSMutableString *modifierKeysString = [[[NSMutableString alloc] initWithString:@""] autorelease];
-	
-	if(modifierFlags & NSControlKeyMask)
-		[modifierKeysString appendString:@"⌃"];
-	
-	if(modifierFlags & NSAlternateKeyMask)
-		[modifierKeysString appendString:@"⌥"];
-	
-	if(modifierFlags & NSShiftKeyMask)
-		[modifierKeysString appendString:@"⇧"];
-	
-	if(modifierFlags & NSCommandKeyMask)
-		[modifierKeysString appendString:@"⌘"];
-	
-	return modifierKeysString;
-}
-
--(void)disableButtons{
-	[hotKeyButtonMatrix setEnabled:NO];
-	[hotKeyButtonMatrix setAlphaValue:0.5];
-}
-
--(void)enableButtons{
-	[hotKeyButtonMatrix setEnabled:YES];
-	[hotKeyButtonMatrix setAlphaValue:1.0];
-}
-
--(void)updateTextFields{
+-(void)updateRecorderCombos{
 	NSString* modifiersPath = [[NSBundle mainBundle] pathForResource:@"ModifierDictStrings" ofType:@"plist"];
 	NSArray *modifierKeys = [NSArray arrayWithContentsOfFile:modifiersPath];
-	
 	NSString* keycodesPath = [[NSBundle mainBundle] pathForResource:@"KeycodeDictKeys" ofType:@"plist"];
 	NSArray *keycodeKeys = [NSArray arrayWithContentsOfFile:keycodesPath];
+	NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
 	
-	for(int i=0; i < [modifierKeys count]; i++){
-		NSString *modifierKey = [modifierKeys objectAtIndex:i];
-		NSString *keycodeKey = [keycodeKeys objectAtIndex:i];
-		
-		//start off with the string of modifiers
-		NSInteger modifiers = [[NSUserDefaults standardUserDefaults] integerForKey:modifierKey];
-		NSMutableString *hotKeyString = [self modifierKeysStringForFlags:modifiers];
-		
-		//convert virtual keycode to character--
-		// strange code but I can't seem to find any other way to do it
-		UInt32 deadKeyState = 0;
-		UniCharCount actualCount = 0;
-		UniChar baseChar;
-		TISInputSourceRef sourceRef = TISCopyCurrentKeyboardLayoutInputSource();
-		CFDataRef keyLayoutPtr = (CFDataRef)TISGetInputSourceProperty( sourceRef, kTISPropertyUnicodeKeyLayoutData); 
-		CFRelease( sourceRef);
-		UCKeyTranslate( (UCKeyboardLayout*)CFDataGetBytePtr(keyLayoutPtr),
-					   [[NSUserDefaults standardUserDefaults] integerForKey:keycodeKey], //<--virtual keycode
-					   kUCKeyActionDown,
-					   0,
-					   LMGetKbdLast(),
-					   kUCKeyTranslateNoDeadKeysBit,
-					   &deadKeyState,
-					   1,
-					   &actualCount,
-					   &baseChar);
-		
-		//arrows don't count as characters-- they're technically modifiers
-		// --must check the modifiers flags for the arrow keys
-		[[NSUserDefaults standardUserDefaults] synchronize];
-		if (modifiers & NSNumericPadKeyMask) {
-			NSInteger keyCode = [[NSUserDefaults standardUserDefaults] integerForKey:keycodeKey];
-			
-			if (keyCode == kVK_LeftArrow ) 
-				[hotKeyString appendString:@"←"];
-			else if (keyCode == kVK_RightArrow ) 
-				[hotKeyString appendString:@"→"];
-			else if (keyCode == kVK_UpArrow ) 
-				[hotKeyString appendString:@"↑"];
-			else if (keyCode == kVK_DownArrow ) 
-				[hotKeyString appendString:@"↓"];
-		}else 
-			[hotKeyString appendFormat:@"%c",baseChar];
-		
-		//append key equivalent character
-		[[textFieldArray objectAtIndex:i] setStringValue:[hotKeyString uppercaseString]];
+	for(int i=0; i<[recorderCtlArray count]; i++){
+		KeyCombo combo;
+		combo.code = [storage integerForKey:[keycodeKeys objectAtIndex:i]];
+		combo.flags = [storage integerForKey:[modifierKeys objectAtIndex:i]];
+		[[recorderCtlArray objectAtIndex:i] setKeyCombo:combo];
 	}
 }
 
 -(void)dealloc{
-	[hotKeyButtonMatrix release];
-	[modifiersString release];	
-	[textFieldArray release];
+	[recorderCtlArray release];
 	[statusMenu release];
-	[oldHotkeyString release];
 	[super dealloc];
 }
 
