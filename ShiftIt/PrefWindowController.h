@@ -19,6 +19,7 @@
 
 
 #import <Cocoa/Cocoa.h>
+#import <ShortcutRecorder/ShortcutRecorder.h>
 
 #include "Preferences.h"
 #include "SIHotKey.h"
@@ -28,56 +29,32 @@
     hKController *hkContObject;
     IBOutlet NSButton * _openAtLogin;
     IBOutlet NSTabView * tabView;
+	IBOutlet NSTextField * versionLabel;
 	
-	NSTextField * topField;
-	NSTextField * bottomField;
-	NSTextField * leftField;
-	NSTextField * rightField;
-	NSTextField * tlField;
-	NSTextField * trField;
-	NSTextField * blField;
-	NSTextField * brField;
-	NSTextField * fullScreenField;
-	NSTextField * centerField;
-	NSButton *cancelHotkeyButton;
-	NSArray *textFieldArray;
+	IBOutlet SRRecorderControl *leftRecorderCtrl;
+	IBOutlet SRRecorderControl *rightRecorderCtrl;
+	IBOutlet SRRecorderControl *topRecorderCtrl;
+	IBOutlet SRRecorderControl *bottomRecorderCtrl;
+
+	IBOutlet SRRecorderControl *tlRecorderCtrl;
+	IBOutlet SRRecorderControl *trRecorderCtrl;
+	IBOutlet SRRecorderControl *blRecorderCtrl;
+	IBOutlet SRRecorderControl *brRecorderCtrl;
+
+	IBOutlet SRRecorderControl *fullScreenRecorderCtrl;
+	IBOutlet SRRecorderControl *centerRecorderCtrl;
+
+	NSArray *recorderCtlArray;
 	
-	IBOutlet NSMatrix *hotKeyButtonMatrix;
-	NSMutableString *modifiersString;
 	NSInteger buttonPressed;
 	NSMenu *statusMenu;
-	NSString *oldHotkeyString;
-
 }
 
--(IBAction)savePreferences:(id)sender;
 -(IBAction)showPreferences:(id)sender;
+-(void)updateRecorderCombos;
 
--(IBAction)changeHotkey:(id)sender;
-- (IBAction)cancelHotkey:(id)sender;
-
--(NSMutableString *)modifierKeysStringForFlags:(NSUInteger)modifierFlags;
--(void)disableButtons;
--(void)enableButtons;
--(void)updateTextFields;
-
-@property (assign) IBOutlet NSTextField * topField;
-@property (assign) IBOutlet NSTextField * bottomField;
-@property (assign) IBOutlet NSTextField * leftField;
-@property (assign) IBOutlet NSTextField * rightField;
-@property (assign) IBOutlet NSTextField * tlField;
-@property (assign) IBOutlet NSTextField * trField;
-@property (assign) IBOutlet NSTextField * blField;
-@property (assign) IBOutlet NSTextField * brField;
-@property (assign) IBOutlet NSTextField * fullScreenField;
-@property (assign) IBOutlet NSTextField * centerField;
-@property (assign) IBOutlet NSButton *cancelHotkeyButton;
-@property (nonatomic, retain) NSArray *textFieldArray;
-
-@property (nonatomic, retain) NSMatrix *hotKeyButtonMatrix;
-@property (nonatomic, retain) NSMutableString *modifiersString;
+@property (nonatomic, retain) NSArray *recorderCtlArray;
 @property (nonatomic) NSInteger buttonPressed;
 @property (nonatomic, retain) NSMenu *statusMenu;
-@property (nonatomic, retain) NSString *oldHotkeyString;
 
 @end

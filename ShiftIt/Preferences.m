@@ -87,7 +87,7 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 
 -(void)registerHotKeys{
 	NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
-
+	
 	if (![storage boolForKey:@"defaultsRegistered"]) {
 		[NSUserDefaults resetStandardUserDefaults];
 		NSLog(@"Registering default");
@@ -123,7 +123,7 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 
 		[storage setInteger:kVK_ANSI_C forKey:@"centerKeyCode"];
 		[storage setInteger:(NSCommandKeyMask+NSAlternateKeyMask+NSControlKeyMask) forKey:@"centerModifiers"];
-	
+
 		[storage setBool:YES forKey:@"shiftItstartLogin"];
 		[storage setBool:YES forKey:@"shiftItshowMenu"];
 		
@@ -146,15 +146,7 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
     
 }
 
--(void)modifyHotKey:(NSInteger)newKey modiferKeys:(NSInteger)modKeys key:(NSString*)keyCode{
-	[[NSUserDefaults standardUserDefaults] setInteger:newKey forKey:[@"hkc" stringByAppendingString:keyCode]];
-	[[NSUserDefaults standardUserDefaults] setInteger:modKeys forKey:[@"hkm" stringByAppendingString:keyCode]];
-	[_hKeyController modifyHotKey:[[SIHotKey alloc]initWithIdentifier:[[_userDefaultsValuesDict objectForKey:keyCode] intValue] keyCode:newKey modCombo:modKeys]];
-	[[NSUserDefaults standardUserDefaults] synchronize];	
-}
-
 -(void)clearUserDefaults{
-	//Uncomment these lines to clear out the NSUserDefaults
 	[[NSUserDefaults standardUserDefaults] removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
 	[[NSUserDefaults standardUserDefaults] synchronize];
 }

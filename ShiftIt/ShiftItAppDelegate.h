@@ -34,7 +34,7 @@
 -(void)registerForLogin;
 -(void)updateStatusMenuShortcuts;
 
-@property (assign) IBOutlet NSMenu *statusMenu;
+@property (nonatomic, retain) IBOutlet NSMenu *statusMenu;
 
 
 @end
