@@ -1,4 +1,3 @@
-
 <h1><img src="http://github.com/fikovnik/ShiftIt/raw/master/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt </h1>
 
 *Managing window size and position in OSX*
@@ -17,11 +16,11 @@ Changes since initial fork:
 ---------------------------
 
 v1.3:
-Added application & status menu icons - thanks to free icons available at [mysitemyway][5] - credit: fikovnik
-Added ability to reconfigure hotkeys in Preferences - credit: Skandocious
+*Added application & status menu icons - thanks to free icons available at [mysitemyway][5] - credit: fikovnik
+*Added ability to reconfigure hotkeys in Preferences - credit: Skandocious
 
 v1.4:
-Large code revamp to utilize [ShortcutRecorder][8] framework for capturing key bindings
+*Large code revamp to utilize [ShortcutRecorder][8] framework for capturing key bindings
 
 
 ShortcutRecorder
