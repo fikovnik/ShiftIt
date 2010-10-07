@@ -15,12 +15,14 @@ License: [GNU General Public License v3][4]
 Changes since initial fork:
 ---------------------------
 
-v1.3:
-*Added application & status menu icons - thanks to free icons available at [mysitemyway][5] - credit: fikovnik
-*Added ability to reconfigure hotkeys in Preferences - credit: Skandocious
+**v1.3:**
 
-v1.4:
-*Large code revamp to utilize [ShortcutRecorder][8] framework for capturing key bindings
+  - Added application & status menu icons - thanks to free icons available at [mysitemyway][5] - credit: fikovnik
+  - Added ability to reconfigure hotkeys in Preferences - credit: Skandocious
+
+**v1.4:**
+
+  - Large code revamp to utilize [ShortcutRecorder][8] framework for capturing key bindings
 
 
 ShortcutRecorder
