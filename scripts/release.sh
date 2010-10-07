@@ -10,10 +10,11 @@
 # configuration
 
 PROJECT_NAME="ShiftIt"
-KEY_FILE="$HOME/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem"
+PRIV_KEY="$HOME/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem"
 URL="http://nkuyu.net/apps/shiftit"
 APPCAST_URL="$URL/appcast.xml"
 DOWNLOAD_URL="$URL/downloads"
+OPENSSL="/usr/bin/openssl"
 
 # below is the logic
 src_dir="$(dirname $0)/../$PROJECT_NAME"
@@ -69,12 +70,21 @@ echo "Date: $pub_date"
 
 # sign
 # this comes from Sparkle
-signature=$(openssl dgst -sha1 -binary < "$archive_path" | openssl dgst -dss1 -sign "$KEY_FILE" | openssl enc -base64 | tr -d '\n' )
+sign_file="$archive_name.sign"
+"$OPENSSL" dgst -sha1 -binary < "$archive_path" | "$OPENSSL" dgst -dss1 -sign "$PRIV_KEY" > "$sign_file"
 if [ $? != 0 ]; then
     echo "Unable to sign an archive"
     exit 2
 fi
+"$OPENSSL" dgst -sha1 -binary < "$archive_path" | "$OPENSSL" dgst -dss1 -verify "$src_dir/dsa_pub.pem" -signature "$sign_file"
+if [ $? != 0 ]; then
+    echo "Unable to verify signature an archive"
+    exit 2
+fi
+
+signature=$(cat "$sign_file" | "$OPENSSL" enc -base64)
 echo "Sig: $signature"
+rm "$sign_file"
 
 echo 
 
@@ -89,11 +99,9 @@ cat <<EOF
     <language>en</language>
     <item>
       <title>Version $version</title>
-      <description>
-	<![CDATA[
-		 <h2>New Features</h2>
-	]]>
-      </description>
+      <sparkle:releaseNotesLink>
+        http://nkuyu.net/apps/shiftit/release-notes-$version.html
+      </sparkle:releaseNotesLink>
       <pubDate>$pub_date</pubDate>
       <enclosure url="$DOWNLOAD_URL/$archive_name" sparkle:version="$version" length="$size" type="application/octet-stream" sparkle:dsaSignature="$signature" />
     </item>
