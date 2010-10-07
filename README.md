@@ -21,13 +21,13 @@ Added application & status menu icons - thanks to free icons available at [mysit
 Added ability to reconfigure hotkeys in Preferences - credit: Skandocious
 
 v1.4:
-Large code revamp to utilize ShortcutRecorder framework[8] capturing key bindings
+Large code revamp to utilize [ShortcutRecorder][8] framework for capturing key bindings
 
 
 ShortcutRecorder
 ----------------
 
-Version 1.4 of ShiftIt employs the ShortcutRecorder framework for capturing key bindings during hotkey reconfiguration.
+Version 1.4 of ShiftIt employs the [ShortcutRecorder][8] framework for capturing key bindings during hotkey reconfiguration.
 
 Copyright (c) 2006, contributors to ShortcutRecorder. (See the contributors listed in detail later in the file, or see <http://wafflesoftware.net/shortcut/contributors/>.)
 
