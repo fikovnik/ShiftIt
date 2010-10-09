@@ -26,28 +26,28 @@
 #include "hKController.h"
 
 @interface PrefWindowController : NSWindowController {
-    hKController *hkContObject;
-    IBOutlet NSButton * _openAtLogin;
-    IBOutlet NSTabView * tabView;
-	IBOutlet NSTextField * versionLabel;
+    hKController *hkContObject_;
+    IBOutlet NSButton * openAtLogin_;
+    IBOutlet NSTabView * tabView_;
+	IBOutlet NSTextField * versionLabel_;
 	
-	IBOutlet SRRecorderControl *leftRecorderCtrl;
-	IBOutlet SRRecorderControl *rightRecorderCtrl;
-	IBOutlet SRRecorderControl *topRecorderCtrl;
-	IBOutlet SRRecorderControl *bottomRecorderCtrl;
+	IBOutlet SRRecorderControl *leftRecorderCtrl_;
+	IBOutlet SRRecorderControl *rightRecorderCtrl_;
+	IBOutlet SRRecorderControl *topRecorderCtrl_;
+	IBOutlet SRRecorderControl *bottomRecorderCtrl_;
 
-	IBOutlet SRRecorderControl *tlRecorderCtrl;
-	IBOutlet SRRecorderControl *trRecorderCtrl;
-	IBOutlet SRRecorderControl *blRecorderCtrl;
-	IBOutlet SRRecorderControl *brRecorderCtrl;
+	IBOutlet SRRecorderControl *tlRecorderCtrl_;
+	IBOutlet SRRecorderControl *trRecorderCtrl_;
+	IBOutlet SRRecorderControl *blRecorderCtrl_;
+	IBOutlet SRRecorderControl *brRecorderCtrl_;
 
-	IBOutlet SRRecorderControl *fullScreenRecorderCtrl;
-	IBOutlet SRRecorderControl *centerRecorderCtrl;
+	IBOutlet SRRecorderControl *fullScreenRecorderCtrl_;
+	IBOutlet SRRecorderControl *centerRecorderCtrl_;
 
-	NSArray *recorderCtlArray;
+	NSArray *recorderCtlArray_;
 	
-	NSInteger buttonPressed;
-	NSMenu *statusMenu;
+	NSInteger buttonPressed_;
+	NSMenu *statusMenu_;
 }
 
 -(IBAction)showPreferences:(id)sender;

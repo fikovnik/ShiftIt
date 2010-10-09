@@ -25,7 +25,8 @@ NSString *const kSIMenuItemTitle = @"Shift";
 int const kSIMenuItemSize = 30;
 
 @implementation ShiftItAppDelegate
-@synthesize statusMenu;
+
+@synthesize statusMenu = statusMenu_;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	if (!AXAPIEnabled()){
@@ -49,14 +50,14 @@ int const kSIMenuItemSize = 30;
 
 -(id)init{
 	if(self == [super init]){
-		_pref = [[Preferences alloc] init];
+		pref_ = [[Preferences alloc] init];
 		[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.shiftItshowMenu" options:0 context:self];
 		[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.shiftItstartLogin" options:0 context:self];
 	}
 	
 	NSString *iconPath = [[NSBundle mainBundle] pathForResource:kSIIconName ofType:kSIIconType];
-	statusMenuItemIcon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-	if (!statusMenuItemIcon) {
+	statusMenuItemIcon_ = [[NSImage alloc] initWithContentsOfFile:iconPath];
+	if (!statusMenuItemIcon_) {
 		NSLog(@"No icon");
 		// TODO: assert fail
 	}
@@ -65,7 +66,7 @@ int const kSIMenuItemSize = 30;
 }
 
 - (void) dealloc {
-	[statusMenuItemIcon release];
+	[statusMenuItemIcon_ release];
 	
 	[super dealloc];
 }
@@ -88,20 +89,20 @@ int const kSIMenuItemSize = 30;
 	BOOL showIconInMenuBar = [[NSUserDefaults standardUserDefaults] boolForKey:@"shiftItshowMenu"];
 	NSStatusBar * statusBar = [NSStatusBar systemStatusBar];
 	if(showIconInMenuBar){
-		if(!statusItem){
-			statusItem = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
-			[statusItem setMenu:statusMenu];
-			if (statusMenuItemIcon) {
-				[statusItem setImage:statusMenuItemIcon];
+		if(!statusItem_){
+			statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
+			[statusItem_ setMenu:statusMenu_];
+			if (statusMenuItemIcon_) {
+				[statusItem_ setImage:statusMenuItemIcon_];
 			} else {
-				[statusItem setTitle:kSIMenuItemTitle];
+				[statusItem_ setTitle:kSIMenuItemTitle];
 			}
-			[statusItem setHighlightMode:YES];
+			[statusItem_ setHighlightMode:YES];
 		}
 	} else {
-		[statusBar removeStatusItem:statusItem];
-		[statusItem autorelease];
-		statusItem = nil;
+		[statusBar removeStatusItem:statusItem_];
+		[statusItem_ autorelease];
+		statusItem_ = nil;
 	}
 }
 
@@ -163,11 +164,11 @@ int const kSIMenuItemSize = 30;
 }
 
 -(IBAction)showPreferences:(id)sender{
-    if (!prefController) {
-        prefController = [[PrefWindowController alloc]init];
-		prefController.statusMenu = self.statusMenu;
+    if (!prefController_) {
+        prefController_ = [[PrefWindowController alloc]init];
+		prefController_.statusMenu = self.statusMenu;
     }
-    [prefController showPreferences:sender];
+    [prefController_ showPreferences:sender];
     [NSApp activateIgnoringOtherApps:YES];
 }
 
@@ -188,8 +189,8 @@ int const kSIMenuItemSize = 30;
 			menuIndex++;
 		
 		keycodeString = SRStringForKeyCode([storage integerForKey:[keycodeKeys objectAtIndex:i]]);
-		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalent:[keycodeString lowercaseString]];
-		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalentModifierMask:[storage integerForKey:[modifierKeys objectAtIndex:i]]];
+		[[statusMenu_ itemAtIndex:menuIndex] setKeyEquivalent:[keycodeString lowercaseString]];
+		[[statusMenu_ itemAtIndex:menuIndex] setKeyEquivalentModifierMask:[storage integerForKey:[modifierKeys objectAtIndex:i]]];
 	}
 }
 

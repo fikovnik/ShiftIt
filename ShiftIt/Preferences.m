@@ -66,11 +66,11 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 
 -(id)init{
 	if(self == [super init]){
-		_hKeyController = [hKController getInstance];
-		_winSizer = [[WindowSizer alloc] init];
-		_eventType.eventClass = kEventClassKeyboard;
-		_eventType.eventKind = kEventHotKeyPressed;
-		InstallApplicationEventHandler(&winSizer,1,&_eventType,_winSizer,NULL);
+		hKeyController_ = [hKController getInstance];
+		windowSizer_ = [[WindowSizer alloc] init];
+		eventType_.eventClass = kEventClassKeyboard;
+		eventType_.eventKind = kEventHotKeyPressed;
+		InstallApplicationEventHandler(&winSizer,1,&eventType_,windowSizer_,NULL);
 		
 		if ( ![[NSUserDefaults standardUserDefaults] boolForKey:@"userDefaultsCleared"] ) {
 			[self clearUserDefaults];
@@ -133,16 +133,16 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 	
 	[storage synchronize];
 	
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:0 keyCode:[storage integerForKey:@"leftKeyCode"] modCombo:[storage integerForKey:@"leftModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:1 keyCode:[storage integerForKey:@"rightKeyCode"] modCombo:[storage integerForKey:@"rightModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:2 keyCode:[storage integerForKey:@"topKeyCode"] modCombo:[storage integerForKey:@"topModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:3 keyCode:[storage integerForKey:@"bottomKeyCode"] modCombo:[storage integerForKey:@"bottomModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:4 keyCode:[storage integerForKey:@"tlKeyCode"] modCombo:[storage integerForKey:@"tlModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:5 keyCode:[storage integerForKey:@"trKeyCode"] modCombo:[storage integerForKey:@"trModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:6 keyCode:[storage integerForKey:@"blKeyCode"] modCombo:[storage integerForKey:@"blModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:7 keyCode:[storage integerForKey:@"brKeyCode"] modCombo:[storage integerForKey:@"brModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:8 keyCode:[storage integerForKey:@"fullscreenKeyCode"] modCombo:[storage integerForKey:@"fullscreenModifiers"]] autorelease]];
-	[_hKeyController registerHotKey:[[[SIHotKey alloc]initWithIdentifier:9 keyCode:[storage integerForKey:@"centerKeyCode"] modCombo:[storage integerForKey:@"centerModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:0 keyCode:[storage integerForKey:@"leftKeyCode"] modCombo:[storage integerForKey:@"leftModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:1 keyCode:[storage integerForKey:@"rightKeyCode"] modCombo:[storage integerForKey:@"rightModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:2 keyCode:[storage integerForKey:@"topKeyCode"] modCombo:[storage integerForKey:@"topModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:3 keyCode:[storage integerForKey:@"bottomKeyCode"] modCombo:[storage integerForKey:@"bottomModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:4 keyCode:[storage integerForKey:@"tlKeyCode"] modCombo:[storage integerForKey:@"tlModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:5 keyCode:[storage integerForKey:@"trKeyCode"] modCombo:[storage integerForKey:@"trModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:6 keyCode:[storage integerForKey:@"blKeyCode"] modCombo:[storage integerForKey:@"blModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:7 keyCode:[storage integerForKey:@"brKeyCode"] modCombo:[storage integerForKey:@"brModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:8 keyCode:[storage integerForKey:@"fullscreenKeyCode"] modCombo:[storage integerForKey:@"fullscreenModifiers"]] autorelease]];
+	[hKeyController_ registerHotKey:[[[SIHotKey alloc]initWithIdentifier:9 keyCode:[storage integerForKey:@"centerKeyCode"] modCombo:[storage integerForKey:@"centerModifiers"]] autorelease]];
     
 }
 
@@ -152,9 +152,9 @@ OSStatus winSizer(EventHandlerCallRef nextHandler,EventRef theEvent,void *userDa
 }
 
 -(void)dealloc{
-    [_winSizer release];
-    [_hKeyController release];
-	[_userDefaultsValuesDict release];
+    [windowSizer_ release];
+    [hKeyController_ release];
+	[userDefaultsValuesDict_ release];
     [super dealloc];
 }
 @end

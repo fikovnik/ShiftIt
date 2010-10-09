@@ -25,43 +25,43 @@
 
 -(id)initWithIdentifier:(NSInteger)identifier keyCode:(NSInteger)keyCode modCombo:(NSInteger)modCombo{
 	if(self ==[super init]){
-		_hotKeyId = identifier;
-		_keyCode = keyCode;
-		_modifierCombi = modCombo;
+		hotKeyId_ = identifier;
+		keyCode_ = keyCode;
+		modifierCombi_ = modCombo;
 	}
 	return self;
 }
 
 -(void)setKeyCode:(NSInteger) keyCode{
-	_keyCode = keyCode;
+	keyCode_ = keyCode;
 }
 
 -(NSInteger)keyCode{
-	return _keyCode;
+	return keyCode_;
 }
 
 -(void)setHotKeyId:(NSInteger)hotKeyId{
-	_hotKeyId = hotKeyId;
+	hotKeyId_ = hotKeyId;
 }
 
 -(NSInteger)hotKeyId{
-	return _hotKeyId;
+	return hotKeyId_;
 }
 
 -(void)setModifierCombo:(NSInteger)mCombo{
-	_modifierCombi = mCombo;
+	modifierCombi_ = mCombo;
 }
 
 -(NSInteger)modifierCombo{
-	return _modifierCombi;
+	return modifierCombi_;
 }
 
 -(void)setHotKeyRef:(EventHotKeyRef)eventRef{
-	_eventHotKeyRef = eventRef;
+	eventHotKeyRef_ = eventRef;
 }
 
 -(EventHotKeyRef)hotKeyRef{
-	return _eventHotKeyRef;
+	return eventHotKeyRef_;
 }
 
 @end

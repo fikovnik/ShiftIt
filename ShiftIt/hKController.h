@@ -22,7 +22,7 @@
 
 @interface hKController : NSObject {
 
-    NSMutableDictionary * _hotKeys;
+    NSMutableDictionary * hotKeys_;
 }
 
 +(id)getInstance;
@@ -30,6 +30,6 @@
 -(BOOL)unregisterHotKey:(SIHotKey*)hotKey;
 -(BOOL)modifyHotKey:(SIHotKey*)hotKey;
 
-@property (nonatomic, retain) NSMutableDictionary * _hotKeys;
+@property (nonatomic, retain) NSMutableDictionary * hotKeys;
 
 @end

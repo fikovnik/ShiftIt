@@ -21,15 +21,15 @@
 #import <Cocoa/Cocoa.h>
 
 @interface WindowSizer : NSObject {
-    AXUIElementRef	_systemWideElement;
-    CFTypeRef _focusedWindow;
-    NSSize _screenSize;
-    NSSize _screenVisibleSize;
-    NSPoint _screenVisiblePosition;
-    NSPoint _screenPosition;
-    NSPoint _windowPosition;
-    NSSize _windowSize;
-	int _menuBarHeight;
+    AXUIElementRef	systemWideElement_;
+    CFTypeRef focusedWindow_;
+    NSSize screenSize_;
+    NSSize screenVisibleSize_;
+    NSPoint screenVisiblePosition_;
+    NSPoint screenPosition_;
+    NSPoint windowPosition_;
+    NSSize windowSize_;
+	int menuBarHeight_;
 }
 
 -(IBAction)shiftToLeftHalf:(id)sender;

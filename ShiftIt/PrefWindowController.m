@@ -20,11 +20,13 @@
 #import "PrefWindowController.h"
 
 @implementation PrefWindowController
-@synthesize recorderCtlArray, buttonPressed, statusMenu;
 
+@synthesize recorderCtlArray = recorderCtlArray_;
+@synthesize buttonPressed = buttonPressed_;
+@synthesize statusMenu= statusMenu_;
 
 -(id)init{
-	hkContObject = [hKController getInstance];
+	hkContObject_ = [hKController getInstance];
     if ((self = [super initWithWindowNibName:@"PrefWindow"])) {
 		NSLog(@"Registering default2");
     }
@@ -34,23 +36,23 @@
 
 -(void)windowDidLoad{
 	self.recorderCtlArray = [[NSArray alloc] initWithObjects:
-							 leftRecorderCtrl,
-							 rightRecorderCtrl,
-							 topRecorderCtrl,
-							 bottomRecorderCtrl,
-							 tlRecorderCtrl,
-							 trRecorderCtrl,
-							 blRecorderCtrl,
-							 brRecorderCtrl,
-							 fullScreenRecorderCtrl,
-							 centerRecorderCtrl,
+							 leftRecorderCtrl_,
+							 rightRecorderCtrl_,
+							 topRecorderCtrl_,
+							 bottomRecorderCtrl_,
+							 tlRecorderCtrl_,
+							 trRecorderCtrl_,
+							 blRecorderCtrl_,
+							 brRecorderCtrl_,
+							 fullScreenRecorderCtrl_,
+							 centerRecorderCtrl_,
 							 nil];
 	
-	buttonPressed = -1;
+	buttonPressed_ = -1;
 	[self updateRecorderCombos];
 
 	NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
-	[versionLabel setStringValue:versionString];
+	[versionLabel_ setStringValue:versionString];
 }
 
 -(BOOL)acceptsFirstResponder{
@@ -58,7 +60,7 @@
 }
 
 -(void)awakeFromNib{
-    [tabView selectTabViewItemAtIndex:0];
+    [tabView_ selectTabViewItemAtIndex:0];
 }
 
 -(IBAction)showPreferences:(id)sender{
@@ -76,9 +78,9 @@
 
 - (void)shortcutRecorder:(SRRecorderControl *)aRecorder keyComboDidChange:(KeyCombo)newKeyCombo{
 	NSLog(@"%@", SRStringForCocoaModifierFlagsAndKeyCode(newKeyCombo.flags, newKeyCombo.code));
-	buttonPressed = [recorderCtlArray indexOfObject:aRecorder];
+	buttonPressed_ = [recorderCtlArray_ indexOfObject:aRecorder];
 	
-	if(buttonPressed >= 0){
+	if(buttonPressed_ >= 0){
 	
 		//change the hotkey in NSUserDefaults
 		NSString* modifiersPath = [[NSBundle mainBundle] pathForResource:@"ModifierDictStrings" ofType:@"plist"];
@@ -86,30 +88,30 @@
 		NSString* keycodesPath = [[NSBundle mainBundle] pathForResource:@"KeycodeDictKeys" ofType:@"plist"];
 		NSArray *keycodeKeys = [NSArray arrayWithContentsOfFile:keycodesPath];
 		
-		[[NSUserDefaults standardUserDefaults] setInteger:newKeyCombo.flags forKey:[modifierKeys objectAtIndex:buttonPressed]];
-		[[NSUserDefaults standardUserDefaults] setInteger:newKeyCombo.code forKey:[keycodeKeys objectAtIndex:buttonPressed]];
+		[[NSUserDefaults standardUserDefaults] setInteger:newKeyCombo.flags forKey:[modifierKeys objectAtIndex:buttonPressed_]];
+		[[NSUserDefaults standardUserDefaults] setInteger:newKeyCombo.code forKey:[keycodeKeys objectAtIndex:buttonPressed_]];
 		[[NSUserDefaults standardUserDefaults] synchronize];
 		
 		//modify the hotkey
-		SIHotKey *newHotKey = [[SIHotKey alloc] initWithIdentifier:buttonPressed 
+		SIHotKey *newHotKey = [[SIHotKey alloc] initWithIdentifier:buttonPressed_ 
 														   keyCode:newKeyCombo.code
 														  modCombo:newKeyCombo.flags];
 		
-		[hkContObject modifyHotKey:newHotKey];
+		[hkContObject_ modifyHotKey:newHotKey];
 		[newHotKey release];
 		
 		//set the key equivalent on the status menu item
 		//must account for the horizontal lines in menu
-		int menuIndex = buttonPressed;
+		int menuIndex = buttonPressed_;
 		if(menuIndex > 3)
 			menuIndex++;
 		if(menuIndex > 8)
 			menuIndex++;	
 		
-		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalent:[SRStringForKeyCode(newKeyCombo.code) lowercaseString]];
-		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalentModifierMask:newKeyCombo.flags];
+		[[statusMenu_ itemAtIndex:menuIndex] setKeyEquivalent:[SRStringForKeyCode(newKeyCombo.code) lowercaseString]];
+		[[statusMenu_ itemAtIndex:menuIndex] setKeyEquivalentModifierMask:newKeyCombo.flags];
 		
-		buttonPressed = -1;
+		buttonPressed_ = -1;
 	}
 }
 
@@ -120,17 +122,17 @@
 	NSArray *keycodeKeys = [NSArray arrayWithContentsOfFile:keycodesPath];
 	NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
 	
-	for(int i=0; i<[recorderCtlArray count]; i++){
+	for(int i=0; i<[recorderCtlArray_ count]; i++){
 		KeyCombo combo;
 		combo.code = [storage integerForKey:[keycodeKeys objectAtIndex:i]];
 		combo.flags = [storage integerForKey:[modifierKeys objectAtIndex:i]];
-		[[recorderCtlArray objectAtIndex:i] setKeyCombo:combo];
+		[[recorderCtlArray_ objectAtIndex:i] setKeyCombo:combo];
 	}
 }
 
 -(void)dealloc{
-	[recorderCtlArray release];
-	[statusMenu release];
+	[recorderCtlArray_ release];
+	[statusMenu_ release];
 	[super dealloc];
 }
 

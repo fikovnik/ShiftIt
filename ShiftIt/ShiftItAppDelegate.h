@@ -21,12 +21,12 @@
 #import "PrefWindowController.h"
 
 @interface ShiftItAppDelegate : NSObject {
-    PrefWindowController * prefController;
-    Preferences * _pref;
-	NSMenu *statusMenu;
-	NSStatusItem *statusItem;
+    PrefWindowController * prefController_;
+    Preferences * pref_;
+	NSMenu *statusMenu_;
+	NSStatusItem *statusItem_;
 	
-	NSImage *statusMenuItemIcon;
+	NSImage *statusMenuItemIcon_;
 }
 
 -(IBAction)showPreferences:(id)sender;

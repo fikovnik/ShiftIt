@@ -23,10 +23,10 @@
 
 
 @interface Preferences : NSObject {
-    hKController * _hKeyController;
-	NSMutableDictionary * _userDefaultsValuesDict;
-    WindowSizer * _winSizer;
-    EventTypeSpec _eventType;
+    hKController * hKeyController_;
+	NSMutableDictionary * userDefaultsValuesDict_;
+    WindowSizer * windowSizer_;
+    EventTypeSpec eventType_;
 }
 
 -(void)registerHotKeys;

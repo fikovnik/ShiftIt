@@ -22,20 +22,21 @@
 
 
 @implementation hKController
-@synthesize _hotKeys;
 
-static id _hkController = nil;
+@synthesize hotKeys = hotKeys_;
+
+static id hkController_ = nil;
 
 +(id)getInstance{
-	if(_hkController == nil){
-		_hkController = [[hKController alloc] init];
+	if(hkController_ == nil){
+		hkController_ = [[hKController alloc] init];
 	}
-	return _hkController;
+	return hkController_;
 }
 
 -(id)init{
 	if(self == [super init]){
-		_hotKeys = [[NSMutableDictionary alloc] init];
+		hotKeys_ = [[NSMutableDictionary alloc] init];
 	}
 	return self;
 }
@@ -81,7 +82,7 @@ UInt32 convertToCarbon(NSUInteger inCocoaModifiers) {
 	}
 	
 	[hotKey setHotKeyRef:hotKeyRef];
-	[_hotKeys setObject:hotKey forKey:[NSNumber numberWithInt:[hotKey hotKeyId]]];
+	[hotKeys_ setObject:hotKey forKey:[NSNumber numberWithInt:[hotKey hotKeyId]]];
 	
 	return TRUE;
 }
@@ -93,13 +94,13 @@ UInt32 convertToCarbon(NSUInteger inCocoaModifiers) {
 	if(error){
 		return FALSE;
 	}
-	[_hotKeys removeObjectForKey:[NSNumber numberWithInt:[hotKey hotKeyId]]];
+	[hotKeys_ removeObjectForKey:[NSNumber numberWithInt:[hotKey hotKeyId]]];
 	return TRUE;
 }
 
 -(BOOL)modifyHotKey:(SIHotKey*)hotKey{
 	BOOL noError;
-	noError = [self unregisterHotKey:[_hotKeys objectForKey:[NSNumber numberWithInt:[hotKey hotKeyId]]]];
+	noError = [self unregisterHotKey:[hotKeys_ objectForKey:[NSNumber numberWithInt:[hotKey hotKeyId]]]];
 	if(noError){
 		noError = [self registerHotKey:hotKey];
 	}
