@@ -21,6 +21,7 @@
 #import "PrefWindowController.h"
 
 @interface ShiftItAppDelegate : NSObject {
+ @private
     PrefWindowController * prefController_;
     Preferences * pref_;
 	NSMenu *statusMenu_;
@@ -29,12 +30,12 @@
 	NSImage *statusMenuItemIcon_;
 }
 
--(IBAction)showPreferences:(id)sender;
+@property (nonatomic, retain) IBOutlet NSMenu *statusMenu;
+
 -(void)updateMenuBarIcon;
 -(void)registerForLogin;
 -(void)updateStatusMenuShortcuts;
 
-@property (nonatomic, retain) IBOutlet NSMenu *statusMenu;
-
+-(IBAction)showPreferences:(id)sender;
 
 @end

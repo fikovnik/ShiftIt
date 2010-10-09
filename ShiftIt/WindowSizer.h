@@ -21,6 +21,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface WindowSizer : NSObject {
+ @private
     AXUIElementRef	systemWideElement_;
     CFTypeRef focusedWindow_;
     NSSize screenSize_;

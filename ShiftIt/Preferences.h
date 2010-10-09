@@ -23,6 +23,7 @@
 
 
 @interface Preferences : NSObject {
+ @private
     hKController * hKeyController_;
 	NSMutableDictionary * userDefaultsValuesDict_;
     WindowSizer * windowSizer_;

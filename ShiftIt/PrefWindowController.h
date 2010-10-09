@@ -26,8 +26,15 @@
 #include "hKController.h"
 
 @interface PrefWindowController : NSWindowController {
+ @private
     hKController *hkContObject_;
-    IBOutlet NSButton * openAtLogin_;
+
+ 	NSArray *recorderCtlArray_;
+	
+	NSInteger buttonPressed_;
+	NSMenu *statusMenu_;
+	
+	IBOutlet NSButton * openAtLogin_;
     IBOutlet NSTabView * tabView_;
 	IBOutlet NSTextField * versionLabel_;
 	
@@ -43,18 +50,13 @@
 
 	IBOutlet SRRecorderControl *fullScreenRecorderCtrl_;
 	IBOutlet SRRecorderControl *centerRecorderCtrl_;
-
-	NSArray *recorderCtlArray_;
-	
-	NSInteger buttonPressed_;
-	NSMenu *statusMenu_;
 }
-
--(IBAction)showPreferences:(id)sender;
--(void)updateRecorderCombos;
 
 @property (nonatomic, retain) NSArray *recorderCtlArray;
 @property (nonatomic) NSInteger buttonPressed;
 @property (nonatomic, retain) NSMenu *statusMenu;
+
+-(void)updateRecorderCombos;
+-(IBAction)showPreferences:(id)sender;
 
 @end

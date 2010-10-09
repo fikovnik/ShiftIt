@@ -21,15 +21,15 @@
 #import "SIHotKey.h"
 
 @interface hKController : NSObject {
-
+ @private
     NSMutableDictionary * hotKeys_;
 }
+
+@property (nonatomic, retain) NSMutableDictionary * hotKeys;
 
 +(id)getInstance;
 -(BOOL)registerHotKey:(SIHotKey*)hotKey;
 -(BOOL)unregisterHotKey:(SIHotKey*)hotKey;
 -(BOOL)modifyHotKey:(SIHotKey*)hotKey;
-
-@property (nonatomic, retain) NSMutableDictionary * hotKeys;
 
 @end

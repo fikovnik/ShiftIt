@@ -21,12 +21,14 @@
 #import <Carbon/Carbon.h>
 
 @interface SIHotKey : NSObject {
+ @private
     NSInteger keyCode_;
 	NSInteger modifierCombi_;
 	NSInteger hotKeyId_;
 	
 	EventHotKeyRef eventHotKeyRef_;
 }
+
 -(id)initWithIdentifier:(NSInteger)identifier keyCode:(NSInteger)keyCode modCombo:(NSInteger)modCombo;
 
 -(void)setHotKeyId:(NSInteger)hotKeyId;
