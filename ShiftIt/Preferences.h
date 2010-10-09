@@ -21,8 +21,7 @@
 #import "hKController.h"
 #import "WindowSizer.h"
 
-#define HotKeyModifers @"Modifiers"
-#define HotKeyCodes @"Key Code"
+
 @interface Preferences : NSObject {
     hKController * _hKeyController;
 	NSMutableDictionary * _userDefaultsValuesDict;
