@@ -41,6 +41,7 @@ fi
 
 archive_name="$PROJECT_NAME-$version.zip"
 archive_path="$archive_name"
+rel_notes_file="release-notes-$version.html"
 
 # create an archive
 if [ -f $archive_path ]; then 
@@ -87,6 +88,8 @@ echo "Sig: $signature"
 rm "$sign_file"
 
 echo 
+echo "Appcast:"
+echo
 
 # item
 cat <<EOF
@@ -108,3 +111,34 @@ cat <<EOF
   </channel>
 </rss>
 EOF
+
+echo
+echo "Release notes: $rel_notes_file"
+echo
+
+# release  notes
+cat <<EOF > $rel_notes_file
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+<body>
+<h1>Version 1.3</h1>
+
+<em>This is a new version of the ShiftIt forked from the original version
+made by Aravindkumar Rajendiran and who has stopped the
+development.</em>
+
+<h2>Changes</h2>
+<ul>
+  <li>Key configuration (thanks to <a href="http://github.com/skandocious">Chris</a>)</li>
+  <li>Development moved to <a href="http://github.com/fikovnik/ShiftIt">github</a></li>
+  <li>New Icon</li>
+</ul>
+
+If you find any bug please report them in <a href="http://github.com/fikovnik/ShiftIt/issues">github</a>
+
+</body>
+</html>
+EOF
+
+cat $rel_notes_file
+echo
