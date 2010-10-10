@@ -219,7 +219,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	for(int i = 0; i < [screens count]; i++) {
 		NSScreen * screen = (NSScreen*)[screens objectAtIndex:i];
 		if ([screens count] == 1 || screen.frame.origin.x == screenPosition->x) {
-			NSPoint origin = [screen visibleFrame].origin;
+			NSPoint origin = screen.frame.origin;
 			visibleScreenPosition->x = origin.x;
 			visibleScreenPosition->y = origin.y;
 			

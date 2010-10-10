@@ -62,8 +62,8 @@ void ShiftIt_Bottom(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowP
 	windowPosition->x = sceenPosition->x;
 	windowPosition->y = sceenPosition->y + screenSize->height / 2;
 	
-	windowSize->width = screenSize->width / 2;
-	windowSize->height = screenSize->height;
+	windowSize->width = screenSize->width;
+	windowSize->height = screenSize->height / 2;
 }
 
 void ShiftIt_TopLeft(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
