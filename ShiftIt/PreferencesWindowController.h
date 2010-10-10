@@ -17,19 +17,18 @@
  
  */
 
-#import <Cocoa/Cocoa.h>
-#import "SIHotKey.h"
 
-@interface hKController : NSObject {
+#import <Cocoa/Cocoa.h>
+#import <ShortcutRecorder/ShortcutRecorder.h>
+
+@interface PreferencesWindowController : NSWindowController {
  @private
-    NSMutableDictionary * hotKeys_;
+	IBOutlet NSButton * openAtLogin_;
+    IBOutlet NSTabView * tabView_;
+	IBOutlet NSTextField * versionLabel_;	
 }
 
-@property (nonatomic, retain) NSMutableDictionary * hotKeys;
-
-+(id)getInstance;
--(BOOL)registerHotKey:(SIHotKey*)hotKey;
--(BOOL)unregisterHotKey:(SIHotKey*)hotKey;
--(BOOL)modifyHotKey:(SIHotKey*)hotKey;
+-(void)updateRecorderCombos;
+-(IBAction)showPreferences:(id)sender;
 
 @end

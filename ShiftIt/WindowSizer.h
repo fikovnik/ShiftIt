@@ -20,28 +20,17 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class ShiftItAction;
+
 @interface WindowSizer : NSObject {
  @private
-    AXUIElementRef	systemWideElement_;
-    CFTypeRef focusedWindow_;
-    NSSize screenSize_;
-    NSSize screenVisibleSize_;
-    NSPoint screenVisiblePosition_;
-    NSPoint screenPosition_;
-    NSPoint windowPosition_;
-    NSSize windowSize_;
+    AXUIElementRef axSystemWideElement_;
+	
 	int menuBarHeight_;
 }
 
--(IBAction)shiftToLeftHalf:(id)sender;
--(IBAction)shiftToRightHalf:(id)sender;
--(IBAction)shiftToBottomHalf:(id)sender;
--(IBAction)shiftToTopHalf:(id)sender;
--(IBAction)shiftToTopRight:(id)sender;
--(IBAction)shiftToTopLeft:(id)sender;
--(IBAction)shiftToBottomLeft:(id)sender;
--(IBAction)shiftToBottomRight:(id)sender;
--(IBAction)fullScreen:(id)sender;
--(IBAction)shiftToCenter:(id)sender;
++ (WindowSizer *) sharedWindowSize;
+
+- (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
 
 @end

@@ -1,6 +1,6 @@
 /*
  ShiftIt: Resize windows with Hotkeys
- Copyright (C) 2010  Aravind
+ Copyright (C) 2010  Filip Krikava
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -18,19 +18,22 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import "hKController.h"
-#import "WindowSizer.h"
 
+typedef void (*ShiftItFunctionRef)(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize); 
 
-@interface Preferences : NSObject {
+@interface ShiftItAction : NSObject {
  @private
-    hKController * hKeyController_;
-	NSMutableDictionary * userDefaultsValuesDict_;
-    WindowSizer * windowSizer_;
-    EventTypeSpec eventType_;
+	NSString *identifier_;
+	NSString *label_;
+	NSInteger uiTag_;
+	ShiftItFunctionRef action_;
 }
 
--(void)registerHotKeys;
--(void)clearUserDefaults;
+@property (readonly) NSString *identifier;
+@property (readonly) NSString *label;
+@property (readonly) NSInteger uiTag;
+@property (readonly) ShiftItFunctionRef action;
+
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFunctionRef)action;
 
 @end

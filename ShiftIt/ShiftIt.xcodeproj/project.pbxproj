@@ -9,23 +9,23 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
+		2708BF011260E10900192883 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
+		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
+		2708C19B1261353000192883 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C1961261353000192883 /* FMTHotKey.m */; };
+		2708C19C1261353000192883 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */; };
+		2708C19D1261353000192883 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C19A1261353000192883 /* FMTHotKeyManager.m */; };
 		835AA46E125D4D1300F11A69 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835AA46D125D4D1300F11A69 /* ShortcutRecorder.framework */; };
 		835AA49C125D4E0200F11A69 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 835AA46D125D4D1300F11A69 /* ShortcutRecorder.framework */; };
-		83854AEF12596871008C7C0B /* ModifierDictStrings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83854AEE12596871008C7C0B /* ModifierDictStrings.plist */; };
-		83854AF2125968DA008C7C0B /* KeycodeDictKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83854AF1125968DA008C7C0B /* KeycodeDictKeys.plist */; };
 		83E55ED5125A5FCF00FC49BF /* shift-it-menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* shift-it-menu-icon.png */; };
 		83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		F2520B641133874D00DB826F /* PrefWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PrefWindowController.m */; };
+		F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PreferencesWindowController.m */; };
 		F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		F2708277117FE51100C0A04C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
-		F2C54EA31128AADB00E7DAC5 /* hKController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2C54EA21128AADB00E7DAC5 /* hKController.m */; };
-		F2DC1A321133829D009BDCA5 /* PrefWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DC1A311133829D009BDCA5 /* PrefWindow.xib */; };
+		F2DC1A321133829D009BDCA5 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */; };
 		F2DC61251127ACDE000E1A5B /* WindowSizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61241127ACDE000E1A5B /* WindowSizer.m */; };
-		F2DC615E1127BB42000E1A5B /* SIHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC615D1127BB42000E1A5B /* SIHotKey.m */; };
-		F2DC61991127C15F000E1A5B /* Preferences.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61981127C15F000E1A5B /* Preferences.m */; };
 		F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DC61EE1127C862000E1A5B /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
@@ -50,27 +50,31 @@
 		256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* ShiftIt_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt_Prefix.pch; sourceTree = "<group>"; };
+		2708BEFF1260E10900192883 /* ShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAction.h; sourceTree = "<group>"; };
+		2708BF001260E10900192883 /* ShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAction.m; sourceTree = "<group>"; };
+		2708BF0D1260E44100192883 /* FMTDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTDefines.h; sourceTree = "<group>"; };
+		2708BF101260E5BB00192883 /* DefaultShiftItActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShiftItActions.h; sourceTree = "<group>"; };
+		2708BF111260E5BB00192883 /* DefaultShiftItActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultShiftItActions.m; sourceTree = "<group>"; };
+		2708C1951261353000192883 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTHotKey.h; sourceTree = "<group>"; };
+		2708C1961261353000192883 /* FMTHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTHotKey.m; sourceTree = "<group>"; };
+		2708C1971261353000192883 /* FMTHotKey+SRKeyCombo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMTHotKey+SRKeyCombo.h"; sourceTree = "<group>"; };
+		2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMTHotKey+SRKeyCombo.m"; sourceTree = "<group>"; };
+		2708C1991261353000192883 /* FMTHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTHotKeyManager.h; sourceTree = "<group>"; };
+		2708C19A1261353000192883 /* FMTHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTHotKeyManager.m; sourceTree = "<group>"; };
+		2708C2551261C8E800192883 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		835AA46D125D4D1300F11A69 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
-		83854AEE12596871008C7C0B /* ModifierDictStrings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ModifierDictStrings.plist; sourceTree = "<group>"; };
-		83854AF1125968DA008C7C0B /* KeycodeDictKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeycodeDictKeys.plist; sourceTree = "<group>"; };
 		83E55ED3125A5FCF00FC49BF /* shift-it-menu-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shift-it-menu-icon.png"; sourceTree = "<group>"; };
 		83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShiftIt.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		F2520B621133874D00DB826F /* PrefWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefWindowController.h; sourceTree = "<group>"; };
-		F2520B631133874D00DB826F /* PrefWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrefWindowController.m; sourceTree = "<group>"; };
+		F2520B621133874D00DB826F /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
+		F2520B631133874D00DB826F /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
 		F2708222117FCF9400C0A04C /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
-		F2C54EA11128AADB00E7DAC5 /* hKController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hKController.h; sourceTree = "<group>"; };
-		F2C54EA21128AADB00E7DAC5 /* hKController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hKController.m; sourceTree = "<group>"; };
-		F2DC1A311133829D009BDCA5 /* PrefWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PrefWindow.xib; sourceTree = "<group>"; };
+		F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		F2DC61231127ACDE000E1A5B /* WindowSizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowSizer.h; sourceTree = "<group>"; };
 		F2DC61241127ACDE000E1A5B /* WindowSizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowSizer.m; sourceTree = "<group>"; };
-		F2DC615C1127BB42000E1A5B /* SIHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIHotKey.h; sourceTree = "<group>"; };
-		F2DC615D1127BB42000E1A5B /* SIHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIHotKey.m; sourceTree = "<group>"; };
-		F2DC61971127C15F000E1A5B /* Preferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Preferences.h; sourceTree = "<group>"; };
-		F2DC61981127C15F000E1A5B /* Preferences.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Preferences.m; sourceTree = "<group>"; };
 		F2DC61EE1127C862000E1A5B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -92,12 +96,17 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2708C1CC1261388A00192883 /* External */,
 				F2D9C239112F9D0E003E9435 /* Preferences */,
-				F2D9C237112F9CF4003E9435 /* HotKey */,
 				F2DC61231127ACDE000E1A5B /* WindowSizer.h */,
 				F2DC61241127ACDE000E1A5B /* WindowSizer.m */,
 				256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */,
+				2708BEFF1260E10900192883 /* ShiftItAction.h */,
+				2708BF001260E10900192883 /* ShiftItAction.m */,
+				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
+				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
+				2708C2551261C8E800192883 /* ShiftIt.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -129,6 +138,36 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		2708C1CC1261388A00192883 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				2708C1CE126138A000192883 /* FMT */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
+		2708C1CD1261389000192883 /* HotKey */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = HotKey;
+			sourceTree = "<group>";
+		};
+		2708C1CE126138A000192883 /* FMT */ = {
+			isa = PBXGroup;
+			children = (
+				2708BF0D1260E44100192883 /* FMTDefines.h */,
+				2708C1CD1261389000192883 /* HotKey */,
+				2708C1951261353000192883 /* FMTHotKey.h */,
+				2708C1961261353000192883 /* FMTHotKey.m */,
+				2708C1971261353000192883 /* FMTHotKey+SRKeyCombo.h */,
+				2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */,
+				2708C1991261353000192883 /* FMTHotKeyManager.h */,
+				2708C19A1261353000192883 /* FMTHotKeyManager.m */,
+			);
+			name = FMT;
+			sourceTree = "<group>";
+		};
 		29B97314FDCFA39411CA2CEA /* ShiftIt */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,10 +196,8 @@
 				83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */,
 				8D1107310486CEB800E47090 /* ShiftIt-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
-				83854AEE12596871008C7C0B /* ModifierDictStrings.plist */,
-				83854AF1125968DA008C7C0B /* KeycodeDictKeys.plist */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
-				F2DC1A311133829D009BDCA5 /* PrefWindow.xib */,
+				F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -174,24 +211,11 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		F2D9C237112F9CF4003E9435 /* HotKey */ = {
-			isa = PBXGroup;
-			children = (
-				F2DC615C1127BB42000E1A5B /* SIHotKey.h */,
-				F2DC615D1127BB42000E1A5B /* SIHotKey.m */,
-				F2C54EA11128AADB00E7DAC5 /* hKController.h */,
-				F2C54EA21128AADB00E7DAC5 /* hKController.m */,
-			);
-			name = HotKey;
-			sourceTree = "<group>";
-		};
 		F2D9C239112F9D0E003E9435 /* Preferences */ = {
 			isa = PBXGroup;
 			children = (
-				F2DC61971127C15F000E1A5B /* Preferences.h */,
-				F2DC61981127C15F000E1A5B /* Preferences.m */,
-				F2520B621133874D00DB826F /* PrefWindowController.h */,
-				F2520B631133874D00DB826F /* PrefWindowController.m */,
+				F2520B621133874D00DB826F /* PreferencesWindowController.h */,
+				F2520B631133874D00DB826F /* PreferencesWindowController.m */,
 			);
 			name = Preferences;
 			sourceTree = "<group>";
@@ -242,9 +266,7 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
-				F2DC1A321133829D009BDCA5 /* PrefWindow.xib in Resources */,
-				83854AEF12596871008C7C0B /* ModifierDictStrings.plist in Resources */,
-				83854AF2125968DA008C7C0B /* KeycodeDictKeys.plist in Resources */,
+				F2DC1A321133829D009BDCA5 /* PreferencesWindow.xib in Resources */,
 				83E55ED5125A5FCF00FC49BF /* shift-it-menu-icon.png in Resources */,
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
 			);
@@ -260,10 +282,12 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */,
 				F2DC61251127ACDE000E1A5B /* WindowSizer.m in Sources */,
-				F2DC615E1127BB42000E1A5B /* SIHotKey.m in Sources */,
-				F2DC61991127C15F000E1A5B /* Preferences.m in Sources */,
-				F2C54EA31128AADB00E7DAC5 /* hKController.m in Sources */,
-				F2520B641133874D00DB826F /* PrefWindowController.m in Sources */,
+				F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */,
+				2708BF011260E10900192883 /* ShiftItAction.m in Sources */,
+				2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */,
+				2708C19B1261353000192883 /* FMTHotKey.m in Sources */,
+				2708C19C1261353000192883 /* FMTHotKey+SRKeyCombo.m in Sources */,
+				2708C19D1261353000192883 /* FMTHotKeyManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,6 +380,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-NDEBUG";
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 			};

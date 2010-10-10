@@ -18,24 +18,24 @@
  */
 
 #import <Cocoa/Cocoa.h>
-#import "PrefWindowController.h"
+
+@class WindowSizer;
+@class PreferencesWindowController;
+@class FMTHotKeyManager;
 
 @interface ShiftItAppDelegate : NSObject {
  @private
-    PrefWindowController * prefController_;
-    Preferences * pref_;
+    PreferencesWindowController *preferencesController_;
+	FMTHotKeyManager *hotKeyManager_;	
+	WindowSizer *windowSizer_;
+
+	NSMutableDictionary *allHotKeys_;
+
 	NSMenu *statusMenu_;
 	NSStatusItem *statusItem_;
-	
 	NSImage *statusMenuItemIcon_;
 }
 
-@property (nonatomic, retain) IBOutlet NSMenu *statusMenu;
-
--(void)updateMenuBarIcon;
--(void)registerForLogin;
--(void)updateStatusMenuShortcuts;
-
--(IBAction)showPreferences:(id)sender;
+- (IBAction)showPreferences:(id)sender;
 
 @end
