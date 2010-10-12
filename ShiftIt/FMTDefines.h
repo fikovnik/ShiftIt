@@ -90,16 +90,22 @@ description:__VA_ARGS__];                             \
 /// This code here is based on Foundation/GTMObjectSingleton.h from google-toolbox-for-mac
 ///
 
-#ifndef FMT_SINGLETON_BOILERPLATE
+#ifndef SINGLETON_BOILERPLATE
 
-#define SINGLETON_BOILERPLATE(_object_name_, _shared_obj_name_) \
+#define SINGLETON_BOILERPLATE(_object_name_, _shared_obj_name_) SINGLETON_BOILERPLATE_FULL(_object_name_, _shared_obj_name_, init)
+
+#endif // SINGLETON_BOILERPLATE
+
+#ifndef SINGLETON_BOILERPLATE_FULL
+
+#define SINGLETON_BOILERPLATE_FULL(_object_name_, _shared_obj_name_, _init_) \
 static _object_name_ *z##_shared_obj_name_ = nil;  \
 + (_object_name_ *)_shared_obj_name_ {             \
 @synchronized(self) {                            \
 if (z##_shared_obj_name_ == nil) {             \
 /* Note that 'self' may not be the same as _object_name_ */                               \
 /* first assignment done in allocWithZone but we must reassign in case init fails */      \
-z##_shared_obj_name_ = [[self alloc] init];                                               \
+z##_shared_obj_name_ = [[self alloc] _init_];                                               \
 FMTAssert((z##_shared_obj_name_ != nil), @"didn't catch singleton allocation");       \
 }                                              \
 }                                                \
@@ -132,7 +138,7 @@ return self;                                     \
 return self;                                     \
 }                                                  \
 
-#endif // FMT_SINGLETON_BOILERPLATE
+#endif // SINGLETON_BOILERPLATE_FULL
 
 #ifndef FMTGetErrorDescription
 #define FMTGetErrorDescription(error)	[[(error) userInfo] objectForKey:NSLocalizedDescriptionKey]

@@ -28,6 +28,8 @@
 	IBOutlet NSTextField * versionLabel_;	
 }
 
+@property BOOL shouldStartAtLogin;
+
 -(void)updateRecorderCombos;
 -(IBAction)showPreferences:(id)sender;
 

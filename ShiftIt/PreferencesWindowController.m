@@ -20,7 +20,10 @@
 #import "PreferencesWindowController.h"
 #import "ShiftIt.h"
 #import "ShiftItAction.h"
+#import "FMTLoginItems.h"
 #import "FMTDefines.h"
+
+NSString *const kShiftItAppBundleId = @"org.shiftitapp.shiftit";
 
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
@@ -33,6 +36,8 @@ NSString *const kHotKeyModifiersKey = @"kHotKeyModifiersKey";
 NSInteger const kSISRUITagPrefix = 1000;
 
 @implementation PreferencesWindowController
+
+@dynamic shouldStartAtLogin;
 
 -(id)init{
     if (![super initWithWindowNibName:@"PreferencesWindow"]) {
@@ -59,6 +64,20 @@ NSInteger const kSISRUITagPrefix = 1000;
     [[self window] center];
     [NSApp activateIgnoringOtherApps:YES];
     [[self window] makeKeyAndOrderFront:sender];    
+}
+
+#pragma mark shouldStartAtLogin dynamic property methods
+
+- (BOOL)shouldStartAtLogin {
+	NSString *path = [[NSBundle mainBundle] bundlePath];
+	return [[FMTLoginItems sharedSessionLoginItems] isInLoginItemsApplicationWithPath:path];
+}
+
+- (void)setShouldStartAtLogin:(BOOL)flag {
+	FMTDevLog(@"ShiftIt should start at login: %d", flag);
+
+	NSString *path = [[NSBundle mainBundle] bundlePath];
+	[[FMTLoginItems sharedSessionLoginItems] toggleApplicationInLoginItemsWithPath:path enabled:flag];
 }
 
 #pragma mark Shortcut Recorder methods

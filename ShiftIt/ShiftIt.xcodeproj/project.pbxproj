@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
+		270028D0126475920062B6D6 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 270028CF126475920062B6D6 /* FMTLoginItems.m */; };
 		2708BF011260E10900192883 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
 		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
 		2708C19B1261353000192883 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C1961261353000192883 /* FMTHotKey.m */; };
@@ -50,6 +51,8 @@
 		256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* ShiftIt_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt_Prefix.pch; sourceTree = "<group>"; };
+		270028CE126475920062B6D6 /* FMTLoginItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTLoginItems.h; sourceTree = "<group>"; };
+		270028CF126475920062B6D6 /* FMTLoginItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTLoginItems.m; sourceTree = "<group>"; };
 		2708BEFF1260E10900192883 /* ShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAction.h; sourceTree = "<group>"; };
 		2708BF001260E10900192883 /* ShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAction.m; sourceTree = "<group>"; };
 		2708BF0D1260E44100192883 /* FMTDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTDefines.h; sourceTree = "<group>"; };
@@ -149,6 +152,12 @@
 		2708C1CD1261389000192883 /* HotKey */ = {
 			isa = PBXGroup;
 			children = (
+				2708C1971261353000192883 /* FMTHotKey+SRKeyCombo.h */,
+				2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */,
+				2708C1991261353000192883 /* FMTHotKeyManager.h */,
+				2708C19A1261353000192883 /* FMTHotKeyManager.m */,
+				2708C1951261353000192883 /* FMTHotKey.h */,
+				2708C1961261353000192883 /* FMTHotKey.m */,
 			);
 			name = HotKey;
 			sourceTree = "<group>";
@@ -156,14 +165,10 @@
 		2708C1CE126138A000192883 /* FMT */ = {
 			isa = PBXGroup;
 			children = (
-				2708BF0D1260E44100192883 /* FMTDefines.h */,
 				2708C1CD1261389000192883 /* HotKey */,
-				2708C1951261353000192883 /* FMTHotKey.h */,
-				2708C1961261353000192883 /* FMTHotKey.m */,
-				2708C1971261353000192883 /* FMTHotKey+SRKeyCombo.h */,
-				2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */,
-				2708C1991261353000192883 /* FMTHotKeyManager.h */,
-				2708C19A1261353000192883 /* FMTHotKeyManager.m */,
+				270028CE126475920062B6D6 /* FMTLoginItems.h */,
+				270028CF126475920062B6D6 /* FMTLoginItems.m */,
+				2708BF0D1260E44100192883 /* FMTDefines.h */,
 			);
 			name = FMT;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 				2708C19B1261353000192883 /* FMTHotKey.m in Sources */,
 				2708C19C1261353000192883 /* FMTHotKey+SRKeyCombo.m in Sources */,
 				2708C19D1261353000192883 /* FMTHotKeyManager.m in Sources */,
+				270028D0126475920062B6D6 /* FMTLoginItems.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
