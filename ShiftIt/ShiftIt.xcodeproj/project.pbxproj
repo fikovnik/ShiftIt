@@ -10,8 +10,8 @@
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
 		835AA0D5125D3D8D00F11A69 /* ShortcutRecorder.strings in Resources */ = {isa = PBXBuildFile; fileRef = 835AA0D3125D3D8D00F11A69 /* ShortcutRecorder.strings */; };
-		835AA46E125D4D1300F11A69 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 835AA46D125D4D1300F11A69 /* ShortcutRecorder.framework */; };
-		835AA49C125D4E0200F11A69 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 835AA46D125D4D1300F11A69 /* ShortcutRecorder.framework */; };
+		837FCFCF1267844100B74B64 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 837FCFCE1267844100B74B64 /* ShortcutRecorder.framework */; };
+		837FCFD01267844400B74B64 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 837FCFCE1267844100B74B64 /* ShortcutRecorder.framework */; };
 		83854AEF12596871008C7C0B /* ModifierDictStrings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83854AEE12596871008C7C0B /* ModifierDictStrings.plist */; };
 		83854AF2125968DA008C7C0B /* KeycodeDictKeys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 83854AF1125968DA008C7C0B /* KeycodeDictKeys.plist */; };
 		83E55ED5125A5FCF00FC49BF /* shift-it-menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* shift-it-menu-icon.png */; };
@@ -37,7 +37,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				835AA49C125D4E0200F11A69 /* ShortcutRecorder.framework in CopyFiles */,
+				837FCFD01267844400B74B64 /* ShortcutRecorder.framework in CopyFiles */,
 				F2708277117FE51100C0A04C /* Sparkle.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,7 +54,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		835AA0D4125D3D8D00F11A69 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/ShortcutRecorder.strings; sourceTree = "<group>"; };
-		835AA46D125D4D1300F11A69 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
+		837FCFCE1267844100B74B64 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		83854AEE12596871008C7C0B /* ModifierDictStrings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ModifierDictStrings.plist; sourceTree = "<group>"; };
 		83854AF1125968DA008C7C0B /* KeycodeDictKeys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = KeycodeDictKeys.plist; sourceTree = "<group>"; };
 		83E55ED3125A5FCF00FC49BF /* shift-it-menu-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shift-it-menu-icon.png"; sourceTree = "<group>"; };
@@ -84,7 +84,7 @@
 				F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
-				835AA46E125D4D1300F11A69 /* ShortcutRecorder.framework in Frameworks */,
+				837FCFCF1267844100B74B64 /* ShortcutRecorder.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +107,7 @@
 		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				835AA46D125D4D1300F11A69 /* ShortcutRecorder.framework */,
+				837FCFCE1267844100B74B64 /* ShortcutRecorder.framework */,
 				F2708222117FCF9400C0A04C /* Sparkle.framework */,
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 			);
@@ -352,10 +352,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBC_OVERRIDING_PLUGINS_AND_FRAMEWORKS_DIR = "";
+				IBC_PLUGIN_SEARCH_PATHS = "";
+				LD_RUNPATH_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
@@ -370,6 +374,9 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBC_OVERRIDING_PLUGINS_AND_FRAMEWORKS_DIR = "";
+				IBC_PLUGIN_SEARCH_PATHS = "";
+				LD_RUNPATH_SEARCH_PATHS = "";
 				PREBINDING = NO;
 				SDKROOT = macosx10.6;
 			};
