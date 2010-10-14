@@ -121,7 +121,6 @@ cat <<EOF > $rel_notes_file
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
 <body>
-<<<<<<< HEAD
 <h1>Version $version</h1>
 
 <h2>Changes</h2>
