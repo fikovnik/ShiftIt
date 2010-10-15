@@ -17,15 +17,8 @@
  
  */
 
-#import <Foundation/Foundation.h>
+int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height);
+int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
+void AXUIFreeWindowRef(void *window);
 
-NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect);
+char *AXUIGetErrorMessage(int code);

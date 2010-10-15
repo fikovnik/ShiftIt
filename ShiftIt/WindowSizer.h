@@ -18,7 +18,11 @@
  */
 
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+
+typedef int (*SetWindowGeometryFunc)(void *window, int x, int y, unsigned int width, unsigned int height);
+typedef void (*FreeWindowRefFunc)(void *window);
+typedef char *(*GetErrorMessageFunc)(int code);
 
 @class ShiftItAction;
 

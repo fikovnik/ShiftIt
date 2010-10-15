@@ -17,9 +17,9 @@
  
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
 
-typedef void (*ShiftItFunctionRef)(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize); 
+typedef NSRect (*ShiftItFunctionRef)(NSSize screenSize, NSRect windowRect); 
 
 @interface ShiftItAction : NSObject {
  @private

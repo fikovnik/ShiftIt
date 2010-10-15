@@ -36,9 +36,8 @@ extern NSString *const kSIIconType;
 extern NSString *const kSIMenuItemTitle;
 
 extern NSString *const SIErrorDomain;
-extern NSInteger const kNoFocusWindowRefErrorCode;
-extern NSInteger const kPositionChangeFailedErrorCode;
-extern NSInteger const kSizeChangeFailedErrorCode;
+extern NSInteger const kUnableToGetActiveWindowErrorCode;
+extern NSInteger const kUnableToChangeWindowSizeOrPositionErrorCode;
 
 #define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
 #define ModifiersPrefKey(identifier) FMTStr(@"%@%@", (identifier), kModifiersPrefKeySuffix)

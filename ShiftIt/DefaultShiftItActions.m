@@ -20,106 +20,119 @@
 #import "DefaultShiftItActions.h"
 #import "FMTDefines.h"
 
-#define ARGS_NOT_NULL 	FMTAssertNotNil(sceenPosition); \
-	FMTAssertNotNil(screenSize); \
-	FMTAssertNotNil(windowPosition); \
-	FMTAssertNotNil(windowSize);
-
-
-void ShiftIt_Left(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x;
-	windowPosition->y = sceenPosition->y;
+	r.origin.x = 0;
+	r.origin.y = 0;
 	
-	windowSize->width = screenSize->width / 2;
-	windowSize->height = screenSize->height;
+	r.size.width = screenSize.width / 2;
+	r.size.height = screenSize.height;
+	
+	return r;
 }
 
-void ShiftIt_Right(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x + screenSize->width/2;
-	windowPosition->y = sceenPosition->y;
+	r.origin.x = screenSize.width/2;
+	r.origin.y = 0;
 	
-	windowSize->width = screenSize->width / 2;
-	windowSize->height = screenSize->height;
+	r.size.width = screenSize.width / 2;
+	r.size.height = screenSize.height;
+
+	return r;
 }
 
-void ShiftIt_Top(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x;
-	windowPosition->y = sceenPosition->y;
+	r.origin.x = 0;
+	r.origin.y = 0;
 	
-	windowSize->width = screenSize->width;
-	windowSize->height = screenSize->height / 2;
+	r.size.width = screenSize.width;
+	r.size.height = screenSize.height / 2;
+	
+	return r;
 }
 
-void ShiftIt_Bottom(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x;
-	windowPosition->y = sceenPosition->y + screenSize->height / 2;
+	r.origin.x = 0;
+	r.origin.y = screenSize.height / 2;
 	
-	windowSize->width = screenSize->width;
-	windowSize->height = screenSize->height / 2;
+	r.size.width = screenSize.width;
+	r.size.height = screenSize.height / 2;
+	
+	return r;
 }
 
-void ShiftIt_TopLeft(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x;
-	windowPosition->y = sceenPosition->y;
+	r.origin.x = 0;
+	r.origin.y = 0;
 	
-	windowSize->width = screenSize->width / 2;
-	windowSize->height = screenSize->height / 2;
+	r.size.width = screenSize.width / 2;
+	r.size.height = screenSize.height / 2;
+	
+	return r;
 }
 
-void ShiftIt_TopRight(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x + screenSize->width / 2;
-	windowPosition->y = sceenPosition->y;
+	r.origin.x = screenSize.width / 2;
+	r.origin.y = 0;
 	
-	windowSize->width = screenSize->width / 2;
-	windowSize->height = screenSize->height / 2;
+	r.size.width = screenSize.width / 2;
+	r.size.height = screenSize.height / 2;
+	
+	return r;
 }
 
-void ShiftIt_BottomLeft(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x;
-	windowPosition->y = sceenPosition->y + screenSize->height / 2;
+	r.origin.x = 0;
+	r.origin.y = screenSize.height / 2;
 	
-	windowSize->width = screenSize->width / 2;
-	windowSize->height = screenSize->height / 2;
+	r.size.width = screenSize.width / 2;
+	r.size.height = screenSize.height / 2;
+	
+	return r;
 }
 
-void ShiftIt_BottomRight(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x + screenSize->width / 2;
-	windowPosition->y = sceenPosition->y + screenSize->height / 2;
+	r.origin.x = screenSize.width / 2;
+	r.origin.y = screenSize.height / 2;
 	
-	windowSize->width = screenSize->width / 2;
-	windowSize->height = screenSize->height / 2;
+	r.size.width = screenSize.width / 2;
+	r.size.height = screenSize.height / 2;
+	
+	return r;
 }
 
-void ShiftIt_FullScreen(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x;
-	windowPosition->y = sceenPosition->y;
+	r.origin.x = 0;
+	r.origin.y = 0;
 	
-	windowSize->width = screenSize->width;
-	windowSize->height = screenSize->height;
+	r.size.width = screenSize.width;
+	r.size.height = screenSize.height;
+	
+	return r;
 }
 
-void ShiftIt_Center(NSPoint *sceenPosition, NSSize *screenSize, NSPoint *windowPosition, NSSize *windowSize) {
-	ARGS_NOT_NULL;
+NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
 	
-	windowPosition->x = sceenPosition->x + (screenSize->width/2)-(windowSize->width/2);
-	windowPosition->y = sceenPosition->y + (screenSize->height/2)-(windowSize->height/2);	
+	r.origin.x = (screenSize.width/2)-(windowRect.size.width/2);
+	r.origin.y = (screenSize.height/2)-(windowRect.size.height/2);	
+	
+	return r;
 }
-

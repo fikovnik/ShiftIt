@@ -17,15 +17,14 @@
  
  */
 
-#import <Foundation/Foundation.h>
+#ifndef _X11UTIL_H_
 
-NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect);
+#define _X11UTIL_H_
+
+int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height);
+int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
+void X11FreeWindowRef(void *window);
+
+char *X11GetErrorMessage(int code);
+
+#endif // _X11UTIL_H_

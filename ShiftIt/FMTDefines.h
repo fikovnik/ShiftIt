@@ -38,6 +38,8 @@
 #define FMTStr(fmt,...) [NSString stringWithFormat:fmt,##__VA_ARGS__]
 #endif // FMTStr
 
+#define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding] 
+
 #ifndef FMTTraceLog
 
 #ifndef NTRACE
