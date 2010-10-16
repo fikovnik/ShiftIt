@@ -25,7 +25,10 @@
 #import "WindowSizer.h"
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
+#import "FMTUtils.h"
 #import "FMTDefines.h"
+
+NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
 
 NSString *const kSIIconName = @"shift-it-menu-icon";
 NSString *const kSIIconType = @"png";
@@ -80,6 +83,18 @@ NSDictionary *allShiftActions = nil;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	FMTDevLog(@"Starting up ShiftIt...");
 
+	// check we are the only one
+	if (FMTNumberOfRunningProcessesWithBundleId(kShiftItAppBundleId) > 1) {
+		[[NSAlert alertWithMessageText:@"ShiftIt is already running" 
+						 defaultButton:@"Quit"
+					   alternateButton:nil
+						   otherButton:nil 
+			 informativeTextWithFormat:@"There is point to have more than instance at the same time so this one will now quit."] runModal];
+		
+		// suicide
+		[NSApp terminate:nil];			
+	}
+		
 	if (!AXAPIEnabled()){
         int ret = NSRunAlertPanel (@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel",NULL);
         switch (ret){

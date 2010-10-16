@@ -23,8 +23,6 @@
 #import "FMTLoginItems.h"
 #import "FMTDefines.h"
 
-NSString *const kShiftItAppBundleId = @"org.shiftitapp.shiftit";
-
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
 
