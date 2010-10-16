@@ -5,7 +5,7 @@
 Overview
 --------
 
-ShiftIt is an application for OSX that allows you to quickly manipulate window position and size using keyboard shortcuts.
+ShiftIt is an application for OSX that allows you to quickly manipulate window position and size using keyboard shortcuts. For discussing any sort of stuff about this app, please post to our [google group][9]
 
 This is a fork from the original [ShiftIt][2] by [Aravindkumar Rajendiran][3] which is not longer under development.
 
@@ -68,3 +68,4 @@ There is a feature full commerical application called [SizeUp][6] that seems to 
   [6]: http://www.irradiatedsoftware.com/sizeup/
   [7]: http://www.irradiatedsoftware.com/sizeup/
   [8]: http://code.google.com/p/shortcutrecorder/
+  [9]: http://groups.google.com/group/shiftitapp
