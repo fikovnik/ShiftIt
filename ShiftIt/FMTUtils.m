@@ -38,6 +38,10 @@ NSString *FMTGetBundleResourcePath(NSBundle *bundle, NSString *resourceName, NSS
 	}
 }
 
+NSString *FMTGetMainBundleResourcePath(NSString *resourceName, NSString *resourceType) {
+	return FMTGetBundleResourcePath([NSBundle mainBundle], resourceName, resourceType);
+}
+
 NSURL *FMTGetBundleResourceURL(NSBundle *bundle, NSString *resourceName, NSString *resourceType) {	
 	NSString *path = FMTGetBundleResourcePath(bundle, resourceName, resourceType);
 	
@@ -46,6 +50,10 @@ NSURL *FMTGetBundleResourceURL(NSBundle *bundle, NSString *resourceName, NSStrin
 	} else {
 		return nil;
 	}
+}
+
+NSURL *FMTGetMainBundleResourceURL(NSString *resourceName, NSString *resourceType) {	
+	return FMTGetBundleResourceURL([NSBundle mainBundle], resourceName, resourceType);
 }
 
 BOOL FMTOpenSystemPreferencePane(NSString *prefPaneId) {

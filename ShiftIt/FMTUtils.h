@@ -23,8 +23,10 @@
 #import <Cocoa/Cocoa.h>
 
 NSString *FMTGetBundleResourcePath(NSBundle *bundle, NSString *resourceName, NSString *resourceType);
+NSString *FMTGetMainBundleResourcePath(NSString *resourceName, NSString *resourceType);
 
 NSURL *FMTGetBundleResourceURL(NSBundle *bundle, NSString *resourceName, NSString *resourceType);
+NSURL *FMTGetMainBundleResourceURL(NSString *resourceName, NSString *resourceType);
 
 BOOL FMTOpenSystemPreferencePane(NSString *prefPaneId);
 
