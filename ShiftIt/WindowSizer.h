@@ -20,9 +20,10 @@
 
 #import <Foundation/Foundation.h>
 
-typedef int (*SetWindowGeometryFunc)(void *window, int x, int y, unsigned int width, unsigned int height);
-typedef void (*FreeWindowRefFunc)(void *window);
-typedef char *(*GetErrorMessageFunc)(int code);
+/**
+ * This unit provides support for sizing application using Apple accessibiity API
+ *
+ */
 
 @class ShiftItAction;
 

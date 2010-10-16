@@ -21,6 +21,14 @@
 
 #define _X11UTIL_H_
 
+/**
+ * This unit defines necessary functions to support sizing of X11 windows
+ * It is based upon the Xlib library [1].
+ * 
+ * [1] http://tronche.com/gui/x/xlib/
+ *
+ */
+
 int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height);
 int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
 void X11FreeWindowRef(void *window);

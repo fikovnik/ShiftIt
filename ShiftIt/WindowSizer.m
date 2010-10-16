@@ -70,8 +70,30 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	return self;
 }
 
-// TODO: fix the error handling - propagate the AXError - not NSLog - strerr
-- (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error {
+
+/**
+ * The method is the heart of the ShiftIt app. It takes an
+ * ShiftItAction and applies it to the current window.
+ *
+ * In order to understand what exactly what is going on it is important
+ * to understand how the graphic coordinates works in OSX. There are two
+ * coordinates systems: screen (quartz core graphics) and cocoa. The
+ * former one has and origin on the top left corner of the primary
+ * screen (the one with a menu bar) and the coordinates grows in east
+ * and south direction. The latter has origin in the bottom left corner
+ * of the primary window and grows in east and north direction. The
+ * overview of the cocoa coordinates is in [1]. X11 on the other 
+ * hand have its coordinate system originating on the
+ * top left corner of the most top left window [2]. 
+ *
+ * In this method all coordinates are translated to be the screen
+ * coordinates.
+ * 
+ * [1] http://bit.ly/aSmfae (apple official docs)
+ * 
+ * [2] http://www.linuxjournal.com/article/4879
+ */
+ - (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error {
 	FMTAssertNotNil(action);
 	
 #ifdef X11
@@ -227,6 +249,12 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 #endif
 }
 
+/**
+ * Chooses the best screen for the given window rect (screen coord).
+ *
+ * For each screen it computes the intersecting rectangle and its size. 
+ * The biggest is the screen where is the most of the window hence the best fit.
+ */
 - (NSScreen *)chooseScreenForWindow_:(NSRect)windowRect {
 	// TODO: rename intgersect
 	// TODO: all should be ***Rect
@@ -236,6 +264,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	
 	for (NSScreen *screen in [NSScreen screens]) {
 		NSRect screenRect = [screen frame];
+		// need to convert coordinates
 		COCOA_TO_SCREEN_COORDINATES(screenRect);
 		 
 		NSRect intersectRect = NSIntersectionRect(screenRect, windowRect);
