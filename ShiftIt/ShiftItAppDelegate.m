@@ -38,8 +38,7 @@ NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
 NSString *const kHasStartedBeforePrefKey = @"hasStartedBefore";
 
 // icon
-NSString *const kSIIconName = @"shift-it-menu-icon";
-NSString *const kSIIconType = @"png";
+NSString *const kSIIconName = @"ShiftIt-menuIcon";
 NSString *const kSIMenuItemTitle = @"Shift";
 
 // the size that should be reserved for the menu item in the system menu in px
@@ -75,7 +74,7 @@ NSDictionary *allShiftActions = nil;
 		return nil;
 	}
 	
-	NSString *iconPath = [[NSBundle mainBundle] pathForResource:kSIIconName ofType:kSIIconType];
+	NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
 	statusMenuItemIcon_ = [[NSImage alloc] initWithContentsOfFile:iconPath];
 	allHotKeys_ = [[NSMutableDictionary alloc] init];
 	

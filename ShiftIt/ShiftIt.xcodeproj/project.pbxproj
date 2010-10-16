@@ -15,7 +15,7 @@
 		27002DE81269CA1B0062B6D6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		27002DE91269CA1B0062B6D6 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		27002DEA1269CA1B0062B6D6 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */; };
-		27002DEB1269CA1B0062B6D6 /* shift-it-menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* shift-it-menu-icon.png */; };
+		27002DEB1269CA1B0062B6D6 /* ShiftIt-menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */; };
 		27002DEC1269CA1B0062B6D6 /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		27002DEE1269CA1B0062B6D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		27002DEF1269CA1B0062B6D6 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
@@ -45,7 +45,7 @@
 		27A14E8E1269E5BB00E68263 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A14E8C1269E5BB00E68263 /* FMTUtils.m */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
 		27A14EC11269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
-		83E55ED5125A5FCF00FC49BF /* shift-it-menu-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* shift-it-menu-icon.png */; };
+		83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */; };
 		83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -115,7 +115,7 @@
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
-		83E55ED3125A5FCF00FC49BF /* shift-it-menu-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shift-it-menu-icon.png"; sourceTree = "<group>"; };
+		83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-menuIcon.png"; sourceTree = "<group>"; };
 		83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShiftIt.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -263,7 +263,7 @@
 			isa = PBXGroup;
 			children = (
 				27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */,
-				83E55ED3125A5FCF00FC49BF /* shift-it-menu-icon.png */,
+				83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */,
 				83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */,
 				8D1107310486CEB800E47090 /* ShiftIt-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -358,7 +358,7 @@
 				27002DE81269CA1B0062B6D6 /* InfoPlist.strings in Resources */,
 				27002DE91269CA1B0062B6D6 /* MainMenu.xib in Resources */,
 				27002DEA1269CA1B0062B6D6 /* PreferencesWindow.xib in Resources */,
-				27002DEB1269CA1B0062B6D6 /* shift-it-menu-icon.png in Resources */,
+				27002DEB1269CA1B0062B6D6 /* ShiftIt-menuIcon.png in Resources */,
 				27002DEC1269CA1B0062B6D6 /* ShiftIt.icns in Resources */,
 				27A14EC11269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
 			);
@@ -371,7 +371,7 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				F2DC1A321133829D009BDCA5 /* PreferencesWindow.xib in Resources */,
-				83E55ED5125A5FCF00FC49BF /* shift-it-menu-icon.png in Resources */,
+				83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */,
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
 				27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
 			);
