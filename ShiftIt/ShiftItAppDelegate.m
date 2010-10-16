@@ -23,6 +23,7 @@
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
 #import "WindowSizer.h"
+#import "FMTLoginItems.h"
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
 #import "FMTUtils.h"
@@ -30,6 +31,13 @@
 
 NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
 
+// the name of the plist file containing the preference defaults
+NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
+
+// preferencs
+NSString *const kHasStartedBeforePrefKey = @"hasStartedBefore";
+
+// icon
 NSString *const kSIIconName = @"shift-it-menu-icon";
 NSString *const kSIIconType = @"png";
 NSString *const kSIMenuItemTitle = @"Shift";
@@ -50,6 +58,7 @@ NSDictionary *allShiftActions = nil;
 
 - (void)initializeActions_;
 - (void)updateMenuBarIcon_;
+- (void)firstLaunch_;
 - (void)invokeShiftItActionByIdentifier_:(NSString *)identifier;
 - (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers;
 
@@ -80,6 +89,34 @@ NSDictionary *allShiftActions = nil;
 	[super dealloc];
 }
 
+- (void) firstLaunch_  {
+	FMTDevLog(@"First run");
+
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+	// ask to start it automatically - make sure it is not there
+	
+	// TODO: refactor this so it shares the code from the pref controller
+	FMTLoginItems *loginItems = [FMTLoginItems sharedSessionLoginItems];
+	NSString *appPath = [[NSBundle mainBundle] bundlePath];
+	
+	if (![loginItems isInLoginItemsApplicationWithPath:appPath]) {
+		int ret = NSRunAlertPanel (@"Start ShiftIt automatically?", @"Would you like to have ShiftIt automatically started at a login time?", @"Yes", @"No",NULL);
+		switch (ret){
+			case NSAlertDefaultReturn:
+				// do it!
+				[loginItems toggleApplicationInLoginItemsWithPath:appPath enabled:YES];
+				break;
+			default:
+				break;
+		}		
+	}
+	
+	// make sure this was the only time
+	[defaults setBool:YES forKey:@"hasStartedBefore"];
+	[defaults synchronize];
+	
+}
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	FMTDevLog(@"Starting up ShiftIt...");
 
@@ -94,7 +131,21 @@ NSDictionary *allShiftActions = nil;
 		// suicide
 		[NSApp terminate:nil];			
 	}
-		
+	
+	// check preferences
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults synchronize];
+	BOOL hasStartedBefore = [defaults boolForKey:kHasStartedBeforePrefKey];
+	
+	if (!hasStartedBefore) {
+		[self firstLaunch_];
+	}
+
+	// register defaults - we assume that the installation is correct
+	NSString *path = FMTGetMainBundleResourcePath(kShiftItUserDefaults, @"plist");
+	NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:path];
+	[defaults registerDefaults:d];
+	
 	if (!AXAPIEnabled()){
         int ret = NSRunAlertPanel (@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel",NULL);
         switch (ret){
@@ -120,10 +171,7 @@ NSDictionary *allShiftActions = nil;
 	
 	NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
 	[userDefaultsController addObserver:self forKeyPath:@"values.shiftItshowMenu" options:0 context:self];
-	[userDefaultsController addObserver:self forKeyPath:@"values.shiftItstartLogin" options:0 context:self];
 	
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults synchronize];
 	for (ShiftItAction *action in [allShiftActions allValues]) {
 		NSString *identifier = [action identifier];
 		

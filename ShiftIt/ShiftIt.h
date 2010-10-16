@@ -25,6 +25,9 @@ extern NSDictionary *allShiftActions;
 extern NSString *const kKeyCodePrefKeySuffix;
 extern NSString *const kModifiersPrefKeySuffix;
 
+// preferences keys
+extern NSString *const kHasStartedBeforePrefKey;
+
 extern NSString *const kHotKeyChangedNotification;
 extern NSString *const kActionIdentifierKey;
 extern NSString *const kHotKeyKeyCodeKey;
