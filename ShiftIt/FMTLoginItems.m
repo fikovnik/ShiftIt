@@ -54,7 +54,7 @@
 @synthesize type = type_;
 
 
-- (id)initWithLoginItemsType:(CFStringRef)type {
+- (id)initWithLoginItemsType_:(CFStringRef)type {
 	FMTAssertNotNil(type)
 	
 	if (![super init]) {
