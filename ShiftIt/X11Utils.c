@@ -18,7 +18,7 @@
  */
 
 #include "X11Utils.h"
-
+#include <stdio.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
@@ -32,11 +32,12 @@ static char *kErrorMessages_[] = {
 	"X11Error: Unable to get window attributes (XGetWindowAttributes)",
 	"X11Error: Unable to translate coordinated (XTranslateCoordinates)",
 	"X11Error: Unable to get geometry (XGetGeometry)"
-	"X11Error: Unable to get move/resize window (XMoveResizeWindow)",
+	"X11Error: Unable to get move window (XMoveWindow)",
+	"X11Error: Unable to get resize window (XResizeWindow)",
 	"X11Error: Unable to sync X11 (XSync)",
 };
 
-static int kErrorMessageCount_ = 8;
+static int kErrorMessageCount_ = 9;
 
 int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height) {
 	assert (window != NULL);
@@ -59,17 +60,19 @@ int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigne
 	width -= wa.x;
 	height -= wa.y;
 	
-	// and we need to do the same for the coordinates
-	x -= wa.x;
-	y -= wa.y;
+	// we don't need to adjust the x and y since they are from the top left window
 	
-	if (!XMoveResizeWindow(dpy, *((Window *)window), x, y, width, height)) {
+	if (!XMoveWindow(dpy, *((Window *)window), x, y)) {
 		return -6;
+	}
+
+	if (!XResizeWindow(dpy, *((Window *)window), width, height)) {
+		return -7;
 	}
 	
 	// do it now - this will block
 	if (!XSync(dpy, False)) {
-		return -7;
+		return -8;
 	}
 	
 	return 0;
@@ -98,6 +101,11 @@ int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int
 	}
 	
 	Window root = DefaultRootWindow(dpy);
+	XWindowAttributes wa2;
+    if(!XGetWindowAttributes(dpy, root, &wa2)) {
+		return -4;
+	}
+	printf("root: [%d %d] [%d %d]\n", wa2.x, wa2.y, wa2.width, wa2.height);
 	
 	// following are for the params that are not used
 	int not_used_int;
@@ -124,17 +132,22 @@ int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int
 		return -4;
 	}
 	
+	if(!XTranslateCoordinates(dpy, window, root, -wa.border_width, -wa.border_width, x, y, &not_used_window)) {
+		return -5;
+	}
+
 	// the height returned is without the window manager decoration - the OSX top bar with buttons, window label and stuff
 	// so we need to add it to the height as well because the WindowSize expects the full window
 	// the same might be potentially apply to the width
 	*width = wa.width + wa.x;
 	*height = wa.height + wa.y;
 
-	if(!XTranslateCoordinates(dpy, window, root, -wa.border_width, -wa.border_width, x, y, &not_used_window)) {
-		return -5;
-	}
+	*x -= wa.x;
+	*y -= wa.y;
 
-	// note that we do not need to adjust the x and y because these are relative to the parent window - the root window
+	printf("window: [%d %d] [%d %d]\n", wa.x, wa.y, wa.width, wa.height);
+
+	
 	
 	XCloseDisplay(dpy);
 	

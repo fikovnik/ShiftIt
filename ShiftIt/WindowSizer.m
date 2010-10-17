@@ -28,10 +28,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
 
+// reference to the carbon GetMBarHeight() function
+extern short GetMBarHeight(void);
+
 @interface NSScreen (Private)
 
 + (NSScreen *)primaryScreen;
-- (BOOL)hasMenuBar;
+- (BOOL)isPrimary;
 
 @end
 
@@ -41,7 +44,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 	return [[NSScreen screens] objectAtIndex:0];
 }
 
-- (BOOL)hasMenuBar {
+- (BOOL)isPrimary {
 	return self == [NSScreen primaryScreen];
 }
 
@@ -190,6 +193,27 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		// translate into X11 coordinates
 		shiftedRect.origin.x -= X11Ref.origin.x;
 		shiftedRect.origin.y -= X11Ref.origin.y;
+		
+		// it seems that the X11 server 2.3.5 on snow leopard 10.6.4 on mac book pro
+		// changes the origin of the coordinates depending on the relative 
+		// positions of the screens next to each other if there is a screen
+		// that is below the primary screen, than the X11 coordnates starts at
+		// [0,m] of the screen coordinates (quartz) where m is the height of the
+		// menu bar (GetMBarHeight()) otherwise it starts at [0,0].
+		BOOL screenBelowPrimary = NO;
+		for (NSScreen *s in [NSScreen screens]) {
+			NSRect r = [s frame];
+			COCOA_TO_SCREEN_COORDINATES(r);
+			if (r.origin.y > 0) {
+				screenBelowPrimary = YES;
+				break;
+			}
+		}
+		
+		if (screenBelowPrimary) {
+			shiftedRect.origin.y -= GetMBarHeight();
+		}
+		
 	} 
 #endif // X11
 		
