@@ -43,17 +43,31 @@ int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigne
 	
 	Display* dpy = NULL;
 	
-	// TODO: how expensive is to always get display?
 	dpy = XOpenDisplay(NULL);
 	
 	if (!dpy) {
 		return -1;
 	}
 
+	XWindowAttributes wa;
+    if(!XGetWindowAttributes(dpy, *((Window *)window), &wa)) {
+		return -4;
+	}
+	
+	// the WindowSizer will pass the size of the entire window including its decoration
+	// we need to subtract that
+	width -= wa.x;
+	height -= wa.y;
+	
+	// and we need to do the same for the coordinates
+	x -= wa.x;
+	y -= wa.y;
+	
 	if (!XMoveResizeWindow(dpy, *((Window *)window), x, y, width, height)) {
 		return -6;
 	}
 	
+	// do it now - this will block
 	if (!XSync(dpy, False)) {
 		return -7;
 	}
@@ -109,15 +123,18 @@ int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int
     if(!XGetWindowAttributes(dpy, window, &wa)) {
 		return -4;
 	}
-		
-	if(!XTranslateCoordinates(dpy, window, wa.root, -wa.border_width, -wa.border_width, x, y, &not_used_window)) {
+	
+	// the height returned is without the window manager decoration - the OSX top bar with buttons, window label and stuff
+	// so we need to add it to the height as well because the WindowSize expects the full window
+	// the same might be potentially apply to the width
+	*width = wa.width + wa.x;
+	*height = wa.height + wa.y;
+
+	if(!XTranslateCoordinates(dpy, window, root, -wa.border_width, -wa.border_width, x, y, &not_used_window)) {
 		return -5;
 	}
-	
-	*x -= wa.x;
-	*y -= wa.y;
-	*width = wa.width;
-	*height = wa.height;
+
+	// note that we do not need to adjust the x and y because these are relative to the parent window - the root window
 	
 	XCloseDisplay(dpy);
 	

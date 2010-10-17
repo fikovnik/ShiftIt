@@ -47,8 +47,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 @end
 
-#define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height; \
-										  (rect).size.height -= (rect).origin.y 
+#define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
 
 @interface WindowSizer (Private)
 
@@ -165,50 +164,33 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	FMTDevLog(@"screen rect: %@", RECT_STR(screenRect));	
 
 	// visible screen coordinates of the best fit window
+	// the visible screen denotes some inner rect of the screen rect which is visible - not occupied by menu bar or dock
 	NSRect visibleScreenRect = [screen visibleFrame];
 	FMTDevLog(@"visible screen rect (cocoa): %@", RECT_STR(visibleScreenRect));	
 	COCOA_TO_SCREEN_COORDINATES(visibleScreenRect);
 	FMTDevLog(@"visible screen rect: %@", RECT_STR(visibleScreenRect));	
-	
-	// adjust the visibility
-	// - menu bar
-	// - dock
-	screenRect.size.width += screenRect.origin.x - visibleScreenRect.origin.x;
-	screenRect.size.height += screenRect.origin.y - visibleScreenRect.origin.y;
+
+	// execute shift it action to reposition the application window
+	ShiftItFunctionRef actionFunction = [action action];
+	NSRect shiftedRect = actionFunction(visibleScreenRect.size, windowRect);
+	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
+	 
+	// readjust adjust the visibility
+	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
+	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
+	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
+	shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
+	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
 
 	// we need to translate from cocoa coordinates
-	FMTDevLog(@"screen rect translated: %@", RECT_STR(screenRect));	
-		
-	// execute the actual action 
-	ShiftItFunctionRef actionFunction = [action action];
-	NSRect shiftedRect = actionFunction(screenRect.size, windowRect);
-	FMTDevLog(@"shifted rect: %@", RECT_STR(shiftedRect));
-	
-	// translate geometry
-	shiftedRect.origin.x += screenRect.origin.x;
-	shiftedRect.origin.y += screenRect.origin.y;
-	
+	FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));	
+				
 #ifdef X11
 	if (activeWindowX11) {
 		// translate into X11 coordinates
 		shiftedRect.origin.x -= X11Ref.origin.x;
 		shiftedRect.origin.y -= X11Ref.origin.y;
-
-		// adjust menu bar
-		if ([screen hasMenuBar]) {
-			shiftedRect.size.height -= GetMBarHeight();
-		}
-	} else {
-		// adjust menu bar
-		if ([screen hasMenuBar]) {
-			shiftedRect.origin.y += GetMBarHeight();
-		}
-	}
-#else
-	// adjust menu bar
-	if ([screen hasMenuBar]) {
-		shiftedRect.origin.y += GetMBarHeight();
-	}	
+	} 
 #endif // X11
 		
 	FMTDevLog(@"translated shifted rect: %@", RECT_STR(shiftedRect));
