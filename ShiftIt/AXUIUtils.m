@@ -22,8 +22,6 @@
 #import "AXUIUtils.h"
 #import "FMTDefines.h"
 
-static AXUIElementRef axSystemWideElement_;
-
 static char *kErrorMessages_[] = {
 	"AXError: Unable to get active application",
 	"AXError: Unable to get active window",
@@ -41,17 +39,20 @@ int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsign
 	FMTAssertNotNil(window);
 	
 	NSPoint position = {x, y};
-	NSSize size = {width, height};
 	CFTypeRef positionRef = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&position));
-	CFTypeRef sizeRef = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&size));
-
 	if(AXUIElementSetAttributeValue((AXUIElementRef)window,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)positionRef) != kAXErrorSuccess){
+		CFRelease(positionRef);
 		return -7;
 	}
+	CFRelease(positionRef);
 	
+	NSSize size = {width, height};
+	CFTypeRef sizeRef = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&size));
 	if(AXUIElementSetAttributeValue((AXUIElementRef)window,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)sizeRef) != kAXErrorSuccess){
+		CFRelease(sizeRef);
 		return -8;
 	}		
+	CFRelease(sizeRef);
 	
 	return 0;
 }
@@ -74,19 +75,17 @@ int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned in
 	FMTAssertNotNil(width);
 	FMTAssertNotNil(height);
 	
-	if (!axSystemWideElement_) {
-		axSystemWideElement_ = AXUIElementCreateSystemWide();
-		
-		// here is the assert for purpose because the app should not have gone 
-		// that far in execution if the AX api is not available
-		FMTAssertNotNil(axSystemWideElement_);
-	}
+	AXUIElementRef systemElementRef = AXUIElementCreateSystemWide();
+	// here is the assert for purpose because the app should not have gone 
+	// that far in execution if the AX api is not available
+	FMTAssertNotNil(systemElementRef);
 
 	//get the focused application
 	AXUIElementRef focusedAppRef = nil;
-	AXError axerror = AXUIElementCopyAttributeValue(axSystemWideElement_,
+	AXError axerror = AXUIElementCopyAttributeValue(systemElementRef,
 													(CFStringRef) kAXFocusedApplicationAttribute,
 													(CFTypeRef *) &focusedAppRef);
+	CFRelease(systemElementRef);
 	
 	if (axerror != kAXErrorSuccess) {
 		return -1;
@@ -98,11 +97,11 @@ int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned in
 	axerror = AXUIElementCopyAttributeValue((AXUIElementRef)focusedAppRef,
 											(CFStringRef)NSAccessibilityFocusedWindowAttribute,
 											(CFTypeRef*)&focusedWindowRef);
+	CFRelease(focusedAppRef);
 	if (axerror != kAXErrorSuccess) {
 		return -2;
 	}
 	FMTAssertNotNil(focusedWindowRef);
-	CFRetain(focusedWindowRef);	
 	*activeWindow = (void *) focusedWindowRef;
 	
 	//get the position
@@ -110,6 +109,8 @@ int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned in
 	NSPoint position;
 	axerror = AXUIElementCopyAttributeValue((AXUIElementRef)focusedWindowRef,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)&positionRef);
 	if (axerror != kAXErrorSuccess) {
+		CFRelease(focusedWindowRef);
+
 		return -3;
 	}
 	FMTAssertNotNil(positionRef);
@@ -118,14 +119,20 @@ int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned in
 		*x = (int) position.x;
 		*y = (int) position.y;
 	} else {
+		CFRelease(focusedWindowRef);
+		CFRelease(positionRef);
+		
 		return -4;
 	}
+	CFRelease(positionRef);
 	
 	//get the focused size
 	CFTypeRef sizeRef;
 	NSSize size;
 	axerror = AXUIElementCopyAttributeValue((AXUIElementRef)focusedWindowRef,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)&sizeRef);
 	if (axerror != kAXErrorSuccess) {
+		CFRelease(focusedWindowRef);
+
 		return -5;
 	}
 	FMTAssertNotNil(sizeRef);
@@ -134,8 +141,12 @@ int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned in
 		*width = (unsigned int) size.width;
 		*height = (unsigned int) size.height;
 	} else {
+		CFRelease(focusedWindowRef);
+		CFRelease(sizeRef);
+
 		return -6;
 	}
+	CFRelease(sizeRef);
 	
 	return 0;
 }
