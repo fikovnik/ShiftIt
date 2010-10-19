@@ -18,11 +18,9 @@
  */
 
 #include "X11Utils.h"
-#include <stdio.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-#include <stdio.h>
 #include <assert.h>
 
 static char *kErrorMessages_[] = {
@@ -34,22 +32,20 @@ static char *kErrorMessages_[] = {
 	"X11Error: Unable to get geometry (XGetGeometry)"
 	"X11Error: Unable to get move window (XMoveWindow)",
 	"X11Error: Unable to get resize window (XResizeWindow)",
-	"X11Error: Unable to sync X11 (XSync)",
+	"X11Error: Unable to sync X11 (XSync)"
 };
 
 static int kErrorMessageCount_ = 9;
 
 int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height) {
 	assert (window != NULL);
-	
-	Display* dpy = NULL;
-	
-	dpy = XOpenDisplay(NULL);
+
+	Display *dpy = XOpenDisplay(NULL);
 	
 	if (!dpy) {
 		return -1;
 	}
-
+	
 	XWindowAttributes wa;
     if(!XGetWindowAttributes(dpy, *((Window *)window), &wa)) {
 		return -4;
@@ -75,11 +71,13 @@ int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigne
 		return -8;
 	}
 	
+	XCloseDisplay(dpy);
+	
 	return 0;
 }
 
 void X11FreeWindowRef(void *window) {
-	assert (window != NULL);
+	assert(window != NULL);
 	
 	XFree(window);
 }
@@ -105,7 +103,6 @@ int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int
     if(!XGetWindowAttributes(dpy, root, &wa2)) {
 		return -4;
 	}
-	printf("root: [%d %d] [%d %d]\n", wa2.x, wa2.y, wa2.width, wa2.height);
 	
 	// following are for the params that are not used
 	int not_used_int;
@@ -145,10 +142,6 @@ int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int
 	*x -= wa.x;
 	*y -= wa.y;
 
-	printf("window: [%d %d] [%d %d]\n", wa.x, wa.y, wa.width, wa.height);
-
-	
-	
 	XCloseDisplay(dpy);
 	
 	*activeWindow = (void *) prop_return;
