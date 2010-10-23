@@ -22,6 +22,7 @@
 #import "ShiftItAction.h"
 #import "FMTLoginItems.h"
 #import "FMTDefines.h"
+#import "FMTUtils.h"
 
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
@@ -63,6 +64,34 @@ NSInteger const kSISRUITagPrefix = 1000;
     [NSApp activateIgnoringOtherApps:YES];
     [[self window] makeKeyAndOrderFront:sender];    
 }
+
+-(IBAction)revertDefaults:(id)sender {
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+	NSString *path = FMTGetMainBundleResourcePath(kShiftItUserDefaults, @"plist");
+	NSDictionary *initialDefaults = [NSDictionary dictionaryWithContentsOfFile:path];
+	[defaults registerDefaults:initialDefaults];
+
+	for (ShiftItAction *action in [allShiftActions allValues]) {
+		NSString *identifier = [action identifier];
+		
+		NSNumber *n = nil;
+
+		n = [initialDefaults objectForKey:KeyCodePrefKey(identifier)];
+		[defaults setInteger:[n integerValue] forKey:KeyCodePrefKey(identifier)];
+		
+		n = [initialDefaults objectForKey:ModifiersPrefKey(identifier)];
+		[defaults setInteger:[n integerValue] forKey:ModifiersPrefKey(identifier)];
+	}
+	
+	[defaults synchronize];
+	
+	// normally this won't be necessary since there could be an observer 
+	// looking at changes in the user defaults values itself, but since there is
+	// unfortunatelly 2 defaults for one key this won't work well
+	[self updateRecorderCombos];
+}
+
 
 #pragma mark shouldStartAtLogin dynamic property methods
 

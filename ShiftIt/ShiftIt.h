@@ -22,6 +22,8 @@ extern NSString *const kShiftItAppBundleId;
 // indexed using the ShiftItAction identifier
 extern NSDictionary *allShiftActions;
 
+extern NSString *const kShiftItUserDefaults;
+
 extern NSString *const kKeyCodePrefKeySuffix;
 extern NSString *const kModifiersPrefKeySuffix;
 
