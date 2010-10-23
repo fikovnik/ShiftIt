@@ -27,6 +27,10 @@ extern NSString *const kModifiersPrefKeySuffix;
 
 // preferences keys
 extern NSString *const kHasStartedBeforePrefKey;
+extern NSString *const kShowMenuPrefKey;
+
+// distributed notifications
+extern NSString *const kShowPreferencesRequestNotification;
 
 extern NSString *const kHotKeyChangedNotification;
 extern NSString *const kActionIdentifierKey;

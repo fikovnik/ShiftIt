@@ -36,6 +36,10 @@ NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
 
 // preferencs
 NSString *const kHasStartedBeforePrefKey = @"hasStartedBefore";
+NSString *const kShowMenuPrefKey = @"shiftItshowMenu";
+
+// notifications
+NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";
 
 // icon
 NSString *const kSIIconName = @"ShiftIt-menuIcon";
@@ -61,6 +65,7 @@ NSDictionary *allShiftActions = nil;
 - (void)invokeShiftItActionByIdentifier_:(NSString *)identifier;
 - (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers;
 
+- (void)handleShowPreferencesRequest_:(NSNotification *) notification; 
 - (void) shiftItActionHotKeyChanged_:(NSNotification *) notification;
 
 - (IBAction)shiftItMenuAction_:(id)sender;
@@ -118,22 +123,25 @@ NSDictionary *allShiftActions = nil;
 }
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	FMTDevLog(@"Starting up ShiftIt...");
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults synchronize];
 
 	// check we are the only one
 	if (FMTNumberOfRunningProcessesWithBundleId(kShiftItAppBundleId) > 1) {
-		[[NSAlert alertWithMessageText:@"ShiftIt is already running" 
-						 defaultButton:@"Quit"
-					   alternateButton:nil
-						   otherButton:nil 
-			 informativeTextWithFormat:@"There is point to have more than instance at the same time so this one will now quit."] runModal];
+        int ret = NSRunAlertPanel (@"ShiftIt is already running", 
+								   @"There is point to have more than instance at the same time so this one will now quit.", 
+								   @"Quit", 
+								   @"Show preferences",
+								   nil);
+		if (ret == NSAlertAlternateReturn) {
+                [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kShowPreferencesRequestNotification object:nil];
+        }
 		
-		// suicide
-		[NSApp terminate:nil];			
+		[NSApp terminate:self];
 	}
 	
 	// check preferences
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults synchronize];
 	BOOL hasStartedBefore = [defaults boolForKey:kHasStartedBeforePrefKey];
 	
 	if (!hasStartedBefore) {
@@ -169,7 +177,7 @@ NSDictionary *allShiftActions = nil;
 	[self updateMenuBarIcon_];
 	
 	NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
-	[userDefaultsController addObserver:self forKeyPath:@"values.shiftItshowMenu" options:0 context:self];
+	[userDefaultsController addObserver:self forKeyPath:FMTStr(@"values.%@",kShowMenuPrefKey) options:0 context:self];
 	
 	for (ShiftItAction *action in [allShiftActions allValues]) {
 		NSString *identifier = [action identifier];
@@ -185,6 +193,9 @@ NSDictionary *allShiftActions = nil;
 
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(shiftItActionHotKeyChanged_:) name:kHotKeyChangedNotification object:nil];
+	
+	notificationCenter = [NSDistributedNotificationCenter defaultCenter];
+	[notificationCenter addObserver:self selector:@selector(handleShowPreferencesRequest_:) name:kShowPreferencesRequestNotification object:nil];
 }
 
 - (void) applicationWillTerminate:(NSNotification *)aNotification {
@@ -197,13 +208,13 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-	if([keyPath compare:@"values.shiftItshowMenu"] == NSOrderedSame) {
+	if([keyPath compare:FMTStr(@"values.%@",kShowMenuPrefKey)] == NSOrderedSame) {
 		[self updateMenuBarIcon_];
 	} 
 }
 
 - (void) updateMenuBarIcon_ {
-	BOOL showIconInMenuBar = [[NSUserDefaults standardUserDefaults] boolForKey:@"shiftItshowMenu"];
+	BOOL showIconInMenuBar = [[NSUserDefaults standardUserDefaults] boolForKey:kShowMenuPrefKey];
 	NSStatusBar * statusBar = [NSStatusBar systemStatusBar];
 	
 	if(showIconInMenuBar) {
@@ -275,6 +286,10 @@ NSDictionary *allShiftActions = nil;
 	[dict setObject:center forKey:[center identifier]];
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
+}
+
+- (void)handleShowPreferencesRequest_:(NSNotification *) notification {
+	[self showPreferences:self];
 }
 
 - (void) shiftItActionHotKeyChanged_:(NSNotification *) notification {
