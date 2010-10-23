@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
-		270028D0126475920062B6D6 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 270028CF126475920062B6D6 /* FMTLoginItems.m */; };
 		27002A4412649E880062B6D6 /* X11Utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 27002A4312649E880062B6D6 /* X11Utils.c */; };
 		27002B331266F5CA0062B6D6 /* AXUIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27002B321266F5CA0062B6D6 /* AXUIUtils.m */; };
 		27002DE81269CA1B0062B6D6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -23,10 +22,6 @@
 		27002DF11269CA1B0062B6D6 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PreferencesWindowController.m */; };
 		27002DF21269CA1B0062B6D6 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
 		27002DF31269CA1B0062B6D6 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
-		27002DF41269CA1B0062B6D6 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C1961261353000192883 /* FMTHotKey.m */; };
-		27002DF51269CA1B0062B6D6 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */; };
-		27002DF61269CA1B0062B6D6 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C19A1261353000192883 /* FMTHotKeyManager.m */; };
-		27002DF71269CA1B0062B6D6 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 270028CF126475920062B6D6 /* FMTLoginItems.m */; };
 		27002DF91269CA1B0062B6D6 /* AXUIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27002B321266F5CA0062B6D6 /* AXUIUtils.m */; };
 		27002DFB1269CA1B0062B6D6 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		27002DFC1269CA1B0062B6D6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
@@ -34,17 +29,22 @@
 		27002E011269CA1B0062B6D6 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		2708BF011260E10900192883 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
 		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
-		2708C19B1261353000192883 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C1961261353000192883 /* FMTHotKey.m */; };
-		2708C19C1261353000192883 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */; };
-		2708C19D1261353000192883 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708C19A1261353000192883 /* FMTHotKeyManager.m */; };
 		27A14D801269CCA200E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14D831269CCAB00E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
-		27A14E8D1269E5BB00E68263 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A14E8C1269E5BB00E68263 /* FMTUtils.m */; };
-		27A14E8E1269E5BB00E68263 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A14E8C1269E5BB00E68263 /* FMTUtils.m */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
 		27A14EC11269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
+		27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
+		27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */; };
+		27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */; };
+		27F4FD4E12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
+		27F4FD4F12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */; };
+		27F4FD5012730F2F00A65750 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */; };
+		27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5312730F4600A65750 /* FMTLoginItems.m */; };
+		27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5512730F4600A65750 /* FMTUtils.m */; };
+		27F4FD5812730F4600A65750 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5312730F4600A65750 /* FMTLoginItems.m */; };
+		27F4FD5912730F4600A65750 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5512730F4600A65750 /* FMTUtils.m */; };
 		83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */; };
 		83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -90,8 +90,6 @@
 		256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* ShiftIt_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt_Prefix.pch; sourceTree = "<group>"; };
-		270028CE126475920062B6D6 /* FMTLoginItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTLoginItems.h; sourceTree = "<group>"; };
-		270028CF126475920062B6D6 /* FMTLoginItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTLoginItems.m; sourceTree = "<group>"; };
 		27002A4212649E880062B6D6 /* X11Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X11Utils.h; sourceTree = "<group>"; };
 		27002A4312649E880062B6D6 /* X11Utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = X11Utils.c; sourceTree = "<group>"; };
 		27002B311266F5CA0062B6D6 /* AXUIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXUIUtils.h; sourceTree = "<group>"; };
@@ -99,20 +97,22 @@
 		27002E051269CA1B0062B6D6 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2708BEFF1260E10900192883 /* ShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAction.h; sourceTree = "<group>"; };
 		2708BF001260E10900192883 /* ShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAction.m; sourceTree = "<group>"; };
-		2708BF0D1260E44100192883 /* FMTDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTDefines.h; sourceTree = "<group>"; };
 		2708BF101260E5BB00192883 /* DefaultShiftItActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShiftItActions.h; sourceTree = "<group>"; };
 		2708BF111260E5BB00192883 /* DefaultShiftItActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultShiftItActions.m; sourceTree = "<group>"; };
-		2708C1951261353000192883 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTHotKey.h; sourceTree = "<group>"; };
-		2708C1961261353000192883 /* FMTHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTHotKey.m; sourceTree = "<group>"; };
-		2708C1971261353000192883 /* FMTHotKey+SRKeyCombo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMTHotKey+SRKeyCombo.h"; sourceTree = "<group>"; };
-		2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMTHotKey+SRKeyCombo.m"; sourceTree = "<group>"; };
-		2708C1991261353000192883 /* FMTHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTHotKeyManager.h; sourceTree = "<group>"; };
-		2708C19A1261353000192883 /* FMTHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTHotKeyManager.m; sourceTree = "<group>"; };
 		2708C2551261C8E800192883 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
-		27A14E8B1269E5BB00E68263 /* FMTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTUtils.h; sourceTree = "<group>"; };
-		27A14E8C1269E5BB00E68263 /* FMTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTUtils.m; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
+		27F4FD4512730F2F00A65750 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTHotKey.h; path = FMT/FMTHotKey.h; sourceTree = "<group>"; };
+		27F4FD4612730F2F00A65750 /* FMTHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTHotKey.m; path = FMT/FMTHotKey.m; sourceTree = "<group>"; };
+		27F4FD4712730F2F00A65750 /* FMTHotKey+SRKeyCombo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTHotKey+SRKeyCombo.h"; path = "FMT/FMTHotKey+SRKeyCombo.h"; sourceTree = "<group>"; };
+		27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTHotKey+SRKeyCombo.m"; path = "FMT/FMTHotKey+SRKeyCombo.m"; sourceTree = "<group>"; };
+		27F4FD4912730F2F00A65750 /* FMTHotKeyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTHotKeyManager.h; path = FMT/FMTHotKeyManager.h; sourceTree = "<group>"; };
+		27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTHotKeyManager.m; path = FMT/FMTHotKeyManager.m; sourceTree = "<group>"; };
+		27F4FD5112730F4600A65750 /* FMTDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTDefines.h; path = FMT/FMTDefines.h; sourceTree = "<group>"; };
+		27F4FD5212730F4600A65750 /* FMTLoginItems.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTLoginItems.h; path = FMT/FMTLoginItems.h; sourceTree = "<group>"; };
+		27F4FD5312730F4600A65750 /* FMTLoginItems.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTLoginItems.m; path = FMT/FMTLoginItems.m; sourceTree = "<group>"; };
+		27F4FD5412730F4600A65750 /* FMTUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTUtils.h; path = FMT/FMTUtils.h; sourceTree = "<group>"; };
+		27F4FD5512730F4600A65750 /* FMTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTUtils.m; path = FMT/FMTUtils.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-menuIcon.png"; sourceTree = "<group>"; };
@@ -215,12 +215,12 @@
 		2708C1CD1261389000192883 /* HotKey */ = {
 			isa = PBXGroup;
 			children = (
-				2708C1971261353000192883 /* FMTHotKey+SRKeyCombo.h */,
-				2708C1981261353000192883 /* FMTHotKey+SRKeyCombo.m */,
-				2708C1991261353000192883 /* FMTHotKeyManager.h */,
-				2708C19A1261353000192883 /* FMTHotKeyManager.m */,
-				2708C1951261353000192883 /* FMTHotKey.h */,
-				2708C1961261353000192883 /* FMTHotKey.m */,
+				27F4FD4512730F2F00A65750 /* FMTHotKey.h */,
+				27F4FD4612730F2F00A65750 /* FMTHotKey.m */,
+				27F4FD4712730F2F00A65750 /* FMTHotKey+SRKeyCombo.h */,
+				27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */,
+				27F4FD4912730F2F00A65750 /* FMTHotKeyManager.h */,
+				27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */,
 			);
 			name = HotKey;
 			sourceTree = "<group>";
@@ -229,11 +229,11 @@
 			isa = PBXGroup;
 			children = (
 				2708C1CD1261389000192883 /* HotKey */,
-				270028CE126475920062B6D6 /* FMTLoginItems.h */,
-				270028CF126475920062B6D6 /* FMTLoginItems.m */,
-				2708BF0D1260E44100192883 /* FMTDefines.h */,
-				27A14E8B1269E5BB00E68263 /* FMTUtils.h */,
-				27A14E8C1269E5BB00E68263 /* FMTUtils.m */,
+				27F4FD5112730F4600A65750 /* FMTDefines.h */,
+				27F4FD5212730F4600A65750 /* FMTLoginItems.h */,
+				27F4FD5312730F4600A65750 /* FMTLoginItems.m */,
+				27F4FD5412730F4600A65750 /* FMTUtils.h */,
+				27F4FD5512730F4600A65750 /* FMTUtils.m */,
 			);
 			name = FMT;
 			sourceTree = "<group>";
@@ -390,12 +390,12 @@
 				27002DF11269CA1B0062B6D6 /* PreferencesWindowController.m in Sources */,
 				27002DF21269CA1B0062B6D6 /* ShiftItAction.m in Sources */,
 				27002DF31269CA1B0062B6D6 /* DefaultShiftItActions.m in Sources */,
-				27002DF41269CA1B0062B6D6 /* FMTHotKey.m in Sources */,
-				27002DF51269CA1B0062B6D6 /* FMTHotKey+SRKeyCombo.m in Sources */,
-				27002DF61269CA1B0062B6D6 /* FMTHotKeyManager.m in Sources */,
-				27002DF71269CA1B0062B6D6 /* FMTLoginItems.m in Sources */,
 				27002DF91269CA1B0062B6D6 /* AXUIUtils.m in Sources */,
-				27A14E8E1269E5BB00E68263 /* FMTUtils.m in Sources */,
+				27F4FD4E12730F2F00A65750 /* FMTHotKey.m in Sources */,
+				27F4FD4F12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */,
+				27F4FD5012730F2F00A65750 /* FMTHotKeyManager.m in Sources */,
+				27F4FD5812730F4600A65750 /* FMTLoginItems.m in Sources */,
+				27F4FD5912730F4600A65750 /* FMTUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,13 +409,13 @@
 				F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */,
 				2708BF011260E10900192883 /* ShiftItAction.m in Sources */,
 				2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */,
-				2708C19B1261353000192883 /* FMTHotKey.m in Sources */,
-				2708C19C1261353000192883 /* FMTHotKey+SRKeyCombo.m in Sources */,
-				2708C19D1261353000192883 /* FMTHotKeyManager.m in Sources */,
-				270028D0126475920062B6D6 /* FMTLoginItems.m in Sources */,
 				27002A4412649E880062B6D6 /* X11Utils.c in Sources */,
 				27002B331266F5CA0062B6D6 /* AXUIUtils.m in Sources */,
-				27A14E8D1269E5BB00E68263 /* FMTUtils.m in Sources */,
+				27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */,
+				27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */,
+				27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */,
+				27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */,
+				27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
