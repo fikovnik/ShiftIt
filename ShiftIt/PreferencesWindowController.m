@@ -27,12 +27,23 @@
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
 
+NSString *const kEnableActionsRequestNotification = @"kEnableActionsRequestNotification";
+NSString *const kDisableActionsRequestNotification = @"kDisableActionsRequestNotification";
 NSString *const kHotKeyChangedNotification = @"kHotKeyChangedNotification";
 NSString *const kActionIdentifierKey = @"kActionIdentifierKey";
 NSString *const kHotKeyKeyCodeKey = @"kHotKeyKeyCodeKey";
 NSString *const kHotKeyModifiersKey = @"kHotKeyModifiersKey";
 
 NSInteger const kSISRUITagPrefix = 1000;
+
+NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
+
+@interface PreferencesWindowController(Private)
+
+- (void)windowMainStatusChanged_:(NSNotification *)notification;
+
+@end
+
 
 @implementation PreferencesWindowController
 
@@ -56,6 +67,10 @@ NSInteger const kSISRUITagPrefix = 1000;
 	NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
 	[versionLabel_ setStringValue:versionString];
 
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidResignMainNotification object:[self window]];
+	[notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidBecomeMainNotification object:[self window]];
+	
 	[self updateRecorderCombos];
 }
 
@@ -110,7 +125,6 @@ NSInteger const kSISRUITagPrefix = 1000;
 #pragma mark Shortcut Recorder methods
 
 // TODO: make sure user does not regsiter the same shortcuts
-// TODO: disable hotkeys while setting shortcuts
 
 - (void)shortcutRecorder:(SRRecorderControl *)recorder keyComboDidChange:(KeyCombo)newKeyCombo{
 	NSInteger tag = [recorder tag] - kSISRUITagPrefix;
@@ -155,6 +169,28 @@ NSInteger const kSISRUITagPrefix = 1000;
 
 -(void)dealloc{
 	[super dealloc];
+}
+
+#pragma mark TabView delegate methods
+
+- (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem {
+	if ([selectedTabIdentifier_ isEqualTo:kHotKeysTabViewItemIdentifier]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisableActionsRequestNotification object:nil];
+	} else {
+		[[NSNotificationCenter defaultCenter] postNotificationName:kEnableActionsRequestNotification object:nil];
+	}
+}
+
+#pragma mark Notification handling methods
+
+- (void)windowMainStatusChanged_:(NSNotification *)notification {
+	NSString *name = [notification name];
+
+	if ([name isEqualTo:NSWindowDidBecomeMainNotification] && [selectedTabIdentifier_ isEqualTo:kHotKeysTabViewItemIdentifier]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDisableActionsRequestNotification object:nil];
+	} else if ([name isEqualTo:NSWindowDidResignMainNotification]) {
+		[[NSNotificationCenter defaultCenter] postNotificationName:kEnableActionsRequestNotification object:nil];
+	}
 }
 
 @end

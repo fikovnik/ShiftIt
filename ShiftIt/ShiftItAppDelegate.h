@@ -30,6 +30,7 @@
 	WindowSizer *windowSizer_;
 
 	NSMutableDictionary *allHotKeys_;
+	BOOL paused_;
 
 	NSMenu *statusMenu_;
 	NSStatusItem *statusItem_;

@@ -23,6 +23,8 @@
 
 @interface PreferencesWindowController : NSWindowController {
  @private
+	NSString *selectedTabIdentifier_;
+	
 	IBOutlet NSButton * openAtLogin_;
     IBOutlet NSTabView * tabView_;
 	IBOutlet NSTextField * versionLabel_;	

@@ -67,6 +67,7 @@ NSDictionary *allShiftActions = nil;
 
 - (void)handleShowPreferencesRequest_:(NSNotification *) notification; 
 - (void) shiftItActionHotKeyChanged_:(NSNotification *) notification;
+- (void)handleActionsStateChangeRequest_:(NSNotification *) notification;
 
 - (IBAction)shiftItMenuAction_:(id)sender;
 @end
@@ -193,6 +194,8 @@ NSDictionary *allShiftActions = nil;
 
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(shiftItActionHotKeyChanged_:) name:kHotKeyChangedNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kEnableActionsRequestNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kDisableActionsRequestNotification object:nil];
 	
 	notificationCenter = [NSDistributedNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(handleShowPreferencesRequest_:) name:kShowPreferencesRequestNotification object:nil];
@@ -292,6 +295,23 @@ NSDictionary *allShiftActions = nil;
 	[self showPreferences:self];
 }
 
+- (void)handleActionsStateChangeRequest_:(NSNotification *) notification {
+	NSString *name = [notification name];
+	
+	if ([name isEqualTo:kEnableActionsRequestNotification]) {
+		@synchronized(self) {
+			paused_ = NO;
+			FMTDevLog(@"Resuming actions");
+		}
+	} else if ([name isEqualTo:kDisableActionsRequestNotification]) {
+		@synchronized(self) {
+			paused_ = YES;
+			FMTDevLog(@"Pausing actions");
+		}		
+	}
+	
+}
+
 - (void) shiftItActionHotKeyChanged_:(NSNotification *) notification {
 	NSDictionary *userInfo = [notification userInfo];
 
@@ -336,6 +356,13 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void) invokeShiftItActionByIdentifier_:(NSString *)identifier {
+	@synchronized(self) {
+		if (paused_) {
+			FMTDevLog(@"The functionality is temporarly paused");
+			return ;
+		}
+	}
+	
 	ShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
 	
