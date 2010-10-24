@@ -35,8 +35,8 @@ extern NSString *const kShowMenuPrefKey;
 extern NSString *const kShowPreferencesRequestNotification;
 
 // local notifications
-extern NSString *const kEnableActionsRequestNotification;
-extern NSString *const kDisableActionsRequestNotification;
+extern NSString *const kDidFinishEditingHotKeysPrefNotification;
+extern NSString *const kDidStartEditingHotKeysPrefNotification;
 extern NSString *const kHotKeyChangedNotification;
 
 // kHotKeyChangedNotification userInfo keys

@@ -27,8 +27,8 @@
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
 
-NSString *const kEnableActionsRequestNotification = @"kEnableActionsRequestNotification";
-NSString *const kDisableActionsRequestNotification = @"kDisableActionsRequestNotification";
+NSString *const kDidFinishEditingHotKeysPrefNotification = @"kEnableActionsRequestNotification";
+NSString *const kDidStartEditingHotKeysPrefNotification = @"kDisableActionsRequestNotification";
 NSString *const kHotKeyChangedNotification = @"kHotKeyChangedNotification";
 NSString *const kActionIdentifierKey = @"kActionIdentifierKey";
 NSString *const kHotKeyKeyCodeKey = @"kHotKeyKeyCodeKey";
@@ -173,9 +173,9 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem {
 	if ([selectedTabIdentifier_ isEqualTo:kHotKeysTabViewItemIdentifier]) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDisableActionsRequestNotification object:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDidStartEditingHotKeysPrefNotification object:nil];
 	} else {
-		[[NSNotificationCenter defaultCenter] postNotificationName:kEnableActionsRequestNotification object:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDidFinishEditingHotKeysPrefNotification object:nil];
 	}
 }
 
@@ -185,9 +185,9 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	NSString *name = [notification name];
 
 	if ([name isEqualTo:NSWindowDidBecomeMainNotification] && [selectedTabIdentifier_ isEqualTo:kHotKeysTabViewItemIdentifier]) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:kDisableActionsRequestNotification object:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDidStartEditingHotKeysPrefNotification object:nil];
 	} else if ([name isEqualTo:NSWindowDidResignMainNotification]) {
-		[[NSNotificationCenter defaultCenter] postNotificationName:kEnableActionsRequestNotification object:nil];
+		[[NSNotificationCenter defaultCenter] postNotificationName:kDidFinishEditingHotKeysPrefNotification object:nil];
 	}
 }
 

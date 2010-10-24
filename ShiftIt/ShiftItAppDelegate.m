@@ -194,8 +194,8 @@ NSDictionary *allShiftActions = nil;
 
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(shiftItActionHotKeyChanged_:) name:kHotKeyChangedNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kEnableActionsRequestNotification object:nil];
-	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kDisableActionsRequestNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kDidFinishEditingHotKeysPrefNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kDidStartEditingHotKeysPrefNotification object:nil];
 	
 	notificationCenter = [NSDistributedNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(handleShowPreferencesRequest_:) name:kShowPreferencesRequestNotification object:nil];
@@ -298,12 +298,12 @@ NSDictionary *allShiftActions = nil;
 - (void)handleActionsStateChangeRequest_:(NSNotification *) notification {
 	NSString *name = [notification name];
 	
-	if ([name isEqualTo:kEnableActionsRequestNotification]) {
+	if ([name isEqualTo:kDidFinishEditingHotKeysPrefNotification]) {
 		@synchronized(self) {
 			paused_ = NO;
 			FMTDevLog(@"Resuming actions");
 		}
-	} else if ([name isEqualTo:kDisableActionsRequestNotification]) {
+	} else if ([name isEqualTo:kDidStartEditingHotKeysPrefNotification]) {
 		@synchronized(self) {
 			paused_ = YES;
 			FMTDevLog(@"Pausing actions");
