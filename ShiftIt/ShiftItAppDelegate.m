@@ -18,179 +18,386 @@
  */
 
 #import "ShiftItAppDelegate.h"
+#import "ShiftIt.h"
+#import "ShiftItAction.h"
+#import "DefaultShiftItActions.h"
+#import "PreferencesWindowController.h"
+#import "WindowSizer.h"
+#import "FMTLoginItems.h"
+#import "FMTHotKey.h"
+#import "FMTHotKeyManager.h"
+#import "FMTUtils.h"
+#import "FMTDefines.h"
 
-NSString *const kSIIconName = @"shift-it-menu-icon";
-NSString *const kSIIconType = @"png";
+NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
+
+// the name of the plist file containing the preference defaults
+NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
+
+// preferencs
+NSString *const kHasStartedBeforePrefKey = @"hasStartedBefore";
+NSString *const kShowMenuPrefKey = @"shiftItshowMenu";
+
+// notifications
+NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";
+
+// icon
+NSString *const kSIIconName = @"ShiftIt-menuIcon";
 NSString *const kSIMenuItemTitle = @"Shift";
-int const kSIMenuItemSize = 30;
+
+// the size that should be reserved for the menu item in the system menu in px
+NSInteger const kSIMenuItemSize = 30;
+
+NSInteger const kSIMenuUITagPrefix = 2000;
+
+// error related
+NSString *const SIErrorDomain = @"org.shiftitapp.shiftit.ErrorDomain";
+NSInteger const kUnableToGetActiveWindowErrorCode = 20100;
+NSInteger const kUnableToChangeWindowSizeOrPositionErrorCode = 20101;
+
+NSDictionary *allShiftActions = nil;
+
+@interface ShiftItAppDelegate (Private)
+
+- (void)initializeActions_;
+- (void)updateMenuBarIcon_;
+- (void)firstLaunch_;
+- (void)invokeShiftItActionByIdentifier_:(NSString *)identifier;
+- (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers;
+
+- (void)handleShowPreferencesRequest_:(NSNotification *) notification; 
+- (void) shiftItActionHotKeyChanged_:(NSNotification *) notification;
+- (void)handleActionsStateChangeRequest_:(NSNotification *) notification;
+
+- (IBAction)shiftItMenuAction_:(id)sender;
+@end
+
 
 @implementation ShiftItAppDelegate
-@synthesize statusMenu;
 
+- (id)init{
+	if(![super init]){
+		return nil;
+	}
+	
+	NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
+	statusMenuItemIcon_ = [[NSImage alloc] initWithContentsOfFile:iconPath];
+	allHotKeys_ = [[NSMutableDictionary alloc] init];
+	
+	return self;
+}
+
+- (void) dealloc {
+	[statusMenuItemIcon_ release];
+	[allShiftActions release];
+	
+	[super dealloc];
+}
+
+- (void) firstLaunch_  {
+	FMTDevLog(@"First run");
+
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		
+	// ask to start it automatically - make sure it is not there
+	
+	// TODO: refactor this so it shares the code from the pref controller
+	FMTLoginItems *loginItems = [FMTLoginItems sharedSessionLoginItems];
+	NSString *appPath = [[NSBundle mainBundle] bundlePath];
+	
+	if (![loginItems isInLoginItemsApplicationWithPath:appPath]) {
+		int ret = NSRunAlertPanel (@"Start ShiftIt automatically?", @"Would you like to have ShiftIt automatically started at a login time?", @"Yes", @"No",NULL);
+		switch (ret){
+			case NSAlertDefaultReturn:
+				// do it!
+				[loginItems toggleApplicationInLoginItemsWithPath:appPath enabled:YES];
+				break;
+			default:
+				break;
+		}		
+	}
+	
+	// make sure this was the only time
+	[defaults setBool:YES forKey:@"hasStartedBefore"];
+	[defaults synchronize];
+	
+}
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+	FMTDevLog(@"Starting up ShiftIt...");
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults synchronize];
+
+	// check we are the only one
+	if (FMTNumberOfRunningProcessesWithBundleId(kShiftItAppBundleId) > 1) {
+        int ret = NSRunAlertPanel (@"ShiftIt is already running", 
+								   @"There is point to have more than instance at the same time so this one will now quit.", 
+								   @"Quit", 
+								   @"Show preferences",
+								   nil);
+		if (ret == NSAlertAlternateReturn) {
+                [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kShowPreferencesRequestNotification object:nil];
+        }
+		
+		[NSApp terminate:self];
+	}
+	
+	// check preferences
+	BOOL hasStartedBefore = [defaults boolForKey:kHasStartedBeforePrefKey];
+	
+	if (!hasStartedBefore) {
+		[self firstLaunch_];
+	}
+
+	// register defaults - we assume that the installation is correct
+	NSString *path = FMTGetMainBundleResourcePath(kShiftItUserDefaults, @"plist");
+	NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:path];
+	[defaults registerDefaults:d];
+	
 	if (!AXAPIEnabled()){
         int ret = NSRunAlertPanel (@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel",NULL);
         switch (ret){
             case NSAlertDefaultReturn:
                 [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
 				[NSApp terminate:self];
+				
 				return;
-                break;
             case NSAlertAlternateReturn:
                 [NSApp terminate:self];
-                return;
-                break;
+                
+				return;
             default:
                 break;
         }
-    }   
-	[self updateStatusMenuShortcuts];
-}
-
--(id)init{
-	if(self == [super init]){
-		_pref = [[Preferences alloc] init];
-		[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.shiftItshowMenu" options:0 context:self];
-		[[NSUserDefaultsController sharedUserDefaultsController] addObserver:self forKeyPath:@"values.shiftItstartLogin" options:0 context:self];
+    }
+	
+	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
+	windowSizer_ = [WindowSizer sharedWindowSize];
+	
+	[self initializeActions_];
+	[self updateMenuBarIcon_];
+	
+	NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
+	[userDefaultsController addObserver:self forKeyPath:FMTStr(@"values.%@",kShowMenuPrefKey) options:0 context:self];
+	
+	for (ShiftItAction *action in [allShiftActions allValues]) {
+		NSString *identifier = [action identifier];
+		
+		NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:3];
+		[userInfo setObject:[action identifier]  forKey:kActionIdentifierKey];
+		[userInfo setObject:[NSNumber numberWithInt:[defaults integerForKey:KeyCodePrefKey(identifier)]] forKey:kHotKeyKeyCodeKey];
+		[userInfo setObject:[NSNumber numberWithInt:[defaults integerForKey:ModifiersPrefKey(identifier)]] forKey:kHotKeyModifiersKey];
+		
+		NSNotification *notification = [NSNotification notificationWithName:kHotKeyChangedNotification object:self userInfo:userInfo];
+		[self shiftItActionHotKeyChanged_:notification];
 	}
+
+	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+	[notificationCenter addObserver:self selector:@selector(shiftItActionHotKeyChanged_:) name:kHotKeyChangedNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kDidFinishEditingHotKeysPrefNotification object:nil];
+	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kDidStartEditingHotKeysPrefNotification object:nil];
 	
-	NSString *iconPath = [[NSBundle mainBundle] pathForResource:kSIIconName ofType:kSIIconType];
-	statusMenuItemIcon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-	if (!statusMenuItemIcon) {
-		NSLog(@"No icon");
-		// TODO: assert fail
+	notificationCenter = [NSDistributedNotificationCenter defaultCenter];
+	[notificationCenter addObserver:self selector:@selector(handleShowPreferencesRequest_:) name:kShowPreferencesRequestNotification object:nil];
+}
+
+- (void) applicationWillTerminate:(NSNotification *)aNotification {
+	FMTDevLog(@"Shutting down ShiftIt...");
+	
+	// unregister hotkeys
+	for (FMTHotKey *hotKey in [allHotKeys_ allValues]) {
+		[hotKeyManager_ unregisterHotKey:hotKey];
 	}
-	
-	return self;
-}
-
-- (void) dealloc {
-	[statusMenuItemIcon release];
-	
-	[super dealloc];
-}
-
-- (void) awakeFromNib{
-	[self updateMenuBarIcon];
-	[self registerForLogin];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-	if([keyPath compare:@"values.shiftItshowMenu"] == NSOrderedSame){
-		[self updateMenuBarIcon];
-	}else if ([keyPath compare:@"values.shiftItstartLogin"]== NSOrderedSame) {
-		[self registerForLogin];
+	if([keyPath compare:FMTStr(@"values.%@",kShowMenuPrefKey)] == NSOrderedSame) {
+		[self updateMenuBarIcon_];
 	} 
-
 }
 
-- (void) updateMenuBarIcon{
-	BOOL showIconInMenuBar = [[NSUserDefaults standardUserDefaults] boolForKey:@"shiftItshowMenu"];
+- (void) updateMenuBarIcon_ {
+	BOOL showIconInMenuBar = [[NSUserDefaults standardUserDefaults] boolForKey:kShowMenuPrefKey];
 	NSStatusBar * statusBar = [NSStatusBar systemStatusBar];
-	if(showIconInMenuBar){
-		if(!statusItem){
-			statusItem = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
-			[statusItem setMenu:statusMenu];
-			if (statusMenuItemIcon) {
-				[statusItem setImage:statusMenuItemIcon];
+	
+	if(showIconInMenuBar) {
+		if(!statusItem_) {
+			statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
+			[statusItem_ setMenu:statusMenu_];
+			if (statusMenuItemIcon_) {
+				[statusItem_ setImage:statusMenuItemIcon_];
 			} else {
-				[statusItem setTitle:kSIMenuItemTitle];
+				[statusItem_ setTitle:kSIMenuItemTitle];
 			}
-			[statusItem setHighlightMode:YES];
+			[statusItem_ setHighlightMode:YES];
 		}
 	} else {
-		[statusBar removeStatusItem:statusItem];
-		[statusItem autorelease];
-		statusItem = nil;
+		[statusBar removeStatusItem:statusItem_];
+		[statusItem_ autorelease];
+		statusItem_ = nil;
 	}
 }
 
--(void)registerForLogin{
-	BOOL login = [[NSUserDefaults standardUserDefaults] boolForKey:@"shiftItstartLogin"];
-    if(login){
-        NSString * appPath = [[NSBundle mainBundle] bundlePath];
-        
-        // This will retrieve the path for the application
-        // For example, /Applications/test.app
-        CFURLRef url = (CFURLRef)[NSURL fileURLWithPath:appPath]; 
-        
-        // Create a reference to the shared file list.
-        // We are adding it to the current user only.
-        // If we want to add it all users, use
-        // kLSSharedFileListGlobalLoginItems instead of
-        //kLSSharedFileListSessionLoginItems
-        LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL,kLSSharedFileListSessionLoginItems, NULL);
-        if (loginItems) {
-            //Insert an item to the list.
-            LSSharedFileListItemRef item = LSSharedFileListInsertItemURL(loginItems,kLSSharedFileListItemLast, NULL, NULL,url, NULL, NULL);
-            if (item){
-                CFRelease(item);
-            }
-        }	
-        CFRelease(loginItems);
-    }else {
-        NSString * appPath = [[NSBundle mainBundle] bundlePath];
-        
-        // This will retrieve the path for the application
-        // For example, /Applications/test.app
-        CFURLRef url = (CFURLRef)[NSURL fileURLWithPath:appPath]; 
-        
-        // Create a reference to the shared file list.
-        LSSharedFileListRef loginItems = LSSharedFileListCreate(NULL,
-                                                                kLSSharedFileListSessionLoginItems, NULL);
-        
-        if (loginItems) {
-            UInt32 seedValue;
-            //Retrieve the list of Login Items and cast them to
-            // a NSArray so that it will be easier to iterate.
-            NSArray  *loginItemsArray = (NSArray *)LSSharedFileListCopySnapshot(loginItems, &seedValue);
-            int i = 0;
-            for(i ; i< [loginItemsArray count]; i++){
-                LSSharedFileListItemRef itemRef = (LSSharedFileListItemRef)[loginItemsArray
-                                                                            objectAtIndex:i];
-                //Resolve the item with URL
-                if (LSSharedFileListItemResolve(itemRef, 0, (CFURLRef*) &url, NULL) == noErr) {
-                    NSString * urlPath = [(NSURL*)url path];
-                    if ([urlPath compare:appPath] == NSOrderedSame){
-                        LSSharedFileListItemRemove(loginItems,itemRef);
-                    }
-                }
-            }
-            [loginItemsArray release];
-        }
+- (IBAction)showPreferences:(id)sender {
+    if (!preferencesController_) {
+        preferencesController_ = [[PreferencesWindowController alloc]init];
     }
-    
-}
 
--(IBAction)showPreferences:(id)sender{
-    if (!prefController) {
-        prefController = [[PrefWindowController alloc]init];
-		prefController.statusMenu = self.statusMenu;
-    }
-    [prefController showPreferences:sender];
+    [preferencesController_ showPreferences:sender];
     [NSApp activateIgnoringOtherApps:YES];
 }
 
-//new version after adding shortcut recorder
--(void)updateStatusMenuShortcuts{
-	NSUserDefaults *storage = [NSUserDefaults standardUserDefaults];
-	NSString* keycodesPath = [[NSBundle mainBundle] pathForResource:@"KeycodeDictKeys" ofType:@"plist"];
-	NSArray *keycodeKeys = [NSArray arrayWithContentsOfFile:keycodesPath];
-	NSString* modifiersPath = [[NSBundle mainBundle] pathForResource:@"ModifierDictStrings" ofType:@"plist"];
-	NSArray *modifierKeys = [NSArray arrayWithContentsOfFile:modifiersPath];
+- (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
+	FMTAssertNotNil(action);
+
+	NSMenuItem *menuItem = [statusMenu_ itemWithTag:kSIMenuUITagPrefix+[action uiTag]];
+	FMTAssertNotNil(menuItem);
 	
-	NSString *keycodeString;
-	for(int i=0; i < [modifierKeys count]; i++){
-		int menuIndex = i;
-		if(menuIndex > 3)
-			menuIndex++;
-		if(menuIndex > 8)
-			menuIndex++;
+	[menuItem setTitle:[action label]];
+	[menuItem setRepresentedObject:[action identifier]];
+	[menuItem setAction:@selector(shiftItMenuAction_:)];
+	
+	NSString *keyCodeString = (keyCode == -1) ? @"" : SRStringForKeyCode(keyCode);
+	[menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
+	[menuItem setKeyEquivalentModifierMask:modifiers];
+}
+
+- (void) initializeActions_ {
+	FMTAssert(allShiftActions == nil, @"Actions have been already initialized");
+	
+	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+	
+	ShiftItAction *left = [[ShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 action:&ShiftIt_Left];
+	[dict setObject:left forKey:[left identifier]];
+	ShiftItAction *right = [[ShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 action:&ShiftIt_Right];
+	[dict setObject:right forKey:[right identifier]];
+	ShiftItAction *top = [[ShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 action:&ShiftIt_Top];
+	[dict setObject:top forKey:[top identifier]];
+	ShiftItAction *bottom = [[ShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 action:&ShiftIt_Bottom];
+	[dict setObject:bottom forKey:[bottom identifier]];
+	ShiftItAction *tl = [[ShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 action:&ShiftIt_TopLeft];
+	[dict setObject:tl forKey:[tl identifier]];
+	ShiftItAction *tr = [[ShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 action:&ShiftIt_TopRight];
+	[dict setObject:tr forKey:[tr identifier]];
+	ShiftItAction *bl = [[ShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 action:&ShiftIt_BottomLeft];
+	[dict setObject:bl forKey:[bl identifier]];
+	ShiftItAction *br = [[ShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 action:&ShiftIt_BottomRight];
+	[dict setObject:br forKey:[br identifier]];
+	ShiftItAction *fullscreen = [[ShiftItAction alloc] initWithIdentifier:@"fullscreen" label:@"Full Screen" uiTag:9 action:&ShiftIt_FullScreen];
+	[dict setObject:fullscreen forKey:[fullscreen identifier]];
+	ShiftItAction *center = [[ShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:10 action:&ShiftIt_Center];
+	[dict setObject:center forKey:[center identifier]];
+	
+	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
+}
+
+- (void)handleShowPreferencesRequest_:(NSNotification *) notification {
+	[self showPreferences:self];
+}
+
+- (void)handleActionsStateChangeRequest_:(NSNotification *) notification {
+	NSString *name = [notification name];
+	
+	if ([name isEqualTo:kDidFinishEditingHotKeysPrefNotification]) {
+		@synchronized(self) {
+			paused_ = NO;
+			FMTDevLog(@"Resuming actions");
+		}
+	} else if ([name isEqualTo:kDidStartEditingHotKeysPrefNotification]) {
+		@synchronized(self) {
+			paused_ = YES;
+			FMTDevLog(@"Pausing actions");
+		}		
+	}
+	
+}
+
+- (void) shiftItActionHotKeyChanged_:(NSNotification *) notification {
+	NSDictionary *userInfo = [notification userInfo];
+
+	NSString *identifier = [userInfo objectForKey:kActionIdentifierKey];
+	NSInteger keyCode = [[userInfo objectForKey:kHotKeyKeyCodeKey] integerValue];
+	NSUInteger modifiers = [[userInfo objectForKey:kHotKeyModifiersKey] longValue];
+	
+	FMTDevLog(@"Updating action %@ hotKey: keyCode=%d modifiers=%ld", identifier, keyCode, modifiers);
+	
+	ShiftItAction *action = [allShiftActions objectForKey:identifier];
+	FMTAssertNotNil(action);
+	
+	FMTHotKey *newHotKey = [[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers];
+	
+	FMTHotKey *hotKey = [allHotKeys_ objectForKey:identifier];
+	if (hotKey) {
+		if ([hotKey isEqualTo:newHotKey]) {
+			FMTDevLog(@"Hot key is the same");
+			return;
+		}
 		
-		keycodeString = SRStringForKeyCode([storage integerForKey:[keycodeKeys objectAtIndex:i]]);
-		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalent:[keycodeString lowercaseString]];
-		[[statusMenu itemAtIndex:menuIndex] setKeyEquivalentModifierMask:[storage integerForKey:[modifierKeys objectAtIndex:i]]];
+		FMTDevLog(@"Unregistering old hot key: %@ for shiftIt action %@", hotKey, identifier);
+		[hotKeyManager_ unregisterHotKey:hotKey];
+	}
+	
+	if (keyCode == -1) { // no key
+		FMTDevLog(@"No hot key");
+	} else {
+		FMTDevLog(@"Registering new hot key: %@ for shiftIt action %@", newHotKey, identifier);
+		[hotKeyManager_ registerHotKey:newHotKey handler:@selector(invokeShiftItActionByIdentifier_:) provider:self userData:identifier];
+		[allHotKeys_ setObject:newHotKey forKey:identifier];
+	}
+	
+	// update menu
+	[self updateStatusMenuShortcutForAction_:action keyCode:keyCode modifiers:modifiers];
+	
+	if ([notification object] != self) {
+		// save to user preferences
+		FMTDevLog(@"Updating user preferences with new hot key: %@ for shiftIt action %@", newHotKey, identifier);
+		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+		[defaults setInteger:keyCode forKey:KeyCodePrefKey(identifier)];
+		[defaults setInteger:modifiers forKey:ModifiersPrefKey(identifier)];
+		[defaults synchronize];
 	}
 }
 
+- (void) invokeShiftItActionByIdentifier_:(NSString *)identifier {
+	@synchronized(self) {
+		if (paused_) {
+			FMTDevLog(@"The functionality is temporarly paused");
+			return ;
+		}
+	}
+	
+	ShiftItAction *action = [allShiftActions objectForKey:identifier];
+	FMTAssertNotNil(action);
+	
+	FMTDevLog(@"Invoking action: %@", identifier);
+	NSError *error = nil;
+	[windowSizer_ shiftFocusedWindowUsing:action error:&error];
+	if (error) {
+		NSLog(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
+	}	
+}
+
+- (IBAction)shiftItMenuAction_:(id)sender {
+	FMTAssertNotNil(sender);
+	FMTAssert([sender isKindOfClass:[NSMenuItem class]], @"Invalid type of sender: %@", [sender class]);
+	
+	NSString *identifier = [sender representedObject];
+	FMTAssertNotNil(identifier);
+	
+	FMTDevLog(@"ShitIt action activated from menu: %@", identifier);	
+
+	[self invokeShiftItActionByIdentifier_:identifier];
+}
+
+		 
 @end
+
+inline NSError* SICreateError(NSString *localizedDescription, NSInteger errorCode) {
+	FMTAssertNotNil(localizedDescription);
+	
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
+	[userInfo setObject:localizedDescription forKey:NSLocalizedDescriptionKey];
+	
+	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errorCode userInfo:userInfo];	
+	return error;
+}

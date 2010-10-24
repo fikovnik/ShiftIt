@@ -1,6 +1,6 @@
 /*
  ShiftIt: Resize windows with Hotkeys
- Copyright (C) 2010  Aravind
+ Copyright (C) 2010  Filip Krikava
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -17,19 +17,22 @@
  
  */
 
-#import <Cocoa/Cocoa.h>
-#import "SIHotKey.h"
+#ifndef _X11UTIL_H_
 
-@interface hKController : NSObject {
+#define _X11UTIL_H_
 
-    NSMutableDictionary * _hotKeys;
-}
+/**
+ * This unit defines necessary functions to support sizing of X11 windows
+ * It is based upon the Xlib library [1].
+ * 
+ * [1] http://tronche.com/gui/x/xlib/
+ *
+ */
 
-+(id)getInstance;
--(BOOL)registerHotKey:(SIHotKey*)hotKey;
--(BOOL)unregisterHotKey:(SIHotKey*)hotKey;
--(BOOL)modifyHotKey:(SIHotKey*)hotKey;
+int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height);
+int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
+void X11FreeWindowRef(void *window);
 
-@property (nonatomic, retain) NSMutableDictionary * _hotKeys;
+const char *X11GetErrorMessage(int code);
 
-@end
+#endif // _X11UTIL_H_

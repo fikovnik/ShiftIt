@@ -17,20 +17,23 @@
  
  */
 
-#import <Cocoa/Cocoa.h>
-#import "hKController.h"
-#import "WindowSizer.h"
 
-#define HotKeyModifers @"Modifiers"
-#define HotKeyCodes @"Key Code"
-@interface Preferences : NSObject {
-    hKController * _hKeyController;
-	NSMutableDictionary * _userDefaultsValuesDict;
-    WindowSizer * _winSizer;
-    EventTypeSpec _eventType;
+#import <Cocoa/Cocoa.h>
+#import <ShortcutRecorder/ShortcutRecorder.h>
+
+@interface PreferencesWindowController : NSWindowController {
+ @private
+	NSString *selectedTabIdentifier_;
+	
+	IBOutlet NSButton * openAtLogin_;
+    IBOutlet NSTabView * tabView_;
+	IBOutlet NSTextField * versionLabel_;	
 }
 
--(void)registerHotKeys;
--(void)clearUserDefaults;
+@property BOOL shouldStartAtLogin;
+
+-(void)updateRecorderCombos;
+-(IBAction)showPreferences:(id)sender;
+-(IBAction)revertDefaults:(id)sender;
 
 @end

@@ -1,6 +1,6 @@
 /*
  ShiftIt: Resize windows with Hotkeys
- Copyright (C) 2010  Aravind
+ Copyright (C) 2010  Filip Krikava
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -17,25 +17,15 @@
  
  */
 
-
 #import <Foundation/Foundation.h>
 
-/**
- * This unit provides support for sizing application using Apple accessibiity API
- *
- */
-
-@class ShiftItAction;
-
-@interface WindowSizer : NSObject {
- @private
-    AXUIElementRef axSystemWideElement_;
-	
-	int menuBarHeight_;
-}
-
-+ (WindowSizer *) sharedWindowSize;
-
-- (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
-
-@end
+NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect);

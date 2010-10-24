@@ -1,6 +1,6 @@
 /*
  ShiftIt: Resize windows with Hotkeys
- Copyright (C) 2010  Aravind
+ Copyright (C) 2010  Filip Krikava
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -17,28 +17,8 @@
  
  */
 
-#import <Cocoa/Cocoa.h>
-#import <Carbon/Carbon.h>
+int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height);
+int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
+void AXUIFreeWindowRef(void *window);
 
-@interface SIHotKey : NSObject {
-    NSInteger _keyCode;
-	NSInteger _modifierCombi;
-	NSInteger _hotKeyId;
-	
-	EventHotKeyRef _eventHotKeyRef;
-}
--(id)initWithIdentifier:(NSInteger)identifier keyCode:(NSInteger)keyCode modCombo:(NSInteger)modCombo;
-
--(void)setHotKeyId:(NSInteger)hotKeyId;
--(NSInteger)hotKeyId;
-
--(void)setKeyCode:(NSInteger) keyCode;
--(NSInteger)keyCode;
-
--(void)setModifierCombo:(NSInteger)mCombo;
--(NSInteger)modifierCombo;
-
--(void)setHotKeyRef:(EventHotKeyRef)eventRef;
--(EventHotKeyRef)hotKeyRef;
-
-@end
+const char *AXUIGetErrorMessage(int code);
