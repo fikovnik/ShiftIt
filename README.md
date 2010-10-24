@@ -29,7 +29,7 @@ Changes since initial fork:
   - Almost completely rewritten the original code base
   - Fixed many bugs especially related with positioning on multiple displays
   - Added X11 support
-  - more in RoadMap[10]
+  - more in [RoadMap][10]
 
 ShortcutRecorder
 ----------------
