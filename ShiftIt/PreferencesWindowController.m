@@ -124,8 +124,6 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
 #pragma mark Shortcut Recorder methods
 
-// TODO: make sure user does not regsiter the same shortcuts
-
 - (void)shortcutRecorder:(SRRecorderControl *)recorder keyComboDidChange:(KeyCombo)newKeyCombo{
 	NSInteger tag = [recorder tag] - kSISRUITagPrefix;
 	

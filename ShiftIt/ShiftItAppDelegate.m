@@ -250,16 +250,16 @@ NSDictionary *allShiftActions = nil;
 - (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
 	FMTAssertNotNil(action);
 
-	NSString *keyCodeString = SRStringForKeyCode(keyCode);
-
 	NSMenuItem *menuItem = [statusMenu_ itemWithTag:kSIMenuUITagPrefix+[action uiTag]];
 	FMTAssertNotNil(menuItem);
 	
 	[menuItem setTitle:[action label]];
-	[menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
-	[menuItem setKeyEquivalentModifierMask:modifiers];
 	[menuItem setRepresentedObject:[action identifier]];
 	[menuItem setAction:@selector(shiftItMenuAction_:)];
+	
+	NSString *keyCodeString = (keyCode == -1) ? @"" : SRStringForKeyCode(keyCode);
+	[menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
+	[menuItem setKeyEquivalentModifierMask:modifiers];
 }
 
 - (void) initializeActions_ {
@@ -323,9 +323,9 @@ NSDictionary *allShiftActions = nil;
 	
 	ShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
-
-	// register new hotkey
+	
 	FMTHotKey *newHotKey = [[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers];
+	
 	FMTHotKey *hotKey = [allHotKeys_ objectForKey:identifier];
 	if (hotKey) {
 		if ([hotKey isEqualTo:newHotKey]) {
@@ -337,17 +337,20 @@ NSDictionary *allShiftActions = nil;
 		[hotKeyManager_ unregisterHotKey:hotKey];
 	}
 	
-	FMTDevLog(@"Registering new hot key: %@ for shiftIt action %@", newHotKey, identifier);
-	[hotKeyManager_ registerHotKey:newHotKey handler:@selector(invokeShiftItActionByIdentifier_:) provider:self userData:identifier];
-	[allHotKeys_ setObject:newHotKey forKey:identifier];
+	if (keyCode == -1) { // no key
+		FMTDevLog(@"No hot key");
+	} else {
+		FMTDevLog(@"Registering new hot key: %@ for shiftIt action %@", newHotKey, identifier);
+		[hotKeyManager_ registerHotKey:newHotKey handler:@selector(invokeShiftItActionByIdentifier_:) provider:self userData:identifier];
+		[allHotKeys_ setObject:newHotKey forKey:identifier];
+	}
 	
 	// update menu
-	// TODO: disable if there is none
 	[self updateStatusMenuShortcutForAction_:action keyCode:keyCode modifiers:modifiers];
 	
 	if ([notification object] != self) {
 		// save to user preferences
-		FMTDevLog(@"Updating user freferences with new hot key: %@ for shiftIt action %@", newHotKey, identifier);
+		FMTDevLog(@"Updating user preferences with new hot key: %@ for shiftIt action %@", newHotKey, identifier);
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		[defaults setInteger:keyCode forKey:KeyCodePrefKey(identifier)];
 		[defaults setInteger:modifiers forKey:ModifiersPrefKey(identifier)];
