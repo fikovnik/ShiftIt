@@ -335,6 +335,7 @@ NSDictionary *allShiftActions = nil;
 		
 		FMTDevLog(@"Unregistering old hot key: %@ for shiftIt action %@", hotKey, identifier);
 		[hotKeyManager_ unregisterHotKey:hotKey];
+		[allHotKeys_ removeObjectForKey:identifier];
 	}
 	
 	if (keyCode == -1) { // no key
