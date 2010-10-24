@@ -33,6 +33,6 @@ int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigne
 int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
 void X11FreeWindowRef(void *window);
 
-char *X11GetErrorMessage(int code);
+const char *X11GetErrorMessage(int code);
 
 #endif // _X11UTIL_H_

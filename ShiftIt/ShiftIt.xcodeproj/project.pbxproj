@@ -523,6 +523,10 @@
 				GCC_WARN_SHADOW = NO;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-L/usr/X11/lib",
+					"-lX11",
+				);
 				PRODUCT_NAME = ShiftIt;
 				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wall";
@@ -551,6 +555,10 @@
 				GCC_WARN_SHADOW = NO;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-L/usr/X11/lib",
+					"-lX11",
+				);
 				PRODUCT_NAME = ShiftIt;
 				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wall";

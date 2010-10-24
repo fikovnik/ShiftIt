@@ -131,7 +131,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		// try X11
 		int errorCodeX11 = X11GetActiveWindowGeometry(&window, &x, &y, &width, &height);		
 		if (errorCodeX11 != 0) {
-			NSString *message = FMTStr(@"%@\n%@",FMTStrc(AXUIGetErrorMessage(errorCode)),FMTStrc(X11GetErrorMessage(errorCodeX11)));
+			NSString *message = FMTStr(@"%@, %@",FMTStrc(AXUIGetErrorMessage(errorCode)),FMTStrc(X11GetErrorMessage(errorCodeX11)));
 
 			*error = SICreateError(message, kUnableToGetActiveWindowErrorCode);
 			return;
@@ -210,7 +210,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			}
 		}
 		
-		if (screenBelowPrimary) {
+		if (screenBelowPrimary || [screen isPrimary]) {
 			shiftedRect.origin.y -= GetMBarHeight();
 		}
 		

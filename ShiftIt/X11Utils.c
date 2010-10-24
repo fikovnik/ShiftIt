@@ -17,25 +17,34 @@
  
  */
 
-#include "X11Utils.h"
+#include <assert.h>
+#include <stdio.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
-#include <assert.h>
+#include "X11Utils.h"
 
-static char *kErrorMessages_[] = {
+static const char *const kErrorMessages_[] = {
 	"X11Error: Unable to to connect to X11 display",
 	"X11Error: Unable to get active window (XGetWindowProperty)",
-	"X11Error: No X11 active window found"
+	"X11Error: No X11 active window found",
 	"X11Error: Unable to get window attributes (XGetWindowAttributes)",
 	"X11Error: Unable to translate coordinated (XTranslateCoordinates)",
-	"X11Error: Unable to get geometry (XGetGeometry)"
-	"X11Error: Unable to get move window (XMoveWindow)",
-	"X11Error: Unable to get resize window (XResizeWindow)",
+	"X11Error: Unable to get geometry (XGetGeometry)",
+	"X11Error: Unable to change window geometry (XMoveResizeWindow)",
 	"X11Error: Unable to sync X11 (XSync)"
 };
 
-static int kErrorMessageCount_ = 9;
+static int kErrorMessageCount_ = sizeof(kErrorMessages_)/sizeof(kErrorMessages_[0]);
+
+static int ShiftItX11ErrorHandler(Display *dpy, XErrorEvent *err) {
+	char msg[256];
+	
+	XGetErrorText(dpy, err->error_code, msg, sizeof(msg));
+	printf("ShiftIt: X11Error: %s (code: %d)\n", msg, err->request_code);
+		
+	return 0;
+}
 
 int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height) {
 	assert (window != NULL);
@@ -45,6 +54,8 @@ int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigne
 	if (!dpy) {
 		return -1;
 	}
+	
+	XSetErrorHandler(&ShiftItX11ErrorHandler);
 	
 	XWindowAttributes wa;
     if(!XGetWindowAttributes(dpy, *((Window *)window), &wa)) {
@@ -58,17 +69,16 @@ int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigne
 	
 	// we don't need to adjust the x and y since they are from the top left window
 	
-	if (!XMoveWindow(dpy, *((Window *)window), x, y)) {
+	if (!XMoveResizeWindow(dpy, *((Window *)window), x,y,width,height)){
 		return -6;
-	}
-
-	if (!XResizeWindow(dpy, *((Window *)window), width, height)) {
-		return -7;
 	}
 	
 	// do it now - this will block
+//	if (!XFlush(dpy)) {
+//		return -7;
+//	}
 	if (!XSync(dpy, False)) {
-		return -8;
+		return -7;
 	}
 	
 	XCloseDisplay(dpy);
@@ -82,9 +92,9 @@ void X11FreeWindowRef(void *window) {
 	XFree(window);
 }
 
-char *X11GetErrorMessage(int code) {
+const char *X11GetErrorMessage(int code) {
 	assert (code < 0 && code >= -kErrorMessageCount_);
-	
+
 	return kErrorMessages_[-code-1];
 }
 
@@ -98,11 +108,9 @@ int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int
 		return -1;
 	}
 	
+	XSetErrorHandler(&ShiftItX11ErrorHandler);
+
 	Window root = DefaultRootWindow(dpy);
-	XWindowAttributes wa2;
-    if(!XGetWindowAttributes(dpy, root, &wa2)) {
-		return -4;
-	}
 	
 	// following are for the params that are not used
 	int not_used_int;
@@ -116,6 +124,10 @@ int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int
 						  XA_WINDOW, &actual_type, &not_used_int, &not_used_long, &not_used_long,
 						  &prop_return) != Success) {
 		return -2;
+	}
+	
+	if (prop_return == NULL) {
+		return -3;
 	}
 	
 	Window window = *(unsigned long *) prop_return;
