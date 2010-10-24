@@ -22,7 +22,7 @@
 #import "AXUIUtils.h"
 #import "FMTDefines.h"
 
-static char *kErrorMessages_[] = {
+static const char *const kErrorMessages_[] = {
 	"AXError: Unable to get active application",
 	"AXError: Unable to get active window",
 	"AXError: Unable to get active window position",
@@ -32,7 +32,8 @@ static char *kErrorMessages_[] = {
 	"AXError: Position cannot be changed",
 	"AXError: Size cannot be modified"
 };
-static int kErrorMessageCount_ = 8;
+
+static int kErrorMessageCount_ = sizeof(kErrorMessages_)/sizeof(kErrorMessages_[0]);
 
 // TODO: assert
 int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height) {
@@ -63,7 +64,7 @@ void AXUIFreeWindowRef(void *window) {
 	CFRelease((CFTypeRef) window);
 }
 
-char *AXUIGetErrorMessage(int code) {
+const char *AXUIGetErrorMessage(int code) {
 	FMTAssert(code < 0 && code > -kErrorMessageCount_, @"error code must be %d < code < 0", -kErrorMessageCount_);
 	
 	return kErrorMessages_[-code-1];

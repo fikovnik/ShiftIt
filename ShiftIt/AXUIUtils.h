@@ -21,4 +21,4 @@ int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsign
 int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
 void AXUIFreeWindowRef(void *window);
 
-char *AXUIGetErrorMessage(int code);
+const char *AXUIGetErrorMessage(int code);
