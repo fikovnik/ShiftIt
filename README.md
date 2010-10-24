@@ -24,6 +24,12 @@ Changes since initial fork:
 
   - Large code revamp to utilize [ShortcutRecorder][8] framework for capturing key bindings
 
+**v1.5: (devel)**
+
+  - Almost completely rewritten the original code base
+  - Fixed many bugs especially related with positioning on multiple displays
+  - Added X11 support
+  - more in RoadMap[10]
 
 ShortcutRecorder
 ----------------
@@ -69,3 +75,4 @@ There is a feature full commerical application called [SizeUp][6] that seems to 
   [7]: http://www.irradiatedsoftware.com/sizeup/
   [8]: http://code.google.com/p/shortcutrecorder/
   [9]: http://groups.google.com/group/shiftitapp
+  [10]: http://github.com/fikovnik/ShiftIt/wiki/RoadMap
