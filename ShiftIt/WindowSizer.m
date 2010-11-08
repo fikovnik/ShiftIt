@@ -28,6 +28,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
 
+extern int abs(int i);
+
 // reference to the carbon GetMBarHeight() function
 extern short GetMBarHeight(void);
 
@@ -99,55 +101,71 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	FMTAssertNotNil(action);
 	
 #ifdef X11
-	// following will make the X11 reference coordinate system
-	// X11 coordinates starts at the very top left corner of the most top left window
-	// basically it is a union of all screens with the beginning at the top left
-	NSRect X11Ref = [[NSScreen primaryScreen] frame];
-	for (NSScreen *screen in [NSScreen screens]) {
-		X11Ref = NSUnionRect(X11Ref, [screen frame]);
-	}
-	// translate
-	COCOA_TO_SCREEN_COORDINATES(X11Ref);
-	FMTDevLog(@"X11 reference rect: %@", RECT_STR(X11Ref));
-
-	bool activeWindowX11 = NO;
+	 bool activeWindowX11 = NO;
+	 NSRect X11Ref;
 #endif // X11
 	
 	// window reference - windowing system agnostic
 	void *window = NULL;
 	
 	// coordinates vars
-	int x,y;
-	unsigned int width, height;
+	int x = 0, y = 0;
+	unsigned int width = 0, height = 0;
 
 	// error handling vars
 	int errorCode = 0;
 	
+	// active window geometry
+	
 	// first try to get the window using accessibility API
-	errorCode = AXUIGetActiveWindowGeometry(&window, &x, &y, &width, &height);
+	errorCode = AXUIGetActiveWindow(&window);
 	
 	if (errorCode != 0) {
 #ifdef X11
+		window = NULL;
 		// try X11
-		int errorCodeX11 = X11GetActiveWindowGeometry(&window, &x, &y, &width, &height);		
+		int errorCodeX11 = X11GetActiveWindow(&window);		
 		if (errorCodeX11 != 0) {
 			NSString *message = FMTStr(@"%@, %@",FMTStrc(AXUIGetErrorMessage(errorCode)),FMTStrc(X11GetErrorMessage(errorCodeX11)));
 
 			*error = SICreateError(message, kUnableToGetActiveWindowErrorCode);
 			return;
-		} else {
-			FMTDevLog(@"window rect (x11): [%d %d] [%d %d]", x, y, width, height);
-			
-			// convert from X11 coordinates to Quartz CG coodinates
-			x += X11Ref.origin.x;
-			y += X11Ref.origin.y;
-						
-			activeWindowX11 = YES;
 		}
+		
+		int errorCode = X11GetWindowGeometry(window, &x, &y, &width, &height);
+		if (errorCode != 0) {
+			*error = SICreateError(FMTStrc(X11GetErrorMessage(errorCode)), kUnableToGetWindowGeometryErrorCode);
+			return;			
+		}
+		FMTDevLog(@"window rect (x11): [%d %d] [%d %d]", x, y, width, height);
+				
+		// following will make the X11 reference coordinate system
+		// X11 coordinates starts at the very top left corner of the most top left window
+		// basically it is a union of all screens with the beginning at the top left
+		X11Ref = [[NSScreen primaryScreen] frame];
+		for (NSScreen *screen in [NSScreen screens]) {
+			X11Ref = NSUnionRect(X11Ref, [screen frame]);
+		}
+		// translate
+		COCOA_TO_SCREEN_COORDINATES(X11Ref);
+		FMTDevLog(@"X11 reference rect: %@", RECT_STR(X11Ref));
+
+		// convert from X11 coordinates to Quartz CG coodinates
+		x += X11Ref.origin.x;
+		y += X11Ref.origin.y;
+		
+		activeWindowX11 = YES;		
 #else
 		*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToGetActiveWindowErrorCode);
 		return;
 #endif // X11
+	} else {
+		int errorCode = AXUIGetWindowGeometry(window, &x, &y, &width, &height);
+		
+		if (errorCode != 0) {
+			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToGetWindowGeometryErrorCode);
+			return;
+		}
 	}
 	
 	// the window rect in screen coordinates
@@ -213,7 +231,6 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		if (screenBelowPrimary || [screen isPrimary]) {
 			shiftedRect.origin.y -= GetMBarHeight();
 		}
-		
 	} 
 #endif // X11
 		
@@ -225,25 +242,42 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	height = (unsigned int) shiftedRect.size.height;
 		
 	// adjust window geometry
+	// there are apps that does not size continuously but rather discretely so
+	// they have to be re-adjusted hence first set the size and then position
 #ifdef X11
-	if (activeWindowX11) {
-		errorCode = X11SetWindowGeometry(window, x, y, width, height);
+	if (activeWindowX11) {		
+		FMTDevLog(@"adjusting position to %dx%d", x, y);
+		errorCode = X11SetWindowPosition(window, x, y);
 		if (errorCode != 0) {
-			*error = SICreateError(FMTStrc(X11GetErrorMessage(errorCode)), kUnableToChangeWindowSizeOrPositionErrorCode);
+			*error = SICreateError(FMTStrc(X11GetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
+			return;
 		}
+		
+		FMTDevLog(@"adjusting size to %dx%d", width, height);
+		errorCode = X11SetWindowSize(window, width, height);
+		if (errorCode != 0) {
+			*error = SICreateError(FMTStrc(X11GetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
+			return;
+		}				
 	} else {
-		errorCode = AXUISetWindowGeometry(window, x, y, width, height);
+#endif // X11
+		FMTDevLog(@"adjusting position to %dx%d", x, y);
+		errorCode = AXUISetWindowPosition(window, x, y);
 		if (errorCode != 0) {
-			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeOrPositionErrorCode);
+			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
+			return;
 		}
+		
+		FMTDevLog(@"adjusting size to %dx%d", width, height);
+		errorCode = AXUISetWindowSize(window, width, height);
+		if (errorCode != 0) {
+			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
+			return;
+		}
+#ifdef X11
 	}
-#else
-	errorCode = AXUISetWindowGeometry(window, x, y, width, height);
-	if (errorCode != 0) {
-		*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeOrPositionErrorCode);		
-	}
-#endif
-	
+#endif // X11
+		 
 #ifdef X11
 	if (activeWindowX11) {
 		X11FreeWindowRef(window);

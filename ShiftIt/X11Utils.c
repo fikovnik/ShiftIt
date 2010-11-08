@@ -46,9 +46,34 @@ static int ShiftItX11ErrorHandler(Display *dpy, XErrorEvent *err) {
 	return 0;
 }
 
-int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height) {
+int X11SetWindowPosition(void *window, int x, int y) {
 	assert (window != NULL);
+	
+	Display *dpy = XOpenDisplay(NULL);
+	
+	if (!dpy) {
+		return -1;
+	}
+	
+	XSetErrorHandler(&ShiftItX11ErrorHandler);
+	
+	// we don't need to adjust the x and y since they are from the top left window	
+	if (!XMoveWindow(dpy, *((Window *)window), x, y)){
+		return -6;
+	}
+	
+	// do it now - this will block
+	if (!XSync(dpy, False)) {
+		return -7;
+	}
+	
+	XCloseDisplay(dpy);
+	return 0;	
+}
 
+int X11SetWindowSize(void *window, unsigned int width, unsigned int height) {
+	assert (window != NULL);
+	
 	Display *dpy = XOpenDisplay(NULL);
 	
 	if (!dpy) {
@@ -66,24 +91,89 @@ int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigne
 	// we need to subtract that
 	width -= wa.x;
 	height -= wa.y;
-	
-	// we don't need to adjust the x and y since they are from the top left window
-	
-	if (!XMoveResizeWindow(dpy, *((Window *)window), x,y,width,height)){
+		
+	if (!XResizeWindow(dpy, *((Window *)window), width, height)){
 		return -6;
 	}
 	
-	// do it now - this will block
-//	if (!XFlush(dpy)) {
-//		return -7;
-//	}
 	if (!XSync(dpy, False)) {
 		return -7;
 	}
 	
 	XCloseDisplay(dpy);
-	
 	return 0;
+}
+
+int X11GetActiveWindow(void **activeWindow) {
+	Display* dpy = NULL;
+	dpy = XOpenDisplay(NULL);
+	
+	if (!dpy) {
+		return -1;
+	}
+	
+	XSetErrorHandler(&ShiftItX11ErrorHandler);
+	
+	Window root = DefaultRootWindow(dpy);
+	
+	// following are for the params that are not used
+	int not_used_int;
+	unsigned long not_used_long;
+	
+	Atom actual_type = 0;
+	unsigned char *prop_return = NULL;
+	
+	if(XGetWindowProperty(dpy, root, XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False), 0, 0x7fffffff, False,
+						  XA_WINDOW, &actual_type, &not_used_int, &not_used_long, &not_used_long,
+						  &prop_return) != Success) {
+		return -2;
+	}
+	
+	if (prop_return == NULL || *((Window *) prop_return) == 0) {
+		return -3;
+	}
+	
+	*activeWindow = (void *) prop_return;	
+	
+	XCloseDisplay(dpy);
+	return 0;
+}
+
+int X11GetWindowGeometry(void *window, int *x, int *y, unsigned int *width, unsigned int *height) {
+	assert (x != NULL && y != NULL && width != NULL && height != NULL);
+
+	Display* dpy = NULL;
+	dpy = XOpenDisplay(NULL);
+	
+	if (!dpy) {
+		return -1;
+	}
+	
+	XSetErrorHandler(&ShiftItX11ErrorHandler);
+
+	Window root = DefaultRootWindow(dpy);
+	XWindowAttributes wa;
+	
+    if(!XGetWindowAttributes(dpy, *((Window *)window), &wa)) {
+		return -4;
+	}
+	
+	Window not_used_window;
+	if(!XTranslateCoordinates(dpy, *((Window *)window), root, -wa.border_width, -wa.border_width, x, y, &not_used_window)) {
+		return -5;
+	}
+	
+	// the height returned is without the window manager decoration - the OSX top bar with buttons, window label and stuff
+	// so we need to add it to the height as well because the WindowSize expects the full window
+	// the same might be potentially apply to the width
+	*width = wa.width + wa.x;
+	*height = wa.height + wa.y;
+	
+	*x -= wa.x;
+	*y -= wa.y;
+	
+	XCloseDisplay(dpy);	
+	return 0;	
 }
 
 void X11FreeWindowRef(void *window) {
@@ -96,66 +186,4 @@ const char *X11GetErrorMessage(int code) {
 	assert (code < 0 && code >= -kErrorMessageCount_);
 
 	return kErrorMessages_[-code-1];
-}
-
-int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height) {
-	assert (x != NULL && y != NULL && width != NULL && height != NULL);
-	
-	Display* dpy = NULL;
-	dpy = XOpenDisplay(NULL);
-	
-	if (!dpy) {
-		return -1;
-	}
-	
-	XSetErrorHandler(&ShiftItX11ErrorHandler);
-
-	Window root = DefaultRootWindow(dpy);
-	
-	// following are for the params that are not used
-	int not_used_int;
-	unsigned long not_used_long;
-	Window not_used_window;
-
-	Atom actual_type = 0;
-	unsigned char *prop_return = NULL;
-
-	if(XGetWindowProperty(dpy, root, XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False), 0, 0x7fffffff, False,
-						  XA_WINDOW, &actual_type, &not_used_int, &not_used_long, &not_used_long,
-						  &prop_return) != Success) {
-		return -2;
-	}
-	
-	if (prop_return == NULL) {
-		return -3;
-	}
-	
-	Window window = *(unsigned long *) prop_return;
-
-	if (window == 0) {
-		return -3;
-	}
-
-	XWindowAttributes wa;
-    if(!XGetWindowAttributes(dpy, window, &wa)) {
-		return -4;
-	}
-	
-	if(!XTranslateCoordinates(dpy, window, root, -wa.border_width, -wa.border_width, x, y, &not_used_window)) {
-		return -5;
-	}
-
-	// the height returned is without the window manager decoration - the OSX top bar with buttons, window label and stuff
-	// so we need to add it to the height as well because the WindowSize expects the full window
-	// the same might be potentially apply to the width
-	*width = wa.width + wa.x;
-	*height = wa.height + wa.y;
-
-	*x -= wa.x;
-	*y -= wa.y;
-
-	XCloseDisplay(dpy);
-	
-	*activeWindow = (void *) prop_return;
-	return 0;
 }

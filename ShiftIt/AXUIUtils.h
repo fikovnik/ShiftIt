@@ -17,8 +17,10 @@
  
  */
 
-int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height);
-int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
+int AXUISetWindowPosition(void *window, int x, int y);
+int AXUISetWindowSize(void *window, unsigned int width, unsigned int height);
+int AXUIGetActiveWindow(void **activeWindow);
+int AXUIGetWindowGeometry(void *window, int *x, int *y, unsigned int *width, unsigned int *height);
 void AXUIFreeWindowRef(void *window);
 
 const char *AXUIGetErrorMessage(int code);

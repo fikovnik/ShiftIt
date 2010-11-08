@@ -53,7 +53,9 @@ NSInteger const kSIMenuUITagPrefix = 2000;
 // error related
 NSString *const SIErrorDomain = @"org.shiftitapp.shiftit.ErrorDomain";
 NSInteger const kUnableToGetActiveWindowErrorCode = 20100;
-NSInteger const kUnableToChangeWindowSizeOrPositionErrorCode = 20101;
+NSInteger const kUnableToChangeWindowPositionErrorCode = 20101;
+NSInteger const kUnableToGetWindowGeometryErrorCode = 20102;
+NSInteger const kUnableToChangeWindowSizeErrorCode = 20102;
 
 NSDictionary *allShiftActions = nil;
 

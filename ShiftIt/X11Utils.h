@@ -29,8 +29,10 @@
  *
  */
 
-int X11SetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height);
-int X11GetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height);
+int X11SetWindowPosition(void *window, int x, int y);
+int X11SetWindowSize(void *window, unsigned int width, unsigned int height);
+int X11GetActiveWindow(void **activeWindow);
+int X11GetWindowGeometry(void *window, int *x, int *y, unsigned int *width, unsigned int *height);
 void X11FreeWindowRef(void *window);
 
 const char *X11GetErrorMessage(int code);

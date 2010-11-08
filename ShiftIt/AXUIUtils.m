@@ -35,10 +35,9 @@ static const char *const kErrorMessages_[] = {
 
 static int kErrorMessageCount_ = sizeof(kErrorMessages_)/sizeof(kErrorMessages_[0]);
 
-// TODO: assert
-int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsigned int height) {
+int AXUISetWindowPosition(void *window, int x, int y) {
 	FMTAssertNotNil(window);
-	
+
 	NSPoint position = {x, y};
 	CFTypeRef positionRef = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&position));
 	if(AXUIElementSetAttributeValue((AXUIElementRef)window,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)positionRef) != kAXErrorSuccess){
@@ -46,6 +45,12 @@ int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsign
 		return -7;
 	}
 	CFRelease(positionRef);
+	
+	return 0;
+}
+
+int AXUISetWindowSize(void *window, unsigned int width, unsigned int height) {
+	FMTAssertNotNil(window);
 	
 	NSSize size = {width, height};
 	CFTypeRef sizeRef = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&size));
@@ -58,29 +63,12 @@ int AXUISetWindowGeometry(void *window, int x, int y, unsigned int width, unsign
 	return 0;
 }
 
-void AXUIFreeWindowRef(void *window) {
-	FMTAssertNotNil(window);
-
-	CFRelease((CFTypeRef) window);
-}
-
-const char *AXUIGetErrorMessage(int code) {
-	FMTAssert(code < 0 && code > -kErrorMessageCount_, @"error code must be %d < code < 0", -kErrorMessageCount_);
-	
-	return kErrorMessages_[-code-1];
-}
-
-int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned int *width, unsigned int *height) {
-	FMTAssertNotNil(x);
-	FMTAssertNotNil(y);
-	FMTAssertNotNil(width);
-	FMTAssertNotNil(height);
-	
+int AXUIGetActiveWindow(void **activeWindow) {
 	AXUIElementRef systemElementRef = AXUIElementCreateSystemWide();
 	// here is the assert for purpose because the app should not have gone 
 	// that far in execution if the AX api is not available
 	FMTAssertNotNil(systemElementRef);
-
+	
 	//get the focused application
 	AXUIElementRef focusedAppRef = nil;
 	AXError axerror = AXUIElementCopyAttributeValue(systemElementRef,
@@ -104,23 +92,31 @@ int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned in
 	}
 	FMTAssertNotNil(focusedWindowRef);
 	*activeWindow = (void *) focusedWindowRef;
+
+	return 0;
+}
+
+int AXUIGetWindowGeometry(void *window, int *x, int *y, unsigned int *width, unsigned int *height) {
+	FMTAssertNotNil(x);
+	FMTAssertNotNil(y);
+	FMTAssertNotNil(width);
+	FMTAssertNotNil(height);
 	
 	//get the position
 	CFTypeRef positionRef;
 	NSPoint position;
-	axerror = AXUIElementCopyAttributeValue((AXUIElementRef)focusedWindowRef,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)&positionRef);
+	
+	int axerror = AXUIElementCopyAttributeValue((AXUIElementRef)window,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)&positionRef);
 	if (axerror != kAXErrorSuccess) {
-		CFRelease(focusedWindowRef);
-
 		return -3;
 	}
+	
 	FMTAssertNotNil(positionRef);
 	if(AXValueGetType(positionRef) == kAXValueCGPointType) {
 		AXValueGetValue(positionRef, kAXValueCGPointType, (void*)&position);
 		*x = (int) position.x;
 		*y = (int) position.y;
 	} else {
-		CFRelease(focusedWindowRef);
 		CFRelease(positionRef);
 		
 		return -4;
@@ -130,24 +126,35 @@ int AXUIGetActiveWindowGeometry(void **activeWindow, int *x, int *y, unsigned in
 	//get the focused size
 	CFTypeRef sizeRef;
 	NSSize size;
-	axerror = AXUIElementCopyAttributeValue((AXUIElementRef)focusedWindowRef,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)&sizeRef);
+	
+	axerror = AXUIElementCopyAttributeValue((AXUIElementRef)window,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)&sizeRef);
 	if (axerror != kAXErrorSuccess) {
-		CFRelease(focusedWindowRef);
-
 		return -5;
 	}
+
 	FMTAssertNotNil(sizeRef);
 	if(AXValueGetType(sizeRef) == kAXValueCGSizeType) {
 		AXValueGetValue(sizeRef, kAXValueCGSizeType, (void*)&size);
 		*width = (unsigned int) size.width;
 		*height = (unsigned int) size.height;
 	} else {
-		CFRelease(focusedWindowRef);
 		CFRelease(sizeRef);
-
+		
 		return -6;
 	}
 	CFRelease(sizeRef);
 	
 	return 0;
+}
+
+void AXUIFreeWindowRef(void *window) {
+	FMTAssertNotNil(window);
+
+	CFRelease((CFTypeRef) window);
+}
+
+const char *AXUIGetErrorMessage(int code) {
+	FMTAssert(code < 0 && code > -kErrorMessageCount_, @"error code must be %d < code < 0", -kErrorMessageCount_);
+	
+	return kErrorMessages_[-code-1];
 }
