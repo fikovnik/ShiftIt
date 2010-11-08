@@ -15,8 +15,7 @@ For discussing any sort of stuff about this app, please post to our [google grou
 Related Work
 ------------
 
-ShiftIt is far not the only application that is trying to somehow organize windows. If you are looking for some commercial solution than you can check [SizeUp][9]  
-(which seemed to be the inspiration for the original Rajendiran's ShiftIt). Plenty of others can be found at [alternative.to][10].
+ShiftIt is far not the only application that is trying to somehow organize windows. If you are looking for some commercial solution than you can check [SizeUp][9] (which seemed to be the inspiration for the original Rajendiran's ShiftIt). Plenty of others can be found at [alternative.to][10].
 
 3rd Party Frameworks
 --------------------
