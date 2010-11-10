@@ -17,6 +17,9 @@ Related Work
 
 ShiftIt is far not the only application that is trying to somehow organize windows. If you are looking for some commercial solution than you can check [SizeUp][9] (which seemed to be the inspiration for the original Rajendiran's ShiftIt). Plenty of others can be found at [alternative.to][10].
 
+<span id="a2itemwidget"></span>
+<script src="http://api.alternativeto.net/software/shiftit/widgetjs/light" type="text/javascript"></script>
+
 3rd Party Frameworks
 --------------------
 
