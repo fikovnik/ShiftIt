@@ -32,10 +32,12 @@
     AXUIElementRef axSystemWideElement_;
 	
 	int menuBarHeight_;
+	NSString *lastActionExecuted;
 }
 
 + (WindowSizer *) sharedWindowSize;
 
 - (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
+- (void) reduceWindowFivePercent:(void *)window forAction:(ShiftItAction*)action winRect:(NSRect)windowRect error:(NSError **)error;
 
 @end

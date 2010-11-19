@@ -196,6 +196,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	NSRect shiftedRect = actionFunction(visibleScreenRect.size, windowRect);
 	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
 	 
+	 
 	// readjust adjust the visibility
 	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
 	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
@@ -203,6 +204,13 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
 	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
 
+	 
+	 if (lastActionExecuted == [action identifier]) {
+		 NSLog(@"Already shifted!");
+		 [self reduceWindowFivePercent:window forAction:action winRect:windowRect error:NULL];
+		 return;
+	 }
+	 
 	// we need to translate from cocoa coordinates
 	FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));	
 				
@@ -287,6 +295,72 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 #else
 	AXUIFreeWindowRef(window);
 #endif
+	 
+	 lastActionExecuted = [action identifier];
+}
+
+- (void) reduceWindowFivePercent:(void *)window forAction:(ShiftItAction*)action winRect:(NSRect)windowRect error:(NSError **)error {
+	// error handling vars
+	int errorCode = 0;
+	
+	unsigned int width = windowRect.size.width;
+	unsigned int height = windowRect.size.height;
+	unsigned int x = windowRect.origin.x;
+	unsigned int y = windowRect.origin.y;
+	
+	if ([[action identifier] isEqualToString:@"left"] || [[action identifier] isEqualToString:@"right"]) {
+		//shave 5% off right side of window
+		
+		FMTDevLog(@"adjusting size to %dx%d", width * 0.95, height);
+		errorCode = AXUISetWindowSize(window, width * 0.95, height);
+		if (errorCode != 0) {
+			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
+			return;
+		}
+		
+		//if right, move the window to the right
+		if ([[action identifier] isEqualToString:@"right"]) {
+			NSScreen *screen = [self chooseScreenForWindow_:windowRect];
+			NSRect screenRect = [screen frame];
+			
+			int newX = screenRect.size.width - (width * 0.95);
+			
+			FMTDevLog(@"adjusting position to %dx%d", newX, y);
+			errorCode = AXUISetWindowPosition(window, newX, y);
+			if (errorCode != 0) {
+				*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
+				return;
+			}
+		}
+	}
+	
+	if ([[action identifier] isEqualToString:@"top"] || [[action identifier] isEqualToString:@"bottom"]) {
+		//shave 5% off bottom side of window
+		
+		FMTDevLog(@"adjusting size to %dx%d", width, height * 0.95);
+		errorCode = AXUISetWindowSize(window, width, height * 0.95);
+		if (errorCode != 0) {
+			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
+			return;
+		}
+		
+		//if bottom, move the window down 
+		if([[action identifier] isEqualToString:@"bottom"]){
+			NSScreen *screen = [self chooseScreenForWindow_:windowRect];
+			NSRect screenRect = [screen frame];
+			
+			int newY = screenRect.size.height - (height * 0.95);
+			
+			FMTDevLog(@"adjusting position to %dx%d", x, newY);
+			errorCode = AXUISetWindowPosition(window, x, newY);
+			if (errorCode != 0) {
+				*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
+				return;
+			}
+		}
+		
+	}
+	
 }
 
 /**
