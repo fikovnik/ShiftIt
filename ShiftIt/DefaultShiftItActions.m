@@ -20,6 +20,8 @@
 #import "DefaultShiftItActions.h"
 #import "FMTDefines.h"
 
+extern short GetMBarHeight(void);
+
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
@@ -135,6 +137,71 @@ NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	r.origin.y = (screenSize.height / 2)-(windowRect.size.height / 2);	
 	
 	r.size = windowRect.size;
+	
+	return r;
+}
+
+NSRect ShiftIt_Wider(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	float menuBarHeight = GetMBarHeight();
+	
+	int whichSide;
+	(windowRect.origin.x == 0) ? (whichSide = 0) : (whichSide = 1);
+	
+	switch (whichSide) {
+		case 0: // window origin is in left region			
+			r.size.width = windowRect.size.width * 1.05;
+			r.size.height = windowRect.size.height;
+			
+			r.origin.x = windowRect.origin.x;
+			r.origin.y = windowRect.origin.y - menuBarHeight;
+			
+			break;
+		case 1: // window origin is in right region
+			r.size.width = windowRect.size.width * 1.05;
+			r.size.height = windowRect.size.height;
+			
+			r.origin.x = screenSize.width - r.size.width;
+			r.origin.y = windowRect.origin.y - menuBarHeight;
+						
+			break;
+		default:
+			break;
+	}
+	
+	return r;
+}
+
+NSRect ShiftIt_Taller(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	float menuBarHeight = GetMBarHeight();
+	
+	// detect which side of the window is touching the side of the display
+	int topOrBottom;
+	(windowRect.origin.y - menuBarHeight == 0) ? (topOrBottom = 0) : (topOrBottom = 1);
+	
+	switch (topOrBottom) {
+		case 0: // window origin is in upper region			
+			r.size.width = windowRect.size.width;
+			r.size.height = windowRect.size.height * 1.05;
+			
+			r.origin.x = windowRect.origin.x;
+			r.origin.y = windowRect.origin.y - menuBarHeight;
+			
+			break;
+		case 1: // window origin is in lower region
+			r.size.width = windowRect.size.width;
+			r.size.height = windowRect.size.height * 1.05;
+			
+			r.origin.x = 0;
+			r.origin.y = screenSize.height - r.size.height;
+			
+			break;
+		default:
+			break;
+	}
 	
 	return r;
 }

@@ -32,7 +32,7 @@
 	NSMutableDictionary *allHotKeys_;
 	BOOL paused_;
 
-	NSMenu *statusMenu_;
+	IBOutlet NSMenu *statusMenu_;
 	NSStatusItem *statusItem_;
 	NSImage *statusMenuItemIcon_;
 }
