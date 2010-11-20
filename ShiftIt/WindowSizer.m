@@ -298,8 +298,6 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	 
 	 if ([action identifier] == @"left" || [action identifier] == @"right" || [action identifier] == @"top" || [action identifier] == @"bottom" ) 
 		 lastActionExecuted = [action identifier];
-	 else
-		 lastActionExecuted = nil;
 }
 
 - (void) reduceWindowFivePercent:(void *)window forAction:(ShiftItAction*)action winRect:(NSRect)windowRect error:(NSError **)error {
