@@ -289,10 +289,10 @@ NSDictionary *allShiftActions = nil;
 	[dict setObject:fullscreen forKey:[fullscreen identifier]];
 	ShiftItAction *center = [[ShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:10 action:&ShiftIt_Center];
 	[dict setObject:center forKey:[center identifier]];
-	ShiftItAction *wider = [[ShiftItAction alloc] initWithIdentifier:@"wider" label:@"Wider by 5%" uiTag:11 action:&ShiftIt_Wider];
-	[dict setObject:wider forKey:[wider identifier]];
-	ShiftItAction *taller = [[ShiftItAction alloc] initWithIdentifier:@"taller" label:@"Taller by 5%" uiTag:12 action:&ShiftIt_Taller];
-	[dict setObject:taller forKey:[taller identifier]];
+	ShiftItAction *increase = [[ShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase 5%" uiTag:11 action:&ShiftIt_Increase];
+	[dict setObject:increase forKey:[increase identifier]];
+	ShiftItAction *reduce = [[ShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce 5%" uiTag:12 action:&ShiftIt_Reduce];
+	[dict setObject:reduce forKey:[reduce identifier]];
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }

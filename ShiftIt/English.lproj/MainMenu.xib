@@ -183,8 +183,8 @@
 					</object>
 					<object class="NSMenuItem" id="945036370">
 						<reference key="NSMenu" ref="981997696"/>
-						<string key="NSTitle">Wider by 5%</string>
-						<string key="NSKeyEquiv">w</string>
+						<string key="NSTitle">Increase 5%</string>
+						<string key="NSKeyEquiv">=</string>
 						<int key="NSKeyEquivModMask">1835008</int>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="757936152"/>
@@ -193,8 +193,8 @@
 					</object>
 					<object class="NSMenuItem" id="766719118">
 						<reference key="NSMenu" ref="981997696"/>
-						<string key="NSTitle">Taller by 5%</string>
-						<string key="NSKeyEquiv">t</string>
+						<string key="NSTitle">Reduce 5%</string>
+						<string key="NSKeyEquiv">-</string>
 						<int key="NSKeyEquivModMask">1835008</int>
 						<int key="NSMnemonicLoc">2147483647</int>
 						<reference key="NSOnImage" ref="757936152"/>
@@ -479,7 +479,7 @@
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{303, 326}, {233, 343}}</string>
+					<string>{{328, 227}, {233, 343}}</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>

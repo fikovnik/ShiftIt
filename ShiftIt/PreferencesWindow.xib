@@ -630,7 +630,7 @@
 													<int key="NSCellFlags2">0</int>
 													<reference key="NSControlView" ref="484337988"/>
 													<nil key="autosaveName"/>
-													<integer value="13" key="keyComboCode"/>
+													<integer value="24" key="keyComboCode"/>
 													<integer value="1835008" key="keyComboFlags"/>
 													<integer value="10354688" key="allowedFlags"/>
 													<integer value="0" key="requiredFlags"/>
@@ -652,7 +652,7 @@
 													<int key="NSCellFlags2">0</int>
 													<reference key="NSControlView" ref="949558154"/>
 													<nil key="autosaveName"/>
-													<integer value="17" key="keyComboCode"/>
+													<integer value="27" key="keyComboCode"/>
 													<integer value="1835008" key="keyComboFlags"/>
 													<integer value="10354688" key="allowedFlags"/>
 													<integer value="0" key="requiredFlags"/>
@@ -671,7 +671,7 @@
 												<object class="NSTextFieldCell" key="NSCell" id="636168158">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">71304192</int>
-													<string key="NSContents">Wider by 5%</string>
+													<string key="NSContents">Increase 5%</string>
 													<reference key="NSSupport" ref="38519159"/>
 													<reference key="NSControlView" ref="573820527"/>
 													<reference key="NSBackgroundColor" ref="925788107"/>
@@ -687,7 +687,7 @@
 												<object class="NSTextFieldCell" key="NSCell" id="148708434">
 													<int key="NSCellFlags">68288064</int>
 													<int key="NSCellFlags2">71304192</int>
-													<string key="NSContents">Taller by 5%</string>
+													<string key="NSContents">Reduce 5%</string>
 													<reference key="NSSupport" ref="38519159"/>
 													<reference key="NSControlView" ref="89715854"/>
 													<reference key="NSBackgroundColor" ref="925788107"/>
