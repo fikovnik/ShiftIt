@@ -182,12 +182,12 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	 // check to see if the user has repeated a left or right shift
 	 //    if so, move window to the screen next current one
 	 NSScreen *screen; 
-	 if ((lastActionExecuted == @"left" || lastActionExecuted == @"right") && lastActionExecuted == [action identifier]) {
-		 NSLog(@"Already shifted!");
-		 //move window to the other screen
-		 screen = [self nextScreenForAction:action window:windowRect];
-	}
-	else 
+//	 if ((lastActionExecuted == @"left" || lastActionExecuted == @"right") && lastActionExecuted == [action identifier]) {
+//		 NSLog(@"Already shifted!");
+//		 //move window to the other screen
+//		 screen = [self nextScreenForAction:action window:windowRect];
+//	}
+//	else 
 		screen = [self chooseScreenForWindow_:windowRect];
 	
 	// screen coordinates of the best fit window
