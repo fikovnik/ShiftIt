@@ -155,7 +155,7 @@ NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
 		
 		switch (whichSide) {
 			case 0: // window origin is in left region			
-				r.size.width = windowRect.size.width * 1.05;
+				r.size.width = windowRect.size.width + screenSize.width/6;
 				r.size.height = windowRect.size.height;
 				
 				r.origin.x = windowRect.origin.x;
@@ -163,7 +163,7 @@ NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
 				
 				break;
 			case 1: // window origin is in right region
-				r.size.width = windowRect.size.width * 1.05;
+				r.size.width = windowRect.size.width + screenSize.width/6;
 				r.size.height = windowRect.size.height;
 				
 				r.origin.x = screenSize.width - r.size.width;
@@ -182,7 +182,7 @@ NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
 		switch (topOrBottom) {
 			case 0: // window origin is in upper region			
 				r.size.width = windowRect.size.width;
-				r.size.height = windowRect.size.height * 1.05;
+				r.size.height = windowRect.size.height + screenSize.height/6;
 				
 				r.origin.x = windowRect.origin.x;
 				r.origin.y = windowRect.origin.y - menuBarHeight;
@@ -190,7 +190,7 @@ NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
 				break;
 			case 1: // window origin is in lower region
 				r.size.width = windowRect.size.width;
-				r.size.height = windowRect.size.height * 1.05;
+				r.size.height = windowRect.size.height + screenSize.height/6;
 				
 				r.origin.x = 0;
 				r.origin.y = screenSize.height - r.size.height;
@@ -219,7 +219,7 @@ NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
 		
 		switch (whichSide) {
 			case 0: // window origin is in left region			
-				r.size.width = windowRect.size.width * 0.95;
+				r.size.width = windowRect.size.width - screenSize.width/6;
 				r.size.height = windowRect.size.height;
 				
 				r.origin.x = windowRect.origin.x;
@@ -227,7 +227,7 @@ NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
 				
 				break;
 			case 1: // window origin is in right region
-				r.size.width = windowRect.size.width * 0.95;
+				r.size.width = windowRect.size.width - screenSize.width/6;
 				r.size.height = windowRect.size.height;
 				
 				r.origin.x = screenSize.width - r.size.width;
@@ -246,7 +246,7 @@ NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
 		switch (topOrBottom) {
 			case 0: // window origin is in upper region			
 				r.size.width = windowRect.size.width;
-				r.size.height = windowRect.size.height * 0.95;
+				r.size.height = windowRect.size.height - screenSize.height/6;
 				
 				r.origin.x = windowRect.origin.x;
 				r.origin.y = windowRect.origin.y - menuBarHeight;
@@ -254,7 +254,7 @@ NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
 				break;
 			case 1: // window origin is in lower region
 				r.size.width = windowRect.size.width;
-				r.size.height = windowRect.size.height * 0.95;
+				r.size.height = windowRect.size.height  - screenSize.height/6;
 				
 				r.origin.x = 0;
 				r.origin.y = screenSize.height - r.size.height;
