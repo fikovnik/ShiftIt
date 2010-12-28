@@ -125,7 +125,7 @@
 		F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
 		F2DC61231127ACDE000E1A5B /* WindowSizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowSizer.h; sourceTree = "<group>"; };
 		F2DC61241127ACDE000E1A5B /* WindowSizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowSizer.m; sourceTree = "<group>"; };
-		F2DC61EE1127C862000E1A5B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
+		F2DC61EE1127C862000E1A5B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -575,6 +575,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_OVERRIDING_PLUGINS_AND_FRAMEWORKS_DIR = "";
+				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				IBC_PLUGIN_SEARCH_PATHS = "";
 				LD_RUNPATH_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
@@ -596,6 +597,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				OTHER_CFLAGS = (
 					"-NDEBUG",
 					"-DX11",
