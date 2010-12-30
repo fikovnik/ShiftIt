@@ -1,6 +1,6 @@
 <h1><img src="https://github.com/rcarmo/ShiftIt/raw/incremental_sizing/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt </h1>
 
-*Managing window size and position in OSX*
+Download [here](https://github.com/downloads/rcarmo/ShiftIt/20101230-ShiftIt.zip).
 
 Overview
 --------
