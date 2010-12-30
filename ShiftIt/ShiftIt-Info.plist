@@ -29,7 +29,7 @@
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 	<key>SUFeedURL</key>
-	<string>http://nkuyu.net/apps/shiftit/appcast.xml</string>
+	<string>https://github.com/rcarmo/ShiftIt/raw/master/sparkle/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>
