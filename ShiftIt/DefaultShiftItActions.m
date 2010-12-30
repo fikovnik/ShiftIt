@@ -132,7 +132,7 @@ NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_LargeTile(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_LargeLeftTile(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
 	r.origin.x = margin;

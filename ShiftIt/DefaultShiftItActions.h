@@ -31,4 +31,5 @@ NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_LargeTile(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_LargeLeftTile(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_VerticalRightTile(NSSize screenSize, NSRect windowRect);

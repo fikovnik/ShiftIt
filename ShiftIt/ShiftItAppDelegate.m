@@ -295,8 +295,10 @@ int margin = 8;
 	[dict setObject:increase forKey:[increase identifier]];
 	ShiftItAction *reduce = [[ShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:12 action:&ShiftIt_Reduce];
 	[dict setObject:reduce forKey:[reduce identifier]];
-	ShiftItAction *largetile = [[ShiftItAction alloc] initWithIdentifier:@"largetile" label:@"Large Tile" uiTag:13 action:&ShiftIt_LargeTile];
+	ShiftItAction *largetile = [[ShiftItAction alloc] initWithIdentifier:@"largetile" label:@"Large Tile" uiTag:13 action:&ShiftIt_LargeLeftTile];
 	[dict setObject:largetile forKey:[largetile identifier]];
+	ShiftItAction *verticaltile = [[ShiftItAction alloc] initWithIdentifier:@"verticaltile" label:@"Vertical Tile" uiTag:14 action:&ShiftIt_VerticalRightTile];
+	[dict setObject:verticaltile forKey:[verticaltile identifier]];
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }

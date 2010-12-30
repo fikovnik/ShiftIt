@@ -2,13 +2,13 @@
 <archive type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1050</int>
-		<string key="IBDocument.SystemVersion">10F2025</string>
-		<string key="IBDocument.InterfaceBuilderVersion">804</string>
-		<string key="IBDocument.AppKitVersion">1038.29</string>
+		<string key="IBDocument.SystemVersion">10H574</string>
+		<string key="IBDocument.InterfaceBuilderVersion">823</string>
+		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.CocoaPlugin</string>
-			<string key="NS.object.0">804</string>
+			<string key="NS.object.0">823</string>
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -153,7 +153,7 @@
 					</object>
 					<object class="NSMenuItem" id="216909775">
 						<reference key="NSMenu" ref="981997696"/>
-						<string key="NSTitle">Maximize</string>
+						<string key="NSTitle">Full Screen</string>
 						<string key="NSKeyEquiv">f</string>
 						<int key="NSKeyEquivModMask">1835008</int>
 						<int key="NSMnemonicLoc">2147483647</int>
@@ -201,6 +201,16 @@
 						<reference key="NSMixedImage" ref="797238407"/>
 						<int key="NSTag">2012</int>
 					</object>
+					<object class="NSMenuItem" id="858283149">
+						<reference key="NSMenu" ref="981997696"/>
+						<bool key="NSIsDisabled">YES</bool>
+						<bool key="NSIsSeparator">YES</bool>
+						<string key="NSTitle"/>
+						<string key="NSKeyEquiv"/>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="757936152"/>
+						<reference key="NSMixedImage" ref="797238407"/>
+					</object>
 					<object class="NSMenuItem" id="507139343">
 						<reference key="NSMenu" ref="981997696"/>
 						<string key="NSTitle">Large Tile</string>
@@ -210,6 +220,16 @@
 						<reference key="NSOnImage" ref="757936152"/>
 						<reference key="NSMixedImage" ref="797238407"/>
 						<int key="NSTag">2013</int>
+					</object>
+					<object class="NSMenuItem" id="623774425">
+						<reference key="NSMenu" ref="981997696"/>
+						<string key="NSTitle">Vertical Tile</string>
+						<string key="NSKeyEquiv">n</string>
+						<int key="NSKeyEquivModMask">1835008</int>
+						<int key="NSMnemonicLoc">2147483647</int>
+						<reference key="NSOnImage" ref="757936152"/>
+						<reference key="NSMixedImage" ref="797238407"/>
+						<int key="NSTag">2014</int>
 					</object>
 					<object class="NSMenuItem" id="479995101">
 						<reference key="NSMenu" ref="981997696"/>
@@ -354,6 +374,8 @@
 							<reference ref="766719118"/>
 							<reference ref="479995101"/>
 							<reference ref="507139343"/>
+							<reference ref="623774425"/>
+							<reference ref="858283149"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -462,6 +484,16 @@
 						<reference key="object" ref="507139343"/>
 						<reference key="parent" ref="981997696"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">791</int>
+						<reference key="object" ref="623774425"/>
+						<reference key="parent" ref="981997696"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">792</int>
+						<reference key="object" ref="858283149"/>
+						<reference key="parent" ref="981997696"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -492,11 +524,15 @@
 					<string>787.IBPluginDependency</string>
 					<string>788.IBPluginDependency</string>
 					<string>790.IBPluginDependency</string>
+					<string>791.IBPluginDependency</string>
+					<string>792.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
-					<string>{{328, 207}, {233, 363}}</string>
+					<string>{{328, 177}, {233, 393}}</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
+					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
 					<string>com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -537,7 +573,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">790</int>
+			<int key="maxID">792</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
