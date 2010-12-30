@@ -131,6 +131,18 @@ NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
+NSRect ShiftIt_LargeTile(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	r.origin.x = 0;
+	r.origin.y = 0;
+
+	r.size.width = screenSize.width * 2/3;
+	r.size.height = screenSize.height;
+		
+	return r;
+}
+
 NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
