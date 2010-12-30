@@ -22,15 +22,16 @@
 #import "WindowSizer.h"
 
 extern short GetMBarHeight(void);
+extern short margin;
 
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = MARGIN;
-	r.origin.y = MARGIN;
+	r.origin.x = margin;
+	r.origin.y = margin;
 	
-	r.size.width = screenSize.width / 2 - MARGIN;
-	r.size.height = screenSize.height - 2*MARGIN;
+	r.size.width = screenSize.width / 2 - 3 * margin / 2;
+	r.size.height = screenSize.height - 2 * margin;
 	
 	return r;
 }
@@ -38,11 +39,11 @@ NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = screenSize.width/2 + MARGIN;
-	r.origin.y = MARGIN;
+	r.origin.x = screenSize.width/2 + margin / 2;
+	r.origin.y = margin;
 	
-	r.size.width = screenSize.width / 2 - 2*MARGIN;
-	r.size.height = screenSize.height - 2*MARGIN;
+	r.size.width = screenSize.width / 2 - 3 * margin / 2;
+	r.size.height = screenSize.height - 2 * margin;
 	
 	return r;
 }
@@ -50,11 +51,11 @@ NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = MARGIN;
-	r.origin.y = MARGIN;
+	r.origin.x = margin;
+	r.origin.y = margin;
 	
-	r.size.width = screenSize.width - 2*MARGIN;
-	r.size.height = screenSize.height / 2 - 2*MARGIN;
+	r.size.width = screenSize.width - 2 * margin;
+	r.size.height = screenSize.height / 2 - 3 * margin / 2;
 	
 	return r;
 }
@@ -62,11 +63,11 @@ NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = MARGIN;
-	r.origin.y = screenSize.height / 2 + MARGIN;
+	r.origin.x = margin;
+	r.origin.y = screenSize.height / 2 + margin / 2;
 	
-	r.size.width = screenSize.width - 2*MARGIN;
-	r.size.height = screenSize.height / 2 - 2*MARGIN;
+	r.size.width = screenSize.width - 2 * margin;
+	r.size.height = screenSize.height / 2 - 3 * margin / 2;
 	
 	return r;
 }
@@ -74,11 +75,11 @@ NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = MARGIN;
-	r.origin.y = MARGIN;
+	r.origin.x = margin;
+	r.origin.y = margin;
 	
-	r.size.width = screenSize.width / 2 - MARGIN;
-	r.size.height = screenSize.height / 2 - 2*MARGIN;
+	r.size.width = screenSize.width / 2 - 3 * margin / 2;
+	r.size.height = screenSize.height / 2 - 3 * margin / 2;
 	
 	return r;
 }
@@ -86,11 +87,11 @@ NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = screenSize.width / 2 + MARGIN;
-	r.origin.y = MARGIN;
+	r.origin.x = screenSize.width / 2 + margin / 2;
+	r.origin.y = margin;
 	
-	r.size.width = screenSize.width / 2 - 2*MARGIN;
-	r.size.height = screenSize.height / 2 - 2*MARGIN;
+	r.size.width = screenSize.width / 2 - 3 * margin / 2;
+	r.size.height = screenSize.height / 2 - 3 * margin / 2;
 	
 	return r;
 }
@@ -98,11 +99,11 @@ NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = MARGIN;
-	r.origin.y = screenSize.height / 2 + MARGIN;
+	r.origin.x = margin;
+	r.origin.y = screenSize.height / 2 + margin / 2;
 	
-	r.size.width = screenSize.width / 2 - MARGIN;
-	r.size.height = screenSize.height / 2 - 2*MARGIN;
+	r.size.width = screenSize.width / 2 - 3 * margin / 2;
+	r.size.height = screenSize.height / 2 - 3 * margin / 2;
 	
 	return r;
 }
@@ -110,11 +111,11 @@ NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = screenSize.width / 2 + MARGIN;
-	r.origin.y = screenSize.height / 2 + MARGIN;
+	r.origin.x = screenSize.width / 2 + margin / 2;
+	r.origin.y = screenSize.height / 2 + margin / 2;
 	
-	r.size.width = screenSize.width / 2 - 2*MARGIN;
-	r.size.height = screenSize.height / 2 - 2*MARGIN;
+	r.size.width = screenSize.width / 2 - 3 * margin / 2;
+	r.size.height = screenSize.height / 2 - 3 * margin / 2;
 	
 	return r;
 }
@@ -122,11 +123,11 @@ NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = MARGIN;
-	r.origin.y = MARGIN;
+	r.origin.x = margin;
+	r.origin.y = margin;
 	
-	r.size.width = screenSize.width - 2*MARGIN;
-	r.size.height = screenSize.height - 2*MARGIN;
+	r.size.width = screenSize.width -  2 * margin;
+	r.size.height = screenSize.height -  2 * margin;
 	
 	return r;
 }
@@ -134,23 +135,36 @@ NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_LargeTile(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = MARGIN;
-	r.origin.y = MARGIN;
+	r.origin.x = margin;
+	r.origin.y = margin;
 
-	r.size.width = screenSize.width * 2/3 - 2*MARGIN;
-	r.size.height = screenSize.height - 2*MARGIN;
+	r.size.width = screenSize.width * 2 / 3 - 3 * margin / 2;
+	r.size.height = screenSize.height -  2 * margin;
 		
+	return r;
+}
+
+NSRect ShiftIt_VerticalRightTile(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	r.origin.x = screenSize.width * 2 / 3 + margin / 2;
+	r.origin.y = margin;
+	
+	r.size.width = screenSize.width / 3 - margin;
+	r.size.height = screenSize.height -  2 * margin;
+	
 	return r;
 }
 
 NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = screenSize.width / 2-(windowRect.size.width / 2);
-	r.origin.y = (screenSize.height / 2)-(windowRect.size.height / 2);	
+	r.origin.x = screenSize.width / 12 + margin / 2;
+	r.origin.y = screenSize.height / 12 + margin / 2;
 	
-	r.size = windowRect.size;
-	
+	r.size.width = 5 * screenSize.width / 6 - margin;
+	r.size.height = 5 * screenSize.height / 6 - margin;
+
 	return r;
 }
 
@@ -171,7 +185,7 @@ NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
 				r.size.height = windowRect.size.height; 
 				
 				r.origin.x = windowRect.origin.x;
-				r.origin.y = windowRect.origin.y - menuBarHeight - MARGIN;
+				r.origin.y = windowRect.origin.y - menuBarHeight - margin;
 				
 				break;
 			case 1: // window origin is in right region
@@ -179,7 +193,7 @@ NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
 				r.size.height = windowRect.size.height;
 				
 				r.origin.x = screenSize.width - r.size.width;
-				r.origin.y = windowRect.origin.y - menuBarHeight - MARGIN;
+				r.origin.y = windowRect.origin.y - menuBarHeight - margin;
 				
 				break;
 			default:
@@ -197,14 +211,14 @@ NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
 				r.size.height = windowRect.size.height + screenSize.height/6;
 				
 				r.origin.x = windowRect.origin.x;
-				r.origin.y = windowRect.origin.y - menuBarHeight - MARGIN;
+				r.origin.y = windowRect.origin.y - menuBarHeight - margin;
 				
 				break;
 			case 1: // window origin is in lower region
 				r.size.width = windowRect.size.width;
 				r.size.height = windowRect.size.height + screenSize.height/6;
 				
-				r.origin.x = MARGIN;
+				r.origin.x = margin;
 				r.origin.y = screenSize.height - r.size.height;
 				
 				break;
@@ -235,7 +249,7 @@ NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
 				r.size.height = windowRect.size.height;
 				
 				r.origin.x = windowRect.origin.x;
-				r.origin.y = windowRect.origin.y - menuBarHeight + MARGIN;
+				r.origin.y = windowRect.origin.y - menuBarHeight + margin;
 				
 				break;
 			case 1: // window origin is in right region
@@ -243,7 +257,7 @@ NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
 				r.size.height = windowRect.size.height;
 				
 				r.origin.x = screenSize.width - r.size.width;
-				r.origin.y = windowRect.origin.y - menuBarHeight + MARGIN;
+				r.origin.y = windowRect.origin.y - menuBarHeight + margin;
 				
 				break;
 			default:
@@ -260,16 +274,16 @@ NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
 				r.size.width = windowRect.size.width;
 				r.size.height = windowRect.size.height - screenSize.height/6;
 				
-				r.origin.x = windowRect.origin.x + MARGIN;
-				r.origin.y = windowRect.origin.y - menuBarHeight + MARGIN;
+				r.origin.x = windowRect.origin.x + margin;
+				r.origin.y = windowRect.origin.y - menuBarHeight + margin;
 				
 				break;
 			case 1: // window origin is in lower region
 				r.size.width = windowRect.size.width;
 				r.size.height = windowRect.size.height  - screenSize.height/6;
 				
-				r.origin.x = MARGIN;
-				r.origin.y = screenSize.height - r.size.height + MARGIN;
+				r.origin.x = margin;
+				r.origin.y = screenSize.height - r.size.height + margin;
 				
 				break;
 			default:

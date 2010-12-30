@@ -19,8 +19,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define MARGIN 8;
-
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
