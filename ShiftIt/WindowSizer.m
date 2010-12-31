@@ -68,12 +68,15 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 
 @synthesize lastActionExecuted;
 
+NSMutableDictionary *windowHistory = nil;
+
 // TODO: remove
 - (id)init {
 	if (![super init]) {
 		return nil;
 	}
 	
+  windowHistory = [[[NSMutableDictionary alloc] init] retain];
 	return self;
 }
 
@@ -203,50 +206,74 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	COCOA_TO_SCREEN_COORDINATES(visibleScreenRect);
 	FMTDevLog(@"visible screen rect: %@", RECT_STR(visibleScreenRect));	
 
-	// execute shift it action to reposition the application window
-	ShiftItFunctionRef actionFunction = [action action];
-	NSRect shiftedRect = actionFunction(visibleScreenRect.size, windowRect);
-	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
+	NSRect shiftedRect;
+	
+	FMTDevLog(@"preparing to query history");
+	NSNumber *handle = [NSNumber numberWithInt:window]; // MASSIVE hack, but I know this is unique
+	
+	// query history using window handle as index
+	NSMutableArray *history = [windowHistory objectForKey:handle];
 	 
-	 
-	// readjust adjust the visibility
-	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
-	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
-	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
-	shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
-	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
-	 
-	// we need to translate from cocoa coordinates
-	FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));	
-				
+	if (history == nil) {
+		history = [[[NSMutableArray alloc] init] retain]; 
+		[windowHistory setObject:history forKey:handle];
+	}
+	if ([action identifier] == @"undo" ) {
+		if ([history count] > 0) {
+  		  shiftedRect = [[history lastObject] rectValue];
+		  FMTDevLog(@"preparing to undo window rect: %@", RECT_STR(shiftedRect));
+		  [history removeLastObject];
+		}
+		else
+			return;
+	}
+	else {
+		[history addObject:[NSValue valueWithRect:windowRect]];
+    	ShiftItFunctionRef actionFunction = [action action];
+		shiftedRect = actionFunction(visibleScreenRect.size, windowRect);
+
+		// execute shift it action to reposition the application window
+		FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
+		 
+		// readjust adjust the visibility
+		// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
+		// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
+		// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
+		shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
+		shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
+		 
+		// we need to translate from cocoa coordinates
+		FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));	
+					
 #ifdef X11
-	if (activeWindowX11) {
-		// translate into X11 coordinates
-		shiftedRect.origin.x -= X11Ref.origin.x;
-		shiftedRect.origin.y -= X11Ref.origin.y;
-		
-		// it seems that the X11 server 2.3.5 on snow leopard 10.6.4 on mac book pro
-		// changes the origin of the coordinates depending on the relative 
-		// positions of the screens next to each other if there is a screen
-		// that is below the primary screen, than the X11 coordnates starts at
-		// [0,m] of the screen coordinates (quartz) where m is the height of the
-		// menu bar (GetMBarHeight()) otherwise it starts at [0,0].
-		BOOL screenBelowPrimary = NO;
-		for (NSScreen *s in [NSScreen screens]) {
-			NSRect r = [s frame];
-			COCOA_TO_SCREEN_COORDINATES(r);
-			if (r.origin.y > 0) {
-				screenBelowPrimary = YES;
-				break;
+		if (activeWindowX11) {
+			// translate into X11 coordinates
+			shiftedRect.origin.x -= X11Ref.origin.x;
+			shiftedRect.origin.y -= X11Ref.origin.y;
+			
+			// it seems that the X11 server 2.3.5 on snow leopard 10.6.4 on mac book pro
+			// changes the origin of the coordinates depending on the relative 
+			// positions of the screens next to each other if there is a screen
+			// that is below the primary screen, than the X11 coordnates starts at
+			// [0,m] of the screen coordinates (quartz) where m is the height of the
+			// menu bar (GetMBarHeight()) otherwise it starts at [0,0].
+			BOOL screenBelowPrimary = NO;
+			for (NSScreen *s in [NSScreen screens]) {
+				NSRect r = [s frame];
+				COCOA_TO_SCREEN_COORDINATES(r);
+				if (r.origin.y > 0) {
+					screenBelowPrimary = YES;
+					break;
+				}
 			}
-		}
-		
-		if (screenBelowPrimary || [screen isPrimary]) {
-			shiftedRect.origin.y -= GetMBarHeight();
-		}
-	} 
+			
+			if (screenBelowPrimary || [screen isPrimary]) {
+				shiftedRect.origin.y -= GetMBarHeight();
+			}
+		} 
 #endif // X11
 		
+	}
 	FMTDevLog(@"translated shifted rect: %@", RECT_STR(shiftedRect));
 	
 	x = (int) shiftedRect.origin.x;

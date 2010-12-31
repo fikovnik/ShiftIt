@@ -299,6 +299,10 @@ int margin = 8;
 	[dict setObject:largetile forKey:[largetile identifier]];
 	ShiftItAction *verticaltile = [[ShiftItAction alloc] initWithIdentifier:@"verticaltile" label:@"Vertical Tile" uiTag:14 action:&ShiftIt_VerticalRightTile];
 	[dict setObject:verticaltile forKey:[verticaltile identifier]];
+
+	// Special undo action that is handled separately
+	ShiftItAction *undo = [[ShiftItAction alloc] initWithIdentifier:@"undo" label:@"Undo" uiTag:15 action:&ShiftIt_Reduce]; //Reduce is dummy here
+	[dict setObject:undo forKey:[undo identifier]];
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }
@@ -384,7 +388,7 @@ int margin = 8;
 	
 	FMTDevLog(@"Invoking action: %@", identifier);
 	NSError *error = nil;
-	[windowSizer_ shiftFocusedWindowUsing:action error:&error];
+  [windowSizer_ shiftFocusedWindowUsing:action error:&error];
 	if (error) {
 		NSLog(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
 	}	
