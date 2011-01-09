@@ -213,7 +213,7 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-	if([keyPath compare:FMTStr(@"values.%@",kShowMenuPrefKey)] == NSOrderedSame) {
+	if([FMTStr(@"values.%@",kShowMenuPrefKey) isEqualToString:keyPath]) {
 		[self updateMenuBarIcon_];
 	} 
 }
