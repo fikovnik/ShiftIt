@@ -251,6 +251,7 @@ NSDictionary *allShiftActions = nil;
 
 - (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
 	FMTAssertNotNil(action);
+	FMTDevLog(@"updateStatusMenuShortcutForAction_:%@ keyCode:%d modifiers:%ld", [action identifier], keyCode, modifiers);
 
 	NSMenuItem *menuItem = [statusMenu_ itemWithTag:kSIMenuUITagPrefix+[action uiTag]];
 	FMTAssertNotNil(menuItem);
@@ -259,9 +260,18 @@ NSDictionary *allShiftActions = nil;
 	[menuItem setRepresentedObject:[action identifier]];
 	[menuItem setAction:@selector(shiftItMenuAction_:)];
 	
-	NSString *keyCodeString = (keyCode == -1) ? @"" : SRStringForKeyCode(keyCode);
-	[menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
-	[menuItem setKeyEquivalentModifierMask:modifiers];
+	if (keyCode != -1) {
+		NSString *keyCodeString = SRStringForKeyCode(keyCode);
+		if (!keyCodeString) {
+			FMTDevLog(@"Unable to get string representation for a key code: %ld", keyCode);
+			keyCodeString = @"";
+		}
+		[menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
+		[menuItem setKeyEquivalentModifierMask:modifiers];
+	} else {
+		[menuItem setKeyEquivalent:@""];
+		[menuItem setKeyEquivalentModifierMask:0];
+	}
 }
 
 - (void) initializeActions_ {

@@ -34,7 +34,7 @@
 	NSInteger keyCode_;
 	
 	/** 
-	 * Using the newer Cocoa modifiers
+	 * Using the Cocoa modifiers
 	 * 
 	 * @see NSEvent for NS*KeyMask (i.e.: NSCommandKeyMask)
 	 */
@@ -50,3 +50,7 @@
 - (BOOL)isEqualTo:(id)object;
 
 @end
+
+#pragma mark Key code and modifiers conversion methods
+
+NSString *FMTStringForCocoaModifiers(NSUInteger modifiers);
