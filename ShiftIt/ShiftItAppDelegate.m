@@ -174,7 +174,7 @@ NSDictionary *allShiftActions = nil;
     }
 	
 	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
-	windowSizer_ = [WindowSizer sharedWindowSize];
+	windowSizer_ = [WindowSizer sharedWindowSizer];
 	
 	[self initializeActions_];
 	[self updateMenuBarIcon_];

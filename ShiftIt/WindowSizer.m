@@ -61,7 +61,7 @@ extern short GetMBarHeight(void);
 
 @implementation WindowSizer
 
-SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
+SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSizer);
 
 // TODO: remove
 - (id)init {

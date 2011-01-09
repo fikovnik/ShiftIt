@@ -34,7 +34,7 @@
 	int menuBarHeight_;
 }
 
-+ (WindowSizer *) sharedWindowSize;
++ (WindowSizer *) sharedWindowSizer;
 
 - (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
 
