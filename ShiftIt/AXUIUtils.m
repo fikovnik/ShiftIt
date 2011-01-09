@@ -154,7 +154,7 @@ void AXUIFreeWindowRef(void *window) {
 }
 
 const char *AXUIGetErrorMessage(int code) {
-	FMTAssert(code < 0 && code > -kErrorMessageCount_, @"error code must be %d < code < 0", -kErrorMessageCount_);
+	FMTAssert(code < 0 && code >= -kErrorMessageCount_, @"error code must be %d < code < 0", -kErrorMessageCount_);
 	
 	return kErrorMessages_[-code-1];
 }
