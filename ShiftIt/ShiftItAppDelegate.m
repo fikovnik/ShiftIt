@@ -130,20 +130,6 @@ NSDictionary *allShiftActions = nil;
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults synchronize];
 
-	// check we are the only one
-	if (FMTNumberOfRunningProcessesWithBundleId(kShiftItAppBundleId) > 1) {
-        int ret = NSRunAlertPanel (@"ShiftIt is already running", 
-								   @"There is point to have more than instance at the same time so this one will now quit.", 
-								   @"Quit", 
-								   @"Show preferences",
-								   nil);
-		if (ret == NSAlertAlternateReturn) {
-                [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kShowPreferencesRequestNotification object:nil];
-        }
-		
-		[NSApp terminate:self];
-	}
-	
 	// check preferences
 	BOOL hasStartedBefore = [defaults boolForKey:kHasStartedBeforePrefKey];
 	
@@ -211,6 +197,13 @@ NSDictionary *allShiftActions = nil;
 		[hotKeyManager_ unregisterHotKey:hotKey];
 	}
 }
+
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows: (BOOL)flag{	
+	if(flag==NO){
+		[self showPreferences:nil];
+	}
+	return YES;
+} 
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
 	if([FMTStr(@"values.%@",kShowMenuPrefKey) isEqualToString:keyPath]) {

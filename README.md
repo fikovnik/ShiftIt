@@ -41,14 +41,7 @@ FAQ
 
 **I disabled the `Show Icon in Menu Bar` in the preferences, how can I get it back?how can I get it back?**
 
-Right now there are three options:
-
-1. In Terminal run: `open -na /Applications/ShiftIt.app` (or wherever you have installed it). This will attempt to run a new instance. It will show a dialog giving you an option to go the preferences.
-
-1. Manually change the preference value: form Terminal run: `defaults write org.shiftitapp.ShiftIt shiftItshowMenu 1` and then restart the app.
-
-1. Quit the app and start it from Terminal with a `-shiftItShowMenu`
-like: `/Applications/ShiftIt.app/Contents/MacOS/ShiftIt -shiftItshowMenu 1`
+Launch the application again. It will open the preference dialog.
 
 3rd Party Frameworks
 --------------------
