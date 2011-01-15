@@ -9,43 +9,18 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
-		27002A4412649E880062B6D6 /* X11Utils.c in Sources */ = {isa = PBXBuildFile; fileRef = 27002A4312649E880062B6D6 /* X11Utils.c */; };
 		27002B331266F5CA0062B6D6 /* AXUIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27002B321266F5CA0062B6D6 /* AXUIUtils.m */; };
-		27002DE81269CA1B0062B6D6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
-		27002DE91269CA1B0062B6D6 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
-		27002DEA1269CA1B0062B6D6 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */; };
-		27002DEB1269CA1B0062B6D6 /* ShiftIt-menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */; };
-		27002DEC1269CA1B0062B6D6 /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
-		27002DEE1269CA1B0062B6D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		27002DEF1269CA1B0062B6D6 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
-		27002DF11269CA1B0062B6D6 /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PreferencesWindowController.m */; };
-		27002DF21269CA1B0062B6D6 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
-		27002DF31269CA1B0062B6D6 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
-		27002DF91269CA1B0062B6D6 /* AXUIUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27002B321266F5CA0062B6D6 /* AXUIUtils.m */; };
-		27002DFB1269CA1B0062B6D6 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
-		27002DFC1269CA1B0062B6D6 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		27002DFD1269CA1B0062B6D6 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DC61EE1127C862000E1A5B /* Carbon.framework */; };
-		27002E011269CA1B0062B6D6 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		2708BF011260E10900192883 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
 		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
 		277F48E812E1EA5C0091B3FF /* WindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F48E712E1EA5C0091B3FF /* WindowManager.m */; };
-		277F48E912E1EA5C0091B3FF /* WindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F48E712E1EA5C0091B3FF /* WindowManager.m */; };
-		27A14D801269CCA200E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
-		27A14D831269CCAB00E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
-		27A14EC11269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
 		27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
 		27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */; };
 		27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */; };
-		27F4FD4E12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
-		27F4FD4F12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */; };
-		27F4FD5012730F2F00A65750 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */; };
 		27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5312730F4600A65750 /* FMTLoginItems.m */; };
 		27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5512730F4600A65750 /* FMTUtils.m */; };
-		27F4FD5812730F4600A65750 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5312730F4600A65750 /* FMTLoginItems.m */; };
-		27F4FD5912730F4600A65750 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5512730F4600A65750 /* FMTUtils.m */; };
 		83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */; };
 		83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -59,17 +34,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		27002DFF1269CA1B0062B6D6 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				27A14D831269CCAB00E68263 /* ShortcutRecorder.framework in CopyFiles */,
-				27002E011269CA1B0062B6D6 /* Sparkle.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F270823F117FCFD600C0A04C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -90,11 +54,8 @@
 		256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* ShiftIt_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt_Prefix.pch; sourceTree = "<group>"; };
-		27002A4212649E880062B6D6 /* X11Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X11Utils.h; sourceTree = "<group>"; };
-		27002A4312649E880062B6D6 /* X11Utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = X11Utils.c; sourceTree = "<group>"; };
 		27002B311266F5CA0062B6D6 /* AXUIUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXUIUtils.h; sourceTree = "<group>"; };
 		27002B321266F5CA0062B6D6 /* AXUIUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXUIUtils.m; sourceTree = "<group>"; };
-		27002E051269CA1B0062B6D6 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2708BEFF1260E10900192883 /* ShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAction.h; sourceTree = "<group>"; };
 		2708BF001260E10900192883 /* ShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAction.m; sourceTree = "<group>"; };
 		2708BF101260E5BB00192883 /* DefaultShiftItActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShiftItActions.h; sourceTree = "<group>"; };
@@ -129,17 +90,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		27002DFA1269CA1B0062B6D6 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27002DFB1269CA1B0062B6D6 /* Sparkle.framework in Frameworks */,
-				27002DFC1269CA1B0062B6D6 /* Cocoa.framework in Frameworks */,
-				27002DFD1269CA1B0062B6D6 /* Carbon.framework in Frameworks */,
-				27A14D801269CCA200E68263 /* ShortcutRecorder.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8D11072E0486CEB800E47090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -168,8 +118,6 @@
 				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
 				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
 				2708C2551261C8E800192883 /* ShiftIt.h */,
-				27002A4212649E880062B6D6 /* X11Utils.h */,
-				27002A4312649E880062B6D6 /* X11Utils.c */,
 				27002B311266F5CA0062B6D6 /* AXUIUtils.h */,
 				27002B321266F5CA0062B6D6 /* AXUIUtils.m */,
 			);
@@ -199,7 +147,6 @@
 			isa = PBXGroup;
 			children = (
 				8D1107320486CEB800E47090 /* ShiftIt.app */,
-				27002E051269CA1B0062B6D6 /* ShiftIt.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -294,25 +241,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		27002DE61269CA1B0062B6D6 /* ShiftIt-noX11 */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 27002E021269CA1B0062B6D6 /* Build configuration list for PBXNativeTarget "ShiftIt-noX11" */;
-			buildPhases = (
-				27002DE71269CA1B0062B6D6 /* Resources */,
-				27002DED1269CA1B0062B6D6 /* Sources */,
-				27002DFA1269CA1B0062B6D6 /* Frameworks */,
-				27002DFF1269CA1B0062B6D6 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "ShiftIt-noX11";
-			productInstallPath = "$(HOME)/Applications";
-			productName = ShiftIt;
-			productReference = 27002E051269CA1B0062B6D6 /* ShiftIt.app */;
-			productType = "com.apple.product-type.application";
-		};
 		8D1107260486CEB800E47090 /* ShiftIt */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "ShiftIt" */;
@@ -351,25 +279,11 @@
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* ShiftIt */,
-				27002DE61269CA1B0062B6D6 /* ShiftIt-noX11 */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		27002DE71269CA1B0062B6D6 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27002DE81269CA1B0062B6D6 /* InfoPlist.strings in Resources */,
-				27002DE91269CA1B0062B6D6 /* MainMenu.xib in Resources */,
-				27002DEA1269CA1B0062B6D6 /* PreferencesWindow.xib in Resources */,
-				27002DEB1269CA1B0062B6D6 /* ShiftIt-menuIcon.png in Resources */,
-				27002DEC1269CA1B0062B6D6 /* ShiftIt.icns in Resources */,
-				27A14EC11269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8D1107290486CEB800E47090 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -386,25 +300,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		27002DED1269CA1B0062B6D6 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27002DEE1269CA1B0062B6D6 /* main.m in Sources */,
-				27002DEF1269CA1B0062B6D6 /* ShiftItAppDelegate.m in Sources */,
-				27002DF11269CA1B0062B6D6 /* PreferencesWindowController.m in Sources */,
-				27002DF21269CA1B0062B6D6 /* ShiftItAction.m in Sources */,
-				27002DF31269CA1B0062B6D6 /* DefaultShiftItActions.m in Sources */,
-				27002DF91269CA1B0062B6D6 /* AXUIUtils.m in Sources */,
-				27F4FD4E12730F2F00A65750 /* FMTHotKey.m in Sources */,
-				27F4FD4F12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */,
-				27F4FD5012730F2F00A65750 /* FMTHotKeyManager.m in Sources */,
-				27F4FD5812730F4600A65750 /* FMTLoginItems.m in Sources */,
-				27F4FD5912730F4600A65750 /* FMTUtils.m in Sources */,
-				277F48E912E1EA5C0091B3FF /* WindowManager.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8D11072C0486CEB800E47090 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,7 +309,6 @@
 				F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */,
 				2708BF011260E10900192883 /* ShiftItAction.m in Sources */,
 				2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */,
-				27002A4412649E880062B6D6 /* X11Utils.c in Sources */,
 				27002B331266F5CA0062B6D6 /* AXUIUtils.m in Sources */,
 				27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */,
 				27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */,
@@ -447,61 +341,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		27002E031269CA1B0062B6D6 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				COPY_PHASE_STRIP = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\\\"$(SRCROOT)/build/Release\\\"",
-					"\\\"$(SRCROOT)\\\"",
-					"\"$(SRCROOT)/../../../../Development/objc/shortcutrecorder-read-only/build/Release\"",
-					"\"$(SRCROOT)\"",
-				);
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
-				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "_DEBUGPRINTS_=1";
-				INFOPLIST_FILE = "ShiftIt-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_CFLAGS = "";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = ShiftIt;
-				SDKROOT = macosx10.5;
-				WARNING_CFLAGS = "-Wall";
-			};
-			name = Debug;
-		};
-		27002E041269CA1B0062B6D6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				FRAMEWORK_SEARCH_PATHS = (
-					"\\\"$(SRCROOT)/build/Release\\\"",
-					"\\\"$(SRCROOT)\\\"",
-					"\"$(SRCROOT)/../../../../Development/objc/shortcutrecorder-read-only/build/Release\"",
-					"\"$(SRCROOT)\"",
-				);
-				GCC_MODEL_TUNING = G5;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
-				INFOPLIST_FILE = "ShiftIt-Info.plist";
-				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_CFLAGS = "-NDEBUG";
-				OTHER_LDFLAGS = "";
-				PRODUCT_NAME = ShiftIt;
-				SDKROOT = macosx10.5;
-				WARNING_CFLAGS = "-Wall";
-			};
-			name = Release;
-		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -529,10 +368,8 @@
 				GCC_WARN_SHADOW = NO;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-L/usr/X11/lib",
-					"-lX11",
-				);
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = ShiftIt;
 				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wall";
@@ -561,10 +398,8 @@
 				GCC_WARN_SHADOW = NO;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-L/usr/X11/lib",
-					"-lX11",
-				);
+				OTHER_CFLAGS = "-DNDEBUG";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = ShiftIt;
 				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wall";
@@ -623,15 +458,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		27002E021269CA1B0062B6D6 /* Build configuration list for PBXNativeTarget "ShiftIt-noX11" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				27002E031269CA1B0062B6D6 /* Debug */,
-				27002E041269CA1B0062B6D6 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "ShiftIt" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
