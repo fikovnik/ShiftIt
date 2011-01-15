@@ -21,6 +21,8 @@
 
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_LeftCycle(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_RightCycle(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);

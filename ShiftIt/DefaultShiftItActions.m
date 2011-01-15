@@ -20,13 +20,41 @@
 #import "DefaultShiftItActions.h"
 #import "FMTDefines.h"
 
+CGFloat equalsWithinTolerance(CGFloat a, CGFloat b) {
+	return abs(a-b) < 10; // test absolute within 5 pixel (units or dots?)
+}
+
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
 	r.origin.x = 0;
 	r.origin.y = 0;
-	
+
 	r.size.width = screenSize.width / 2;
+	r.size.height = screenSize.height;
+	
+	return r;
+}
+
+NSRect ShiftIt_LeftCycle(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	r.origin.x = 0;
+	r.origin.y = 0;
+
+	
+	// NSLog(@"window rect: [%f %f] [%f %f]", windowRect.origin.x, windowRect.origin.y, windowRect.size.width, windowRect.size.height);
+
+	// Cycle in order 1/2 to 2/3 to 1/3
+	// if (!equalsWithinTolerance(windowRect.origin.x, 0)) // init 
+	// 	r.size.width = screenSize.width * 1.0 / 2.0;
+	if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 1.0 / 2.0 ))
+		r.size.width = screenSize.width * 2.0 / 3.0;
+	else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 2.0 / 3.0 ))
+		r.size.width = screenSize.width * 1.0 / 3.0;
+	else 
+		r.size.width = screenSize.width * 1.0 / 2.0;
+	
 	r.size.height = screenSize.height;
 	
 	return r;
@@ -35,12 +63,40 @@ NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	r.origin.x = screenSize.width/2;
+	r.origin.x = screenSize.width / 2;
 	r.origin.y = 0;
 	
 	r.size.width = screenSize.width / 2;
 	r.size.height = screenSize.height;
 
+	return r;
+}
+
+NSRect ShiftIt_RightCycle(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	// Cycle in order 1/2 to 1/3 to 2/3 and back 
+	if (!equalsWithinTolerance(windowRect.origin.x, screenSize.width * 1.0 / 2.0)) // init
+		r.origin.x = screenSize.width * 1.0 / 2.0;
+	else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * 1.0 / 2.0 ))
+		r.origin.x = screenSize.width * 2.0 / 3.0;
+	else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * 2.0 / 3.0 ))
+		r.origin.x = screenSize.width * 1.0 / 3.0;
+	else
+		r.origin.x = screenSize.width * 1.0 / 2.0;
+
+	r.origin.y = 0;
+	
+	// // Cycle in order 1/2 to 2/3 to 1/3
+	// if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 1.0 / 2.0 ))
+	// 	r.size.width = screenSize.width * 2.0 / 3.0;
+	// else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 2.0 / 3.0 ))
+	// 	r.size.width = screenSize.width * 1.0 / 3.0;
+	// else 
+		r.size.width = screenSize.width * 1.0 / 2.0;
+	
+	r.size.height = screenSize.height;
+	
 	return r;
 }
 
@@ -123,6 +179,18 @@ NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
 	r.origin.y = 0;
 	
 	r.size.width = screenSize.width;
+	r.size.height = screenSize.height;
+	
+	return r;
+}
+
+NSRect ShiftIt_FullHeight(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	r.origin.x = windowRect.origin.x;
+	r.origin.y = 0;
+	
+	r.size.width = windowRect.size.width;
 	r.size.height = screenSize.height;
 	
 	return r;
