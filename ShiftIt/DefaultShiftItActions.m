@@ -22,6 +22,35 @@
 
 #define CYCLE_FRACTION_HORIZ (1.0/10.0) // will cycle about 2/5 and 3/5
 #define CYCLE_FRACTION_VERT (1.0/6.0) // will cycle about 1/3 and 2/3
+#define HZONE(a) findHorizZone(a, screenSize)
+
+CGFloat equalsWithinTolerance(CGFloat a, CGFloat b) {
+	return abs(a-b) < 10; // test absolute within 5 pixel (units or dots?)
+}
+
+enum Zone { 
+	Left, 
+	MiddleLeft, 
+	Middle, 
+	MiddleRight, 
+	Right,
+	None
+};
+
+Zone findHorizZone(CGFloat a, NSSize screenSize) {
+	if (equalsWithinTolerance(a, 0))
+		return Left;
+	else if (equalsWithinTolerance(a, screenSize.width * (0.5-CYCLE_FRACTION_HORIZ)))
+		return MiddleLeft;
+	else if (equalsWithinTolerance(a, screenSize.width * (0.5)))
+		return Middle;
+	else if (equalsWithinTolerance(a, screenSize.width * (0.5-CYCLE_FRACTION_HORIZ)))
+		return MiddleRight;
+	else if (equalsWithinTolerance(a, screenSize.width * (1.0)))
+		return Right;
+	else
+		return None;
+}
 
 CGFloat equalsWithinTolerance(CGFloat a, CGFloat b) {
 	return abs(a-b) < 10; // test absolute within 5 pixel (units or dots?)
