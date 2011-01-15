@@ -190,6 +190,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	
 	// screen coordinates of the best fit window
 	NSRect screenRect = [screen frame];
+
 	FMTDevLog(@"screen rect (cocoa): %@", RECT_STR(screenRect));	
 	COCOA_TO_SCREEN_COORDINATES(screenRect);
 	FMTDevLog(@"screen rect: %@", RECT_STR(screenRect));	
@@ -197,6 +198,10 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	// visible screen coordinates of the best fit window
 	// the visible screen denotes some inner rect of the screen rect which is visible - not occupied by menu bar or dock
 	NSRect visibleScreenRect = [screen visibleFrame];
+	// make windowRect relative according to its screen frame
+	windowRect.origin.x = windowRect.origin.x - visibleScreenRect.origin.x;
+	windowRect.origin.y = windowRect.origin.y - visibleScreenRect.origin.y;
+	
 	FMTDevLog(@"visible screen rect (cocoa): %@", RECT_STR(visibleScreenRect));	
 	COCOA_TO_SCREEN_COORDINATES(visibleScreenRect);
 	FMTDevLog(@"visible screen rect: %@", RECT_STR(visibleScreenRect));	
@@ -210,8 +215,8 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
 	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
 	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
-	shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
-	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
+	shiftedRect.origin.x += visibleScreenRect.origin.x;
+	shiftedRect.origin.y += visibleScreenRect.origin.y;
 
 	// we need to translate from cocoa coordinates
 	FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));	

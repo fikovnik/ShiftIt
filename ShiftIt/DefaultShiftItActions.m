@@ -42,13 +42,10 @@ NSRect ShiftIt_LeftCycle(NSSize screenSize, NSRect windowRect) {
 	r.origin.x = 0;
 	r.origin.y = 0;
 
-	
-	// NSLog(@"window rect: [%f %f] [%f %f]", windowRect.origin.x, windowRect.origin.y, windowRect.size.width, windowRect.size.height);
-
 	// Cycle in order 1/2 to 2/3 to 1/3
-	// if (!equalsWithinTolerance(windowRect.origin.x, 0)) // init 
-	// 	r.size.width = screenSize.width * 1.0 / 2.0;
-	if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 1.0 / 2.0 ))
+	if (!equalsWithinTolerance(windowRect.origin.x, 0)) // init 
+		r.size.width = screenSize.width * 1.0 / 2.0;
+	else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 1.0 / 2.0 ))
 		r.size.width = screenSize.width * 2.0 / 3.0;
 	else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 2.0 / 3.0 ))
 		r.size.width = screenSize.width * 1.0 / 3.0;
@@ -75,27 +72,27 @@ NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 NSRect ShiftIt_RightCycle(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
-	// Cycle in order 1/2 to 1/3 to 2/3 and back 
-	if (!equalsWithinTolerance(windowRect.origin.x, screenSize.width * 1.0 / 2.0)) // init
-		r.origin.x = screenSize.width * 1.0 / 2.0;
-	else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * 1.0 / 2.0 ))
-		r.origin.x = screenSize.width * 2.0 / 3.0;
-	else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * 2.0 / 3.0 ))
-		r.origin.x = screenSize.width * 1.0 / 3.0;
-	else
-		r.origin.x = screenSize.width * 1.0 / 2.0;
-
-	r.origin.y = 0;
-	
-	// // Cycle in order 1/2 to 2/3 to 1/3
-	// if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 1.0 / 2.0 ))
-	// 	r.size.width = screenSize.width * 2.0 / 3.0;
-	// else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 2.0 / 3.0 ))
-	// 	r.size.width = screenSize.width * 1.0 / 3.0;
-	// else 
-		r.size.width = screenSize.width * 1.0 / 2.0;
-	
+	r.origin.y = 0;	
 	r.size.height = screenSize.height;
+	
+	// Cycle in order 1/2 to 1/3 to 2/3 and back 
+	if (!equalsWithinTolerance(windowRect.origin.x+windowRect.size.width, screenSize.width)) { // init
+		r.origin.x = screenSize.width * 1.0 / 2.0;
+		r.size.width = screenSize.width * 1.0 / 2.0;
+	} else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * 1.0 / 2.0 )) {
+		r.origin.x = screenSize.width * 2.0 / 3.0;
+		r.size.width = screenSize.width * 1.0 / 3.0;
+	} else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * 2.0 / 3.0 )) {
+		r.origin.x = screenSize.width * 1.0 / 3.0;
+		r.size.width = screenSize.width * 2.0 / 3.0;
+	} else {
+		r.origin.x = screenSize.width * 1.0 / 2.0;
+		r.size.width = screenSize.width * 1.0 / 2.0;
+	}
+
+	NSLog(@"windowRect: [%f %f] [%f %f]", windowRect.origin.x, windowRect.origin.y, windowRect.size.width, windowRect.size.height);
+	NSLog(@"shiftRect: [%f %f] [%f %f]", r.origin.x, r.origin.y, r.size.width, r.size.height);
+
 	
 	return r;
 }
