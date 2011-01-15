@@ -36,12 +36,12 @@ CGFloat equalsWithinTolerance(CGFloat a, CGFloat b) {
 }
 
 typedef enum { 
-	Left, 
+	Left, // 0
 	MiddleLeft, 
 	Middle, 
 	MiddleRight, 
 	Right,
-	None
+	NoZone // 5
 } Zone;
 
 Zone findHorizZone(CGFloat a, NSSize screenSize) {
@@ -51,12 +51,12 @@ Zone findHorizZone(CGFloat a, NSSize screenSize) {
 		return MiddleLeft;
 	else if (equalsWithinTolerance(a, screenSize.width * (0.5)))
 		return Middle;
-	else if (equalsWithinTolerance(a, screenSize.width * (0.5-CYCLE_FRACTION_HORIZ)))
+	else if (equalsWithinTolerance(a, screenSize.width * (0.5+CYCLE_FRACTION_HORIZ)))
 		return MiddleRight;
 	else if (equalsWithinTolerance(a, screenSize.width ))
 		return Right;
 	else
-		return None;
+		return NoZone;
 }
 
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
@@ -76,19 +76,36 @@ NSRect ShiftIt_LeftCycle(NSSize screenSize, NSRect windowRect) {
 	
 	r.origin.x = 0;
 	r.origin.y = 0;
-
-	// Cycle in order 1/2 and 1/2 (+/-) fraction offset from center
-	if (! (HZONE(windowRect.origin.x) == Left)) // init 
-		r.size.width = screenSize.width * 0.5;
-	else if (HZONE(windowRect.size.width) == Middle)
-		r.size.width = screenSize.width * MIDDLE_LEFT_ZONE_FRACTION;
-	else if (HZONE(windowRect.size.width) == MiddleLeft)
-		r.size.width = screenSize.width * MIDDLE_RIGHT_ZONE_FRACTION;
-	else 
-		r.size.width = screenSize.width * MIDDLE_ZONE_FRACTION;
-	
 	r.size.height = screenSize.height;
+
+	// Cycle in order 1/2 and 1/2 (-/+) fraction offset from center
+	Zone originZone = HZONE(windowRect.origin.x);
+	Zone widthZoneSize = HZONE(windowRect.size.width);
 	
+	NSLog(@"originZone: %d", originZone);
+	NSLog(@"widthZoneSize: %d", widthZoneSize);
+	
+	CGFloat newWidthFrac = MIDDLE_ZONE_FRACTION;
+	
+	if (originZone == NoZone) // initialize
+		newWidthFrac = MIDDLE_ZONE_FRACTION;
+	else if (originZone != Left) { // flip sides
+		switch (widthZoneSize) {
+			case MiddleLeft:  newWidthFrac = MIDDLE_RIGHT_ZONE_FRACTION; break;
+			case MiddleRight: newWidthFrac = MIDDLE_LEFT_ZONE_FRACTION; break;
+			default:          newWidthFrac = MIDDLE_ZONE_FRACTION;
+		}
+	} 
+	else { // cycle
+		switch (widthZoneSize) {
+			case Middle:      newWidthFrac = MIDDLE_LEFT_ZONE_FRACTION; break;
+			case MiddleLeft:  newWidthFrac = MIDDLE_RIGHT_ZONE_FRACTION; break;
+			case MiddleRight: newWidthFrac = MIDDLE_ZONE_FRACTION; break;
+		}
+	}
+	
+	r.size.width = screenSize.width * newWidthFrac;
+		
 	return r;
 }
 
