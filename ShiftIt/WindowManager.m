@@ -23,12 +23,35 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "ShiftIt.h"
 #import "ShiftItAction.h"
 #import "FMTDefines.h"
-#import "AXUIUtils.h"
 
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
+#define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
 
 // reference to the carbon GetMBarHeight() function
 extern short GetMBarHeight(void);
+
+// AXUI helpers
+// TODO: convert to NSString
+static const char *const kAXUIErrorMessages_[] = {
+	"AXError: Unable to get active application",
+	"AXError: Unable to get active window",
+	"AXError: Unable to get active window position",
+	"AXError: Unable to extract position",
+	"AXError: Unable to get focused window size",
+	"AXError: Unable to extract position",
+	"AXError: Position cannot be changed",
+	"AXError: Size cannot be modified"
+};
+
+#define AXUIGetErrorMessage(idx) kAXUIErrorMessages_[-idx-1]
+
+int AXUIGetFocusedWindowId(WindowId *windowId, AXUIElementRef axSystemWideElement);
+void AXUIFreeWindowId(WindowId windowId);
+int AXUIGetWindowGeometry(WindowId windowId, NSPoint *origin, NSSize *size);
+int AXUISetWindowPosition(WindowId windowId, NSPoint origin);
+int AXUISetWindowSize(WindowId windowId, NSSize size);
+
+#pragma mark NSScreen Private Additions
 
 @interface NSScreen (Private)
 
@@ -49,154 +72,194 @@ extern short GetMBarHeight(void);
 
 @end
 
-#define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
+#pragma mark Screen Implementation
 
-@interface WindowManager (Private)
+@interface Screen ()
+
+@property (readonly) NSRect screenFrame_;
+@property (readonly) NSRect visibleFrame_;
+
+@end
+
+@implementation Screen
+
+@dynamic size;
+@synthesize primary = primary_;
+
+@synthesize screenFrame_;
+@synthesize visibleFrame_;
+
+- (id) initWithNSScreen:(NSScreen *)screen {
+	FMTAssertNotNil(screen);
+	
+	if (![super init]) {
+		return nil;
+	}
+	
+	// screen coordinates of the best fit window
+	screenFrame_ = [screen frame];
+	COCOA_TO_SCREEN_COORDINATES(screenFrame_);
+	
+	// visible screen coordinates of the best fit window
+	// the visible screen denotes some inner rect of the screen frame
+	// which is visible - not occupied by menu bar or dock
+	visibleFrame_ = [screen visibleFrame];
+	COCOA_TO_SCREEN_COORDINATES(visibleFrame_);
+	
+	primary_ = [screen isPrimary];
+	
+	return self;
+}
+
+- (NSSize) size {
+	return visibleFrame_.size;
+}
+
+@end
+
+#pragma mark Window Implementation
+
+@interface Window ()
+
+@property (readonly) WindowId windowId_;
+
+@end
+
+@implementation Window
+
+@dynamic origin;
+@dynamic size;
+@synthesize screen = screen_;
+
+@synthesize windowId_;
+
+- (id) initWithId:(WindowId)windowId rect:(NSRect)rect screen:(Screen *)screen {
+	FMTAssertNotNil(windowId);
+	FMTAssertNotNil(screen);
+	
+	if (![super init]) {
+		return nil;
+	}
+	
+	windowId_ = windowId;
+	rect_ = rect;
+	screen_ = [screen retain];
+	
+	return self;
+}
+
+- (void) dealloc {
+	CFRelease(windowId_);
+	[screen_ release];
+	
+	[super dealloc];
+}
+
+- (NSPoint) origin {
+	return rect_.origin;
+}
+
+- (NSSize) size {
+	return rect_.size;
+}
+
+@end
+
+#pragma mark WindowManager Implementation
+
+@interface WindowManager ()
 
 - (NSScreen *)chooseScreenForWindow_:(NSRect)windowRect;
 
 @end
 
-
 @implementation WindowManager
 
-SINGLETON_BOILERPLATE(WindowManager, sharedWindowManager);
-
-// TODO: remove
 - (id)init {
 	if (![super init]) {
 		return nil;
 	}
 	
+	axSystemWideElement_ = AXUIElementCreateSystemWide();
+	// here is the assert for purpose because the app should not have gone 
+	// that far in execution if the AX api is not available
+	FMTAssertNotNil(axSystemWideElement_);
+	
 	return self;
 }
 
-
-/**
- * The method is the heart of the ShiftIt app. It takes an
- * ShiftItAction and applies it to the current window.
- *
- * In order to understand what exactly what is going on it is important
- * to understand how the graphic coordinates works in OSX. There are two
- * coordinates systems: screen (quartz core graphics) and cocoa. The
- * former one has and origin on the top left corner of the primary
- * screen (the one with a menu bar) and the coordinates grows in east
- * and south direction. The latter has origin in the bottom left corner
- * of the primary window and grows in east and north direction. The
- * overview of the cocoa coordinates is in [1]. X11 on the other 
- * hand have its coordinate system originating on the
- * top left corner of the most top left window [2]. 
- *
- * In this method all coordinates are translated to be the screen
- * coordinates.
- * 
- * [1] http://bit.ly/aSmfae (apple official docs)
- * 
- * [2] http://www.linuxjournal.com/article/4879
- */
- - (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error {
-	FMTAssertNotNil(action);
-		
-	// window reference - windowing system agnostic
-	void *window = NULL;
+- (void) dealloc {
+	CFRelease(axSystemWideElement_);
 	
-	// coordinates vars
-	int x = 0, y = 0;
-	unsigned int width = 0, height = 0;
+	[super dealloc];
+}
 
-	// error handling vars
-	int errorCode = 0;
-	
-	// active window geometry
+- (void) focusedWindow:(Window **)window error:(NSError **)error {
+	WindowId windowId;
+	int ret;
 	
 	// first try to get the window using accessibility API
-	errorCode = AXUIGetActiveWindow(&window);
-	
-	if (errorCode != 0) {
-		*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToGetActiveWindowErrorCode);
-		return;
-	} else {
-		int errorCode = AXUIGetWindowGeometry(window, &x, &y, &width, &height);
-		
-		if (errorCode != 0) {
-			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToGetWindowGeometryErrorCode);
-			return;
-		}
+	if ((ret = AXUIGetFocusedWindowId(&windowId, axSystemWideElement_)) != 0) {
+		*error = CreateError(kUnableToGetActiveWindowErrorCode, FMTStrc(AXUIGetErrorMessage(ret)), nil);
+		return;		
 	}
 	
-	// the window rect in screen coordinates
-	NSRect windowRect = {
-		{x, y},
-		{width, height}
-	};
-	FMTDevLog(@"window rect: %@", RECT_STR(windowRect));
+	NSRect windowRect;
+	if ((ret = AXUIGetWindowGeometry(windowId, &windowRect.origin, &windowRect.size)) != 0) {
+		*error = CreateError(kUnableToGetWindowGeometryErrorCode, FMTStrc(AXUIGetErrorMessage(ret)), nil);
+		return;			
+	}
 	
-#ifndef NDEBUG
-	 // dump screen info
-	 for (NSScreen *screen in [NSScreen screens]) {
-		 NSRect frame = [screen frame];
-		 NSRect visibleFrame = [screen visibleFrame];
-		 
-		 COCOA_TO_SCREEN_COORDINATES(frame);
-		 COCOA_TO_SCREEN_COORDINATES(visibleFrame);
-		 FMTDevLog(@"Screen info: %@ frame: %@ visible frame: %@",screen, RECT_STR(frame), RECT_STR(visibleFrame));
-	 }
-#endif		 
-	 
-	// get the screen which is the best fit for the window
-	NSScreen *screen = [self chooseScreenForWindow_:windowRect];
+	NSScreen *nsscreen = [self chooseScreenForWindow_:windowRect];
+	FMTAssertNotNil(nsscreen);
+	Screen *screen = [[Screen alloc] initWithNSScreen:nsscreen];
 	
-	// screen coordinates of the best fit window
-	NSRect screenRect = [screen frame];
-	FMTDevLog(@"screen rect (cocoa): %@", RECT_STR(screenRect));	
-	COCOA_TO_SCREEN_COORDINATES(screenRect);
-	FMTDevLog(@"screen rect: %@", RECT_STR(screenRect));	
+	*window = [[Window alloc] initWithId:windowId rect:windowRect screen:screen];
+}
 
-	// visible screen coordinates of the best fit window
-	// the visible screen denotes some inner rect of the screen rect which is visible - not occupied by menu bar or dock
-	NSRect visibleScreenRect = [screen visibleFrame];
-	FMTDevLog(@"visible screen rect (cocoa): %@", RECT_STR(visibleScreenRect));	
-	COCOA_TO_SCREEN_COORDINATES(visibleScreenRect);
-	FMTDevLog(@"visible screen rect: %@", RECT_STR(visibleScreenRect));	
-
-	// execute shift it action to reposition the application window
-	ShiftItFunctionRef actionFunction = [action action];
-	NSRect shiftedRect = actionFunction(visibleScreenRect.size, windowRect);
-	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
-	 
+- (void) moveWindow:(Window *)window origin:(NSPoint)origin error:(NSError **)error {
+	FMTAssertNotNil(window);
+	
 	// readjust adjust the visibility
 	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
 	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
 	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
-	shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
-	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
-
-	// we need to translate from cocoa coordinates
-	FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));							
+	origin.x += [[window screen] visibleFrame_].origin.x;
+	origin.y += [[window screen] visibleFrame_].origin.y;
 	
-	x = (int) shiftedRect.origin.x;
-	y = (int) shiftedRect.origin.y;
-	width = (unsigned int) shiftedRect.size.width;
-	height = (unsigned int) shiftedRect.size.height;
-		
-	// adjust window geometry
-	// there are apps that does not size continuously but rather discretely so
-	// they have to be re-adjusted hence first set the size and then position
-		FMTDevLog(@"adjusting position to %dx%d", x, y);
-		errorCode = AXUISetWindowPosition(window, x, y);
-		if (errorCode != 0) {
-			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
-			return;
-		}
-		
-		FMTDevLog(@"adjusting size to %dx%d", width, height);
-		errorCode = AXUISetWindowSize(window, width, height);
-		if (errorCode != 0) {
-			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
-			return;
-		}
-	AXUIFreeWindowRef(window);
+	FMTDevLog(@"adjusting position to %dx%d", origin.x, origin.y);
+	int ret;
+	
+	if ((ret = AXUISetWindowPosition([window windowId_], origin)) != 0) {
+		*error = CreateError(kUnableToChangeWindowPositionErrorCode, FMTStrc(AXUIGetErrorMessage(ret)), nil);
+		return;
+	}	
 }
+
+- (void) resizeWindow:(Window *)window size:(NSSize)size error:(NSError **)error {
+	FMTAssertNotNil(window);
+		
+	FMTDevLog(@"adjusting size to %dx%d", size);
+	int ret;
+	
+	if ((ret = AXUISetWindowSize([window windowId_], size)) != 0) {
+		*error = CreateError(kUnableToChangeWindowSizeErrorCode, FMTStrc(AXUIGetErrorMessage(ret)), nil);
+		return;
+	}	
+}
+
+- (void) shiftWindow:(Window *)window origin:(NSPoint)origin size:(NSSize)size error:(NSError **)error {
+	FMTAssertNotNil(window);
+
+	NSError *localError = nil;
+	
+	[self moveWindow:window origin:origin error:&localError];
+	HANDLE_WM_ERROR(error,localError);
+	
+	[self resizeWindow:window size:size error:&localError];
+	HANDLE_WM_ERROR(error,localError);
+}
+
 
 /**
  * Chooses the best screen for the given window rect (screen coord).
@@ -231,3 +294,117 @@ SINGLETON_BOILERPLATE(WindowManager, sharedWindowManager);
 }
 
 @end
+
+#pragma mark AXUI utilities
+
+int AXUIGetFocusedWindowId(WindowId *windowId, AXUIElementRef axSystemWideElement) {	
+	//get the focused application
+	AXUIElementRef focusedAppRef = nil;
+	
+	AXError ret = AXUIElementCopyAttributeValue(axSystemWideElement,
+													(CFStringRef) kAXFocusedApplicationAttribute,
+													(CFTypeRef *) &focusedAppRef);	
+	if (ret != kAXErrorSuccess) {
+		return -1;
+	}
+	
+	FMTAssertNotNil(focusedAppRef);
+	
+	//get the focused window
+	AXUIElementRef focusedWindowRef = nil;
+	
+	ret = AXUIElementCopyAttributeValue((AXUIElementRef)focusedAppRef,
+											(CFStringRef)NSAccessibilityFocusedWindowAttribute,
+											(CFTypeRef*)&focusedWindowRef);
+	CFRelease(focusedAppRef);
+	
+	if (ret != kAXErrorSuccess) {
+		return -2;
+	}
+	
+	*windowId = (WindowId)focusedWindowRef;
+	
+	return 0;
+}
+
+void AXUIFreeWindowId(WindowId windowId) {
+	FMTAssertNotNil(windowId);
+	
+	CFRelease((CFTypeRef) windowId);
+}
+
+int AXUIGetWindowGeometry(WindowId windowId, NSPoint *origin, NSSize *size) {
+	FMTAssertNotNil(windowId);
+	FMTAssertNotNil(origin);
+	FMTAssertNotNil(size);
+		
+	//get the position
+	CFTypeRef originRef;
+	
+	AXError ret = AXUIElementCopyAttributeValue((AXUIElementRef)windowId,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)&originRef);
+	if (ret != kAXErrorSuccess) {
+		return -3;
+	}
+	
+	FMTAssertNotNil(originRef);
+	if(AXValueGetType(originRef) == kAXValueCGPointType) {
+		AXValueGetValue(originRef, kAXValueCGPointType, (void*)origin);
+	} else {
+		CFRelease(originRef);
+		
+		return -4;
+	}
+	CFRelease(originRef);
+	
+	//get the focused size
+	CFTypeRef sizeRef;
+	
+	ret = AXUIElementCopyAttributeValue((AXUIElementRef)windowId,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)&sizeRef);
+	if (ret != kAXErrorSuccess) {
+		return -5;
+	}
+	
+	FMTAssertNotNil(sizeRef);
+	if(AXValueGetType(sizeRef) == kAXValueCGSizeType) {
+		AXValueGetValue(sizeRef, kAXValueCGSizeType, (void*)size);
+	} else {
+		CFRelease(sizeRef);
+		
+		return -6;
+	}
+	CFRelease(sizeRef);
+	
+	return 0;
+}
+
+int AXUISetWindowPosition(WindowId windowId, NSPoint origin) {
+	FMTAssertNotNil(windowId);
+	
+	CFTypeRef originRef = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&origin));
+	
+	AXError ret = AXUIElementSetAttributeValue((AXUIElementRef)windowId,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)originRef);
+	
+	CFRelease(originRef);
+
+	if(ret != kAXErrorSuccess){
+		return -7;
+	} else {
+		return 0;
+	}	
+}
+
+int AXUISetWindowSize(WindowId windowId, NSSize size) {
+	FMTAssertNotNil(windowId);
+	
+	CFTypeRef sizeRef = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&size));
+	
+	AXError ret = AXUIElementSetAttributeValue((AXUIElementRef)windowId,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)sizeRef);
+	
+	CFRelease(sizeRef);
+
+	if(ret != kAXErrorSuccess){
+		return -8;
+	} else {
+		return 0;
+	}	
+}

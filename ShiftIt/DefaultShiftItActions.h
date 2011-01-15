@@ -19,13 +19,22 @@
 
 #import <Foundation/Foundation.h>
 
-NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect);
+#define GET_FOCUSED_WINDOW(focusedWindowm, windowManager, error, localError) \
+[(windowManager) focusedWindow:&(focusedWindow) error:&(localError)]; \
+HANDLE_WM_ERROR((error), (localError)); \
+if (!(focusedWindow)) { \
+return ; \
+} \
+
+@class WindowManager;
+
+void ShiftIt_Left(WindowManager *windowManager, NSError **error);
+//NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
+//NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
+//NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
+//NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);
+//NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect);
+//NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect);
+//NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect);
+//NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect);
+//NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect);

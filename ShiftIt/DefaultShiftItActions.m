@@ -18,123 +18,128 @@
  */
 
 #import "DefaultShiftItActions.h"
+#import "WindowManager.h"
+#import "ShiftIt.h"
 #import "FMTDefines.h"
 
-NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
+void ShiftIt_Left(WindowManager *windowManager, NSError **error) {
+	Window *focusedWindow = nil;
+	NSError *localError = nil;
 	
-	r.origin.x = 0;
-	r.origin.y = 0;
+	GET_FOCUSED_WINDOW(focusedWindow, windowManager, error, localError);
 	
-	r.size.width = screenSize.width / 2;
-	r.size.height = screenSize.height;
+	NSPoint origin = {0, 0};
+	NSSize size = [[focusedWindow screen] size];
 	
-	return r;
+	size.width = size.width / 2;
+
+	[windowManager shiftWindow:focusedWindow origin:origin size:size error:&localError];
+	HANDLE_WM_ERROR(error, localError);	
 }
 
-NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = screenSize.width/2;
-	r.origin.y = 0;
-	
-	r.size.width = screenSize.width / 2;
-	r.size.height = screenSize.height;
-
-	return r;
-}
-
-NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = 0;
-	r.origin.y = 0;
-	
-	r.size.width = screenSize.width;
-	r.size.height = screenSize.height / 2;
-	
-	return r;
-}
-
-NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = 0;
-	r.origin.y = screenSize.height / 2;
-	
-	r.size.width = screenSize.width;
-	r.size.height = screenSize.height / 2;
-	
-	return r;
-}
-
-NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = 0;
-	r.origin.y = 0;
-	
-	r.size.width = screenSize.width / 2;
-	r.size.height = screenSize.height / 2;
-	
-	return r;
-}
-
-NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = screenSize.width / 2;
-	r.origin.y = 0;
-	
-	r.size.width = screenSize.width / 2;
-	r.size.height = screenSize.height / 2;
-	
-	return r;
-}
-
-NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = 0;
-	r.origin.y = screenSize.height / 2;
-	
-	r.size.width = screenSize.width / 2;
-	r.size.height = screenSize.height / 2;
-	
-	return r;
-}
-
-NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = screenSize.width / 2;
-	r.origin.y = screenSize.height / 2;
-	
-	r.size.width = screenSize.width / 2;
-	r.size.height = screenSize.height / 2;
-	
-	return r;
-}
-
-NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = 0;
-	r.origin.y = 0;
-	
-	r.size.width = screenSize.width;
-	r.size.height = screenSize.height;
-	
-	return r;
-}
-
-NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
-	NSRect r;
-	
-	r.origin.x = (screenSize.width / 2)-(windowRect.size.width / 2);
-	r.origin.y = (screenSize.height / 2)-(windowRect.size.height / 2);	
-	
-	r.size = windowRect.size;
-	
-	return r;
-}
+//NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = screenSize.width/2;
+//	r.origin.y = 0;
+//	
+//	r.size.width = screenSize.width / 2;
+//	r.size.height = screenSize.height;
+//
+//	return r;
+//}
+//
+//NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = 0;
+//	r.origin.y = 0;
+//	
+//	r.size.width = screenSize.width;
+//	r.size.height = screenSize.height / 2;
+//	
+//	return r;
+//}
+//
+//NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = 0;
+//	r.origin.y = screenSize.height / 2;
+//	
+//	r.size.width = screenSize.width;
+//	r.size.height = screenSize.height / 2;
+//	
+//	return r;
+//}
+//
+//NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = 0;
+//	r.origin.y = 0;
+//	
+//	r.size.width = screenSize.width / 2;
+//	r.size.height = screenSize.height / 2;
+//	
+//	return r;
+//}
+//
+//NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = screenSize.width / 2;
+//	r.origin.y = 0;
+//	
+//	r.size.width = screenSize.width / 2;
+//	r.size.height = screenSize.height / 2;
+//	
+//	return r;
+//}
+//
+//NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = 0;
+//	r.origin.y = screenSize.height / 2;
+//	
+//	r.size.width = screenSize.width / 2;
+//	r.size.height = screenSize.height / 2;
+//	
+//	return r;
+//}
+//
+//NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = screenSize.width / 2;
+//	r.origin.y = screenSize.height / 2;
+//	
+//	r.size.width = screenSize.width / 2;
+//	r.size.height = screenSize.height / 2;
+//	
+//	return r;
+//}
+//
+//NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = 0;
+//	r.origin.y = 0;
+//	
+//	r.size.width = screenSize.width;
+//	r.size.height = screenSize.height;
+//	
+//	return r;
+//}
+//
+//NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
+//	NSRect r;
+//	
+//	r.origin.x = (screenSize.width / 2)-(windowRect.size.width / 2);
+//	r.origin.y = (screenSize.height / 2)-(windowRect.size.height / 2);	
+//	
+//	r.size = windowRect.size;
+//	
+//	return r;
+//}

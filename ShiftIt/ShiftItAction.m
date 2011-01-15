@@ -27,7 +27,7 @@
 @synthesize uiTag = uiTag_;
 @synthesize action = action_;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFunctionRef)action {
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFnRef)action {
 	FMTAssertNotNil(identifier);
 	FMTAssertNotNil(label);
 	FMTAssert(uiTag > 0, @"uiTag must be greater than 0");

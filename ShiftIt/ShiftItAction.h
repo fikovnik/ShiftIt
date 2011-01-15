@@ -19,6 +19,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class WindowManager;
+
 /** 
  * A reference to a function that position
  * and size the window's geometry denoted by the windowRect argument
@@ -26,21 +28,21 @@
  * and has a size screenSize. The windowRect is the whole window
  * including any sort window decorators.
  */
-typedef NSRect (*ShiftItFunctionRef)(NSSize screenSize, NSRect windowRect); 
+typedef void (*ShiftItFnRef)(WindowManager *windowManager, NSError **error); 
 
 @interface ShiftItAction : NSObject {
  @private
 	NSString *identifier_;
 	NSString *label_;
 	NSInteger uiTag_;
-	ShiftItFunctionRef action_;
+	ShiftItFnRef action_;
 }
 
 @property (readonly) NSString *identifier;
 @property (readonly) NSString *label;
 @property (readonly) NSInteger uiTag;
-@property (readonly) ShiftItFunctionRef action;
+@property (readonly) ShiftItFnRef action;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFunctionRef)action;
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFnRef)action;
 
 @end

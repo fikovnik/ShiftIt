@@ -25,7 +25,32 @@
  *
  */
 
-@class ShiftItAction;
+typedef AXUIElementRef WindowId;
+
+@interface Screen : NSObject {
+ @private
+	NSRect visibleFrame_;
+	NSRect screenFrame_;
+	BOOL primary_;
+}
+
+@property (readonly) NSSize size;
+@property (readonly) BOOL primary;
+
+@end
+
+@interface Window : NSObject {
+ @private	
+	WindowId windowId_;
+	NSRect rect_;
+	Screen *screen_;
+}
+
+@property (readonly) NSPoint origin;
+@property (readonly) NSSize size;
+@property (readonly) Screen *screen;
+
+@end
 
 @interface WindowManager : NSObject {
  @private
@@ -34,8 +59,13 @@
 	int menuBarHeight_;
 }
 
-+ (WindowManager *) sharedWindowManager;
+//- (void) startShiftsRecording;
+//- (void) finishShiftsRecording;
 
-- (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
+- (void) focusedWindow:(Window **)window error:(NSError **)error;
+
+- (void) moveWindow:(Window *)window origin:(NSPoint)origin error:(NSError **)error;
+- (void) resizeWindow:(Window *)window size:(NSSize)size error:(NSError **)error;
+- (void) shiftWindow:(Window *)window origin:(NSPoint)origin size:(NSSize)size error:(NSError **)error;
 
 @end

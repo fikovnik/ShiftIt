@@ -60,4 +60,17 @@ extern NSInteger const kUnableToChangeWindowSizeErrorCode;
 #define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
 #define ModifiersPrefKey(identifier) FMTStr(@"%@%@", (identifier), kModifiersPrefKeySuffix)
 
-extern NSError* SICreateError(NSString *localizedDescription, NSInteger errorCode);
+// TODO: move to FMT
+extern NSError *CreateError(NSInteger errCode, NSString *description, NSError *cause);
+
+#define HANDLE_WM_ERROR_LONG(error,localError,errCode,description) \
+if ((localError)) { \
+*(error) = CreateError((errCode), (description), (localError)); \
+return; \
+}
+
+#define HANDLE_WM_ERROR(error,localError) \
+if ((localError)) { \
+*(error) = (localError); \
+return; \
+}

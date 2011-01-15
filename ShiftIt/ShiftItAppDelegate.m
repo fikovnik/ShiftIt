@@ -86,12 +86,16 @@ NSDictionary *allShiftActions = nil;
 	statusMenuItemIcon_ = [[NSImage alloc] initWithContentsOfFile:iconPath];
 	allHotKeys_ = [[NSMutableDictionary alloc] init];
 	
+	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
+	windowManager_ = [[WindowManager alloc] init];
+
 	return self;
 }
 
 - (void) dealloc {
 	[statusMenuItemIcon_ release];
 	[allShiftActions release];
+	[windowManager_ release];
 	
 	[super dealloc];
 }
@@ -172,10 +176,7 @@ NSDictionary *allShiftActions = nil;
                 break;
         }
     }
-	
-	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
-	windowManager_ = [WindowManager sharedWindowManager];
-	
+		
 	[self initializeActions_];
 	[self updateMenuBarIcon_];
 	
@@ -281,24 +282,24 @@ NSDictionary *allShiftActions = nil;
 	
 	ShiftItAction *left = [[ShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 action:&ShiftIt_Left];
 	[dict setObject:left forKey:[left identifier]];
-	ShiftItAction *right = [[ShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 action:&ShiftIt_Right];
-	[dict setObject:right forKey:[right identifier]];
-	ShiftItAction *top = [[ShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 action:&ShiftIt_Top];
-	[dict setObject:top forKey:[top identifier]];
-	ShiftItAction *bottom = [[ShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 action:&ShiftIt_Bottom];
-	[dict setObject:bottom forKey:[bottom identifier]];
-	ShiftItAction *tl = [[ShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 action:&ShiftIt_TopLeft];
-	[dict setObject:tl forKey:[tl identifier]];
-	ShiftItAction *tr = [[ShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 action:&ShiftIt_TopRight];
-	[dict setObject:tr forKey:[tr identifier]];
-	ShiftItAction *bl = [[ShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 action:&ShiftIt_BottomLeft];
-	[dict setObject:bl forKey:[bl identifier]];
-	ShiftItAction *br = [[ShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 action:&ShiftIt_BottomRight];
-	[dict setObject:br forKey:[br identifier]];
-	ShiftItAction *fullscreen = [[ShiftItAction alloc] initWithIdentifier:@"fullscreen" label:@"Full Screen" uiTag:9 action:&ShiftIt_FullScreen];
-	[dict setObject:fullscreen forKey:[fullscreen identifier]];
-	ShiftItAction *center = [[ShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:10 action:&ShiftIt_Center];
-	[dict setObject:center forKey:[center identifier]];
+//	ShiftItAction *right = [[ShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 action:&ShiftIt_Right];
+//	[dict setObject:right forKey:[right identifier]];
+//	ShiftItAction *top = [[ShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 action:&ShiftIt_Top];
+//	[dict setObject:top forKey:[top identifier]];
+//	ShiftItAction *bottom = [[ShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 action:&ShiftIt_Bottom];
+//	[dict setObject:bottom forKey:[bottom identifier]];
+//	ShiftItAction *tl = [[ShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 action:&ShiftIt_TopLeft];
+//	[dict setObject:tl forKey:[tl identifier]];
+//	ShiftItAction *tr = [[ShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 action:&ShiftIt_TopRight];
+//	[dict setObject:tr forKey:[tr identifier]];
+//	ShiftItAction *bl = [[ShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 action:&ShiftIt_BottomLeft];
+//	[dict setObject:bl forKey:[bl identifier]];
+//	ShiftItAction *br = [[ShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 action:&ShiftIt_BottomRight];
+//	[dict setObject:br forKey:[br identifier]];
+//	ShiftItAction *fullscreen = [[ShiftItAction alloc] initWithIdentifier:@"fullscreen" label:@"Full Screen" uiTag:9 action:&ShiftIt_FullScreen];
+//	[dict setObject:fullscreen forKey:[fullscreen identifier]];
+//	ShiftItAction *center = [[ShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:10 action:&ShiftIt_Center];
+//	[dict setObject:center forKey:[center identifier]];
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }
@@ -384,7 +385,7 @@ NSDictionary *allShiftActions = nil;
 	
 	FMTDevLog(@"Invoking action: %@", identifier);
 	NSError *error = nil;
-	[windowManager_ shiftFocusedWindowUsing:action error:&error];
+	[action action](windowManager_, &error);
 	if (error) {
 		NSLog(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
 	}	
@@ -405,12 +406,16 @@ NSDictionary *allShiftActions = nil;
 		 
 @end
 
-inline NSError* SICreateError(NSString *localizedDescription, NSInteger errorCode) {
-	FMTAssertNotNil(localizedDescription);
+// TODO: move to FMT
+inline NSError *CreateError(NSInteger errCode, NSString *description, NSError *cause) {
+	FMTAssertNotNil(description);
 	
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-	[userInfo setObject:localizedDescription forKey:NSLocalizedDescriptionKey];
+	[userInfo setObject:description forKey:NSLocalizedDescriptionKey];
+	if (cause) {
+		[userInfo setObject:cause forKey:NSUnderlyingErrorKey];
+	}
 	
-	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errorCode userInfo:userInfo];	
+	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errCode userInfo:userInfo];	
 	return error;
 }
