@@ -22,7 +22,7 @@
 #import "ShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
-#import "WindowSizer.h"
+#import "WindowManager.h"
 #import "FMTLoginItems.h"
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
@@ -174,7 +174,7 @@ NSDictionary *allShiftActions = nil;
     }
 	
 	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
-	windowSizer_ = [WindowSizer sharedWindowSizer];
+	windowManager_ = [WindowManager sharedWindowManager];
 	
 	[self initializeActions_];
 	[self updateMenuBarIcon_];
@@ -384,7 +384,7 @@ NSDictionary *allShiftActions = nil;
 	
 	FMTDevLog(@"Invoking action: %@", identifier);
 	NSError *error = nil;
-	[windowSizer_ shiftFocusedWindowUsing:action error:&error];
+	[windowManager_ shiftFocusedWindowUsing:action error:&error];
 	if (error) {
 		NSLog(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
 	}	

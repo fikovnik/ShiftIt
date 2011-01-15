@@ -27,14 +27,14 @@
 
 @class ShiftItAction;
 
-@interface WindowSizer : NSObject {
+@interface WindowManager : NSObject {
  @private
     AXUIElementRef axSystemWideElement_;
 	
 	int menuBarHeight_;
 }
 
-+ (WindowSizer *) sharedWindowSizer;
++ (WindowManager *) sharedWindowManager;
 
 - (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
 

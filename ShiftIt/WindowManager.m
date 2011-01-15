@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import <Carbon/Carbon.h>
 
-#import "WindowSizer.h"
+#import "WindowManager.h"
 #import "ShiftIt.h"
 #import "ShiftItAction.h"
 #import "FMTDefines.h"
@@ -52,16 +52,16 @@ extern short GetMBarHeight(void);
 
 #define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
 
-@interface WindowSizer (Private)
+@interface WindowManager (Private)
 
 - (NSScreen *)chooseScreenForWindow_:(NSRect)windowRect;
 
 @end
 
 
-@implementation WindowSizer
+@implementation WindowManager
 
-SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSizer);
+SINGLETON_BOILERPLATE(WindowManager, sharedWindowManager);
 
 // TODO: remove
 - (id)init {
