@@ -23,11 +23,18 @@
 #define CYCLE_FRACTION_HORIZ (1.0/10.0) // will cycle about 2/5 and 3/5
 #define CYCLE_FRACTION_VERT (1.0/6.0) // will cycle about 1/3 and 2/3
 
+// Hozirontal Zone Fractions
 #define LEFT_ZONE_FRACTION (0.0)
 #define MIDDLE_LEFT_ZONE_FRACTION (0.5-CYCLE_FRACTION_HORIZ)
 #define MIDDLE_ZONE_FRACTION (0.5)
 #define MIDDLE_RIGHT_ZONE_FRACTION (0.5+CYCLE_FRACTION_HORIZ)
 #define RIGHT_ZONE_FRACTION (1.0)
+
+// Vertical Zone Fractions
+#define TOP_ZONE_FRACTION (0.0)
+#define MIDDLE_TOP_ZONE_FRACTION (0.5-CYCLE_FRACTION_HORIZ)
+#define MIDDLE_BOTTOM_ZONE_FRACTION (0.5+CYCLE_FRACTION_HORIZ)
+#define BOTTOM_ZONE_FRACTION (1.0)
 
 #define HZONE(a) findHorizZone(a, screenSize)
 
@@ -196,15 +203,11 @@ NSRect ShiftIt_TopCycle(NSSize screenSize, NSRect windowRect) {
 	
 	// Cycle in order 1/2 and 1/2 (+/-) fraction offset from center
 	if (!equalsWithinTolerance(windowRect.origin.y, 0)) // init 
-		r.size.height = screenSize.height * 0.5;
-	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * 0.5 ))
-		r.size.height = screenSize.height * (0.5 - CYCLE_FRACTION_VERT); 
-	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * (0.5 - CYCLE_FRACTION_VERT) ))
-		r.size.height = screenSize.height * (0.5 + CYCLE_FRACTION_VERT); 
-	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * (0.5 + CYCLE_FRACTION_VERT) ))
-		r.size.height = screenSize.height * 1.0 / 1.0; // add fullscreen extra cycle
+		r.size.height = screenSize.height * MIDDLE_ZONE_FRACTION;
+	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * MIDDLE_ZONE_FRACTION ))
+		r.size.height = screenSize.height; // add fullscreen extra cycle
 	else 
-		r.size.height = screenSize.height * 0.5;
+		r.size.height = screenSize.height * MIDDLE_ZONE_FRACTION;
 	
 	return r;
 }
@@ -232,20 +235,14 @@ NSRect ShiftIt_BottomCycle(NSSize screenSize, NSRect windowRect) {
 	
 	// Cycle in order 1/2 and 1/2 (+/-) fraction offset from center
 	if (!equalsWithinTolerance(windowRect.origin.y+windowRect.size.height, screenSize.height)) { // init
-		r.origin.y = screenSize.height * 0.5;
-		r.size.height = screenSize.height * 0.5;
-	} else if (equalsWithinTolerance(windowRect.origin.y, screenSize.height * 0.5 )) {
-		r.origin.y = screenSize.height * (0.5 - CYCLE_FRACTION_VERT);
-		r.size.height = screenSize.height * (0.5 + CYCLE_FRACTION_VERT);
-	} else if (equalsWithinTolerance(windowRect.origin.y, screenSize.height * (0.5 - CYCLE_FRACTION_VERT) )) {
-		r.origin.y = screenSize.height * (0.5 + CYCLE_FRACTION_VERT);
-		r.size.height = screenSize.height * (0.5 - CYCLE_FRACTION_VERT);
-	} else if (equalsWithinTolerance(windowRect.origin.y, screenSize.height * (0.5 + CYCLE_FRACTION_VERT) )) {
+		r.origin.y = screenSize.height * MIDDLE_ZONE_FRACTION;
+		r.size.height = screenSize.height * MIDDLE_ZONE_FRACTION;
+	} else if (equalsWithinTolerance(windowRect.origin.y, screenSize.height * MIDDLE_ZONE_FRACTION )) {
 		r.origin.y = 0;
-		r.size.height = screenSize.height * 1.0 / 1.0;
+		r.size.height = screenSize.height;
 	} else {
-		r.origin.y = screenSize.height * 0.5;
-		r.size.height = screenSize.height * 0.5;
+		r.origin.y = screenSize.height * MIDDLE_ZONE_FRACTION;
+		r.size.height = screenSize.height * MIDDLE_ZONE_FRACTION;
 	}
 
 	return r;
