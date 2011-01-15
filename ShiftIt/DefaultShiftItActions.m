@@ -22,20 +22,27 @@
 
 #define CYCLE_FRACTION_HORIZ (1.0/10.0) // will cycle about 2/5 and 3/5
 #define CYCLE_FRACTION_VERT (1.0/6.0) // will cycle about 1/3 and 2/3
+
+#define LEFT_ZONE_FRACTION (0.0)
+#define MIDDLE_LEFT_ZONE_FRACTION (0.5-CYCLE_FRACTION_HORIZ)
+#define MIDDLE_ZONE_FRACTION (0.5)
+#define MIDDLE_RIGHT_ZONE_FRACTION (0.5+CYCLE_FRACTION_HORIZ)
+#define RIGHT_ZONE_FRACTION (1.0)
+
 #define HZONE(a) findHorizZone(a, screenSize)
 
 CGFloat equalsWithinTolerance(CGFloat a, CGFloat b) {
 	return abs(a-b) < 10; // test absolute within 5 pixel (units or dots?)
 }
 
-enum Zone { 
+typedef enum { 
 	Left, 
 	MiddleLeft, 
 	Middle, 
 	MiddleRight, 
 	Right,
 	None
-};
+} Zone;
 
 Zone findHorizZone(CGFloat a, NSSize screenSize) {
 	if (equalsWithinTolerance(a, 0))
@@ -46,14 +53,10 @@ Zone findHorizZone(CGFloat a, NSSize screenSize) {
 		return Middle;
 	else if (equalsWithinTolerance(a, screenSize.width * (0.5-CYCLE_FRACTION_HORIZ)))
 		return MiddleRight;
-	else if (equalsWithinTolerance(a, screenSize.width * (1.0)))
+	else if (equalsWithinTolerance(a, screenSize.width ))
 		return Right;
 	else
 		return None;
-}
-
-CGFloat equalsWithinTolerance(CGFloat a, CGFloat b) {
-	return abs(a-b) < 10; // test absolute within 5 pixel (units or dots?)
 }
 
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
@@ -75,14 +78,14 @@ NSRect ShiftIt_LeftCycle(NSSize screenSize, NSRect windowRect) {
 	r.origin.y = 0;
 
 	// Cycle in order 1/2 and 1/2 (+/-) fraction offset from center
-	if (!equalsWithinTolerance(windowRect.origin.x, 0)) // init 
+	if (! (HZONE(windowRect.origin.x) == Left)) // init 
 		r.size.width = screenSize.width * 0.5;
-	else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 0.5 ))
-		r.size.width = screenSize.width * (0.5 - CYCLE_FRACTION_HORIZ);
-	else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * (0.5 - CYCLE_FRACTION_HORIZ ) ))
-		r.size.width = screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ);
+	else if (HZONE(windowRect.size.width) == Middle)
+		r.size.width = screenSize.width * MIDDLE_LEFT_ZONE_FRACTION;
+	else if (HZONE(windowRect.size.width) == MiddleLeft)
+		r.size.width = screenSize.width * MIDDLE_RIGHT_ZONE_FRACTION;
 	else 
-		r.size.width = screenSize.width * 0.5;
+		r.size.width = screenSize.width * MIDDLE_ZONE_FRACTION;
 	
 	r.size.height = screenSize.height;
 	
