@@ -199,8 +199,8 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	// the visible screen denotes some inner rect of the screen rect which is visible - not occupied by menu bar or dock
 	NSRect visibleScreenRect = [screen visibleFrame];
 	// make windowRect relative according to its screen frame
-	windowRect.origin.x = windowRect.origin.x - visibleScreenRect.origin.x;
-	windowRect.origin.y = windowRect.origin.y - visibleScreenRect.origin.y;
+	windowRect.origin.x = windowRect.origin.x - screenRect.origin.x;
+	windowRect.origin.y = windowRect.origin.y - screenRect.origin.y;
 	
 	FMTDevLog(@"visible screen rect (cocoa): %@", RECT_STR(visibleScreenRect));	
 	COCOA_TO_SCREEN_COORDINATES(visibleScreenRect);

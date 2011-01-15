@@ -89,10 +89,6 @@ NSRect ShiftIt_RightCycle(NSSize screenSize, NSRect windowRect) {
 		r.origin.x = screenSize.width * 1.0 / 2.0;
 		r.size.width = screenSize.width * 1.0 / 2.0;
 	}
-
-	NSLog(@"windowRect: [%f %f] [%f %f]", windowRect.origin.x, windowRect.origin.y, windowRect.size.width, windowRect.size.height);
-	NSLog(@"shiftRect: [%f %f] [%f %f]", r.origin.x, r.origin.y, r.size.width, r.size.height);
-
 	
 	return r;
 }
@@ -109,6 +105,27 @@ NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
+NSRect ShiftIt_TopCycle(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	r.origin.x = 0;
+	r.origin.y = 0;
+	
+	r.size.width = screenSize.width;
+	
+	// Cycle in order 1/2 to 1/3 to 2/3
+	if (!equalsWithinTolerance(windowRect.origin.y, 0)) // init 
+		r.size.height = screenSize.height * 1.0 / 2.0;
+	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * 1.0 / 2.0 ))
+		r.size.height = screenSize.height * 1.0 / 3.0;
+	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * 1.0 / 3.0 ))
+		r.size.height = screenSize.height * 2.0 / 3.0;
+	else 
+		r.size.height = screenSize.height * 1.0 / 2.0;
+	
+	return r;
+}
+
 NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
@@ -118,6 +135,33 @@ NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 	r.size.width = screenSize.width;
 	r.size.height = screenSize.height / 2;
 	
+	return r;
+}
+
+NSRect ShiftIt_BottomCycle(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	
+	r.origin.x = 0;
+	r.origin.y = screenSize.height / 2;
+	
+	r.size.width = screenSize.width;
+	r.size.height = screenSize.height / 2;
+	
+	// Cycle in order 1/2 to 1/3 to 2/3 and back 
+	if (!equalsWithinTolerance(windowRect.origin.y+windowRect.size.height, screenSize.height)) { // init
+		r.origin.y = screenSize.height * 1.0 / 2.0;
+		r.size.height = screenSize.height * 1.0 / 2.0;
+	} else if (equalsWithinTolerance(windowRect.origin.y, screenSize.height * 1.0 / 2.0 )) {
+		r.origin.y = screenSize.height * 1.0 / 3.0;
+		r.size.height = screenSize.height * 2.0 / 3.0;
+	} else if (equalsWithinTolerance(windowRect.origin.y, screenSize.height * 1.0 / 3.0 )) {
+		r.origin.y = screenSize.height * 2.0 / 3.0;
+		r.size.height = screenSize.height * 1.0 / 3.0;
+	} else {
+		r.origin.y = screenSize.height * 1.0 / 2.0;
+		r.size.height = screenSize.height * 1.0 / 2.0;
+	}
+
 	return r;
 }
 
