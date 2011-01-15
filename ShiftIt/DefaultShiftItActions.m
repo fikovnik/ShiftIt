@@ -93,7 +93,6 @@ NSRect ShiftIt_LeftCycle(NSSize screenSize, NSRect windowRect) {
 		switch (widthZoneSize) {
 			case MiddleLeft:  newWidthFrac = MIDDLE_RIGHT_ZONE_FRACTION; break;
 			case MiddleRight: newWidthFrac = MIDDLE_LEFT_ZONE_FRACTION; break;
-			default:          newWidthFrac = MIDDLE_ZONE_FRACTION;
 		}
 	} 
 	else { // cycle
@@ -127,20 +126,50 @@ NSRect ShiftIt_RightCycle(NSSize screenSize, NSRect windowRect) {
 	r.origin.y = 0;	
 	r.size.height = screenSize.height;
 	
-	// Cycle in order 1/2 and 1/2 (+/-) fraction offset from center
-	if (!equalsWithinTolerance(windowRect.origin.x+windowRect.size.width, screenSize.width)) { // init
-		r.origin.x = screenSize.width * 0.5;
-		r.size.width = screenSize.width * 0.5;
-	} else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * 0.5 )) {
-		r.origin.x = screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ);
-		r.size.width = screenSize.width * (0.5 - CYCLE_FRACTION_HORIZ);
-	} else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ) )) {
-		r.origin.x = screenSize.width * (0.5 - CYCLE_FRACTION_HORIZ);
-		r.size.width = screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ);
-	} else {
-		r.origin.x = screenSize.width * 0.5;
-		r.size.width = screenSize.width * 0.5;
+	// // Cycle in order 1/2 and 1/2 (+/-) fraction offset from center
+	// if (!equalsWithinTolerance(windowRect.origin.x+windowRect.size.width, screenSize.width)) { // init
+	// 	r.origin.x = screenSize.width * 0.5;
+	// 	r.size.width = screenSize.width * 0.5;
+	// } else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * 0.5 )) {
+	// 	r.origin.x = screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ);
+	// 	r.size.width = screenSize.width * (0.5 - CYCLE_FRACTION_HORIZ);
+	// } else if (equalsWithinTolerance(windowRect.origin.x, screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ) )) {
+	// 	r.origin.x = screenSize.width * (0.5 - CYCLE_FRACTION_HORIZ);
+	// 	r.size.width = screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ);
+	// } else {
+	// 	r.origin.x = screenSize.width * 0.5;
+	// 	r.size.width = screenSize.width * 0.5;
+	// }
+	
+	// Cycle in order 1/2 and 1/2 (-/+) fraction offset from center
+	Zone originZone = HZONE(windowRect.origin.x);
+	Zone widthZoneSize = HZONE(windowRect.size.width);
+	
+	NSLog(@"originZone: %d", originZone);
+	NSLog(@"widthZoneSize: %d", widthZoneSize);
+	
+	CGFloat newOriginFrac = MIDDLE_ZONE_FRACTION;
+	CGFloat newWidthFrac = MIDDLE_ZONE_FRACTION;
+	
+	if (originZone == NoZone) // initialize
+		newWidthFrac = MIDDLE_ZONE_FRACTION;
+	else if (originZone == Left) { // flip sides
+		switch (widthZoneSize) {
+			case MiddleLeft:  newWidthFrac = MIDDLE_RIGHT_ZONE_FRACTION; break;
+			case MiddleRight: newWidthFrac = MIDDLE_LEFT_ZONE_FRACTION; break;
+			default:          newWidthFrac = MIDDLE_ZONE_FRACTION;
+		}
+	} 
+	else { // cycle
+		switch (widthZoneSize) {
+			case Middle:      newWidthFrac = MIDDLE_LEFT_ZONE_FRACTION; break;
+			case MiddleLeft:  newWidthFrac = MIDDLE_RIGHT_ZONE_FRACTION; break;
+			case MiddleRight: newWidthFrac = MIDDLE_ZONE_FRACTION; break;
+		}
 	}
+	
+	r.size.width = screenSize.width * newWidthFrac;
+	r.origin.x = screenSize.width - r.size.width;
 	
 	return r;
 }
