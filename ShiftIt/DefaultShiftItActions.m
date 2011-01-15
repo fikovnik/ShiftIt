@@ -117,9 +117,11 @@ NSRect ShiftIt_TopCycle(NSSize screenSize, NSRect windowRect) {
 	if (!equalsWithinTolerance(windowRect.origin.y, 0)) // init 
 		r.size.height = screenSize.height * 1.0 / 2.0;
 	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * 1.0 / 2.0 ))
-		r.size.height = screenSize.height * 1.0 / 3.0;
+		r.size.height = screenSize.height * 1.0 / 3.0; 
 	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * 1.0 / 3.0 ))
-		r.size.height = screenSize.height * 2.0 / 3.0;
+		r.size.height = screenSize.height * 2.0 / 3.0; 
+	else if (equalsWithinTolerance(windowRect.size.height, screenSize.height * 2.0 / 3.0 ))
+		r.size.height = screenSize.height * 1.0 / 1.0; // add fullscreen extra cycle
 	else 
 		r.size.height = screenSize.height * 1.0 / 2.0;
 	
@@ -157,6 +159,9 @@ NSRect ShiftIt_BottomCycle(NSSize screenSize, NSRect windowRect) {
 	} else if (equalsWithinTolerance(windowRect.origin.y, screenSize.height * 1.0 / 3.0 )) {
 		r.origin.y = screenSize.height * 2.0 / 3.0;
 		r.size.height = screenSize.height * 1.0 / 3.0;
+	} else if (equalsWithinTolerance(windowRect.origin.y, screenSize.height * 2.0 / 3.0 )) {
+		r.origin.y = 0;
+		r.size.height = screenSize.height * 1.0 / 1.0;
 	} else {
 		r.origin.y = screenSize.height * 1.0 / 2.0;
 		r.size.height = screenSize.height * 1.0 / 2.0;
