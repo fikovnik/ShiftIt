@@ -49,9 +49,9 @@ NSRect ShiftIt_LeftCycle(NSSize screenSize, NSRect windowRect) {
 	if (!equalsWithinTolerance(windowRect.origin.x, 0)) // init 
 		r.size.width = screenSize.width * 0.5;
 	else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * 0.5 ))
-		r.size.width = screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ);
-	else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ ) ))
 		r.size.width = screenSize.width * (0.5 - CYCLE_FRACTION_HORIZ);
+	else if (equalsWithinTolerance(windowRect.size.width, screenSize.width * (0.5 - CYCLE_FRACTION_HORIZ ) ))
+		r.size.width = screenSize.width * (0.5 + CYCLE_FRACTION_HORIZ);
 	else 
 		r.size.width = screenSize.width * 0.5;
 	
