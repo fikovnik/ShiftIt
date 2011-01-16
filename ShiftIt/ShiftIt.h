@@ -56,6 +56,7 @@ extern NSInteger const kUnableToGetActiveWindowErrorCode;
 extern NSInteger const kUnableToChangeWindowPositionErrorCode;
 extern NSInteger const kUnableToGetWindowGeometryErrorCode;
 extern NSInteger const kUnableToChangeWindowSizeErrorCode;
+extern NSInteger const kUnableToSwitchWindowToWorkspaceErrorCode;
 
 #define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
 #define ModifiersPrefKey(identifier) FMTStr(@"%@%@", (identifier), kModifiersPrefKeySuffix)

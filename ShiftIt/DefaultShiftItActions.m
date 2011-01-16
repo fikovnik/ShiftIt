@@ -37,7 +37,16 @@ void ShiftIt_Left(WindowManager *windowManager, NSError **error) {
 	HANDLE_WM_ERROR(error, localError);	
 }
 
-//NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
+void ShiftIt_Right(WindowManager *windowManager, NSError **error) {
+	Window *focusedWindow = nil;
+	NSError *localError = nil;
+	
+	GET_FOCUSED_WINDOW(focusedWindow, windowManager, error, localError);
+
+	[windowManager switchWorkspace:focusedWindow row:1 col:3 error:&localError];
+	HANDLE_WM_ERROR(error, localError);	
+
+	
 //	NSRect r;
 //	
 //	r.origin.x = screenSize.width/2;
@@ -47,7 +56,7 @@ void ShiftIt_Left(WindowManager *windowManager, NSError **error) {
 //	r.size.height = screenSize.height;
 //
 //	return r;
-//}
+}
 //
 //NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 //	NSRect r;

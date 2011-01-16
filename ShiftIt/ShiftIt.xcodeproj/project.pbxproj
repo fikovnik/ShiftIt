@@ -60,6 +60,7 @@
 		2708C2551261C8E800192883 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
 		277F48E612E1EA5C0091B3FF /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		277F48E712E1EA5C0091B3FF /* WindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowManager.m; sourceTree = "<group>"; };
+		277F4A4212E2654B0091B3FF /* CGSPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSPrivate.h; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
 		27F4FD4512730F2F00A65750 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTHotKey.h; path = FMT/FMTHotKey.h; sourceTree = "<group>"; };
@@ -115,6 +116,7 @@
 				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
 				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
 				2708C2551261C8E800192883 /* ShiftIt.h */,
+				277F4A4212E2654B0091B3FF /* CGSPrivate.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";

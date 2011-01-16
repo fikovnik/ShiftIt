@@ -45,11 +45,11 @@ static const char *const kAXUIErrorMessages_[] = {
 
 #define AXUIGetErrorMessage(idx) kAXUIErrorMessages_[-idx-1]
 
-int AXUIGetFocusedWindowId(WindowId *windowId, AXUIElementRef axSystemWideElement);
-void AXUIFreeWindowId(WindowId windowId);
-int AXUIGetWindowGeometry(WindowId windowId, NSPoint *origin, NSSize *size);
-int AXUISetWindowPosition(WindowId windowId, NSPoint origin);
-int AXUISetWindowSize(WindowId windowId, NSSize size);
+int AXUIGetFocusedAXWindowRef(AXWindowRef *windowId, AXUIElementRef axSystemWideElement);
+void AXUIFreeAXWindowRef(AXWindowRef windowId);
+int AXUIGetWindowGeometry(AXWindowRef windowId, NSPoint *origin, NSSize *size);
+int AXUISetWindowPosition(AXWindowRef windowId, NSPoint origin);
+int AXUISetWindowSize(AXWindowRef windowId, NSSize size);
 
 #pragma mark NSScreen Private Additions
 
@@ -85,7 +85,6 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 
 @dynamic size;
 @synthesize primary = primary_;
-
 @synthesize screenFrame_;
 @synthesize visibleFrame_;
 
@@ -121,7 +120,8 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 
 @interface Window ()
 
-@property (readonly) WindowId windowId_;
+@property (readonly) AXWindowRef ref_;
+@property (readonly) CGSWindow wid_;
 
 @end
 
@@ -130,18 +130,20 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 @dynamic origin;
 @dynamic size;
 @synthesize screen = screen_;
+@synthesize ref_;
+@synthesize wid_;
 
-@synthesize windowId_;
-
-- (id) initWithId:(WindowId)windowId rect:(NSRect)rect screen:(Screen *)screen {
-	FMTAssertNotNil(windowId);
+- (id) initWithId:(CGSWindow)wid ref:(AXWindowRef)ref rect:(NSRect)rect screen:(Screen *)screen {
+	// TODO: check for invalid wids
+	FMTAssertNotNil(ref);
 	FMTAssertNotNil(screen);
 	
 	if (![super init]) {
 		return nil;
 	}
 	
-	windowId_ = windowId;
+	wid_ = wid;
+	ref_ = ref;
 	rect_ = rect;
 	screen_ = [screen retain];
 	
@@ -149,7 +151,7 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 }
 
 - (void) dealloc {
-	CFRelease(windowId_);
+	CFRelease(ref_);
 	[screen_ release];
 	
 	[super dealloc];
@@ -185,6 +187,9 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 	// that far in execution if the AX api is not available
 	FMTAssertNotNil(axSystemWideElement_);
 	
+	cgsconn_ = _CGSDefaultConnection();
+	FMTAssert(cgsconn_ != 0, @"Unable to connect to Quartz Window Server");
+	
 	return self;
 }
 
@@ -195,26 +200,54 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 }
 
 - (void) focusedWindow:(Window **)window error:(NSError **)error {
-	WindowId windowId;
+	AXWindowRef ref;
 	int ret;
 	
 	// first try to get the window using accessibility API
-	if ((ret = AXUIGetFocusedWindowId(&windowId, axSystemWideElement_)) != 0) {
+	if ((ret = AXUIGetFocusedAXWindowRef(&ref, axSystemWideElement_)) != 0) {
 		*error = CreateError(kUnableToGetActiveWindowErrorCode, FMTStrc(AXUIGetErrorMessage(ret)), nil);
 		return;		
 	}
 	
 	NSRect windowRect;
-	if ((ret = AXUIGetWindowGeometry(windowId, &windowRect.origin, &windowRect.size)) != 0) {
+	if ((ret = AXUIGetWindowGeometry(ref, &windowRect.origin, &windowRect.size)) != 0) {
 		*error = CreateError(kUnableToGetWindowGeometryErrorCode, FMTStrc(AXUIGetErrorMessage(ret)), nil);
 		return;			
 	}
 	
+	// find screen
 	NSScreen *nsscreen = [self chooseScreenForWindow_:windowRect];
 	FMTAssertNotNil(nsscreen);
 	Screen *screen = [[Screen alloc] initWithNSScreen:nsscreen];
 	
-	*window = [[Window alloc] initWithId:windowId rect:windowRect screen:screen];
+	// find wid
+	CGSWindow wid = -1;
+	
+	/*
+	 Since there is no way how to get a CGWindow from AXElementRef (the systems
+	 are completely separate, following is only a heuristic, but should work 
+	 always:
+	 
+	 the CGWindowListCopyWindowInfo() called with kCGWindowListOptionOnScreenOnly
+	 return (from official doc): List all windows that are currently onscreen. 
+	 Windows are returned in order from front to back. Since the window we are
+	 interested is focused, it should be really in the top of the hierarchy.
+	 */
+	CFArrayRef windowsInfoList = CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly + kCGWindowListExcludeDesktopElements, kCGNullWindowID);
+	
+	for (NSMutableDictionary *windowInfo in (NSArray *)windowsInfoList) {
+		NSRect rect;
+		CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)[windowInfo objectForKey:(id)kCGWindowBounds], &rect);
+
+		if (NSEqualRects(windowRect, rect)) {
+			wid = [[windowInfo objectForKey:(id)kCGWindowNumber] integerValue];
+			break;
+		}
+	}
+	
+	CFRelease(windowsInfoList);
+	
+	*window = [[Window alloc] initWithId:wid ref:ref rect:windowRect screen:screen];
 }
 
 - (void) moveWindow:(Window *)window origin:(NSPoint)origin error:(NSError **)error {
@@ -230,7 +263,7 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 	FMTDevLog(@"adjusting position to %dx%d", origin.x, origin.y);
 	int ret;
 	
-	if ((ret = AXUISetWindowPosition([window windowId_], origin)) != 0) {
+	if ((ret = AXUISetWindowPosition([window ref_], origin)) != 0) {
 		*error = CreateError(kUnableToChangeWindowPositionErrorCode, FMTStrc(AXUIGetErrorMessage(ret)), nil);
 		return;
 	}	
@@ -242,7 +275,7 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 	FMTDevLog(@"adjusting size to %dx%d", size);
 	int ret;
 	
-	if ((ret = AXUISetWindowSize([window windowId_], size)) != 0) {
+	if ((ret = AXUISetWindowSize([window ref_], size)) != 0) {
 		*error = CreateError(kUnableToChangeWindowSizeErrorCode, FMTStrc(AXUIGetErrorMessage(ret)), nil);
 		return;
 	}	
@@ -260,6 +293,30 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 	HANDLE_WM_ERROR(error,localError);
 }
 
+- (void) switchWorkspace:(Window *)window row:(NSInteger)row col:(NSInteger)col error:(NSError **)error {
+	FMTAssertNotNil(window);
+	
+	if (!CoreDockGetWorkspacesEnabled()) {
+		// TODO: error code
+		*error = CreateError(1, @"Workspaces are not enabled", nil);
+		return ;
+	}
+		
+	// workspace information
+	int wsRows, wsCols;
+	CoreDockGetWorkspacesCount(&wsRows, &wsCols);
+
+	// worskpace number
+	CGSWorkspace ws = wsCols * (row - 1) + col;
+	CGSWindow wids[] = {[window wid_]};
+	
+	// switch
+	CGError ret = CGSMoveWorkspaceWindowList(cgsconn_, wids, 1, ws);
+	if (ret != 0) {
+		*error = CreateError(kUnableToSwitchWindowToWorkspaceErrorCode, FMTStr(@"CGSMoveWorkspaceWindowList(): %d", ret), nil);
+		return ;
+	}
+}
 
 /**
  * Chooses the best screen for the given window rect (screen coord).
@@ -297,7 +354,7 @@ int AXUISetWindowSize(WindowId windowId, NSSize size);
 
 #pragma mark AXUI utilities
 
-int AXUIGetFocusedWindowId(WindowId *windowId, AXUIElementRef axSystemWideElement) {	
+int AXUIGetFocusedAXWindowRef(AXWindowRef *windowId, AXUIElementRef axSystemWideElement) {	
 	//get the focused application
 	AXUIElementRef focusedAppRef = nil;
 	
@@ -322,18 +379,18 @@ int AXUIGetFocusedWindowId(WindowId *windowId, AXUIElementRef axSystemWideElemen
 		return -2;
 	}
 	
-	*windowId = (WindowId)focusedWindowRef;
+	*windowId = (AXWindowRef)focusedWindowRef;
 	
 	return 0;
 }
 
-void AXUIFreeWindowId(WindowId windowId) {
+void AXUIFreeAXWindowRef(AXWindowRef windowId) {
 	FMTAssertNotNil(windowId);
 	
 	CFRelease((CFTypeRef) windowId);
 }
 
-int AXUIGetWindowGeometry(WindowId windowId, NSPoint *origin, NSSize *size) {
+int AXUIGetWindowGeometry(AXWindowRef windowId, NSPoint *origin, NSSize *size) {
 	FMTAssertNotNil(windowId);
 	FMTAssertNotNil(origin);
 	FMTAssertNotNil(size);
@@ -377,7 +434,7 @@ int AXUIGetWindowGeometry(WindowId windowId, NSPoint *origin, NSSize *size) {
 	return 0;
 }
 
-int AXUISetWindowPosition(WindowId windowId, NSPoint origin) {
+int AXUISetWindowPosition(AXWindowRef windowId, NSPoint origin) {
 	FMTAssertNotNil(windowId);
 	
 	CFTypeRef originRef = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&origin));
@@ -393,7 +450,7 @@ int AXUISetWindowPosition(WindowId windowId, NSPoint origin) {
 	}	
 }
 
-int AXUISetWindowSize(WindowId windowId, NSSize size) {
+int AXUISetWindowSize(AXWindowRef windowId, NSSize size) {
 	FMTAssertNotNil(windowId);
 	
 	CFTypeRef sizeRef = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&size));

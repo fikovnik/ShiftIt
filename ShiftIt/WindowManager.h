@@ -19,13 +19,14 @@
 
 
 #import <Foundation/Foundation.h>
+#import "CGSPrivate.h"
 
 /**
  * This unit provides support for sizing application using Apple accessibiity API
  *
  */
 
-typedef AXUIElementRef WindowId;
+typedef AXUIElementRef AXWindowRef;
 
 @interface Screen : NSObject {
  @private
@@ -41,7 +42,8 @@ typedef AXUIElementRef WindowId;
 
 @interface Window : NSObject {
  @private	
-	WindowId windowId_;
+	AXWindowRef ref_;
+	CGSWindow wid_;
 	NSRect rect_;
 	Screen *screen_;
 }
@@ -55,6 +57,7 @@ typedef AXUIElementRef WindowId;
 @interface WindowManager : NSObject {
  @private
     AXUIElementRef axSystemWideElement_;
+	CGSConnection cgsconn_;
 	
 	int menuBarHeight_;
 }
@@ -67,5 +70,14 @@ typedef AXUIElementRef WindowId;
 - (void) moveWindow:(Window *)window origin:(NSPoint)origin error:(NSError **)error;
 - (void) resizeWindow:(Window *)window size:(NSSize)size error:(NSError **)error;
 - (void) shiftWindow:(Window *)window origin:(NSPoint)origin size:(NSSize)size error:(NSError **)error;
+
+//- (void) focusWindow:(Window *)window relativeTo:(Window *)relativeWindow direction:(Direction)direction;
+//- (void) focusWindow:(Window *)window error:(NSError **)error;
+
+//- (void) switchScreen:(Window *)window direction:(Direction)direction flipOver:(BOOL)flip error:(NSError **)error;
+//- (void) switchScreen:(Window *)window screen:(Screen *)screen error:(NSError **)error;
+
+//- (void) switchWorkspace:(Window *)window direction:(Direction)direction flipOver:(BOOL)flip error:(NSError **)error;
+- (void) switchWorkspace:(Window *)window row:(NSInteger)row col:(NSInteger)col error:(NSError **)error;
 
 @end

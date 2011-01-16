@@ -56,6 +56,7 @@ NSInteger const kUnableToGetActiveWindowErrorCode = 20100;
 NSInteger const kUnableToChangeWindowPositionErrorCode = 20101;
 NSInteger const kUnableToGetWindowGeometryErrorCode = 20102;
 NSInteger const kUnableToChangeWindowSizeErrorCode = 20102;
+NSInteger const kUnableToSwitchWindowToWorkspaceErrorCode = 20103;
 
 NSDictionary *allShiftActions = nil;
 
@@ -282,8 +283,8 @@ NSDictionary *allShiftActions = nil;
 	
 	ShiftItAction *left = [[ShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 action:&ShiftIt_Left];
 	[dict setObject:left forKey:[left identifier]];
-//	ShiftItAction *right = [[ShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 action:&ShiftIt_Right];
-//	[dict setObject:right forKey:[right identifier]];
+	ShiftItAction *right = [[ShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 action:&ShiftIt_Right];
+	[dict setObject:right forKey:[right identifier]];
 //	ShiftItAction *top = [[ShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 action:&ShiftIt_Top];
 //	[dict setObject:top forKey:[top identifier]];
 //	ShiftItAction *bottom = [[ShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 action:&ShiftIt_Bottom];

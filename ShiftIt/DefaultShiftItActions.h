@@ -29,7 +29,7 @@ return ; \
 @class WindowManager;
 
 void ShiftIt_Left(WindowManager *windowManager, NSError **error);
-//NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
+void ShiftIt_Right(WindowManager *windowManager, NSError **error);
 //NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
 //NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
 //NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);
