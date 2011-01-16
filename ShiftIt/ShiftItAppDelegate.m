@@ -23,6 +23,7 @@
 #import "WindowManager.h"
 #import "ShiftItAction.h"
 #import "WindowShiftAction.h"
+#import "CyclingCompositeAction.h"
 #import "FMTLoginItems.h"
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
@@ -283,7 +284,13 @@ NSDictionary *allShiftActions = nil;
 
 	NSError *error = nil;
 	
-	WindowShiftAction *leftActionDelegate = [WindowShiftAction windowShiftActionFromExpressionForX:@"0" y:@"0" width:@"sw*0.5" height:@"sh" error:&error];
+	NSArray *leftActions = [NSArray arrayWithObjects: 
+								[WindowShiftAction windowShiftActionFromExpressionForX:@"0" y:@"0" width:@"sw/2" height:@"sh" error:&error],
+								[WindowShiftAction windowShiftActionFromExpressionForX:@"0" y:@"0" width:@"sw/3" height:@"sh" error:&error],
+								[WindowShiftAction windowShiftActionFromExpressionForX:@"0" y:@"0" width:@"sw/6" height:@"sh" error:&error],
+								nil];
+	
+	CyclingCompositeAction *leftActionDelegate = [[CyclingCompositeAction alloc] initWithActions:leftActions];	
 	ShiftItAction *left = [[ShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 delegate:leftActionDelegate];
 	
 	[dict setObject:left forKey:@"left"];

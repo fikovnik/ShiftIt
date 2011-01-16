@@ -14,6 +14,7 @@
 		277F4B2512E32D4C0091B3FF /* GCMathParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F4B2212E32D4C0091B3FF /* GCMathParser.m */; };
 		277F4B2612E32D4C0091B3FF /* ZExpParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 277F4B2412E32D4C0091B3FF /* ZExpParser.mm */; };
 		277F4B8C12E359E10091B3FF /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F4B8B12E359E10091B3FF /* ShiftItAction.m */; };
+		277F4C6A12E366690091B3FF /* CyclingCompositeAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F4C6912E366690091B3FF /* CyclingCompositeAction.m */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
@@ -67,6 +68,8 @@
 		277F4B2412E32D4C0091B3FF /* ZExpParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZExpParser.mm; path = GCExpressionParser/ZExpParser.mm; sourceTree = "<group>"; };
 		277F4B8A12E359E10091B3FF /* ShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAction.h; sourceTree = "<group>"; };
 		277F4B8B12E359E10091B3FF /* ShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAction.m; sourceTree = "<group>"; };
+		277F4C6812E366690091B3FF /* CyclingCompositeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CyclingCompositeAction.h; sourceTree = "<group>"; };
+		277F4C6912E366690091B3FF /* CyclingCompositeAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CyclingCompositeAction.m; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
 		27F4FD4512730F2F00A65750 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTHotKey.h; path = FMT/FMTHotKey.h; sourceTree = "<group>"; };
@@ -193,6 +196,8 @@
 			children = (
 				277F4AF012E3272E0091B3FF /* WindowShiftAction.h */,
 				277F4AF112E3272E0091B3FF /* WindowShiftAction.m */,
+				277F4C6812E366690091B3FF /* CyclingCompositeAction.h */,
+				277F4C6912E366690091B3FF /* CyclingCompositeAction.m */,
 			);
 			name = Actions;
 			sourceTree = "<group>";
@@ -340,6 +345,7 @@
 				277F4B2512E32D4C0091B3FF /* GCMathParser.m in Sources */,
 				277F4B2612E32D4C0091B3FF /* ZExpParser.mm in Sources */,
 				277F4B8C12E359E10091B3FF /* ShiftItAction.m in Sources */,
+				277F4C6A12E366690091B3FF /* CyclingCompositeAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
