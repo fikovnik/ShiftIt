@@ -192,13 +192,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	 // check to see if the user has repeated a left or right shift
 	 //    if so, move window to the screen next current one
 	 NSScreen *screen; 
-//	 if ((lastActionExecuted == @"left" || lastActionExecuted == @"right") && lastActionExecuted == [action identifier]) {
-//		 NSLog(@"Already shifted!");
-//		 //move window to the other screen
-//		 screen = [self nextScreenForAction:action window:windowRect];
-//	}
-//	else 
-		screen = [self chooseScreenForWindow_:windowRect];
+	screen = [self chooseScreenForWindow_:windowRect];
 	
 	// screen coordinates of the best fit window
 	NSRect screenRect = [screen frame];
@@ -315,70 +309,6 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	 if ([action identifier] == @"left" || [action identifier] == @"right" || [action identifier] == @"top" || [action identifier] == @"bottom")
 		 lastActionExecuted = [action identifier];
 }
-
-//- (void) reduceWindowFivePercent:(void *)window winRect:(NSRect)windowRect error:(NSError **)error {
-//	// error handling vars
-//	int errorCode = 0;
-//	
-//	unsigned int width = windowRect.size.width;
-//	unsigned int height = windowRect.size.height;
-//	unsigned int x = windowRect.origin.x;
-//	unsigned int y = windowRect.origin.y;
-//	
-//	if ([lastActionExecuted isEqualToString:@"left"] || [lastActionExecuted isEqualToString:@"right"]) {
-//		//shave 5% off right side of window
-//		
-//		FMTDevLog(@"adjusting size to %dx%d", width * 0.95, height);
-//		errorCode = AXUISetWindowSize(window, width * 0.95, height);
-//		if (errorCode != 0) {
-//			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
-//			return;
-//		}
-//		
-//		//if right, move the window to the right
-//		if ([lastActionExecuted isEqualToString:@"right"]) {
-//			NSScreen *screen = [self chooseScreenForWindow_:windowRect];
-//			NSRect screenRect = [screen frame];
-//			
-//			int newX = screenRect.size.width - (width * 0.95);
-//			
-//			FMTDevLog(@"adjusting position to %dx%d", newX, y);
-//			errorCode = AXUISetWindowPosition(window, newX, y);
-//			if (errorCode != 0) {
-//				*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
-//				return;
-//			}
-//		}
-//	}
-//	
-//	if ([lastActionExecuted isEqualToString:@"top"] || [lastActionExecuted isEqualToString:@"bottom"]) {
-//		//shave 5% off bottom side of window
-//		
-//		FMTDevLog(@"adjusting size to %dx%d", width, height * 0.95);
-//		errorCode = AXUISetWindowSize(window, width, height * 0.95);
-//		if (errorCode != 0) {
-//			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
-//			return;
-//		}
-//		
-//		//if bottom, move the window down 
-//		if([lastActionExecuted isEqualToString:@"bottom"]){
-//			NSScreen *screen = [self chooseScreenForWindow_:windowRect];
-//			NSRect screenRect = [screen frame];
-//			
-//			int newY = screenRect.size.height - (height * 0.95);
-//			
-//			FMTDevLog(@"adjusting position to %dx%d", x, newY);
-//			errorCode = AXUISetWindowPosition(window, x, newY);
-//			if (errorCode != 0) {
-//				*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
-//				return;
-//			}
-//		}
-//		
-//	}
-//	
-//}
 
 /**
  * Chooses the best screen for the given window rect (screen coord).
