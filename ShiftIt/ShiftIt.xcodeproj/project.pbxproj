@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
 		256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
-		2708BF011260E10900192883 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
-		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
 		277F48E812E1EA5C0091B3FF /* WindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F48E712E1EA5C0091B3FF /* WindowManager.m */; };
+		277F4AF212E3272E0091B3FF /* WindowShiftAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F4AF112E3272E0091B3FF /* WindowShiftAction.m */; };
+		277F4B2512E32D4C0091B3FF /* GCMathParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F4B2212E32D4C0091B3FF /* GCMathParser.m */; };
+		277F4B2612E32D4C0091B3FF /* ZExpParser.mm in Sources */ = {isa = PBXBuildFile; fileRef = 277F4B2412E32D4C0091B3FF /* ZExpParser.mm */; };
+		277F4B8C12E359E10091B3FF /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 277F4B8B12E359E10091B3FF /* ShiftItAction.m */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
@@ -53,14 +55,18 @@
 		256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* ShiftIt_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt_Prefix.pch; sourceTree = "<group>"; };
-		2708BEFF1260E10900192883 /* ShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAction.h; sourceTree = "<group>"; };
-		2708BF001260E10900192883 /* ShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAction.m; sourceTree = "<group>"; };
-		2708BF101260E5BB00192883 /* DefaultShiftItActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShiftItActions.h; sourceTree = "<group>"; };
-		2708BF111260E5BB00192883 /* DefaultShiftItActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultShiftItActions.m; sourceTree = "<group>"; };
 		2708C2551261C8E800192883 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
 		277F48E612E1EA5C0091B3FF /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		277F48E712E1EA5C0091B3FF /* WindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowManager.m; sourceTree = "<group>"; };
 		277F4A4212E2654B0091B3FF /* CGSPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSPrivate.h; sourceTree = "<group>"; };
+		277F4AF012E3272E0091B3FF /* WindowShiftAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowShiftAction.h; sourceTree = "<group>"; };
+		277F4AF112E3272E0091B3FF /* WindowShiftAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowShiftAction.m; sourceTree = "<group>"; };
+		277F4B2112E32D4C0091B3FF /* GCMathParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GCMathParser.h; path = GCExpressionParser/GCMathParser.h; sourceTree = "<group>"; };
+		277F4B2212E32D4C0091B3FF /* GCMathParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GCMathParser.m; path = GCExpressionParser/GCMathParser.m; sourceTree = "<group>"; };
+		277F4B2312E32D4C0091B3FF /* ZExpParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ZExpParser.h; path = GCExpressionParser/ZExpParser.h; sourceTree = "<group>"; };
+		277F4B2412E32D4C0091B3FF /* ZExpParser.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ZExpParser.mm; path = GCExpressionParser/ZExpParser.mm; sourceTree = "<group>"; };
+		277F4B8A12E359E10091B3FF /* ShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAction.h; sourceTree = "<group>"; };
+		277F4B8B12E359E10091B3FF /* ShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAction.m; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
 		27F4FD4512730F2F00A65750 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTHotKey.h; path = FMT/FMTHotKey.h; sourceTree = "<group>"; };
@@ -105,16 +111,15 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				277F4AEF12E327030091B3FF /* Actions */,
 				2708C1CC1261388A00192883 /* External */,
 				F2D9C239112F9D0E003E9435 /* Preferences */,
 				277F48E612E1EA5C0091B3FF /* WindowManager.h */,
 				277F48E712E1EA5C0091B3FF /* WindowManager.m */,
 				256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */,
-				2708BEFF1260E10900192883 /* ShiftItAction.h */,
-				2708BF001260E10900192883 /* ShiftItAction.m */,
-				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
-				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
+				277F4B8A12E359E10091B3FF /* ShiftItAction.h */,
+				277F4B8B12E359E10091B3FF /* ShiftItAction.m */,
 				2708C2551261C8E800192883 /* ShiftIt.h */,
 				277F4A4212E2654B0091B3FF /* CGSPrivate.h */,
 			);
@@ -151,6 +156,7 @@
 		2708C1CC1261388A00192883 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				277F4B2012E32D330091B3FF /* GCExpressionParser */,
 				2708C1CE126138A000192883 /* FMT */,
 			);
 			name = External;
@@ -180,6 +186,26 @@
 				27F4FD5512730F4600A65750 /* FMTUtils.m */,
 			);
 			name = FMT;
+			sourceTree = "<group>";
+		};
+		277F4AEF12E327030091B3FF /* Actions */ = {
+			isa = PBXGroup;
+			children = (
+				277F4AF012E3272E0091B3FF /* WindowShiftAction.h */,
+				277F4AF112E3272E0091B3FF /* WindowShiftAction.m */,
+			);
+			name = Actions;
+			sourceTree = "<group>";
+		};
+		277F4B2012E32D330091B3FF /* GCExpressionParser */ = {
+			isa = PBXGroup;
+			children = (
+				277F4B2112E32D4C0091B3FF /* GCMathParser.h */,
+				277F4B2212E32D4C0091B3FF /* GCMathParser.m */,
+				277F4B2312E32D4C0091B3FF /* ZExpParser.h */,
+				277F4B2412E32D4C0091B3FF /* ZExpParser.mm */,
+			);
+			name = GCExpressionParser;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* ShiftIt */ = {
@@ -304,14 +330,16 @@
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */,
 				F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */,
-				2708BF011260E10900192883 /* ShiftItAction.m in Sources */,
-				2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */,
 				27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */,
 				27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */,
 				27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */,
 				27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */,
 				27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */,
 				277F48E812E1EA5C0091B3FF /* WindowManager.m in Sources */,
+				277F4AF212E3272E0091B3FF /* WindowShiftAction.m in Sources */,
+				277F4B2512E32D4C0091B3FF /* GCMathParser.m in Sources */,
+				277F4B2612E32D4C0091B3FF /* ZExpParser.mm in Sources */,
+				277F4B8C12E359E10091B3FF /* ShiftItAction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,13 +25,13 @@
 @synthesize identifier = identifier_;
 @synthesize label = label_;
 @synthesize uiTag = uiTag_;
-@synthesize action = action_;
+@synthesize delegate = delegate_;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFnRef)action {
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag delegate:(NSObject<ShiftItActionDelegate> *)delegate {
 	FMTAssertNotNil(identifier);
 	FMTAssertNotNil(label);
 	FMTAssert(uiTag > 0, @"uiTag must be greater than 0");
-	FMTAssertNotNil(action);
+	FMTAssertNotNil(delegate);
 
 	if (![super init]) {
 		return nil;
@@ -40,7 +40,7 @@
 	identifier_ = [identifier retain];
 	label_ = [label retain];
 	uiTag_ = uiTag;
-	action_ = action;
+	delegate_ = [delegate retain];
 	
 	return self;
 }
@@ -48,6 +48,7 @@
 - (void) dealloc {
 	[identifier_ release];
 	[label_ release];
+	[delegate_ release];
 	
 	[super dealloc];
 }

@@ -49,6 +49,7 @@ typedef AXUIElementRef AXWindowRef;
 }
 
 @property (readonly) NSPoint origin;
+@property (readonly) NSRect frame;
 @property (readonly) NSSize size;
 @property (readonly) Screen *screen;
 

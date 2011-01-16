@@ -63,15 +63,3 @@ extern NSInteger const kUnableToSwitchWindowToWorkspaceErrorCode;
 
 // TODO: move to FMT
 extern NSError *CreateError(NSInteger errCode, NSString *description, NSError *cause);
-
-#define HANDLE_WM_ERROR_LONG(error,localError,errCode,description) \
-if ((localError)) { \
-*(error) = CreateError((errCode), (description), (localError)); \
-return; \
-}
-
-#define HANDLE_WM_ERROR(error,localError) \
-if ((localError)) { \
-*(error) = (localError); \
-return; \
-}

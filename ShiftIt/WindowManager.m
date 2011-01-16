@@ -21,7 +21,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #import "WindowManager.h"
 #import "ShiftIt.h"
-#import "ShiftItAction.h"
 #import "FMTDefines.h"
 
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
@@ -129,6 +128,7 @@ int AXUISetWindowSize(AXWindowRef windowId, NSSize size);
 
 @dynamic origin;
 @dynamic size;
+@synthesize frame = rect_;
 @synthesize screen = screen_;
 @synthesize ref_;
 @synthesize wid_;
@@ -260,7 +260,7 @@ int AXUISetWindowSize(AXWindowRef windowId, NSSize size);
 	origin.x += [[window screen] visibleFrame_].origin.x;
 	origin.y += [[window screen] visibleFrame_].origin.y;
 	
-	FMTDevLog(@"adjusting position to %dx%d", origin.x, origin.y);
+	FMTDevLog(@"adjusting position to %f x %f", origin.x, origin.y);
 	int ret;
 	
 	if ((ret = AXUISetWindowPosition([window ref_], origin)) != 0) {
@@ -272,7 +272,7 @@ int AXUISetWindowSize(AXWindowRef windowId, NSSize size);
 - (void) resizeWindow:(Window *)window size:(NSSize)size error:(NSError **)error {
 	FMTAssertNotNil(window);
 		
-	FMTDevLog(@"adjusting size to %dx%d", size);
+	FMTDevLog(@"adjusting size to %f x %f", size.width, size.height);
 	int ret;
 	
 	if ((ret = AXUISetWindowSize([window ref_], size)) != 0) {
@@ -287,10 +287,16 @@ int AXUISetWindowSize(AXWindowRef windowId, NSSize size);
 	NSError *localError = nil;
 	
 	[self moveWindow:window origin:origin error:&localError];
-	HANDLE_WM_ERROR(error,localError);
+	if (localError) { 
+		*error = (localError); 
+		return ;
+	}
 	
 	[self resizeWindow:window size:size error:&localError];
-	HANDLE_WM_ERROR(error,localError);
+	if (localError) { 
+		*error = (localError); 
+		return ;
+	}
 }
 
 - (void) switchWorkspace:(Window *)window row:(NSInteger)row col:(NSInteger)col error:(NSError **)error {

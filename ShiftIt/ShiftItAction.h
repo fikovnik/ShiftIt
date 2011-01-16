@@ -19,30 +19,48 @@
 
 #import <Foundation/Foundation.h>
 
+#define HANDLE_WM_ERROR_LONG(error,localError,errCode,description) \
+if ((localError)) { \
+*(error) = CreateError((errCode), (description), (localError)); \
+return NO; \
+}
+
+#define HANDLE_WM_ERROR(error,localError) \
+if ((localError)) { \
+*(error) = (localError); \
+return NO; \
+}
+
+#define GET_FOCUSED_WINDOW(focusedWindowm, windowManager, error, localError) \
+[(windowManager) focusedWindow:&(focusedWindow) error:&(localError)]; \
+HANDLE_WM_ERROR((error), (localError)); \
+if (!(focusedWindow)) { \
+return NO; \
+} \
+
 @class WindowManager;
 
-/** 
- * A reference to a function that position
- * and size the window's geometry denoted by the windowRect argument
- * relatively to a screen rect that originates at [0,0] (top left corner)
- * and has a size screenSize. The windowRect is the whole window
- * including any sort window decorators.
- */
-typedef void (*ShiftItFnRef)(WindowManager *windowManager, NSError **error); 
+@protocol ShiftItActionDelegate
+
+@required
+- (BOOL) executeWithWindowManager:(WindowManager *)windowManager error:(NSError **)error;
+
+@end
+
 
 @interface ShiftItAction : NSObject {
  @private
 	NSString *identifier_;
 	NSString *label_;
 	NSInteger uiTag_;
-	ShiftItFnRef action_;
+	NSObject<ShiftItActionDelegate> *delegate_;
 }
 
 @property (readonly) NSString *identifier;
 @property (readonly) NSString *label;
 @property (readonly) NSInteger uiTag;
-@property (readonly) ShiftItFnRef action;
+@property (readonly) NSObject<ShiftItActionDelegate> *delegate;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFnRef)action;
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag delegate:(NSObject<ShiftItActionDelegate> *)delegate;
 
 @end
