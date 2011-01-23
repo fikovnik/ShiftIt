@@ -21,14 +21,6 @@
 #import "FMTDefines.h"
 #import "WindowSizer.h"
 
-typedef enum {
-	kNoAnchor, kLeftAnchor, kRightAnchor, kTopAnchor, kBottomAnchor, 
-	kTopLeftAnchor, kTopRightAnchor, kBottomLeftAnchor, kBottomRightAnchor, 
-	kCenterAnchor
-} WindowAnchor;
-
-WindowAnchor lastAnchor_ = kNoAnchor;
-
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
 	
@@ -37,8 +29,6 @@ NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	
 	r.size.width = screenSize.width / 2;
 	r.size.height = screenSize.height;
-	
-	lastAnchor_ = kLeftAnchor;
 	
 	return r;
 }
@@ -52,8 +42,6 @@ NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 	r.size.width = screenSize.width / 2;
 	r.size.height = screenSize.height;
 	
-	lastAnchor_ = kRightAnchor;
-	
 	return r;
 }
 
@@ -65,8 +53,6 @@ NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 	
 	r.size.width = screenSize.width;
 	r.size.height = screenSize.height / 2;
-	
-	lastAnchor_ = kTopAnchor;
 	
 	return r;
 }
@@ -80,8 +66,6 @@ NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 	r.size.width = screenSize.width;
 	r.size.height = screenSize.height / 2;
 	
-	lastAnchor_ = kBottomAnchor;
-	
 	return r;
 }
 
@@ -93,8 +77,6 @@ NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
 	
 	r.size.width = screenSize.width / 2;
 	r.size.height = screenSize.height / 2;
-	
-	lastAnchor_ = kTopLeftAnchor;
 	
 	return r;
 }
@@ -108,8 +90,6 @@ NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
 	r.size.width = screenSize.width / 2;
 	r.size.height = screenSize.height / 2;
 	
-	lastAnchor_ = kTopRightAnchor;
-	
 	return r;
 }
 
@@ -121,8 +101,6 @@ NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
 	
 	r.size.width = screenSize.width / 2;
 	r.size.height = screenSize.height / 2;
-	
-	lastAnchor_ = kBottomLeftAnchor;
 	
 	return r;
 }
@@ -136,8 +114,6 @@ NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
 	r.size.width = screenSize.width / 2;
 	r.size.height = screenSize.height / 2;
 	
-	lastAnchor_ = kBottomRightAnchor;
-	
 	return r;
 }
 
@@ -150,8 +126,6 @@ NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
 	r.size.width = screenSize.width;
 	r.size.height = screenSize.height;
 	
-	lastAnchor_ = kCenterAnchor;
-	
 	return r;
 }
 
@@ -163,70 +137,89 @@ NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	
 	r.size = windowRect.size;
 	
-	lastAnchor_ = kCenterAnchor;
-	
 	return r;
 }
+
+#define EqualWithVicinity(a,b,e) ((a) >= ((b) - (e)) && (a) <= ((b) + (e)))
+
+#define EqualPoints(p1,x1,y1,e) (EqualWithVicinity(((p1).x), (x1), (e)) && EqualWithVicinity(((p1).y), (y1), (e)))
 
 NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, float kw, float kh, BOOL increase) {	
 	FMTAssert(kw > 0, @"kw must be greater than zero");
 	FMTAssert(kh > 0, @"kh must be greater than zero");
 	
 	NSRect r = windowRect;
+	
 	// 1: increase, -1: reduce
 	int inc = increase ? 1 : -1;
-	
-	// TODO: check the window is the same
-	
-	// wider
-	switch (lastAnchor_) {
-		case kNoAnchor:
-			// no action if there is no anchor defined
-			// return straight away so the size check in the end is skipped
-			return windowRect;
-		case kLeftAnchor:
-			r.size.width = windowRect.size.width + inc * (kw);			
-			break;
-		case kRightAnchor:
-			r.size.width = windowRect.size.width + inc * (kw);			
-			r.origin.x = screenSize.width - r.size.width;
-			break;
-		case kTopAnchor:
-			r.size.height = windowRect.size.height + inc * (kh);
-			break;
-		case kBottomAnchor:
-			r.size.height = windowRect.size.height + inc * (kh);			
-			r.origin.y = screenSize.height - r.size.height;
-			break;
-		case kTopLeftAnchor:
-			r.size.width = windowRect.size.width + inc * (kw);			
-			r.size.height = windowRect.size.height + inc * (kh);
-			break;
-		case kTopRightAnchor:
-			r.size.width = windowRect.size.width + inc * (kw);			
-			r.size.height = windowRect.size.height + inc * (kh);
-			r.origin.x = screenSize.width - r.size.width;
-			break;
-		case kBottomLeftAnchor:
-			r.size.width = windowRect.size.width + inc * (kw);			
-			r.size.height = windowRect.size.height + inc * (kh);			
-			r.origin.y = screenSize.height - r.size.height;
-			break;
-		case kBottomRightAnchor:
-			r.size.width = windowRect.size.width + inc * (kw);			
-			r.size.height = windowRect.size.height + inc * (kh);			
-			r.origin.x = screenSize.width - r.size.width;
-			r.origin.y = screenSize.height - r.size.height;
-			break;
-		case kCenterAnchor:
-			r.size.width = windowRect.size.width + inc * (kw);			
-			r.size.height = windowRect.size.height + inc * (kh);			
-			r.origin.x -= inc * (kw/2);
-			r.origin.y -= inc * (kh/2);
-			break;
+	int e = 2;
+		
+	// try to determine what is the anchor
+	if (EqualPoints(r.origin,0,0,e) 
+		&& EqualWithVicinity(r.size.width, screenSize.width, e)
+		&& EqualWithVicinity(r.size.height, screenSize.height, e)) {
+		// fullscreen
+
+		r.size.width = windowRect.size.width + inc * (kw);			
+		r.size.height = windowRect.size.height + inc * (kh);			
+		r.origin.x -= inc * (kw/2);
+		r.origin.y -= inc * (kh/2);
+	} else if (EqualPoints(r.origin,0,0,e) 
+			   && EqualWithVicinity(r.size.height, screenSize.height, e)) {
+		// left
+		
+		r.size.width = windowRect.size.width + inc * (kw);			
+	} else if (EqualPoints(r.origin, screenSize.width - r.size.width, 0, e) 
+			   && EqualWithVicinity(r.size.height, screenSize.height, e)) {
+		// right
+		
+		r.size.width = windowRect.size.width + inc * (kw);			
+		r.origin.x = screenSize.width - r.size.width;
+	} else if (EqualPoints(r.origin,0,0,e) 
+			   && EqualWithVicinity(r.size.width, screenSize.width, e)) {
+		// top
+		
+		r.size.height = windowRect.size.height + inc * (kh);
+	} else if (EqualPoints(r.origin, 0, screenSize.height - r.size.height,e)
+			   && r.size.width == screenSize.width) {
+		// bottom
+		
+		r.size.height = windowRect.size.height + inc * (kh);			
+		r.origin.y = screenSize.height - r.size.height;
+	} else if (EqualPoints(r.origin,0,0,e)) {
+		// top left
+		
+		r.size.width = windowRect.size.width + inc * (kw);			
+		r.size.height = windowRect.size.height + inc * (kh);
+	} else if (EqualPoints(r.origin, screenSize.width - r.size.width, 0, e)) {
+		// top right
+		
+		r.size.width = windowRect.size.width + inc * (kw);			
+		r.size.height = windowRect.size.height + inc * (kh);
+		r.origin.x = screenSize.width - r.size.width;		
+	} else if (EqualPoints(r.origin, 0, screenSize.height - r.size.height, e)) {
+		// bottom left
+		
+		r.size.width = windowRect.size.width + inc * (kw);			
+		r.size.height = windowRect.size.height + inc * (kh);			
+		r.origin.y = screenSize.height - r.size.height;		
+	} else if (EqualPoints(r.origin, screenSize.width - r.size.width, screenSize.height - r.size.height,e)) {
+		// bottom right
+		
+		r.size.width = windowRect.size.width + inc * (kw);			
+		r.size.height = windowRect.size.height + inc * (kh);			
+		r.origin.x = screenSize.width - r.size.width;
+		r.origin.y = screenSize.height - r.size.height;
+	} else {
+		// other 
+		
+		r.size.width = windowRect.size.width + inc * (kw);			
+		r.size.height = windowRect.size.height + inc * (kh);			
+		r.origin.x -= inc * (kw/2);
+		r.origin.y -= inc * (kh/2);
 	}
 	
-	// check window rect
+	// check window rect - constraine by the screen size
 	r.size.width = r.size.width < kw ? kw : r.size.width;
 	r.size.width = r.size.width > screenSize.width ? screenSize.width : r.size.width;
 	
