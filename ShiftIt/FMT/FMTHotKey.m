@@ -43,7 +43,7 @@
 }
 
 - (NSString *)description {
-	return FMTStr(@"code: %d modifiers: %ld", keyCode_, modifiers_);
+	return FMTStr(@"code: %d modifiers: %@ (%ld)", keyCode_, FMTStringForCocoaModifiers(modifiers_), modifiers_);
 }
 
 - (BOOL)isEqualTo:(id)object {
@@ -60,3 +60,18 @@
 // TODO: add hash
 
 @end
+
+#pragma mark Key code and modifiers conversion methods
+
+// this method is based on the SRStringForCocoaModifierFlags from SRCommon.m
+// in the ShortcutRecorder. The reason why it is duplicated here is to not to
+// have the dependency on ShortcutRecorder in FMTHotKey
+NSString *FMTStringForCocoaModifiers(NSUInteger modifiers) {
+    NSString *modifiersString = [NSString stringWithFormat:@"%@%@%@%@",
+								 (modifiers & NSControlKeyMask ? [NSString stringWithFormat:@"%C", kControlUnicode] : @""),
+								 (modifiers & NSAlternateKeyMask ? [NSString stringWithFormat:@"%C", kOptionUnicode] : @""),
+								 (modifiers & NSShiftKeyMask ? [NSString stringWithFormat:@"%C", kShiftUnicode] : @""),
+								 (modifiers & NSCommandKeyMask ? [NSString stringWithFormat:@"%C", kCommandUnicode] : @"")];
+	
+	return modifiersString;
+}

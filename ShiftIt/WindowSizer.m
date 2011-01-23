@@ -28,8 +28,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
 
-extern int abs(int i);
-
 // reference to the carbon GetMBarHeight() function
 extern short GetMBarHeight(void);
 
@@ -181,6 +179,18 @@ NSMutableDictionary *windowHistory = nil;
 	};
 	FMTDevLog(@"window rect: %@", RECT_STR(windowRect));
 	
+#ifndef NDEBUG
+	 // dump screen info
+	 for (NSScreen *screen in [NSScreen screens]) {
+		 NSRect frame = [screen frame];
+		 NSRect visibleFrame = [screen visibleFrame];
+		 
+		 COCOA_TO_SCREEN_COORDINATES(frame);
+		 COCOA_TO_SCREEN_COORDINATES(visibleFrame);
+		 FMTDevLog(@"Screen info: %@ frame: %@ visible frame: %@",screen, RECT_STR(frame), RECT_STR(visibleFrame));
+	 }
+#endif		 
+	 
 	// get the screen which is the best fit for the window
 	 // check to see if the user has repeated a left or right shift
 	 //    if so, move window to the screen next current one

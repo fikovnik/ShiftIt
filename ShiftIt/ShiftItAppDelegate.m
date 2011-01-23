@@ -132,20 +132,6 @@ int margin = 8;
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	[defaults synchronize];
 
-	// check we are the only one
-	if (FMTNumberOfRunningProcessesWithBundleId(kShiftItAppBundleId) > 1) {
-        int ret = NSRunAlertPanel (@"ShiftIt is already running", 
-								   @"There is point to have more than instance at the same time so this one will now quit.", 
-								   @"Quit", 
-								   @"Show preferences",
-								   nil);
-		if (ret == NSAlertAlternateReturn) {
-                [[NSDistributedNotificationCenter defaultCenter] postNotificationName:kShowPreferencesRequestNotification object:nil];
-        }
-		
-		[NSApp terminate:self];
-	}
-	
 	// check preferences
 	BOOL hasStartedBefore = [defaults boolForKey:kHasStartedBeforePrefKey];
 	
@@ -214,8 +200,15 @@ int margin = 8;
 	}
 }
 
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows: (BOOL)flag{	
+	if(flag==NO){
+		[self showPreferences:nil];
+	}
+	return YES;
+} 
+
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context{
-	if([keyPath compare:FMTStr(@"values.%@",kShowMenuPrefKey)] == NSOrderedSame) {
+	if([FMTStr(@"values.%@",kShowMenuPrefKey) isEqualToString:keyPath]) {
 		[self updateMenuBarIcon_];
 	} 
 }
@@ -253,6 +246,7 @@ int margin = 8;
 
 - (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
 	FMTAssertNotNil(action);
+	FMTDevLog(@"updateStatusMenuShortcutForAction_:%@ keyCode:%d modifiers:%ld", [action identifier], keyCode, modifiers);
 
 	NSMenuItem *menuItem = [statusMenu_ itemWithTag:kSIMenuUITagPrefix+[action uiTag]];
 	FMTAssertNotNil(menuItem);
@@ -261,9 +255,18 @@ int margin = 8;
 	[menuItem setRepresentedObject:[action identifier]];
 	[menuItem setAction:@selector(shiftItMenuAction_:)];
 	
-	NSString *keyCodeString = (keyCode == -1) ? @"" : SRStringForKeyCode(keyCode);
-	[menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
-	[menuItem setKeyEquivalentModifierMask:modifiers];
+	if (keyCode != -1) {
+		NSString *keyCodeString = SRStringForKeyCode(keyCode);
+		if (!keyCodeString) {
+			FMTDevLog(@"Unable to get string representation for a key code: %ld", keyCode);
+			keyCodeString = @"";
+		}
+		[menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
+		[menuItem setKeyEquivalentModifierMask:modifiers];
+	} else {
+		[menuItem setKeyEquivalent:@""];
+		[menuItem setKeyEquivalentModifierMask:0];
+	}
 }
 
 - (void) initializeActions_ {

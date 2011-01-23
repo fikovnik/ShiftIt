@@ -2,7 +2,7 @@
 
 Download [here](https://github.com/downloads/rcarmo/ShiftIt/20110103-ShiftIt-noX11.zip).
 
-Overview
+About
 --------
 
 ShiftIt is an application for OSX that allows you to quickly manipulate window position and size using keyboard shortcuts. It intends to become a full featured window organizer for OSX.
@@ -11,10 +11,5 @@ This is a sub-fork from the original [ShiftIt][1] by [Aravindkumar Rajendiran][2
 
 Version 1.5.2 adds Undo support - you can now restore previous window positions (as long as they were handled by ShiftIt)
 
+
 Please refer to the [forks](https://github.com/rcarmo/ShiftIt/network) listing for more documentation and related work (kudos to the folk who picked this up before I did).
-
-License: [GNU General Public License v3][3]
-
-[1]: http://code.google.com/p/shiftit/
-[2]: http://ca.linkedin.com/in/aravind88
-[3]: http://www.gnu.org/licenses/gpl.html
