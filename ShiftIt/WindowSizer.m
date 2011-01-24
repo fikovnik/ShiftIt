@@ -78,6 +78,10 @@ NSMutableDictionary *windowHistory = nil;
 	return self;
 }
 
+- (id)dealloc {
+	[windowHistory release];
+}
+
 
 /**
  * The method is the heart of the ShiftIt app. It takes an
@@ -234,8 +238,19 @@ NSMutableDictionary *windowHistory = nil;
 		  FMTDevLog(@"preparing to undo window rect: %@", RECT_STR(shiftedRect));
 		  [history removeLastObject];
 		}
-		else
+		else {
+#ifdef X11
+			if (activeWindowX11) {
+				X11FreeWindowRef(window);
+			} else {
+				AXUIFreeWindowRef(window);
+			}
+#else
+		AXUIFreeWindowRef(window);
+#endif
 			return;
+		}
+			
 	}
 	else {
 		[history addObject:[NSValue valueWithRect:windowRect]];
