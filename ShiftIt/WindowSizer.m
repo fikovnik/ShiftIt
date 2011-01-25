@@ -27,6 +27,7 @@
 #import "X11Utils.h"
 
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
+#define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
 
 // reference to the carbon GetMBarHeight() function
 extern short GetMBarHeight(void);
@@ -35,6 +36,7 @@ extern short GetMBarHeight(void);
 
 + (NSScreen *)primaryScreen;
 - (BOOL)isPrimary;
+- (BOOL)isBelowPrimary;
 
 @end
 
@@ -48,9 +50,21 @@ extern short GetMBarHeight(void);
 	return self == [NSScreen primaryScreen];
 }
 
+- (BOOL)isBelowPrimary { 			
+	BOOL isBellow = NO;
+	for (NSScreen *s in [NSScreen screens]) {
+		NSRect r = [s frame];
+		COCOA_TO_SCREEN_COORDINATES(r);
+		if (r.origin.y > 0) {
+			isBellow = YES;
+			break;
+		}
+	}
+	return isBellow;
+}
+
 @end
 
-#define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
 
 @interface WindowSizer (Private)
 
@@ -167,6 +181,30 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		}
 	}
 	
+	int (*getWindowGeometryFn)(void *, int *, int *, unsigned int *, unsigned int *);
+	int (*setWindowPositionFn)(void *, int, int);
+	int (*setWindowSizeFn)(void *, unsigned int, unsigned int);
+	void (*freeWindowRefFn)(void *);
+	const char *(*getErrorMessageFn)(int);
+	
+#ifdef X11
+	if (activeWindowX11) {
+		getWindowGeometryFn = &X11GetWindowGeometry;
+		setWindowPositionFn = &X11SetWindowPosition;
+		setWindowSizeFn = &X11SetWindowSize;
+		freeWindowRefFn = &X11FreeWindowRef;
+		getErrorMessageFn = &X11GetErrorMessage;
+	} else {
+#endif
+		getWindowGeometryFn = &AXUIGetWindowGeometry;
+		setWindowPositionFn = &AXUISetWindowPosition;
+		setWindowSizeFn = &AXUISetWindowSize;
+		freeWindowRefFn = &AXUIFreeWindowRef;
+		getErrorMessageFn = &AXUIGetErrorMessage;		
+#ifdef X11
+	}
+#endif	
+	
 	// the window rect in screen coordinates
 	NSRect windowRect = {
 		{x, y},
@@ -189,8 +227,18 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	// get the screen which is the best fit for the window
 	// check to see if the user has repeated a left or right shift
 	// if so, move window to the screen next current one
-	NSScreen *screen; 
-	screen = [self chooseScreenForWindow_:windowRect];
+	NSScreen *screen = [self chooseScreenForWindow_:windowRect];
+	
+#ifdef X11
+	if (activeWindowX11) {
+		// adjust the menu bar:
+		// cocoa windows get the size counted from the [0,GetMBarHeight()]
+		// whereas X11 gets [0,0] so we need to add it to them
+		if ([screen isBelowPrimary] || [screen isPrimary]) {
+			windowRect.origin.y += GetMBarHeight();
+		}
+	}
+#endif
 	
 	// screen coordinates of the best fit window
 	NSRect screenRect = [screen frame];
@@ -234,23 +282,8 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			shiftedRect.origin.x -= X11Ref.origin.x;
 			shiftedRect.origin.y -= X11Ref.origin.y;
 			
-			// it seems that the X11 server 2.3.5 on snow leopard 10.6.4 on mac book pro
-			// changes the origin of the coordinates depending on the relative 
-			// positions of the screens next to each other if there is a screen
-			// that is below the primary screen, than the X11 coordnates starts at
-			// [0,m] of the screen coordinates (quartz) where m is the height of the
-			// menu bar (GetMBarHeight()) otherwise it starts at [0,0].
-			BOOL screenBelowPrimary = NO;
-			for (NSScreen *s in [NSScreen screens]) {
-				NSRect r = [s frame];
-				COCOA_TO_SCREEN_COORDINATES(r);
-				if (r.origin.y > 0) {
-					screenBelowPrimary = YES;
-					break;
-				}
-			}
-			
-			if (screenBelowPrimary || [screen isPrimary]) {
+			// readjust back the menu bar
+			if ([screen isBelowPrimary] || [screen isPrimary]) {
 				shiftedRect.origin.y -= GetMBarHeight();
 			}
 		} 
@@ -263,57 +296,69 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		width = (unsigned int) shiftedRect.size.width;
 		height = (unsigned int) shiftedRect.size.height;
 		
-		// adjust window geometry
-		// there are apps that does not size continuously but rather discretely so
-		// they have to be re-adjusted hence first set the size and then position
-#ifdef X11
-		if (activeWindowX11) {		
-			FMTDevLog(@"adjusting position to %dx%d", x, y);
-			errorCode = X11SetWindowPosition(window, x, y);
-			if (errorCode != 0) {
-				*error = SICreateError(FMTStrc(X11GetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
-				return;
-			}
-			
-			FMTDevLog(@"adjusting size to %dx%d", width, height);
-			errorCode = X11SetWindowSize(window, width, height);
-			if (errorCode != 0) {
-				*error = SICreateError(FMTStrc(X11GetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
-				return;
-			}				
-		} else {
-#endif // X11
-			FMTDevLog(@"adjusting position to %dx%d", x, y);
-			errorCode = AXUISetWindowPosition(window, x, y);
-			if (errorCode != 0) {
-				*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
-				return;
-			}
-			
-			FMTDevLog(@"adjusting size to %dx%d", width, height);
-			errorCode = AXUISetWindowSize(window, width, height);
-			if (errorCode != 0) {
-				*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
-				return;
-			}
-#ifdef X11
+		// move window
+		FMTDevLog(@"moving window to: %dx%d", x, y);		
+		errorCode = setWindowPositionFn(window, x, y);
+		if (errorCode != 0) {
+			*error = SICreateError(FMTStrc(getErrorMessageFn(errorCode)), kUnableToChangeWindowPositionErrorCode);
+			return;
 		}
-#endif // X11
 		
+		// resize window
+		FMTDevLog(@"resizing to: %dx%d", width, height);
+		errorCode = setWindowSizeFn(window, width, height);
+		if (errorCode != 0) {
+			*error = SICreateError(FMTStrc(getErrorMessageFn(errorCode)), kUnableToChangeWindowSizeErrorCode);
+			return;
+		}
+		
+		// there are apps that does not size continuously but rather discretely so
+		// they have to be re-adjusted
+		int dx = 0;
+		int dy = 0;
+		
+		// in order to check for the bottom anchor we have to deal with the menu bar again
+		// TODO: debug in multiscreen (X11)
+		int mbarAdj = 0;
+#ifdef X11
+		if (!activeWindowX11) {
+			mbarAdj = GetMBarHeight();
+		}
+#else
+		mbarAdj = GetMBarHeight();
+#endif
+		
+		// get the anchor and readjust the size
+		if (x + width == visibleScreenRect.size.width || y + height == visibleScreenRect.size.height + mbarAdj) {
+			int unused;
+			unsigned int width2,height2; 
+			
+			// check how was it resized
+			errorCode = getWindowGeometryFn(window, &unused, &unused, &width2, &height2);
+			if (errorCode != 0) {
+				*error = SICreateError(FMTStrc(getErrorMessageFn(errorCode)), kUnableToGetWindowGeometryErrorCode);
+				return;
+			}
+			FMTDevLog(@"window resized to: %dx%d", width2, height2);
+			
+			dx = (x + width == visibleScreenRect.size.width ? 1 : 0) * (width - width2);
+			dy = (y + height == visibleScreenRect.size.height + mbarAdj ? 1 : 0) * (height - height2);				
+			
+			if (dx != 0 || dy != 0) {
+				// there have to be two separate move actions. cocoa window could not be resize over the screen boundaries
+				FMTDevLog(@"adjusting by delta: %dx%d", x, y, dx, dy);		
+				errorCode = setWindowPositionFn(window, x+dx, y+dy);
+				if (errorCode != 0) {
+					*error = SICreateError(FMTStrc(getErrorMessageFn(errorCode)), kUnableToChangeWindowPositionErrorCode);
+					return;
+				}		
+			}
+		}
 	} else {
 		FMTDevLog(@"Shifted window origin and dimensions are the same");
 	}
 	
-#ifdef X11
-	if (activeWindowX11) {
-		X11FreeWindowRef(window);
-	} else {
-		AXUIFreeWindowRef(window);
-	}
-#else
-	AXUIFreeWindowRef(window);
-#endif
-	
+	freeWindowRefFn(window);	
 }
 
 /**
