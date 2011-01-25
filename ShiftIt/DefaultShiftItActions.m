@@ -140,83 +140,78 @@ NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-#define EqualWithVicinity(a,b,e) ((a) >= ((b) - (e)) && (a) <= ((b) + (e)))
-
-#define EqualPoints(p1,x1,y1,e) (EqualWithVicinity(((p1).x), (x1), (e)) && EqualWithVicinity(((p1).y), (y1), (e)))
+typedef enum {
+	kLeftDirection = 1 << 0,
+	kTopDirection = 1 << 1,
+	kBottomDirection = 1 << 2,
+	kRightDirection =  1 << 3
+} Direction;
 
 NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, float kw, float kh, BOOL increase) {	
 	FMTAssert(kw > 0, @"kw must be greater than zero");
 	FMTAssert(kh > 0, @"kh must be greater than zero");
 	
+	// target window rect
 	NSRect r = windowRect;
-	
 	// 1: increase, -1: reduce
 	int inc = increase ? 1 : -1;
-	int e = 2;
-		
-	// try to determine what is the anchor
-	if (EqualPoints(r.origin,0,0,e) 
-		&& EqualWithVicinity(r.size.width, screenSize.width, e)
-		&& EqualWithVicinity(r.size.height, screenSize.height, e)) {
-		// fullscreen
-
-		r.size.width = windowRect.size.width + inc * (kw);			
-		r.size.height = windowRect.size.height + inc * (kh);			
-		r.origin.x -= inc * (kw/2);
-		r.origin.y -= inc * (kh/2);
-	} else if (EqualPoints(r.origin,0,0,e) 
-			   && EqualWithVicinity(r.size.height, screenSize.height, e)) {
-		// left
-		
-		r.size.width = windowRect.size.width + inc * (kw);			
-	} else if (EqualPoints(r.origin, screenSize.width - r.size.width, 0, e) 
-			   && EqualWithVicinity(r.size.height, screenSize.height, e)) {
-		// right
-		
-		r.size.width = windowRect.size.width + inc * (kw);			
-		r.origin.x = screenSize.width - r.size.width;
-	} else if (EqualPoints(r.origin,0,0,e) 
-			   && EqualWithVicinity(r.size.width, screenSize.width, e)) {
-		// top
-		
-		r.size.height = windowRect.size.height + inc * (kh);
-	} else if (EqualPoints(r.origin, 0, screenSize.height - r.size.height,e)
-			   && r.size.width == screenSize.width) {
-		// bottom
-		
-		r.size.height = windowRect.size.height + inc * (kh);			
-		r.origin.y = screenSize.height - r.size.height;
-	} else if (EqualPoints(r.origin,0,0,e)) {
-		// top left
-		
-		r.size.width = windowRect.size.width + inc * (kw);			
-		r.size.height = windowRect.size.height + inc * (kh);
-	} else if (EqualPoints(r.origin, screenSize.width - r.size.width, 0, e)) {
-		// top right
-		
-		r.size.width = windowRect.size.width + inc * (kw);			
-		r.size.height = windowRect.size.height + inc * (kh);
-		r.origin.x = screenSize.width - r.size.width;		
-	} else if (EqualPoints(r.origin, 0, screenSize.height - r.size.height, e)) {
-		// bottom left
-		
-		r.size.width = windowRect.size.width + inc * (kw);			
-		r.size.height = windowRect.size.height + inc * (kh);			
-		r.origin.y = screenSize.height - r.size.height;		
-	} else if (EqualPoints(r.origin, screenSize.width - r.size.width, screenSize.height - r.size.height,e)) {
-		// bottom right
-		
-		r.size.width = windowRect.size.width + inc * (kw);			
-		r.size.height = windowRect.size.height + inc * (kh);			
-		r.origin.x = screenSize.width - r.size.width;
-		r.origin.y = screenSize.height - r.size.height;
-	} else {
-		// other 
-		
-		r.size.width = windowRect.size.width + inc * (kw);			
-		r.size.height = windowRect.size.height + inc * (kh);			
-		r.origin.x -= inc * (kw/2);
-		r.origin.y -= inc * (kh/2);
+	// into which directio we are going to increse/reduce size
+	int directions = kLeftDirection | kTopDirection | kBottomDirection | kRightDirection;
+	
+	if (r.origin.x == 0) {
+		// do not resize to left
+		directions ^= kLeftDirection;
+	}
+	if (r.origin.y == 0) {
+		// do not resize to top
+		directions ^= kTopDirection;
+	}
+	if (r.origin.y + r.size.height == screenSize.height) {
+		// do not resize to bottom
+		directions ^= kBottomDirection;
+	}
+	if (r.origin.x + r.size.width == screenSize.width) {
+		// do not resize to right
+		directions ^= kRightDirection;
+	}
+	
+	// following first handle fullscreen
+	// iff the window is in fullscreen than allow reducing the size with no
+	// anchors
+	if (!directions && !increase) {
+		directions = kLeftDirection | kTopDirection | kBottomDirection | kRightDirection;
+	}
+	
+	// max horizotal resize at a time is kw, so in case we do resize both
+	// directions at the same time we do half to each
+	int khorz = inc * kw;
+	if (directions & kLeftDirection 
+		&& directions & kRightDirection) {
+		khorz /= 2;
+	}
+	
+	// max vertical resize at a time is kh, so in case we do resize both
+	// directions at the same time we do half to each
+	int kvert = inc * kh;
+	if (directions & kTopDirection
+		&& directions & kBottomDirection) {
+		kvert /= 2;
+	}
+	
+	// adjust the size accordingly into each allowed direction
+	if (directions & kLeftDirection) {
+		r.origin.x -= khorz; // move left
+		r.size.width +=  khorz; // resize 	
+	}
+	if (directions & kTopDirection) {
+		r.origin.y -= kvert; // move up
+		r.size.height += kvert; // resize			
+	}
+	if (directions & kBottomDirection) {
+		r.size.height += kvert; // resize
+	}
+	if (directions & kRightDirection) {
+		r.size.width += khorz; // resize			
 	}
 	
 	// check window rect - constraine by the screen size
@@ -225,13 +220,13 @@ NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, float kw, f
 	
 	r.size.height = r.size.height < kh ? kh : r.size.height;
 	r.size.height = r.size.height > screenSize.height ? screenSize.height : r.size.height;
-
+	
 	r.origin.x = r.origin.x < 0 ? 0 : r.origin.x;
 	r.origin.x = r.origin.x > screenSize.width - r.size.width ? screenSize.width - r.size.width : r.origin.x;
-
+	
 	r.origin.y = r.origin.y < 0 ? 0 : r.origin.y;
 	r.origin.y = r.origin.y > screenSize.height - r.size.height ? screenSize.height - r.size.height : r.origin.y;
-		
+	
 	return r;	
 }
 
