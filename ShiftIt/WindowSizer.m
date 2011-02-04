@@ -341,12 +341,21 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			}
 			FMTDevLog(@"window resized to: %dx%d", width2, height2);
 			
-			dx = (x + width == visibleScreenRect.size.width ? 1 : 0) * (width - width2);
-			dy = (y + height == visibleScreenRect.size.height + mbarAdj ? 1 : 0) * (height - height2);				
+			// check whether the anchor is at the right part of the screen
+			if (x + width == visibleScreenRect.size.width
+				&& x > visibleScreenRect.size.width - width - x) {
+				dx = width - width2;
+			}
+			
+			// check whether the anchor is at the bottom part of the screen
+			if (y + height == visibleScreenRect.size.height + mbarAdj
+				&& y - mbarAdj > visibleScreenRect.size.height + mbarAdj - height - y) {
+				dy = height - height2;
+			}
 			
 			if (dx != 0 || dy != 0) {
 				// there have to be two separate move actions. cocoa window could not be resize over the screen boundaries
-				FMTDevLog(@"adjusting by delta: %dx%d", x, y, dx, dy);		
+				FMTDevLog(@"adjusting by delta: %dx%d", dx, dy);		
 				errorCode = setWindowPositionFn(window, x+dx, y+dy);
 				if (errorCode != 0) {
 					*error = SICreateError(FMTStrc(getErrorMessageFn(errorCode)), kUnableToChangeWindowPositionErrorCode);
