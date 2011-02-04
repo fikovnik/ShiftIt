@@ -151,6 +151,13 @@ NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, float kw, f
 	FMTAssert(kw > 0, @"kw must be greater than zero");
 	FMTAssert(kh > 0, @"kh must be greater than zero");
 	
+	// get margin settings - in pixels
+	// TODO: attach user options
+	int leftMargin = 15;
+	int topMargin = 15;
+	int bottomMargin = 15;
+	int rightMargin = 15;
+	
 	// target window rect
 	NSRect r = windowRect;
 	// 1: increase, -1: reduce
@@ -158,19 +165,21 @@ NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, float kw, f
 	// into which directio we are going to increse/reduce size
 	int directions = kLeftDirection | kTopDirection | kBottomDirection | kRightDirection;
 	
-	if (r.origin.x == 0) {
+	// TODO: define anchor margin!
+	
+	if (r.origin.x <= leftMargin) {
 		// do not resize to left
 		directions ^= kLeftDirection;
 	}
-	if (r.origin.y == 0) {
+	if (r.origin.y <= topMargin) {
 		// do not resize to top
 		directions ^= kTopDirection;
 	}
-	if (r.origin.y + r.size.height == screenSize.height) {
+	if (r.origin.y + r.size.height >= screenSize.height - bottomMargin) {
 		// do not resize to bottom
 		directions ^= kBottomDirection;
 	}
-	if (r.origin.x + r.size.width == screenSize.width) {
+	if (r.origin.x + r.size.width >= screenSize.width - rightMargin) {
 		// do not resize to right
 		directions ^= kRightDirection;
 	}
