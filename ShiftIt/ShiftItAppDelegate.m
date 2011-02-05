@@ -37,6 +37,12 @@ NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
 // preferencs
 NSString *const kHasStartedBeforePrefKey = @"hasStartedBefore";
 NSString *const kShowMenuPrefKey = @"shiftItshowMenu";
+NSString *const kMarginsEnabledPrefKey =  @"marginsEnabled";
+NSString *const kLeftMarginPrefKey = @"leftMargin";
+NSString *const kTopMarginPrefKey = @"topMargin";
+NSString *const kBottomMarginPrefKey = @"bottomMargin";
+NSString *const kRightMarginPrefKey = @"rightMargin";
+
 
 // notifications
 NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";

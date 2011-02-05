@@ -30,6 +30,11 @@ extern NSString *const kModifiersPrefKeySuffix;
 // preferences keys
 extern NSString *const kHasStartedBeforePrefKey;
 extern NSString *const kShowMenuPrefKey;
+extern NSString *const kMarginsEnabledPrefKey;
+extern NSString *const kLeftMarginPrefKey;
+extern NSString *const kTopMarginPrefKey;
+extern NSString *const kBottomMarginPrefKey;
+extern NSString *const kRightMarginPrefKey;
 
 // distributed notifications
 extern NSString *const kShowPreferencesRequestNotification;

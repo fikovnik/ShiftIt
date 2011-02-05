@@ -18,6 +18,7 @@
  */
 
 #import "DefaultShiftItActions.h"
+#import "ShiftIt.h"
 #import "FMTDefines.h"
 #import "WindowSizer.h"
 
@@ -151,12 +152,19 @@ NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, float kw, f
 	FMTAssert(kw > 0, @"kw must be greater than zero");
 	FMTAssert(kh > 0, @"kh must be greater than zero");
 	
+	int leftMargin = 0;
+	int topMargin = 0;
+	int bottomMargin = 0;
+	int rightMargin = 0;
+
 	// get margin settings - in pixels
-	// TODO: attach user options
-	int leftMargin = 15;
-	int topMargin = 15;
-	int bottomMargin = 15;
-	int rightMargin = 15;
+	NSUserDefaults *defauts = [NSUserDefaults standardUserDefaults];
+	if ([defauts boolForKey:kMarginsEnabledPrefKey]) {
+		leftMargin = [defauts integerForKey:kLeftMarginPrefKey];
+		topMargin = [defauts integerForKey:kTopMarginPrefKey];
+		bottomMargin = [defauts integerForKey:kBottomMarginPrefKey];
+		rightMargin = [defauts integerForKey:kRightMarginPrefKey];
+	}	
 	
 	// target window rect
 	NSRect r = windowRect;

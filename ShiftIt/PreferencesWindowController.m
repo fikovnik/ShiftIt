@@ -67,6 +67,10 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
 	[versionLabel_ setStringValue:versionString];
 
+	NSImage *backgroundImage = [[[NSImage alloc] initWithContentsOfFile:FMTGetBundleResourcePath([NSBundle mainBundle], @"margin-background-image", @"png")] autorelease];
+	FMTAssertNotNil(backgroundImage);
+	[marginBackgroundImage_ setImage:backgroundImage];
+	
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidResignMainNotification object:[self window]];
 	[notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidBecomeMainNotification object:[self window]];
