@@ -76,6 +76,8 @@ extern short GetMBarHeight(void);
 
 @implementation WindowSizer
 
+static int X11Available_ = 0;
+
 SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 
 // TODO: remove
@@ -84,9 +86,20 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		return nil;
 	}
 	
+#ifdef X11
+	X11Available_ = InitializeX11Support();
+#endif
+	
 	return self;
 }
 
+- (void) dealloc {
+#ifdef X11
+	DestoryX11Support();
+#endif
+	
+	[super dealloc];
+}
 
 /**
  * The method is the heart of the ShiftIt app. It takes an
@@ -135,39 +148,42 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	
 	if (errorCode != 0) {
 #ifdef X11
-		window = NULL;
-		// try X11
-		int errorCodeX11 = X11GetActiveWindow(&window);		
-		if (errorCodeX11 != 0) {
-			NSString *message = FMTStr(@"%@, %@",FMTStrc(AXUIGetErrorMessage(errorCode)),FMTStrc(X11GetErrorMessage(errorCodeX11)));
+		if (X11Available_) {
 			
-			*error = SICreateError(message, kUnableToGetActiveWindowErrorCode);
-			return;
+			window = NULL;
+			// try X11
+			int errorCodeX11 = X11GetActiveWindow(&window);		
+			if (errorCodeX11 != 0) {
+				NSString *message = FMTStr(@"%@, %@",FMTStrc(AXUIGetErrorMessage(errorCode)),FMTStrc(X11GetErrorMessage(errorCodeX11)));
+				
+				*error = SICreateError(message, kUnableToGetActiveWindowErrorCode);
+				return;
+			}
+			
+			int errorCode = X11GetWindowGeometry(window, &x, &y, &width, &height);
+			if (errorCode != 0) {
+				*error = SICreateError(FMTStrc(X11GetErrorMessage(errorCode)), kUnableToGetWindowGeometryErrorCode);
+				return;			
+			}
+			FMTDevLog(@"window rect (x11): [%d %d] [%d %d]", x, y, width, height);
+			
+			// following will make the X11 reference coordinate system
+			// X11 coordinates starts at the very top left corner of the most top left window
+			// basically it is a union of all screens with the beginning at the top left
+			X11Ref = [[NSScreen primaryScreen] frame];
+			for (NSScreen *screen in [NSScreen screens]) {
+				X11Ref = NSUnionRect(X11Ref, [screen frame]);
+			}
+			// translate
+			COCOA_TO_SCREEN_COORDINATES(X11Ref);
+			FMTDevLog(@"X11 reference rect: %@", RECT_STR(X11Ref));
+			
+			// convert from X11 coordinates to Quartz CG coodinates
+			x += X11Ref.origin.x;
+			y += X11Ref.origin.y;
+			
+			activeWindowX11 = YES;
 		}
-		
-		int errorCode = X11GetWindowGeometry(window, &x, &y, &width, &height);
-		if (errorCode != 0) {
-			*error = SICreateError(FMTStrc(X11GetErrorMessage(errorCode)), kUnableToGetWindowGeometryErrorCode);
-			return;			
-		}
-		FMTDevLog(@"window rect (x11): [%d %d] [%d %d]", x, y, width, height);
-		
-		// following will make the X11 reference coordinate system
-		// X11 coordinates starts at the very top left corner of the most top left window
-		// basically it is a union of all screens with the beginning at the top left
-		X11Ref = [[NSScreen primaryScreen] frame];
-		for (NSScreen *screen in [NSScreen screens]) {
-			X11Ref = NSUnionRect(X11Ref, [screen frame]);
-		}
-		// translate
-		COCOA_TO_SCREEN_COORDINATES(X11Ref);
-		FMTDevLog(@"X11 reference rect: %@", RECT_STR(X11Ref));
-		
-		// convert from X11 coordinates to Quartz CG coodinates
-		x += X11Ref.origin.x;
-		y += X11Ref.origin.y;
-		
-		activeWindowX11 = YES;		
 #else
 		*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToGetActiveWindowErrorCode);
 		return;

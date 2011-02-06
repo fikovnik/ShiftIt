@@ -520,10 +520,7 @@
 				GCC_WARN_SHADOW = NO;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-L/usr/X11/lib",
-					"-lX11",
-				);
+				OTHER_LDFLAGS = "-ldl";
 				PRODUCT_NAME = ShiftIt;
 				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wall";
@@ -549,10 +546,7 @@
 				GCC_WARN_SHADOW = NO;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				OTHER_LDFLAGS = (
-					"-L/usr/X11/lib",
-					"-lX11",
-				);
+				OTHER_LDFLAGS = "-ldl";
 				PRODUCT_NAME = ShiftIt;
 				SDKROOT = macosx10.5;
 				WARNING_CFLAGS = "-Wall";
@@ -575,10 +569,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DX11";
-				OTHER_LDFLAGS = (
-					"-L/usr/X11/lib",
-					"-lX11",
-				);
+				OTHER_LDFLAGS = "-ldl";
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
 			};
@@ -599,10 +590,7 @@
 					"-DNDEBUG",
 					"-DX11",
 				);
-				OTHER_LDFLAGS = (
-					"-L/usr/X11/lib",
-					"-lX11",
-				);
+				OTHER_LDFLAGS = "-ldl";
 				PREBINDING = NO;
 				SDKROOT = macosx10.5;
 			};

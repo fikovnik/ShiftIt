@@ -29,6 +29,9 @@
  *
  */
 
+int InitializeX11Support();
+void DestoryX11Support();
+
 int X11SetWindowPosition(void *window, int x, int y);
 int X11SetWindowSize(void *window, unsigned int width, unsigned int height);
 int X11GetActiveWindow(void **activeWindow);

@@ -19,10 +19,100 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <dlfcn.h>
 #include <X11/Xlib.h>
 #include <X11/Xatom.h>
 
 #include "X11Utils.h"
+
+Display *(*XOpenDisplayRef)(char *display_name);
+int (*XCloseDisplayRef)(Display *display);
+int (*XFreeRef)(void *data);
+int (*XSetErrorHandlerRef)(int (*handler)(Display *, XErrorEvent *));
+int (*XGetErrorTextRef)(Display *display, int code, char *buffer_return, int length);
+int (*XSyncRef)(Display *display, Bool discard);
+int (*XMoveWindowRef)(Display *display, Window w, int x, int y);
+int (*XResizeWindowRef)(Display *display, Window w, unsigned width, unsigned height);
+Status (*XGetWindowAttributesRef)(Display *display, Window w, XWindowAttributes *window_attributes_return);
+int (*XGetWindowPropertyRef)(Display *display, Window w, Atom property, long long_offset, long long_length, Bool delete, Atom
+					   req_type, Atom *actual_type_return, int *actual_format_return, unsigned long *nitems_return, unsigned long
+					   *bytes_after_return, unsigned char **prop_return);
+Atom (*XInternAtomRef)(Display *display, char *atom_name, Bool only_if_exists);
+Bool (*XTranslateCoordinatesRef)(Display *display, Window src_w, Window dest_w, int src_x, int src_y, int *dest_x_return, int
+								   *dest_y_return, Window *child_return);
+
+void *X11Symbols_[][2] = {
+	{&XCloseDisplayRef,"XCloseDisplay"},
+	{&XFreeRef,"XFree"},
+	{&XGetErrorTextRef,"XGetErrorText"},
+	{&XGetWindowAttributesRef,"XGetWindowAttributes"},
+	{&XGetWindowPropertyRef,"XGetWindowProperty"},
+	{&XInternAtomRef,"XInternAtom"},
+	{&XMoveWindowRef,"XMoveWindow"},
+	{&XOpenDisplayRef,"XOpenDisplay"},
+	{&XResizeWindowRef,"XResizeWindow"},
+	{&XSetErrorHandlerRef,"XSetErrorHandler"},
+	{&XSyncRef,"XSync"},
+	{&XTranslateCoordinatesRef,"XTranslateCoordinates"},
+};
+
+char *X11Paths_[] = {
+	"libX11.6.dylib",
+	"/usr/X11/lib/libX11.6.dylib", // regular
+	"/opt/local/X11/lib/libX11.6.dylib", // MacPorts?
+	"/sw/X11/lib/libX11.6.dylib", // Fink?
+};
+
+static int X11Initialized_ = 0;
+static int X11Available_ = 0;
+static void *X11Lib_ = NULL;
+
+int InitializeX11Support() {
+	if (X11Initialized_ == 1) {
+		return X11Available_;
+	}
+
+	X11Initialized_ = 1;
+	
+	// try to load the library
+	int found=0;
+	for (int i=0; i<sizeof(X11Paths_)/sizeof(X11Paths_[0]); i++) {
+		X11Lib_ = dlopen(X11Paths_[i], RTLD_LOCAL | RTLD_NOW);
+		if (!X11Lib_) {
+			printf("X11Info: Unable to load X11 library from: %s: %s\n", X11Paths_[i], dlerror());
+		} else {
+			found = 1;
+			break;
+		}
+	}
+	
+	if (!found) {
+		printf("X11Info: No libX11 found - X11 support will be disabled\n");
+		X11Available_ = 0;
+		return 0;
+	}
+	
+	// try to load symbols
+	char *err;
+	for (int i=0; i<sizeof(X11Symbols_)/sizeof(X11Symbols_[0]); i++) {
+		*(void **)(X11Symbols_[i][0]) = dlsym(X11Lib_, X11Symbols_[i][1]);
+		if ((err = dlerror()) != NULL) {
+			fprintf(stderr,"X11Error: Unable to load X11 symbol: %s: %s\n", (char *)(X11Symbols_[i][1]), err);
+			dlclose(X11Lib_);
+			X11Lib_ = NULL;
+			return 0;
+		}
+	}
+	
+	X11Available_ = 1;
+	return 1;
+}
+
+void DestoryX11Support() {
+	if (X11Lib_) {
+		dlclose(X11Lib_);
+	}
+}
 
 static const char *const kErrorMessages_[] = {
 	"X11Error: Unable to to connect to X11 display",
@@ -40,7 +130,7 @@ static int kErrorMessageCount_ = sizeof(kErrorMessages_)/sizeof(kErrorMessages_[
 static int ShiftItX11ErrorHandler(Display *dpy, XErrorEvent *err) {
 	char msg[256];
 	
-	XGetErrorText(dpy, err->error_code, msg, sizeof(msg));
+	XGetErrorTextRef(dpy, err->error_code, msg, sizeof(msg));
 	printf("ShiftIt: X11Error: %s (code: %d)\n", msg, err->request_code);
 		
 	return 0;
@@ -49,41 +139,41 @@ static int ShiftItX11ErrorHandler(Display *dpy, XErrorEvent *err) {
 int X11SetWindowPosition(void *window, int x, int y) {
 	assert (window != NULL);
 	
-	Display *dpy = XOpenDisplay(NULL);
+	Display *dpy = XOpenDisplayRef(NULL);
 	
 	if (!dpy) {
 		return -1;
 	}
 	
-	XSetErrorHandler(&ShiftItX11ErrorHandler);
+	XSetErrorHandlerRef(&ShiftItX11ErrorHandler);
 	
 	// we don't need to adjust the x and y since they are from the top left window	
-	if (!XMoveWindow(dpy, *((Window *)window), x, y)){
+	if (!XMoveWindowRef(dpy, *((Window *)window), x, y)){
 		return -6;
 	}
 	
 	// do it now - this will block
-	if (!XSync(dpy, False)) {
+	if (!XSyncRef(dpy, False)) {
 		return -7;
 	}
 	
-	XCloseDisplay(dpy);
+	XCloseDisplayRef(dpy);
 	return 0;	
 }
 
 int X11SetWindowSize(void *window, unsigned int width, unsigned int height) {
 	assert (window != NULL);
 	
-	Display *dpy = XOpenDisplay(NULL);
+	Display *dpy = XOpenDisplayRef(NULL);
 	
 	if (!dpy) {
 		return -1;
 	}
 	
-	XSetErrorHandler(&ShiftItX11ErrorHandler);
+	XSetErrorHandlerRef(&ShiftItX11ErrorHandler);
 	
 	XWindowAttributes wa;
-    if(!XGetWindowAttributes(dpy, *((Window *)window), &wa)) {
+    if(!XGetWindowAttributesRef(dpy, *((Window *)window), &wa)) {
 		return -4;
 	}
 	
@@ -92,27 +182,27 @@ int X11SetWindowSize(void *window, unsigned int width, unsigned int height) {
 	width -= wa.x;
 	height -= wa.y;
 		
-	if (!XResizeWindow(dpy, *((Window *)window), width, height)){
+	if (!XResizeWindowRef(dpy, *((Window *)window), width, height)){
 		return -6;
 	}
 	
-	if (!XSync(dpy, False)) {
+	if (!XSyncRef(dpy, False)) {
 		return -7;
 	}
 	
-	XCloseDisplay(dpy);
+	XCloseDisplayRef(dpy);
 	return 0;
 }
 
 int X11GetActiveWindow(void **activeWindow) {
 	Display* dpy = NULL;
-	dpy = XOpenDisplay(NULL);
+	dpy = XOpenDisplayRef(NULL);
 	
 	if (!dpy) {
 		return -1;
 	}
 	
-	XSetErrorHandler(&ShiftItX11ErrorHandler);
+	XSetErrorHandlerRef(&ShiftItX11ErrorHandler);
 	
 	Window root = DefaultRootWindow(dpy);
 	
@@ -123,7 +213,7 @@ int X11GetActiveWindow(void **activeWindow) {
 	Atom actual_type = 0;
 	unsigned char *prop_return = NULL;
 	
-	if(XGetWindowProperty(dpy, root, XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False), 0, 0x7fffffff, False,
+	if(XGetWindowPropertyRef(dpy, root, XInternAtomRef(dpy, "_NET_ACTIVE_WINDOW", False), 0, 0x7fffffff, False,
 						  XA_WINDOW, &actual_type, &not_used_int, &not_used_long, &not_used_long,
 						  &prop_return) != Success) {
 		return -2;
@@ -135,7 +225,7 @@ int X11GetActiveWindow(void **activeWindow) {
 	
 	*activeWindow = (void *) prop_return;	
 	
-	XCloseDisplay(dpy);
+	XCloseDisplayRef(dpy);
 	return 0;
 }
 
@@ -143,23 +233,23 @@ int X11GetWindowGeometry(void *window, int *x, int *y, unsigned int *width, unsi
 	assert (x != NULL && y != NULL && width != NULL && height != NULL);
 
 	Display* dpy = NULL;
-	dpy = XOpenDisplay(NULL);
+	dpy = XOpenDisplayRef(NULL);
 	
 	if (!dpy) {
 		return -1;
 	}
 	
-	XSetErrorHandler(&ShiftItX11ErrorHandler);
+	XSetErrorHandlerRef(&ShiftItX11ErrorHandler);
 
 	Window root = DefaultRootWindow(dpy);
 	XWindowAttributes wa;
 	
-    if(!XGetWindowAttributes(dpy, *((Window *)window), &wa)) {
+    if(!XGetWindowAttributesRef(dpy, *((Window *)window), &wa)) {
 		return -4;
 	}
 	
 	Window not_used_window;
-	if(!XTranslateCoordinates(dpy, *((Window *)window), root, -wa.border_width, -wa.border_width, x, y, &not_used_window)) {
+	if(!XTranslateCoordinatesRef(dpy, *((Window *)window), root, -wa.border_width, -wa.border_width, x, y, &not_used_window)) {
 		return -5;
 	}
 	
@@ -172,14 +262,14 @@ int X11GetWindowGeometry(void *window, int *x, int *y, unsigned int *width, unsi
 	*x -= wa.x;
 	*y -= wa.y;
 	
-	XCloseDisplay(dpy);	
+	XCloseDisplayRef(dpy);	
 	return 0;	
 }
 
 void X11FreeWindowRef(void *window) {
 	assert(window != NULL);
 	
-	XFree(window);
+	XFreeRef(window);
 }
 
 const char *X11GetErrorMessage(int code) {
