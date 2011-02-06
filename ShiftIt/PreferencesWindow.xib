@@ -21,7 +21,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="3"/>
+			<integer value="6"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -79,13 +79,13 @@
 											<object class="NSButton" id="655643897">
 												<reference key="NSNextResponder" ref="170212671"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{51, 92}, {186, 32}}</string>
+												<string key="NSFrame">{{49, 92}, {190, 32}}</string>
 												<reference key="NSSuperview" ref="170212671"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="679692590">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">134217728</int>
-													<string key="NSContents">Check for updates now</string>
+													<string key="NSContents">Check For Updates Now</string>
 													<object class="NSFont" key="NSSupport" id="38519159">
 														<string key="NSName">LucidaGrande</string>
 														<double key="NSSize">13</double>
@@ -207,7 +207,7 @@
 											<object class="NSMatrix" id="1023244677">
 												<reference key="NSNextResponder" ref="170212671"/>
 												<int key="NSvFlags">256</int>
-												<string key="NSFrame">{{31, 154}, {226, 102}}</string>
+												<string key="NSFrame">{{27, 154}, {233, 102}}</string>
 												<reference key="NSSuperview" ref="170212671"/>
 												<bool key="NSEnabled">YES</bool>
 												<int key="NSNumRows">4</int>
@@ -252,7 +252,7 @@
 													<object class="NSButtonCell" id="474449978">
 														<int key="NSCellFlags">-2080244224</int>
 														<int key="NSCellFlags2">0</int>
-														<string key="NSContents">Automatically check for updates</string>
+														<string key="NSContents">Automatically Check For Updates</string>
 														<reference key="NSSupport" ref="38519159"/>
 														<reference key="NSControlView" ref="1023244677"/>
 														<int key="NSButtonFlags">1211912703</int>
@@ -280,7 +280,7 @@
 														<int key="NSPeriodicInterval">25</int>
 													</object>
 												</object>
-												<string key="NSCellSize">{226, 21}</string>
+												<string key="NSCellSize">{233, 21}</string>
 												<string key="NSIntercellSpacing">{0, 6}</string>
 												<int key="NSMatrixFlags">-2080366592</int>
 												<nil key="NSCellClass"/>
@@ -1963,11 +1963,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<string key="NSClassName">SUUpdater</string>
 			</object>
 			<object class="NSUserDefaultsController" id="411932581">
-				<object class="NSMutableArray" key="NSDeclaredKeys">
-					<bool key="EncodedWithXMLCoder">YES</bool>
-					<string>includeDrawer</string>
-					<string>includeDrawers</string>
-				</object>
 				<bool key="NSSharedInstance">YES</bool>
 			</object>
 		</object>
