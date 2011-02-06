@@ -188,9 +188,9 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 - (void)windowMainStatusChanged_:(NSNotification *)notification {
 	NSString *name = [notification name];
 
-	if ([name isEqualTo:NSWindowDidBecomeMainNotification] && [selectedTabIdentifier_ isEqualTo:kHotKeysTabViewItemIdentifier]) {
+	if ([name isEqualToString:NSWindowDidBecomeMainNotification] && [selectedTabIdentifier_ isEqualToString:kHotKeysTabViewItemIdentifier]) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDidStartEditingHotKeysPrefNotification object:nil];
-	} else if ([name isEqualTo:NSWindowDidResignMainNotification]) {
+	} else if ([name isEqualToString:NSWindowDidResignMainNotification]) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDidFinishEditingHotKeysPrefNotification object:nil];
 	}
 }

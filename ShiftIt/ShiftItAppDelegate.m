@@ -319,12 +319,12 @@ NSDictionary *allShiftActions = nil;
 - (void)handleActionsStateChangeRequest_:(NSNotification *) notification {
 	NSString *name = [notification name];
 	
-	if ([name isEqualTo:kDidFinishEditingHotKeysPrefNotification]) {
+	if ([name isEqualToString:kDidFinishEditingHotKeysPrefNotification]) {
 		@synchronized(self) {
 			paused_ = NO;
 			FMTDevLog(@"Resuming actions");
 		}
-	} else if ([name isEqualTo:kDidStartEditingHotKeysPrefNotification]) {
+	} else if ([name isEqualToString:kDidStartEditingHotKeysPrefNotification]) {
 		@synchronized(self) {
 			paused_ = YES;
 			FMTDevLog(@"Pausing actions");
