@@ -89,6 +89,15 @@ NSDictionary *allShiftActions = nil;
 
 @implementation ShiftItAppDelegate
 
++ (void) initialize {
+	// register defaults - we assume that the installation is correct
+	NSString *path = FMTGetMainBundleResourcePath(kShiftItUserDefaults, @"plist");
+	NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:path];
+	
+	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+	[defaults registerDefaults:d];
+}
+
 - (id)init{
 	if(![super init]){
 		return nil;
@@ -109,10 +118,7 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void) firstLaunch_  {
-	FMTDevLog(@"First run");
-
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-		
+	FMTDevLog(@"First run");		
 	// ask to start it automatically - make sure it is not there
 	
 	// TODO: refactor this so it shares the code from the pref controller
@@ -129,34 +135,28 @@ NSDictionary *allShiftActions = nil;
 			default:
 				break;
 		}		
-	}
-	
-	// make sure this was the only time
-	[defaults setBool:YES forKey:@"hasStartedBefore"];
-	[defaults synchronize];
-	
+	}	
 }
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
 	FMTDevLog(@"Starting up ShiftIt...");
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults synchronize];
 
 	// check preferences
 	BOOL hasStartedBefore = [defaults boolForKey:kHasStartedBeforePrefKey];
 	
 	if (!hasStartedBefore) {
+		// make sure this was the only time
+		[defaults setBool:YES forKey:@"hasStartedBefore"];
+		[defaults synchronize];
+
 		[self firstLaunch_];
 	}
 
-	// register defaults - we assume that the installation is correct
-	NSString *path = FMTGetMainBundleResourcePath(kShiftItUserDefaults, @"plist");
-	NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:path];
-	[defaults registerDefaults:d];
-	
 	if (!AXAPIEnabled()){
         int ret = NSRunAlertPanel (@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel",NULL);
-        switch (ret){
+        switch (ret) {
             case NSAlertDefaultReturn:
                 [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
 				[NSApp terminate:self];
