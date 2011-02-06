@@ -29,6 +29,8 @@
 		27002E011269CA1B0062B6D6 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		2708BF011260E10900192883 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
 		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
+		270EC26B12FF1965002A5F22 /* ShiftIt-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */; };
+		270EC26C12FF1965002A5F22 /* ShiftIt-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */; };
 		271D2EBA12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
 		271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
 		27A14D801269CCA200E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
@@ -102,6 +104,7 @@
 		2708BF101260E5BB00192883 /* DefaultShiftItActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShiftItActions.h; sourceTree = "<group>"; };
 		2708BF111260E5BB00192883 /* DefaultShiftItActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultShiftItActions.m; sourceTree = "<group>"; };
 		2708C2551261C8E800192883 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
+		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
@@ -265,6 +268,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */,
 				271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */,
 				27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */,
 				83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */,
@@ -372,6 +376,7 @@
 				27002DEC1269CA1B0062B6D6 /* ShiftIt.icns in Resources */,
 				27A14EC11269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
 				271D2EBA12FC6B3A00A4D0BF /* margin-background-image.png in Resources */,
+				270EC26B12FF1965002A5F22 /* ShiftIt-logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +391,7 @@
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
 				27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
 				271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */,
+				270EC26C12FF1965002A5F22 /* ShiftIt-logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

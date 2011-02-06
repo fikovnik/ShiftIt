@@ -28,8 +28,6 @@
 	IBOutlet NSButton * openAtLogin_;
     IBOutlet NSTabView * tabView_;
 	IBOutlet NSTextField * versionLabel_;
-	
-	IBOutlet NSImageView *marginBackgroundImage_;
 }
 
 @property BOOL shouldStartAtLogin;
