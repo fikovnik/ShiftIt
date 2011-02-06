@@ -35,6 +35,17 @@ extern NSString *const kLeftMarginPrefKey;
 extern NSString *const kTopMarginPrefKey;
 extern NSString *const kBottomMarginPrefKey;
 extern NSString *const kRightMarginPrefKey;
+extern NSString *const kSizeDeltaTypePrefKey;
+extern NSString *const kFixedSizeWidthDeltaPrefKey;
+extern NSString *const kFixedSizeHeightDeltaPrefKey;
+extern NSString *const kWindowSizeDeltaPrefKey;
+extern NSString *const kScreenSizeDeltaPrefKey;
+
+typedef enum {
+	kFixedSizeDeltaType = 3001,
+	kWindowSizeDeltaType = 3002,
+	kScreenSizeDeltaType = 3003
+} SizeDeltaType;
 
 // distributed notifications
 extern NSString *const kShowPreferencesRequestNotification;

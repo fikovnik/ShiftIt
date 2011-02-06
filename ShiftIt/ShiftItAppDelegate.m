@@ -42,6 +42,12 @@ NSString *const kLeftMarginPrefKey = @"leftMargin";
 NSString *const kTopMarginPrefKey = @"topMargin";
 NSString *const kBottomMarginPrefKey = @"bottomMargin";
 NSString *const kRightMarginPrefKey = @"rightMargin";
+NSString *const kSizeDeltaTypePrefKey = @"sizeDeltaType";
+NSString *const kFixedSizeWidthDeltaPrefKey = @"fixedSizeWidthDelta";
+NSString *const kFixedSizeHeightDeltaPrefKey = @"fixedSizeHeightDelta";
+NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
+NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
+
 
 
 // notifications

@@ -148,17 +148,50 @@ typedef enum {
 	kRightDirection =  1 << 3
 } Direction;
 
-NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, float kw, float kh, BOOL increase) {	
-	FMTAssert(kw > 0, @"kw must be greater than zero");
-	FMTAssert(kh > 0, @"kh must be greater than zero");
+NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, BOOL increase) {	
+	float kw = 0;
+	float kh = 0;
 	
+	NSUserDefaults *defauts = [NSUserDefaults standardUserDefaults];
+
+	// get the size delta settings - in pixels
+	int sizeDeltaType = [defauts integerForKey:kSizeDeltaTypePrefKey];
+	float coef = 0;
+	switch (sizeDeltaType) {
+		case kFixedSizeDeltaType:
+			kw = [defauts integerForKey:kFixedSizeWidthDeltaPrefKey];
+			kh = [defauts integerForKey:kFixedSizeHeightDeltaPrefKey];
+			break;
+		case kWindowSizeDeltaType:
+			coef = [defauts floatForKey:kWindowSizeDeltaPrefKey] / 100;
+			kw = windowRect.size.width * coef;
+			kh = windowRect.size.height * coef;
+			break;
+		case kScreenSizeDeltaType:
+			coef = [defauts floatForKey:kScreenSizeDeltaPrefKey] / 100;
+			kw = screenSize.width * coef;
+			kh = screenSize.height * coef;
+			break;
+		default:
+			break;
+	}
+	
+	if (kw <= 0) {
+		NSLog(@"Invalid size for width delta: %f (type: %d)", kw, sizeDeltaType);
+		return windowRect;
+	}
+	
+	if (kh <= 0) {
+		NSLog(@"Invalid size for height delta: %f (type: %d)", kh, sizeDeltaType);
+		return windowRect;
+	}
+		
 	int leftMargin = 0;
 	int topMargin = 0;
 	int bottomMargin = 0;
 	int rightMargin = 0;
 
 	// get margin settings - in pixels
-	NSUserDefaults *defauts = [NSUserDefaults standardUserDefaults];
 	if ([defauts boolForKey:kMarginsEnabledPrefKey]) {
 		leftMargin = [defauts integerForKey:kLeftMarginPrefKey];
 		topMargin = [defauts integerForKey:kTopMarginPrefKey];
@@ -248,9 +281,9 @@ NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, float kw, f
 }
 
 NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
-	return ShiftIt_IncreaseReduce_(screenSize, windowRect, screenSize.width/12, screenSize.height/12, YES);
+	return ShiftIt_IncreaseReduce_(screenSize, windowRect, YES);
 }
 
 NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
-	return ShiftIt_IncreaseReduce_(screenSize, windowRect, screenSize.width/12, screenSize.height/12, NO);
+	return ShiftIt_IncreaseReduce_(screenSize, windowRect, NO);
 }
