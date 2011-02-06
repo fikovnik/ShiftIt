@@ -47,8 +47,7 @@ NSString *const kFixedSizeWidthDeltaPrefKey = @"fixedSizeWidthDelta";
 NSString *const kFixedSizeHeightDeltaPrefKey = @"fixedSizeHeightDelta";
 NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
-
-
+NSString *const kIncludeDrawersPrefKey = @"includeDrawers";
 
 // notifications
 NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";
@@ -95,7 +94,7 @@ NSDictionary *allShiftActions = nil;
 	NSDictionary *d = [NSDictionary dictionaryWithContentsOfFile:path];
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults registerDefaults:d];
+	[defaults registerDefaults:d];	
 }
 
 - (id)init{

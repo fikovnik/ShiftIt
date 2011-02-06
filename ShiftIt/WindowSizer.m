@@ -138,6 +138,14 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	int x = 0, y = 0;
 	unsigned int width = 0, height = 0;
 	
+	// drawers of the window
+	NSRect drawersRect = {{0,0},{0,0}};
+	
+	BOOL useDrawers = [[NSUserDefaults standardUserDefaults] boolForKey:kIncludeDrawersPrefKey];
+	
+	// window rect
+	NSRect windowRect;
+	
 	// error handling vars
 	int errorCode = 0;
 	
@@ -182,6 +190,11 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			x += X11Ref.origin.x;
 			y += X11Ref.origin.y;
 			
+			windowRect.origin.x = x;
+			windowRect.origin.y = y;
+			windowRect.size.width = width;
+			windowRect.size.height = height;
+			
 			activeWindowX11 = YES;
 		}
 #else
@@ -194,6 +207,26 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		if (errorCode != 0) {
 			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToGetWindowGeometryErrorCode);
 			return;
+		}
+		
+		windowRect.origin.x = x;
+		windowRect.origin.y = y;
+		windowRect.size.width = width;
+		windowRect.size.height = height;
+		
+		// drawers
+		if (useDrawers) {
+			errorCode = AXUIGetWindowDrawersUnionRect(window, &drawersRect);
+			
+			if (errorCode != 0) {
+				FMTDevLog(@"Unable to get window drawers: %d", errorCode);
+			} else {
+				FMTDevLog(@"Drawers: %@", RECT_STR(drawersRect));
+			}
+			
+			if (drawersRect.size.width > 0) {
+				windowRect = NSUnionRect(windowRect, drawersRect);
+			}
 		}
 	}
 	
@@ -221,11 +254,6 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	}
 #endif	
 	
-	// the window rect in screen coordinates
-	NSRect windowRect = {
-		{x, y},
-		{width, height}
-	};
 	FMTDevLog(@"window rect: %@", RECT_STR(windowRect));
 	
 #ifndef NDEBUG
@@ -280,6 +308,25 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	NSRect shiftedRect = actionFunction(visibleScreenRect.size, relWindowRect);
 	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
 	
+	// drawers
+	if (useDrawers && drawersRect.size.width > 0) {
+		if (drawersRect.origin.x < x) {
+			shiftedRect.origin.x += x - drawersRect.origin.x;
+		}
+		if (drawersRect.origin.y < windowRect.origin.y) {
+			shiftedRect.origin.y += y -drawersRect.origin.y;
+		}
+		if (drawersRect.size.width > width) {
+			shiftedRect.size.width -= drawersRect.size.width - width;
+		}
+		if (drawersRect.size.height > height) {
+			// TODO: the mbar is probably incorrect in here
+			shiftedRect.size.height -= drawersRect.size.height - height + ([screen isPrimary] ? GetMBarHeight() : 0);
+		}	
+		
+		FMTDevLog(@"shifted window rect after drawers adjustements: %@", RECT_STR(shiftedRect));
+	}
+	
 	// readjust adjust the visibility
 	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
 	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
@@ -293,17 +340,21 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	if (!NSEqualRects(windowRect, shiftedRect)) {
 		
 #ifdef X11
-		if (activeWindowX11) {
-			// translate into X11 coordinates
-			shiftedRect.origin.x -= X11Ref.origin.x;
-			shiftedRect.origin.y -= X11Ref.origin.y;
+        if (activeWindowX11) {
+            // translate into X11 coordinates
+            shiftedRect.origin.x -= X11Ref.origin.x;
+            shiftedRect.origin.y -= X11Ref.origin.y;
 			
-			// readjust back the menu bar
-			if ([screen isBelowPrimary] || [screen isPrimary]) {
-				shiftedRect.origin.y -= GetMBarHeight();
-			}
-		} 
-#endif // X11
+            // readjust back the menu bar
+            if ([screen isBelowPrimary] || [screen isPrimary]) {
+                shiftedRect.origin.y -= GetMBarHeight();
+            }
+        } else { 
+#endif // X11			
+			
+#ifdef X11
+		}
+#endif
 		
 		FMTDevLog(@"translated shifted rect: %@", RECT_STR(shiftedRect));
 		

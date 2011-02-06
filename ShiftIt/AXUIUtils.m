@@ -96,53 +96,99 @@ int AXUIGetActiveWindow(void **activeWindow) {
 	return 0;
 }
 
+static BOOL ExtractPosition(AXUIElementRef element, NSPoint *position) {
+	FMTAssertNotNil(element);
+	FMTAssertNotNil(position);
+	
+	CFTypeRef positionRef;
+	
+	int ret = 0;
+	if ((ret = AXUIElementCopyAttributeValue(element,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)&positionRef)) != kAXErrorSuccess) {
+		return NO; // -3
+	}
+	
+	FMTAssertNotNil(positionRef);
+	if(AXValueGetType(positionRef) == kAXValueCGPointType) {
+		AXValueGetValue(positionRef, kAXValueCGPointType, position);
+	} else {
+		CFRelease(positionRef);
+		return NO; // -4
+	}
+	
+	CFRelease(positionRef);
+	return YES;
+}
+
+static BOOL ExtractSize(AXUIElementRef element, NSSize *size) {
+	CFTypeRef sizeRef;
+	
+	int ret = 0;
+	if ((ret = AXUIElementCopyAttributeValue(element,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)&sizeRef)) != kAXErrorSuccess) {
+		return NO; // -5
+	}
+	
+	FMTAssertNotNil(sizeRef);
+	if(AXValueGetType(sizeRef) == kAXValueCGSizeType) {
+		AXValueGetValue(sizeRef, kAXValueCGSizeType, size);
+	} else {
+		CFRelease(sizeRef);
+		return NO; // -6
+	}
+	
+	CFRelease(sizeRef);
+	return YES;
+}
+
 int AXUIGetWindowGeometry(void *window, int *x, int *y, unsigned int *width, unsigned int *height) {
 	FMTAssertNotNil(x);
 	FMTAssertNotNil(y);
 	FMTAssertNotNil(width);
 	FMTAssertNotNil(height);
 	
-	//get the position
-	CFTypeRef positionRef;
-	NSPoint position;
-	
-	int axerror = AXUIElementCopyAttributeValue((AXUIElementRef)window,(CFStringRef)NSAccessibilityPositionAttribute,(CFTypeRef*)&positionRef);
-	if (axerror != kAXErrorSuccess) {
+	NSRect windowRect;
+	if (!ExtractPosition(window,&(windowRect.origin))) {
 		return -3;
 	}
-	
-	FMTAssertNotNil(positionRef);
-	if(AXValueGetType(positionRef) == kAXValueCGPointType) {
-		AXValueGetValue(positionRef, kAXValueCGPointType, (void*)&position);
-		*x = (int) position.x;
-		*y = (int) position.y;
-	} else {
-		CFRelease(positionRef);
-		
-		return -4;
-	}
-	CFRelease(positionRef);
-	
-	//get the focused size
-	CFTypeRef sizeRef;
-	NSSize size;
-	
-	axerror = AXUIElementCopyAttributeValue((AXUIElementRef)window,(CFStringRef)NSAccessibilitySizeAttribute,(CFTypeRef*)&sizeRef);
-	if (axerror != kAXErrorSuccess) {
+
+	if (!ExtractSize(window,&(windowRect.size))) {
 		return -5;
 	}
+	
+	*x = (int) windowRect.origin.x;
+	*y = (int) windowRect.origin.y;
+	*width = (unsigned int) windowRect.size.width;
+	*height = (unsigned int) windowRect.size.height;
+	
+	return 0;
+}
 
-	FMTAssertNotNil(sizeRef);
-	if(AXValueGetType(sizeRef) == kAXValueCGSizeType) {
-		AXValueGetValue(sizeRef, kAXValueCGSizeType, (void*)&size);
-		*width = (unsigned int) size.width;
-		*height = (unsigned int) size.height;
-	} else {
-		CFRelease(sizeRef);
-		
-		return -6;
+int AXUIGetWindowDrawersUnionRect(void *window, NSRect *rect) {
+	NSArray *children = nil;
+	int ret = 0;
+	if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)window,(CFStringRef)NSAccessibilityChildrenAttribute,(CFTypeRef*)&children)) != kAXErrorSuccess) {
+		return -9;
 	}
-	CFRelease(sizeRef);
+	
+	NSRect r;
+	
+	BOOL first = YES;
+	for (id child in children) {
+		NSString *role = nil;
+		
+		AXUIElementCopyAttributeValue((AXUIElementRef)child,(CFStringRef)NSAccessibilityRoleAttribute,(CFTypeRef*)&role);
+		
+		if([role isEqualToString:NSAccessibilityDrawerRole]) {
+			ExtractPosition((AXUIElementRef)child,&(r.origin));
+			ExtractSize((AXUIElementRef)child,&(r.size));
+			
+			if (first) {
+				*rect = r;
+				first = NO;
+			} else {
+				*rect = NSUnionRect(*rect, r);
+			}
+		}
+	}
 	
 	return 0;
 }

@@ -21,6 +21,7 @@ int AXUISetWindowPosition(void *window, int x, int y);
 int AXUISetWindowSize(void *window, unsigned int width, unsigned int height);
 int AXUIGetActiveWindow(void **activeWindow);
 int AXUIGetWindowGeometry(void *window, int *x, int *y, unsigned int *width, unsigned int *height);
+int AXUIGetWindowDrawersUnionRect(void *window, NSRect *rect);
 void AXUIFreeWindowRef(void *window);
 
 const char *AXUIGetErrorMessage(int code);
