@@ -229,7 +229,7 @@
 					</object>
 					<object class="NSMenuItem" id="256384429">
 						<reference key="NSMenu" ref="981997696"/>
-						<string key="NSTitle">Exit</string>
+						<string key="NSTitle">Quit ShiftIt</string>
 						<string key="NSKeyEquiv">q</string>
 						<int key="NSKeyEquivModMask">1048576</int>
 						<int key="NSMnemonicLoc">2147483647</int>
