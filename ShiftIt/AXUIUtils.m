@@ -188,8 +188,11 @@ int AXUIGetWindowDrawersUnionRect(void *window, NSRect *rect) {
 				*rect = NSUnionRect(*rect, r);
 			}
 		}
+		
+		CFRelease((CFTypeRef) role);
 	}
 	
+	[children release];
 	return 0;
 }
 
