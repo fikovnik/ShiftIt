@@ -320,8 +320,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			shiftedRect.size.width -= drawersRect.size.width - width;
 		}
 		if (drawersRect.size.height > height) {
-			// TODO: the mbar is probably incorrect in here
-			shiftedRect.size.height -= drawersRect.size.height - height + ([screen isPrimary] ? GetMBarHeight() : 0);
+			shiftedRect.size.height -= drawersRect.size.height - height + GetMBarHeight();
 		}	
 		
 		FMTDevLog(@"shifted window rect after drawers adjustements: %@", RECT_STR(shiftedRect));
