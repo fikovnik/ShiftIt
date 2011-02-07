@@ -68,6 +68,8 @@ NSInteger const kUnableToChangeWindowPositionErrorCode = 20101;
 NSInteger const kUnableToGetWindowGeometryErrorCode = 20102;
 NSInteger const kUnableToChangeWindowSizeErrorCode = 20102;
 
+const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 1/3; // in seconds
+
 NSDictionary *allShiftActions = nil;
 
 @interface ShiftItAppDelegate (Private)
@@ -105,6 +107,8 @@ NSDictionary *allShiftActions = nil;
 	NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
 	statusMenuItemIcon_ = [[NSImage alloc] initWithContentsOfFile:iconPath];
 	allHotKeys_ = [[NSMutableDictionary alloc] init];
+	
+	beforeNow_ = CFAbsoluteTimeGetCurrent();
 	
 	return self;
 }
@@ -385,17 +389,30 @@ NSDictionary *allShiftActions = nil;
 			FMTDevLog(@"The functionality is temporarly paused");
 			return ;
 		}
+
+		CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
+		
+		// since now can be actually smaller than beforeNow_ due to sync
+		// we just drop it anyway and hope next time we have more luck
+		if (now > beforeNow_ && now - beforeNow_ < kMinimumTimeBetweenActionInvocations) {
+			// drop it - too soon new request
+			// we need to give the AXUI and others some time to recover :)
+			// otherwise some weird results are experienced
+			return ;
+		} else {
+			beforeNow_ = now;
+		}
+		
+		ShiftItAction *action = [allShiftActions objectForKey:identifier];
+		FMTAssertNotNil(action);
+		
+		FMTDevLog(@"Invoking action: %@", identifier);
+		NSError *error = nil;
+		[windowSizer_ shiftFocusedWindowUsing:action error:&error];
+		if (error) {
+			NSLog(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
+		}
 	}
-	
-	ShiftItAction *action = [allShiftActions objectForKey:identifier];
-	FMTAssertNotNil(action);
-	
-	FMTDevLog(@"Invoking action: %@", identifier);
-	NSError *error = nil;
-	[windowSizer_ shiftFocusedWindowUsing:action error:&error];
-	if (error) {
-		NSLog(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
-	}	
 }
 
 - (IBAction)shiftItMenuAction_:(id)sender {
