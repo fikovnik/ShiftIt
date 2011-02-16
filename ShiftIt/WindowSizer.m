@@ -314,13 +314,15 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			shiftedRect.origin.x += x - drawersRect.origin.x;
 		}
 		if (drawersRect.origin.y < windowRect.origin.y) {
-			shiftedRect.origin.y += y -drawersRect.origin.y;
+			shiftedRect.origin.y += y - drawersRect.origin.y;
 		}
-		if (drawersRect.size.width > width) {
-			shiftedRect.size.width -= drawersRect.size.width - width;
+		if (drawersRect.origin.x + drawersRect.size.width > x + width) {
+			shiftedRect.size.width -= - (x + width - drawersRect.origin.x) // this is the offset, drawers do not start at the end of the frame
+										+ drawersRect.size.width;
 		}
-		if (drawersRect.size.height > height) {
-			shiftedRect.size.height -= drawersRect.size.height - height + GetMBarHeight();
+		if (drawersRect.origin.y + drawersRect.size.height > y + height) {
+			shiftedRect.size.height -= - (y + height - drawersRect.origin.y) // this is the offset, drawers do not start at the end of the frame
+										+ drawersRect.size.height;
 		}	
 		
 		FMTDevLog(@"shifted window rect after drawers adjustements: %@", RECT_STR(shiftedRect));
@@ -393,7 +395,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 #else
 		mbarAdj = GetMBarHeight();
 #endif
-		
+	
 		// get the anchor and readjust the size
 		if (x + width == visibleScreenRect.size.width || y + height == visibleScreenRect.size.height + mbarAdj) {
 			int unused;
