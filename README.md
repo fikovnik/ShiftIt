@@ -23,7 +23,7 @@ is recommended*):
 
   * on OSX 10.6 Snow Leopard
        1. Compile in XCode by clicking build, or use the
-        `scripts/release.sh`
+        `scripts/release.sh` (*With the script option, please ignore any errors related to the signing the release. Just check if you see the `** BUILD SUCCEEDED **` message in the output and grab the app from `ShiftIt/build/Release/ShiftIt.app` directory.*)
        1. That's it
   * on OSX 10.5 Leopard
        1. Go to `Project` menu and click `Edit Project Settings` item
