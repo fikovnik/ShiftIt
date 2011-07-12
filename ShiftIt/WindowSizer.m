@@ -55,6 +55,7 @@ extern short GetMBarHeight(void);
 @interface WindowSizer (Private)
 
 - (NSScreen *)chooseScreenForWindow_:(NSRect)windowRect;
+- (NSScreen *)nextScreenForAction:(ShiftItAction*)action window:(NSRect)windowRect;
 
 @end
 
@@ -62,6 +63,8 @@ extern short GetMBarHeight(void);
 @implementation WindowSizer
 
 SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
+
+@synthesize lastActionExecuted;
 
 // TODO: remove
 - (id)init {
@@ -186,7 +189,10 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 #endif		 
 	 
 	// get the screen which is the best fit for the window
-	NSScreen *screen = [self chooseScreenForWindow_:windowRect];
+	 // check to see if the user has repeated a left or right shift
+	 //    if so, move window to the screen next current one
+	 NSScreen *screen; 
+	screen = [self chooseScreenForWindow_:windowRect];
 	
 	// screen coordinates of the best fit window
 	NSRect screenRect = [screen frame];
@@ -206,13 +212,14 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	NSRect shiftedRect = actionFunction(visibleScreenRect.size, windowRect);
 	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
 	 
+	 
 	// readjust adjust the visibility
 	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
 	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
 	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
 	shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
 	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
-
+	 
 	// we need to translate from cocoa coordinates
 	FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));	
 				
@@ -297,6 +304,10 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 #else
 	AXUIFreeWindowRef(window);
 #endif
+	 
+	 // this variable should only be stored if we're doing 1 of the 4 main shifts
+	 if ([action identifier] == @"left" || [action identifier] == @"right" || [action identifier] == @"top" || [action identifier] == @"bottom")
+		 lastActionExecuted = [action identifier];
 }
 
 /**
@@ -329,6 +340,89 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	}
 
 	return fitScreen;
+}
+
+- (NSScreen *)nextScreenForAction:(ShiftItAction*)action window:(NSRect)windowRect{
+	// TODO: rename intgersect
+	// TODO: all should be ***Rect
+	
+	//First find which screen the window is in
+	float maxSize = 0;
+	int currentScreenIndex = 0;
+	for(int i = 0; i < [[NSScreen screens] count]; i++){
+		NSRect screenRect = [[[NSScreen screens] objectAtIndex:i] frame];
+		// need to convert coordinates
+		COCOA_TO_SCREEN_COORDINATES(screenRect);
+		
+		NSRect intersectRect = NSIntersectionRect(screenRect, windowRect);
+		
+		if (intersectRect.size.width > 0 ) {
+			float size = intersectRect.size.width * intersectRect.size.height;
+			if (size > maxSize) {
+				maxSize = size;
+				currentScreenIndex = i;
+			}
+		}
+	}
+	
+	NSScreen *currentScreen = [[NSScreen screens] objectAtIndex:currentScreenIndex]; 
+	
+	// Now find the adjascent screen	
+	NSString *whichDirection = [action identifier];
+	
+	float leftClosestOffset = FLT_MAX; //arbitrarily large value
+	float rightClosestOffset = FLT_MAX; //arbitrarily large value
+	float leftFarthestOffset = 0;
+	float rightFarthestOffset = 0;
+
+	int leftClosestIndex = -1;
+	int rightClosestIndex = -1;
+	int leftFarthestIndex = -1;
+	int rightFarthestIndex = -1;
+	
+	//this gives the screen in which the active window resides
+	for(int i = 0; i < [[NSScreen screens] count]; i++){
+		NSScreen *otherScreen = [[NSScreen screens] objectAtIndex:i];
+		if (otherScreen == currentScreen) // if it's the same screen
+			continue;
+		
+		float screenOffset = otherScreen.frame.origin.x - currentScreen.frame.origin.x;		
+		
+		//find the closest screens to left and right
+		if (screenOffset < 0) { // screen is left of current
+			if (fabs(screenOffset) < fabs(leftClosestOffset)) {
+				leftClosestOffset = screenOffset;
+				leftClosestIndex = i;
+			}
+			
+			if (fabs(screenOffset) > fabs(leftFarthestOffset)) {
+				leftFarthestOffset = screenOffset;
+				leftFarthestIndex = i;
+			}
+		}
+		else { //screen is right of current
+			if (fabs(screenOffset) < fabs(rightClosestOffset)){
+				rightClosestOffset = screenOffset;
+				rightClosestIndex = i;
+			}
+			
+			if (fabs(screenOffset) > fabs(rightFarthestOffset)) {
+				rightFarthestOffset = screenOffset;
+				rightFarthestIndex = i;
+			}
+		}
+
+	}
+	
+	int target = 0;
+	if (whichDirection == @"left") 
+		(leftClosestIndex == -1) ? (target = rightFarthestIndex) : (target = leftClosestIndex);
+	else if (whichDirection == @"right")
+		(rightClosestIndex == -1) ? (target = leftFarthestIndex) : (target = rightClosestIndex);
+	else //action must be left or right-- if not, bail
+		return [NSScreen mainScreen]; // return the current screen
+	
+	return [[NSScreen screens] objectAtIndex:target];
 }
 
 @end
