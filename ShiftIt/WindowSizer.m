@@ -203,6 +203,14 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 
 	// execute shift it action to reposition the application window
 	ShiftItFunctionRef actionFunction = [action action];
+	
+	// readjust adjust the visibility
+	// the windowRect is the current application window geometry relative to the visible screen
+	// we need to shift it accordingly that is to the origin of the best fit screen (windowRect) and
+	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
+	windowRect.origin.x -= visibleScreenRect.origin.x;
+	windowRect.origin.y -= visibleScreenRect.origin.y; 
+	 
 	NSRect shiftedRect = actionFunction(visibleScreenRect.size, windowRect);
 	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
 	 
@@ -210,8 +218,8 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
 	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
 	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
-	shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
-	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
+	shiftedRect.origin.x += visibleScreenRect.origin.x;
+	shiftedRect.origin.y += visibleScreenRect.origin.y;
 
 	// we need to translate from cocoa coordinates
 	FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));	

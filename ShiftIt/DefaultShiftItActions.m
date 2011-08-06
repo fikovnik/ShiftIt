@@ -22,49 +22,85 @@
 
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
+	r.size.height = windowRect.size.height;
+	r.origin.y = windowRect.origin.y;
 	
+	if(windowRect.origin.x < 5) {
+		r.size.width = SizeIt(windowRect.size.width, screenSize.width); 
+	} else {
+		r.size.width = windowRect.size.width;
+	}
 	r.origin.x = 0;
-	r.origin.y = 0;
-	
-	r.size.width = screenSize.width / 2;
-	r.size.height = screenSize.height;
 	
 	return r;
 }
 
 NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
+	r.size.height = windowRect.size.height;
+	r.origin.y = windowRect.origin.y;
 	
-	r.origin.x = screenSize.width/2;
-	r.origin.y = 0;
+	if(fabsf(windowRect.origin.x + windowRect.size.width - screenSize.width) < 5) {
+		r.size.width = SizeIt(windowRect.size.width, screenSize.width); 
+	} else {
+		r.size.width = windowRect.size.width;
+	}
+	r.origin.x = screenSize.width - r.size.width;
 	
-	r.size.width = screenSize.width / 2;
-	r.size.height = screenSize.height;
-
 	return r;
 }
 
 NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
+	r.size.width = windowRect.size.width;
+	r.origin.x = windowRect.origin.x;
 	
-	r.origin.x = 0;
+	if(windowRect.origin.y < 5) {
+		r.size.height = SizeIt(windowRect.size.height, screenSize.height); 
+	} else {
+		r.size.height = windowRect.size.height;
+	}
 	r.origin.y = 0;
-	
-	r.size.width = screenSize.width;
-	r.size.height = screenSize.height / 2;
 	
 	return r;
 }
 
 NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
+	r.size.width = windowRect.size.width;
+	r.origin.x = windowRect.origin.x;
 	
+	if( fabsf(windowRect.origin.y + windowRect.size.height - screenSize.height) < 5 ){
+		r.size.height = SizeIt(windowRect.size.height, screenSize.height); 
+	} else {
+		r.size.height = windowRect.size.height;
+	}
+	r.origin.y = screenSize.height - r.size.height;
+	
+	return r;
+}
+
+
+NSRect ShiftIt_Left_Two_Thirds(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	    
 	r.origin.x = 0;
-	r.origin.y = screenSize.height / 2;
-	
-	r.size.width = screenSize.width;
-	r.size.height = screenSize.height / 2;
-	
+	r.origin.y = 0;
+	    
+	r.size.width = 2 * screenSize.width / 3;
+	r.size.height = screenSize.height;
+	    
+	return r;
+}
+
+NSRect ShiftIt_Right_One_Third(NSSize screenSize, NSRect windowRect) {
+	NSRect r;
+	    
+	r.origin.x = 2 * screenSize.width/3;
+	r.origin.y = 0;
+	    
+	r.size.width = screenSize.width / 3;
+	r.size.height = screenSize.height;
 	return r;
 }
 
@@ -137,4 +173,16 @@ NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	r.size = windowRect.size;
 	
 	return r;
+}
+
+float SizeIt(float part, float full) {
+	if ( fabsf(part - full / 2) < 5 ) {
+		return full / 3;
+	} else if ( fabsf(part - full / 3) < 5 ) {
+		return full;
+	} else if ( fabsf(part - full) < 5 ) {
+		return 2*full/3;
+	} else {
+		return full / 2;
+	}
 }
