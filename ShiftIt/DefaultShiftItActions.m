@@ -25,8 +25,8 @@ NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	r.size.height = windowRect.size.height;
 	r.origin.y = windowRect.origin.y;
 	
-	if(windowRect.origin.x < 5) {
-		r.size.width = SizeIt(windowRect.size.width, screenSize.width); 
+	if(windowRect.origin.x == 0) {
+		r.size.width = SizeIt(windowRect.size.width, screenSize.width, ERROR_BAR_X); 
 	} else {
 		r.size.width = windowRect.size.width;
 	}
@@ -40,8 +40,8 @@ NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 	r.size.height = windowRect.size.height;
 	r.origin.y = windowRect.origin.y;
 	
-	if(fabsf(windowRect.origin.x + windowRect.size.width - screenSize.width) < 5) {
-		r.size.width = SizeIt(windowRect.size.width, screenSize.width); 
+	if(fabsf(windowRect.origin.x + windowRect.size.width - screenSize.width) < ERROR_BAR_X) {
+		r.size.width = SizeIt(windowRect.size.width, screenSize.width, ERROR_BAR_X); 
 	} else {
 		r.size.width = windowRect.size.width;
 	}
@@ -55,8 +55,8 @@ NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 	r.size.width = windowRect.size.width;
 	r.origin.x = windowRect.origin.x;
 	
-	if(windowRect.origin.y < 5) {
-		r.size.height = SizeIt(windowRect.size.height, screenSize.height); 
+	if(windowRect.origin.y == 0) {
+		r.size.height = SizeIt(windowRect.size.height, screenSize.height, ERROR_BAR_Y); 
 	} else {
 		r.size.height = windowRect.size.height;
 	}
@@ -70,8 +70,8 @@ NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 	r.size.width = windowRect.size.width;
 	r.origin.x = windowRect.origin.x;
 	
-	if( fabsf(windowRect.origin.y + windowRect.size.height - screenSize.height) < 5 ){
-		r.size.height = SizeIt(windowRect.size.height, screenSize.height); 
+	if( fabsf(windowRect.origin.y + windowRect.size.height - screenSize.height) < ERROR_BAR_Y ){
+		r.size.height = SizeIt(windowRect.size.height, screenSize.height,ERROR_BAR_Y); 
 	} else {
 		r.size.height = windowRect.size.height;
 	}
@@ -175,12 +175,12 @@ NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-float SizeIt(float part, float full) {
-	if ( fabsf(part - full / 2) < 5 ) {
+float SizeIt(float part, float full, float errorBar) {
+	if ( fabsf(part - full / 2) < errorBar ) {
 		return full / 3;
-	} else if ( fabsf(part - full / 3) < 5 ) {
+	} else if ( fabsf(part - full / 3) < errorBar ) {
 		return full;
-	} else if ( fabsf(part - full) < 5 ) {
+	} else if ( fabsf(part - full) < errorBar ) {
 		return 2*full/3;
 	} else {
 		return full / 2;
