@@ -17,15 +17,25 @@
  
  */
 
+#define ERROR_BAR_X 5.0
+#define ERROR_BAR_Y 40.0
+// This deals with 2 issues:
+// 1) Resizing of certain windows will not always be exactly what you asked for(Terminal)
+// 2) There may be some rounding errors with the floats and converting from floats to pixels
+
 #import <Foundation/Foundation.h>
 
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_Left_Two_Thirds(NSSize screenSize, NSRect windowRect);
+NSRect ShiftIt_Right_One_Third(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect);
 NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect);
+
+float SizeIt(float part, float full, float errorBar);
