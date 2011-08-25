@@ -4,3 +4,6 @@ ShiftIt-*.zip
 ShiftIt/ShiftIt.xcodeproj/*.pbxuser
 ShiftIt/ShiftIt.xcodeproj/*.perspectivev3
 misc
+
+/ShiftIt/ShiftIt.xcodeproj/project.xcworkspace/xcuserdata/krikava.xcuserdatad/UserInterfaceState.xcuserstate
+/ShiftIt/ShiftIt.xcodeproj/xcuserdata/krikava.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
