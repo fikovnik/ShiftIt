@@ -48,6 +48,7 @@ NSString *const kFixedSizeHeightDeltaPrefKey = @"fixedSizeHeightDelta";
 NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
 NSString *const kIncludeDrawersPrefKey = @"includeDrawers";
+NSString *const kNumberOfTriesPrefKey = @"numberOfTries";
 
 // notifications
 NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";

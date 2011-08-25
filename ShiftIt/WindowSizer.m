@@ -28,6 +28,8 @@
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
 #define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
 
+const int kMaxNumberOfTries = 20;
+
 // reference to the carbon GetMBarHeight() function
 extern short GetMBarHeight(void);
 
@@ -112,6 +114,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
  * 
  * [2] http://www.linuxjournal.com/article/4879
  */
+// TODO: get rid of the c like functions from AXUIUtils
 - (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error {
 	FMTAssertNotNil(action);
 		
@@ -126,9 +129,14 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	NSRect drawersRect = {{0,0},{0,0}};
 	
 	BOOL useDrawers = [[NSUserDefaults standardUserDefaults] boolForKey:kIncludeDrawersPrefKey];
+	int numberOfTries = [[NSUserDefaults standardUserDefaults] integerForKey:kNumberOfTriesPrefKey];
+    if (numberOfTries < 0 || numberOfTries > kMaxNumberOfTries) {
+        numberOfTries = 1;
+    }
 	
 	// window rect
 	NSRect windowRect;
+    NSRect windowRectWithoutDrawers;
 	
 	// error handling vars
 	int errorCode = 0;
@@ -153,6 +161,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		windowRect.origin.y = y;
 		windowRect.size.width = width;
 		windowRect.size.height = height;
+        FMTDevLog(@"Window rect: %@", RECT_STR(windowRect));
 		
 		// drawers
 		if (useDrawers) {
@@ -161,17 +170,17 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			if (errorCode != 0) {
 				FMTDevLog(@"Unable to get window drawers: %d", errorCode);
 			} else {
-				FMTDevLog(@"Drawers: %@", RECT_STR(drawersRect));
+				FMTDevLog(@"Drawers rect: %@", RECT_STR(drawersRect));
 			}
 			
 			if (drawersRect.size.width > 0) {
+                windowRectWithoutDrawers = windowRect;
 				windowRect = NSUnionRect(windowRect, drawersRect);
+                FMTDevLog(@"Window rect with drawers: %@", RECT_STR(windowRect));
 			}
 		}
 	}
-	
-	FMTDevLog(@"window rect: %@", RECT_STR(windowRect));
-	
+				
 #ifndef NDEBUG
 	// dump screen info
 	for (NSScreen *screen in [NSScreen screens]) {
@@ -215,7 +224,15 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	
 	// drawers
 	if (useDrawers && drawersRect.size.width > 0) {
-		}	
+        int dx = windowRectWithoutDrawers.origin.x - windowRect.origin.x;
+        int dy = windowRect.origin.y - windowRectWithoutDrawers.origin.y;
+        int dw = windowRect.size.width - windowRectWithoutDrawers.size.width;
+        int dh = windowRect.size.height - windowRectWithoutDrawers.size.height;
+        
+		shiftedRect.origin.x += dx;
+		shiftedRect.origin.y -= dy;
+		shiftedRect.size.width -= dw;
+		shiftedRect.size.height -= dh;
 		
 		FMTDevLog(@"shifted window rect after drawers adjustements: %@", RECT_STR(shiftedRect));
 	}
@@ -243,18 +260,44 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		FMTDevLog(@"moving window to: %dx%d", x, y);		
 		errorCode = AXUISetWindowPosition(window, x, y);
 		if (errorCode != 0) {
-			*error = SICreateError(FMTStrc(getErrorMessageFn(errorCode)), kUnableToChangeWindowPositionErrorCode);
-			return;
-		}
-		
-		// resize window
-		FMTDevLog(@"resizing to: %dx%d", width, height);
-		errorCode = setWindowSizeFn(window, width, height);
-		if (errorCode != 0) {
 			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
 			return;
 		}
 		
+        // here we will keep the size after the second attempt
+        {
+            unsigned int width2=0, height2=0; 
+            for (int i=1; i<=numberOfTries; i++) {
+                // resize window
+                FMTDevLog(@"resizing to: %dx%d (%d. attempt)", width, height, i);
+                errorCode = AXUISetWindowSize(window, width, height);
+                if (errorCode != 0) {
+                    *error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowSizeErrorCode);
+                    return;
+                }
+                
+                // check how was it resized
+                int unused;
+                unsigned int width3=0, height3=0; 
+                errorCode = AXUIGetWindowGeometry(window, &unused, &unused, &width3, &height3);
+                if (errorCode != 0) {
+                    *error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToGetWindowGeometryErrorCode);
+                    return;
+                }
+                FMTDevLog(@"window resized to: %dx%d (%d. attempt)", width3, height3, i);
+                
+                if (width == width3 && height == height3) {
+                    break;
+                } else if (i > 1 && (width3 == width2 && height3 == height2)) {
+                        // it seems that more attempts wont change anything
+                        FMTDevLog(@"The %d attempt is the same as %d so no effect (likely a discretely sizing window)", i, i-1);
+                        break;
+                }
+                width2 = width3;
+                height2 = height3;
+            }
+        }
+        
 		// there are apps that does not size continuously but rather discretely so
 		// they have to be re-adjusted
 		int dx = 0;
@@ -298,6 +341,9 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 				}		
 			}
 		}
+        
+        // TODO: make sure window is always visible
+        
 	} else {
 		FMTDevLog(@"Shifted window origin and dimensions are the same");
 	}
