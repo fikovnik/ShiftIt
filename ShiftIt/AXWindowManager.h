@@ -44,5 +44,8 @@
 
 - (BOOL) getSize:(NSSize *)size element:(AXUIElementRef)element error:(NSError **)error;
 
+- (BOOL) isWindowResizeable:(AXUIElementRef)window;
+
+- (BOOL) isWindowMoveable:(AXUIElementRef)window;
 
 @end

@@ -10,9 +10,14 @@
 #import "ShiftIt.h"
 #import "FMTDefines.h"
 
+@interface AXWindowManager(Private)
++ (BOOL) isAttributeSettable_:(CFStringRef)attributeName element:(AXUIElementRef)element;
+@end
+
 @implementation AXWindowManager
 
 SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
+
 - (id)init {
 	if(![super init]){
 		return nil;
@@ -231,5 +236,22 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
 	CFRelease(sizeRef);
 	return YES;
 }
+
+- (BOOL) isWindowResizeable:(AXUIElementRef)window {
+    return [AXWindowManager isAttributeSettable_:kAXSizeAttribute element:window];
+}
+
+- (BOOL) isWindowMoveable:(AXUIElementRef)window {
+    return [AXWindowManager isAttributeSettable_:kAXPositionAttribute element:window];
+}
+
++ (BOOL) isAttributeSettable_:(CFStringRef)attributeName element:(AXUIElementRef)element {
+    Boolean isSettable = false;
+    
+    AXUIElementIsAttributeSettable(element, (CFStringRef)attributeName, &isSettable);
+    
+    return isSettable == true ? YES : NO;
+}
+
 
 @end

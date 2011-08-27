@@ -162,31 +162,42 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	if (![windowManager_ getFocusedWindow:&window error:&cause]) {
 		*error = SICreateErrorWithCause(@"Unable to get active window", kUnableToGetActiveWindowErrorCode, cause);
 		return NO;
-	} else {
-		if (![windowManager_ getGeometry:&windowRectWithoutDrawers window:window error:&cause]) {
-            *error = SICreateErrorWithCause(@"Unable to get window geometry", kUnableToGetWindowGeometryErrorCode, cause);
-			return NO;
-		}
-		
-        FMTDevLog(@"Window geometry without drawers: %@", RECT_STR(windowRectWithoutDrawers));
-		
-		// drawers
-		if (useDrawers) {
-			if (![windowManager_ getDrawersGeometry:&drawersRect window:window error:&cause]) {
-				FMTDevLog(@"Unable to get window drawers: %@", [cause description]);
-			} else if (drawersRect.size.width > 0) {
-                // there are some drawers
-                FMTDevLog(@"Drawers geometry: %@", RECT_STR(drawersRect));
-                
-                windowRect = NSUnionRect(windowRect, drawersRect);
-                FMTDevLog(@"Window geometry with drawers: %@", RECT_STR(windowRect));
-            } else {
-                windowRect = windowRectWithoutDrawers;                
-            }
+	} 
+    
+    if (![windowManager_ getGeometry:&windowRectWithoutDrawers window:window error:&cause]) {
+        *error = SICreateErrorWithCause(@"Unable to get window geometry", kUnableToGetWindowGeometryErrorCode, cause);
+        return NO;
+    }
+    
+    if (![windowManager_ isWindowMoveable:window]) {
+        FMTDevLog(@"Window is not moveable");
+        return YES;
+    }
+
+    if (![windowManager_ isWindowResizeable:window]) {
+        FMTDevLog(@"Window is not resizeable");
+        return YES;
+    }
+
+    FMTDevLog(@"Window geometry without drawers: %@", RECT_STR(windowRectWithoutDrawers));
+    
+    // drawers
+    if (useDrawers) {
+        if (![windowManager_ getDrawersGeometry:&drawersRect window:window error:&cause]) {
+            FMTDevLog(@"Unable to get window drawers: %@", [cause description]);
+        } else if (drawersRect.size.width > 0) {
+            // there are some drawers
+            FMTDevLog(@"Drawers geometry: %@", RECT_STR(drawersRect));
+            
+            windowRect = NSUnionRect(windowRect, drawersRect);
+            FMTDevLog(@"Window geometry with drawers: %@", RECT_STR(windowRect));
         } else {
-            windowRect = windowRectWithoutDrawers;
+            windowRect = windowRectWithoutDrawers;                
         }
-	}
+    } else {
+        windowRect = windowRectWithoutDrawers;
+    }
+	
     
 #ifndef NDEBUG
 	// dump screen info
