@@ -70,12 +70,20 @@ extern NSString *const kSIIconType;
 extern NSString *const kSIMenuItemTitle;
 
 extern NSString *const SIErrorDomain;
+
+extern NSInteger const kUnableToGetActiveApplicationErrorCode;
 extern NSInteger const kUnableToGetActiveWindowErrorCode;
 extern NSInteger const kUnableToChangeWindowPositionErrorCode;
 extern NSInteger const kUnableToGetWindowGeometryErrorCode;
 extern NSInteger const kUnableToChangeWindowSizeErrorCode;
+extern NSInteger const kUnableToGetWindowDrawersErrorCode;
+extern NSInteger const kUnableToCheckWindowFullScreenModeErrorCode;
+extern NSInteger const kUnableToElementPositionErrorCode;
+extern NSInteger const kUnableToElementSizeErrorCode;
+extern NSInteger const kAXFailureErrorCode;
 
 #define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
 #define ModifiersPrefKey(identifier) FMTStr(@"%@%@", (identifier), kModifiersPrefKeySuffix)
 
 extern NSError* SICreateError(NSString *localizedDescription, NSInteger errorCode);
+extern NSError* SICreateErrorWithCause(NSString *localizedDescription, NSInteger errorCode, NSError *cause);

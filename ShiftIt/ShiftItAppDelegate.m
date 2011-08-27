@@ -67,7 +67,12 @@ NSString *const SIErrorDomain = @"org.shiftitapp.shiftit.ErrorDomain";
 NSInteger const kUnableToGetActiveWindowErrorCode = 20100;
 NSInteger const kUnableToChangeWindowPositionErrorCode = 20101;
 NSInteger const kUnableToGetWindowGeometryErrorCode = 20102;
-NSInteger const kUnableToChangeWindowSizeErrorCode = 20102;
+NSInteger const kUnableToChangeWindowSizeErrorCode = 20103;
+NSInteger const kUnableToGetWindowDrawersErrorCode = 20104;
+NSInteger const kUnableToCheckWindowFullScreenModeErrorCode = 20105;
+NSInteger const kUnableToElementPositionErrorCode = 20106;
+NSInteger const kUnableToElementSizeErrorCode = 20107;
+NSInteger const kAXFailureErrorCode = 20108;
 
 const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 1/3; // in seconds
 
@@ -146,7 +151,7 @@ NSDictionary *allShiftActions = nil;
 	FMTDevLog(@"Starting up ShiftIt...");
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
+    
 	// check preferences
 	BOOL hasStartedBefore = [defaults boolForKey:kHasStartedBeforePrefKey];
 	
@@ -154,10 +159,10 @@ NSDictionary *allShiftActions = nil;
 		// make sure this was the only time
 		[defaults setBool:YES forKey:@"hasStartedBefore"];
 		[defaults synchronize];
-
+        
 		[self firstLaunch_];
 	}
-
+    
 	if (!AXAPIEnabled()){
         int ret = NSRunAlertPanel (@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel",NULL);
         switch (ret) {
@@ -195,7 +200,7 @@ NSDictionary *allShiftActions = nil;
 		NSNotification *notification = [NSNotification notificationWithName:kHotKeyChangedNotification object:self userInfo:userInfo];
 		[self shiftItActionHotKeyChanged_:notification];
 	}
-
+    
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(shiftItActionHotKeyChanged_:) name:kHotKeyChangedNotification object:nil];
 	[notificationCenter addObserver:self selector:@selector(handleActionsStateChangeRequest_:) name:kDidFinishEditingHotKeysPrefNotification object:nil];
@@ -253,15 +258,15 @@ NSDictionary *allShiftActions = nil;
     if (!preferencesController_) {
         preferencesController_ = [[PreferencesWindowController alloc]init];
     }
-
+    
     [preferencesController_ showPreferences:sender];
     [NSApp activateIgnoringOtherApps:YES];
 }
 
 - (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
 	FMTAssertNotNil(action);
-	FMTDevLog(@"updateStatusMenuShortcutForAction_:%@ keyCode:%d modifiers:%ld", [action identifier], keyCode, modifiers);
-
+	FMTDevLog(@"updateStatusMenuShortcutForAction_:%@ keyCode:%ld modifiers:%ld", [action identifier], keyCode, modifiers);
+    
 	NSMenuItem *menuItem = [statusMenu_ itemWithTag:kSIMenuUITagPrefix+[action uiTag]];
 	FMTAssertNotNil(menuItem);
 	
@@ -339,12 +344,12 @@ NSDictionary *allShiftActions = nil;
 
 - (void) shiftItActionHotKeyChanged_:(NSNotification *) notification {
 	NSDictionary *userInfo = [notification userInfo];
-
+    
 	NSString *identifier = [userInfo objectForKey:kActionIdentifierKey];
 	NSInteger keyCode = [[userInfo objectForKey:kHotKeyKeyCodeKey] integerValue];
 	NSUInteger modifiers = [[userInfo objectForKey:kHotKeyModifiersKey] longValue];
 	
-	FMTDevLog(@"Updating action %@ hotKey: keyCode=%d modifiers=%ld", identifier, keyCode, modifiers);
+	FMTDevLog(@"Updating action %@ hotKey: keyCode=%ld modifiers=%ld", identifier, keyCode, modifiers);
 	
 	ShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
@@ -390,7 +395,7 @@ NSDictionary *allShiftActions = nil;
 			FMTDevLog(@"The functionality is temporarly paused");
 			return ;
 		}
-
+        
 		CFAbsoluteTime now = CFAbsoluteTimeGetCurrent();
 		
 		// since now can be actually smaller than beforeNow_ due to sync
@@ -415,8 +420,7 @@ NSDictionary *allShiftActions = nil;
 		
 		FMTDevLog(@"Invoking action: %@", identifier);
 		NSError *error = nil;
-		[windowSizer_ shiftFocusedWindowUsing:action error:&error];
-		if (error) {
+		if (![windowSizer_ shiftFocusedWindowUsing:action error:&error]) {
 			NSLog(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
 		}
 	}
@@ -430,11 +434,11 @@ NSDictionary *allShiftActions = nil;
 	FMTAssertNotNil(identifier);
 	
 	FMTDevLog(@"ShitIt action activated from menu: %@", identifier);	
-
+    
 	[self invokeShiftItActionByIdentifier_:identifier];
 }
 
-		 
+
 @end
 
 inline NSError* SICreateError(NSString *localizedDescription, NSInteger errorCode) {
@@ -445,4 +449,16 @@ inline NSError* SICreateError(NSString *localizedDescription, NSInteger errorCod
 	
 	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errorCode userInfo:userInfo];	
 	return error;
+}
+
+inline NSError* SICreateErrorWithCause(NSString *localizedDescription, NSInteger errorCode, NSError *cause) {
+	FMTAssertNotNil(localizedDescription);
+	FMTAssertNotNil(cause);
+	
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
+	[userInfo setObject:localizedDescription forKey:NSLocalizedDescriptionKey];
+	[userInfo setObject:cause forKey:NSUnderlyingErrorKey];
+	
+	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errorCode userInfo:userInfo];	
+	return error;    
 }

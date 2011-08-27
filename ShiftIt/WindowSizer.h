@@ -26,17 +26,17 @@
  */
 
 @class ShiftItAction;
+@class AXWindowManager;
 
 @interface WindowSizer : NSObject {
  @private
-    AXUIElementRef axSystemWideElement_;
-	
+    AXWindowManager *windowManager_;
 	int menuBarHeight_;
 }
 
 + (WindowSizer *) sharedWindowSize;
 
-- (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
+- (BOOL) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
 - (NSScreen *)chooseScreenForWindow_:(NSRect)windowRect;
 - (BOOL) isCurrentWindowInFullScreen;
 
