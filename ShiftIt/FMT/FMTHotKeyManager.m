@@ -25,6 +25,7 @@
 
 #import "FMTHotKeyManager.h"
 #import "FMTDefines.h"
+#import "GTMLogger.h"
 
 @interface FMTHotKey (Private)
 
@@ -148,7 +149,7 @@ SINGLETON_BOILERPLATE(FMTHotKeyManager, sharedHotKeyManager);
 - (void)unregisterHotKey:(FMTHotKey *)hotKey {
 	FMTAssertNotNil(hotKey);
 	
-	FMTDevLog(@"Unregistering hotKey %@", hotKey);
+	GTMLoggerDebug(@"Unregistering hotKey %@", hotKey);
 	
 	// search for the registration
 	TWHotKeyRegistartion *hotKeyReg;
@@ -163,7 +164,7 @@ SINGLETON_BOILERPLATE(FMTHotKeyManager, sharedHotKeyManager);
 		UnregisterEventHotKey([hotKeyReg ref]);
 	} else {
 		// no registration found
-		FMTDevLog(@"Unable to unregister hotKey: %@ - it has not been registered by this HotKeyManager", hotKey);
+		GTMLoggerDebug(@"Unable to unregister hotKey: %@ - it has not been registered by this HotKeyManager", hotKey);
 	}
 
 }
@@ -174,7 +175,7 @@ SINGLETON_BOILERPLATE(FMTHotKeyManager, sharedHotKeyManager);
 	FMTAssertNotNil(handler);
 	FMTAssertNotNil(provider);
 	
-	FMTDevLog(@"Registering hotKey %@", hotKey);
+	GTMLoggerDebug(@"Registering hotKey %@", hotKey);
 
 	EventHotKeyID hotKeyID;
 	// TODO: extract
@@ -187,7 +188,7 @@ SINGLETON_BOILERPLATE(FMTHotKeyManager, sharedHotKeyManager);
 						GetApplicationEventTarget(), 0, &hotKeyRef);
 	
 	if (!hotKeyRef) {
-		NSLog(@"Unable to register hotKey: %@", hotKey);
+		GTMLoggerError(@"Unable to register hotKey: %@", hotKey);
 		return;
 	}
 	

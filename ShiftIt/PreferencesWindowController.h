@@ -21,9 +21,12 @@
 #import <Cocoa/Cocoa.h>
 #import <ShortcutRecorder/ShortcutRecorder.h>
 
+@class GTMLogger;
+
 @interface PreferencesWindowController : NSWindowController {
  @private
 	NSString *selectedTabIdentifier_;
+    GTMLogger *logger_;
 	
 	IBOutlet NSButton * openAtLogin_;
     IBOutlet NSTabView * tabView_;

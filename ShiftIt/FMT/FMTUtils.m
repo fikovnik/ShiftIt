@@ -22,6 +22,7 @@
 
 #import "FMTUtils.h"
 #import "FMTDefines.h"
+#import "GTMLogger.h"
 
 NSString *const kSystemPreferencesAppBundeId = @"com.apple.systempreferences";
 
@@ -70,7 +71,7 @@ BOOL FMTOpenSystemPreferencePane(NSString *prefPaneId) {
 	NSAppleEventDescriptor *event = [script executeAndReturnError:&dict];
 
 	if (dict) {
-		FMTDevLog(@"Compilation of AppleScript: %@ failed: %@", source, dict);
+		GTMLoggerError(@"Compilation of AppleScript: %@ failed: %@", source, dict);
 	}
 	
 	[script release];	

@@ -23,31 +23,12 @@
 // following assertions were taken from: GMTDefines.h from the google-mac-toolbox:
 // http://code.google.com/p/google-toolbox-for-mac/
 
-#ifndef FMTDevLog
-
-#ifndef NDEBUG
-#define FMTDevLog(...) NSLog(__VA_ARGS__)
-#else
-#define FMTDevLog(...) do { } while (0)
-#endif // NDEBUG
-
-#endif // FMTDevLog
-
 // TODO: rename to NSStr
 #ifndef FMTStr
 #define FMTStr(fmt,...) [NSString stringWithFormat:fmt,##__VA_ARGS__]
 #endif // FMTStr
 
 #define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding] 
-
-#ifndef FMTTraceLog
-
-#ifndef NTRACE
-#define FMTTraceLog(...) NSLog(@"%@: %@",FMTStr(@"[\%s:\%s:\%d]",__PRETTY_FUNCTION__,__FILE__,__LINE__),FMTStr(__VA_ARGS__))
-#define FMTTrace() NSLog(@"[\%s:\%s:\%d]",__PRETTY_FUNCTION__,__FILE__,__LINE__)
-#endif // NTRACE
-
-#endif // FMTTraceLog
 
 #ifndef FMTAssert
 

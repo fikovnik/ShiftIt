@@ -12,6 +12,7 @@
 		2708BF011260E10900192883 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
 		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
 		270DACA414094B9E0080DFBD /* AXWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA314094B9E0080DFBD /* AXWindowManager.m */; };
+		270DACA914098AE30080DFBD /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
 		270EC26C12FF1965002A5F22 /* ShiftIt-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */; };
 		271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
@@ -63,6 +64,10 @@
 		2708C2551261C8E800192883 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
 		270DACA214094B9E0080DFBD /* AXWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXWindowManager.h; sourceTree = "<group>"; };
 		270DACA314094B9E0080DFBD /* AXWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXWindowManager.m; sourceTree = "<group>"; };
+		270DACA614098AE30080DFBD /* GTMGarbageCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMGarbageCollection.h; path = GTM/GTMGarbageCollection.h; sourceTree = "<group>"; };
+		270DACA714098AE30080DFBD /* GTMLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMLogger.h; path = GTM/GTMLogger.h; sourceTree = "<group>"; };
+		270DACA814098AE30080DFBD /* GTMLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMLogger.m; path = GTM/GTMLogger.m; sourceTree = "<group>"; };
+		270DACAA14098B250080DFBD /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = GTM/GTMDefines.h; sourceTree = "<group>"; };
 		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
@@ -158,6 +163,7 @@
 		2708C1CC1261388A00192883 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				270DACA514098ACA0080DFBD /* GTM */,
 				2708C1CE126138A000192883 /* FMT */,
 			);
 			name = External;
@@ -187,6 +193,17 @@
 				27F4FD5512730F4600A65750 /* FMTUtils.m */,
 			);
 			name = FMT;
+			sourceTree = "<group>";
+		};
+		270DACA514098ACA0080DFBD /* GTM */ = {
+			isa = PBXGroup;
+			children = (
+				270DACAA14098B250080DFBD /* GTMDefines.h */,
+				270DACA614098AE30080DFBD /* GTMGarbageCollection.h */,
+				270DACA714098AE30080DFBD /* GTMLogger.h */,
+				270DACA814098AE30080DFBD /* GTMLogger.m */,
+			);
+			name = GTM;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* ShiftIt */ = {
@@ -328,6 +345,7 @@
 				27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */,
 				27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */,
 				270DACA414094B9E0080DFBD /* AXWindowManager.m in Sources */,
+				270DACA914098AE30080DFBD /* GTMLogger.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,7 +447,7 @@
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = "-ldl";
 				SDKROOT = macosx;
 			};

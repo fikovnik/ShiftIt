@@ -22,12 +22,14 @@
 @class WindowSizer;
 @class PreferencesWindowController;
 @class FMTHotKeyManager;
+@class GTMLogger;
 
 @interface ShiftItAppDelegate : NSObject {
  @private
     PreferencesWindowController *preferencesController_;
 	FMTHotKeyManager *hotKeyManager_;	
 	WindowSizer *windowSizer_;
+    GTMLogger *logger_;
 
 	NSMutableDictionary *allHotKeys_;
 	BOOL paused_;
