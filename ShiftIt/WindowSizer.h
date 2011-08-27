@@ -38,5 +38,6 @@
 
 - (void) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
 - (NSScreen *)chooseScreenForWindow_:(NSRect)windowRect;
+- (BOOL) isCurrentWindowInFullScreen;
 
 @end

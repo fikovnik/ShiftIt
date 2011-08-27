@@ -35,6 +35,9 @@ static const char *const kErrorMessages_[] = {
 
 static int kErrorMessageCount_ = sizeof(kErrorMessages_)/sizeof(kErrorMessages_[0]);
 
+// From whatever reason this attribute is missing in the AXAttributeConstants.h
+#define kAXFullScreenAttribute  CFSTR("AXFullScreen")
+
 int AXUISetWindowPosition(void *window, int x, int y) {
 	FMTAssertNotNil(window);
 
@@ -195,6 +198,24 @@ int AXUIGetWindowDrawersUnionRect(void *window, NSRect *rect) {
 	[children release];
 	return 0;
 }
+
+int AXUIGetWindowFullScreenStatus(void *window, BOOL *fullscreen) {
+    FMTAssertNotNil(window);
+	
+    CFBooleanRef fullScreenRef;
+    if (AXUIElementCopyAttributeValue((AXUIElementRef)window,
+                                      (CFStringRef) kAXFullScreenAttribute,
+                                      (CFTypeRef *) &fullScreenRef) != kAXErrorSuccess) {
+        
+		return -8;
+    }
+    
+    *fullscreen = fullScreenRef == kCFBooleanTrue ? YES : NO;
+	CFRelease(fullScreenRef);
+	
+	return 0;
+}
+
 
 void AXUIFreeWindowRef(void *window) {
 	FMTAssertNotNil(window);

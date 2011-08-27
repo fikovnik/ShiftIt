@@ -92,6 +92,18 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	[super dealloc];
 }
 
+- (BOOL) isCurrentWindowInFullScreen {
+    void *window = NULL;
+	if (AXUIGetActiveWindow(&window) != 0) {
+		return NO;
+    }
+    
+    BOOL fullScreen;
+    AXUIGetWindowFullScreenStatus(window, &fullScreen);
+    
+    return fullScreen;
+}
+
 /**
  * The method is the heart of the ShiftIt app. It takes an
  * ShiftItAction and applies it to the current window.

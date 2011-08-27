@@ -404,6 +404,12 @@ NSDictionary *allShiftActions = nil;
 			beforeNow_ = now;
 		}
 		
+        // check for fullscreen - if the window is in fullscreen we do not execute any action
+        if ([windowSizer_ isCurrentWindowInFullScreen]) {
+            FMTDevLog(@"Current window is in fullscreen, not executing any action");
+            return ;
+        }
+        
 		ShiftItAction *action = [allShiftActions objectForKey:identifier];
 		FMTAssertNotNil(action);
 		
