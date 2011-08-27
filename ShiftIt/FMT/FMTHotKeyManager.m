@@ -21,6 +21,7 @@
  */
 
 #import <ShortcutRecorder/SRCommon.h>
+#import <objc/message.h>
 
 #import "FMTHotKeyManager.h"
 #import "FMTDefines.h"

@@ -131,8 +131,6 @@ return self;                                     \
 - (NSUInteger)retainCount {                        \
 return NSUIntegerMax;                            \
 }                                                  \
-- (void)release {                                  \
-}                                                  \
 - (id)autorelease {                                \
 return self;                                     \
 }                                                  \
