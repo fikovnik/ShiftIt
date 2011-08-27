@@ -24,6 +24,8 @@
 
 @interface AXWindowManager : NSObject
 
++ (AXWindowManager *) sharedAXWindowManager;
+
 - (BOOL) getFocusedWindow:(AXUIElementRef *)windowRef error:(NSError **)error;
 
 - (void) freeWindow:(AXUIElementRef)windowRef;

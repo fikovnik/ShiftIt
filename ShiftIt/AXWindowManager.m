@@ -12,6 +12,7 @@
 
 @implementation AXWindowManager
 
+SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
 - (id)init {
 	if(![super init]){
 		return nil;

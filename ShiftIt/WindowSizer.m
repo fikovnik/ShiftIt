@@ -88,7 +88,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		return nil;
 	}
     
-    windowManager_ = [[AXWindowManager alloc] init];
+    windowManager_ = [[AXWindowManager sharedAXWindowManager] retain];
     
 	return self;
 }
