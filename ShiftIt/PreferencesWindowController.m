@@ -23,7 +23,6 @@
 #import "FMTLoginItems.h"
 #import "FMTDefines.h"
 #import "FMTUtils.h"
-#import "GTMLogger.h"
 
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
@@ -55,14 +54,10 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 		return nil;
     }
     
-    logger_ = [[GTMLogger sharedLogger] retain];
-	
     return self;
 }
 
--(void)dealloc{
-    [logger_ release];
-    
+-(void)dealloc{    
 	[super dealloc];
 }
 
@@ -125,7 +120,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 }
 
 - (void)setShouldStartAtLogin:(BOOL)flag {
-	[logger_ logInfo:@"ShiftIt should start at login: %d", flag];
+	FMTLogDebug(@"ShiftIt should start at login: %d", flag);
 
 	NSString *path = [[NSBundle mainBundle] bundlePath];
 	[[FMTLoginItems sharedSessionLoginItems] toggleApplicationInLoginItemsWithPath:path enabled:flag];
@@ -144,7 +139,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	}
 	FMTAssertNotNil(action);
 	
-	[logger_ logInfo:@"ShiftIt action %@ hotkey changed: ", [action identifier]];
+	FMTLogDebug(@"ShiftIt action %@ hotkey changed: ", [action identifier]);
 	
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:3];
 	[userInfo setObject:[action identifier] forKey:kActionIdentifierKey];

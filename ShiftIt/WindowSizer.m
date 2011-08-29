@@ -24,7 +24,6 @@
 #import "ShiftItAction.h"
 #import "AXWindowManager.h"
 #import "FMTDefines.h"
-#import "GTMLogger.h"
 
 #define POINT_STR(point) FMTStr(@"[%f %f]", (point).x, (point).y)
 #define SIZE_STR(size) FMTStr(@"[%f %f]", (size).width, (size).height)
@@ -90,14 +89,12 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	}
     
     windowManager_ = [[AXWindowManager sharedAXWindowManager] retain];
-    logger_ = [[GTMLogger sharedLogger] retain];
     
 	return self;
 }
 
 - (void) dealloc {	
     [windowManager_ release];
-    [logger_ release];
     
 	[super dealloc];
 }
@@ -107,13 +104,13 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
     NSError *error = nil;
     
     if (![windowManager_ getFocusedWindow:&window error:&error]) {
-        [logger_ logInfo:@"Unable to get active window reference"];
+        FMTLogInfo(@"Unable to get active window reference");
 		return NO;
     }
     
     BOOL fullScreenMode;
     if (![windowManager_ getFullScreenMode:&fullScreenMode window:window error:&error]) {
-        [logger_ logInfo:@"Unable to check window full screen mode"];
+        FMTLogInfo(@"Unable to check window full screen mode");
 		return NO;
     }
     
@@ -174,26 +171,26 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
     }
     
     if (![windowManager_ isWindowMoveable:window]) {
-        [logger_ logInfo:@"Window is not moveable"];
+        FMTLogInfo(@"Window is not moveable");
         return YES;
     }
 
     if (![windowManager_ isWindowResizeable:window]) {
-        [logger_ logInfo:@"Window is not resizeable"];
+        FMTLogInfo(@"Window is not resizeable");
         return YES;
     }
 
-    [logger_ logDebug:@"Window geometry without drawers: %@", RECT_STR(windowRectWithoutDrawers)];
+    FMTLogDebug(@"Window geometry without drawers: %@", RECT_STR(windowRectWithoutDrawers));
     
     // drawers
     if (useDrawers) {
         if (![windowManager_ getDrawersGeometry:&drawersRect window:window error:&cause]) {
-            [logger_ logInfo:@"Unable to get window drawers: %@", [cause description]];
+            FMTLogInfo(@"Unable to get window drawers: %@", [cause description]);
         } else if (drawersRect.size.width > 0) {
             // there are some drawers
-            [logger_ logDebug:@"Drawers geometry: %@, window geometry with drawers: %@", RECT_STR(drawersRect), RECT_STR(windowRect)];
-            
-            windowRect = NSUnionRect(windowRect, drawersRect);
+            FMTLogDebug(@"Drawers geometry: %@", RECT_STR(drawersRect));
+            windowRect = NSUnionRect(windowRectWithoutDrawers, drawersRect);            
+            FMTLogDebug(@"Window geometry with drawers: %@", RECT_STR(windowRect));
         } else {
             windowRect = windowRectWithoutDrawers;                
         }
@@ -210,7 +207,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		
 		COCOA_TO_SCREEN_COORDINATES(frame);
 		COCOA_TO_SCREEN_COORDINATES(visibleFrame);
-		[logger_ logDebug:@"Screen info: %@ frame: %@ visible frame: %@",screen, RECT_STR(frame), RECT_STR(visibleFrame)];
+		FMTLogDebug(@"Screen info: %@ frame: %@ visible frame: %@",screen, RECT_STR(frame), RECT_STR(visibleFrame));
 	}
 #endif		 
 	
@@ -221,26 +218,26 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
     
 	// screen coordinates of the best fit window
 	NSRect screenRect = [screen frame];
-	//	[logger_ logInfo:@"screen rect (cocoa): %@", RECT_STR(screenRect));	
+	//	FMTLogInfo(@"screen rect (cocoa): %@", RECT_STR(screenRect));	
 	COCOA_TO_SCREEN_COORDINATES(screenRect);	
 	// visible screen coordinates of the best fit window
 	// the visible screen denotes some inner rect of the screen rect which is visible - not occupied by menu bar or dock
 	NSRect visibleScreenRect = [screen visibleFrame];
-	//	[logger_ logInfo:@"visible screen rect (cocoa): %@", RECT_STR(visibleScreenRect));	
+	//	FMTLogInfo(@"visible screen rect (cocoa): %@", RECT_STR(visibleScreenRect));	
 	COCOA_TO_SCREEN_COORDINATES(visibleScreenRect);
     
-	[logger_ logDebug:@"Screen geometry: %@, visible screen geometry: %@", RECT_STR(screenRect), RECT_STR(visibleScreenRect)];	
+	FMTLogDebug(@"Screen geometry: %@, visible screen geometry: %@", RECT_STR(screenRect), RECT_STR(visibleScreenRect));	
 	
 	// readjust adjust the window rect to be relative of the screen at origin [0,0]
 	NSRect relWindowRect = windowRect;
 	relWindowRect.origin.x -= visibleScreenRect.origin.x;
 	relWindowRect.origin.y -= visibleScreenRect.origin.y;
-	[logger_ logDebug:@"Window geometry relative to [0,0]: %@", RECT_STR(relWindowRect)];	
+	FMTLogDebug(@"Window geometry relative to [0,0]: %@", RECT_STR(relWindowRect));	
 	
 	// execute shift it action to reposition the application window
 	ShiftItFunctionRef actionFunction = [action action];
 	NSRect shiftedRect = actionFunction(visibleScreenRect.size, relWindowRect);
-	[logger_ logDebug:@"Shifted window geometry: %@", RECT_STR(shiftedRect)];
+	FMTLogDebug(@"Shifted window geometry: %@", RECT_STR(shiftedRect));
 	
 	// drawers
 	if (useDrawers && drawersRect.size.width > 0) {
@@ -254,7 +251,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		shiftedRect.size.width -= dw;
 		shiftedRect.size.height -= dh;
 		
-		[logger_ logDebug:@"Shifted window geometry after drawers adjustements: %@", RECT_STR(shiftedRect)];
+		FMTLogDebug(@"Shifted window geometry after drawers adjustements: %@", RECT_STR(shiftedRect));
 	}
 	
 	// readjust adjust the visibility
@@ -265,11 +262,11 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;// - ([screen isPrimary] ? GetMBarHeight() : 0);
 	
 	// we need to translate from cocoa coordinates
-	[logger_ logDebug:@"Shifted window within screen: %@", RECT_STR(shiftedRect)];	
+	FMTLogDebug(@"Shifted window within screen: %@", RECT_STR(shiftedRect));	
 	
 	if (!NSEqualRects(windowRect, shiftedRect)) {				
 		// move window
-		[logger_ logDebug:@"Moving window to: %@", POINT_STR(shiftedRect.origin)];		
+		FMTLogDebug(@"Moving window to: %@", POINT_STR(shiftedRect.origin));		
 		if (![windowManager_ setPosition:shiftedRect.origin window:window error:&cause] != 0) {
 			*error = SICreateErrorWithCause(@"Unable to move window", kUnableToChangeWindowPositionErrorCode, cause);
 			return NO;
@@ -281,7 +278,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
         {
             for (int i=1; i<=numberOfTries; i++) {
                 // resize window
-                [logger_ logDebug:@"Resizing to: %@ (%d. attempt)", SIZE_STR(shiftedRect.size), i];
+                FMTLogDebug(@"Resizing to: %@ (%d. attempt)", SIZE_STR(shiftedRect.size), i);
                 if (![windowManager_ setSize:shiftedRect.size window:window error:&cause] != 0) {
                     *error = SICreateErrorWithCause(@"Unable to resize window", kUnableToChangeWindowSizeErrorCode, cause);
                     return NO;
@@ -293,13 +290,13 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
                     *error = SICreateErrorWithCause(@"Unable to get window geometry", kUnableToGetWindowGeometryErrorCode, cause);
                     return NO;
                 }
-                [logger_ logDebug:@"Window resized to: %@ (%d. attempt)", SIZE_STR(windowRect3.size), i];
+                FMTLogDebug(@"Window resized to: %@ (%d. attempt)", SIZE_STR(windowRect3.size), i);
                 
                 if (NSEqualSizes(windowRect3.size, shiftedRect.size)) {
                     break;
                 } else if (i > 1 && (NSEqualSizes(windowRect3.size, windowRect2.size))) {
                     // it seems that more attempts wont change anything
-                    [logger_ logDebug:@"The %d attempt is the same as %d so no effect (likely a discretely sizing window)", i, i-1];
+                    FMTLogDebug(@"The %d attempt is the same as %d so no effect (likely a discretely sizing window)", i, i-1);
                     break;
                 }
                 windowRect2 = windowRect3;
@@ -323,7 +320,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
                 return NO;
             }
             
-			[logger_ logDebug:@"Window resized to: %@", SIZE_STR(windowRect2.size)];
+			FMTLogDebug(@"Window resized to: %@", SIZE_STR(windowRect2.size));
 			
 			// check whether the anchor is at the right part of the screen
 			if (shiftedRect.origin.x + shiftedRect.size.width == visibleScreenRect.size.width
@@ -339,7 +336,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			
 			if (dx != 0 || dy != 0) {
 				// there have to be two separate move actions. cocoa window could not be resize over the screen boundaries
-				[logger_ logDebug:@"Adjusting by delta: %dx%d", dx, dy];
+				FMTLogDebug(@"Adjusting by delta: %dx%d", dx, dy);
                 NSPoint dp = NSMakePoint(shiftedRect.origin.x+dx, shiftedRect.origin.y+dy);        
 				if (![windowManager_ setPosition:dp window:window error:&cause]) {
 					*error = SICreateErrorWithCause(@"Unable to move window", kUnableToChangeWindowPositionErrorCode, cause);
@@ -351,7 +348,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
         // TODO: make sure window is always visible
         
 	} else {
-		[logger_ logInfo:@"Shifted window origin and dimensions are the same"];
+		FMTLogInfo(@"Shifted window origin and dimensions are the same");
 	}
 	
     [windowManager_ freeWindow:window];

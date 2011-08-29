@@ -28,7 +28,6 @@
 #import "FMTHotKeyManager.h"
 #import "FMTUtils.h"
 #import "FMTDefines.h"
-#import "GTMLogger.h"
 
 NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
 
@@ -114,7 +113,6 @@ NSDictionary *allShiftActions = nil;
 	NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
 	statusMenuItemIcon_ = [[NSImage alloc] initWithContentsOfFile:iconPath];
 	allHotKeys_ = [[NSMutableDictionary alloc] init];
-    logger_ = [[GTMLogger sharedLogger] retain];
 	
 	beforeNow_ = CFAbsoluteTimeGetCurrent();
 	
@@ -124,13 +122,12 @@ NSDictionary *allShiftActions = nil;
 - (void) dealloc {
 	[statusMenuItemIcon_ release];
 	[allShiftActions release];
-	[logger_ release];
     
 	[super dealloc];
 }
 
 - (void) firstLaunch_  {
-	[logger_ logInfo:@"First run"];		
+	FMTLogInfo(@"First run");		
 	// ask to start it automatically - make sure it is not there
 	
 	// TODO: refactor this so it shares the code from the pref controller
@@ -151,7 +148,7 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-	[logger_ logInfo:@"Starting up ShiftIt..."];
+	FMTLogDebug(@"Starting up ShiftIt...");
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
@@ -214,7 +211,7 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void) applicationWillTerminate:(NSNotification *)aNotification {
-	[logger_ logInfo:@"Shutting down ShiftIt..."];
+	FMTLogInfo(@"Shutting down ShiftIt...");
 	
 	// unregister hotkeys
 	for (FMTHotKey *hotKey in [allHotKeys_ allValues]) {
@@ -268,7 +265,7 @@ NSDictionary *allShiftActions = nil;
 
 - (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
 	FMTAssertNotNil(action);
-	[logger_ logDebug:@"updateStatusMenuShortcutForAction_:%@ keyCode:%ld modifiers:%ld", [action identifier], keyCode, modifiers];
+	FMTLogDebug(@"updateStatusMenuShortcutForAction_:%@ keyCode:%ld modifiers:%ld", [action identifier], keyCode, modifiers);
     
 	NSMenuItem *menuItem = [statusMenu_ itemWithTag:kSIMenuUITagPrefix+[action uiTag]];
 	FMTAssertNotNil(menuItem);
@@ -280,7 +277,7 @@ NSDictionary *allShiftActions = nil;
 	if (keyCode != -1) {
 		NSString *keyCodeString = SRStringForKeyCode(keyCode);
 		if (!keyCodeString) {
-			[logger_ logInfo:@"Unable to get string representation for a key code: %ld", keyCode];
+			FMTLogInfo(@"Unable to get string representation for a key code: %ld", keyCode);
 			keyCodeString = @"";
 		}
 		[menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
@@ -334,12 +331,12 @@ NSDictionary *allShiftActions = nil;
 	if ([name isEqualToString:kDidFinishEditingHotKeysPrefNotification]) {
 		@synchronized(self) {
 			paused_ = NO;
-			[logger_ logDebug:@"Resuming actions"];
+			FMTLogDebug(@"Resuming actions");
 		}
 	} else if ([name isEqualToString:kDidStartEditingHotKeysPrefNotification]) {
 		@synchronized(self) {
 			paused_ = YES;
-			[logger_ logDebug:@"Pausing actions"];
+			FMTLogDebug(@"Pausing actions");
 		}		
 	}
 	
@@ -352,7 +349,7 @@ NSDictionary *allShiftActions = nil;
 	NSInteger keyCode = [[userInfo objectForKey:kHotKeyKeyCodeKey] integerValue];
 	NSUInteger modifiers = [[userInfo objectForKey:kHotKeyModifiersKey] longValue];
 	
-	[logger_ logDebug:@"Updating action %@ hotKey: keyCode=%ld modifiers=%ld", identifier, keyCode, modifiers];
+	FMTLogDebug(@"Updating action %@ hotKey: keyCode=%ld modifiers=%ld", identifier, keyCode, modifiers);
 	
 	ShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
@@ -362,19 +359,19 @@ NSDictionary *allShiftActions = nil;
 	FMTHotKey *hotKey = [allHotKeys_ objectForKey:identifier];
 	if (hotKey) {
 		if ([hotKey isEqualTo:newHotKey]) {
-			[logger_ logDebug:@"Hot key is the same"];
+			FMTLogDebug(@"Hot key is the same");
 			return;
 		}
 		
-		[logger_ logDebug:@"Unregistering old hot key: %@ for shiftIt action %@", hotKey, identifier];
+		FMTLogDebug(@"Unregistering old hot key: %@ for shiftIt action %@", hotKey, identifier);
 		[hotKeyManager_ unregisterHotKey:hotKey];
 		[allHotKeys_ removeObjectForKey:identifier];
 	}
 	
 	if (keyCode == -1) { // no key
-		[logger_ logDebug:@"No hot key"];
+		FMTLogDebug(@"No hot key");
 	} else {
-		[logger_ logDebug:@"Registering new hot key: %@ for shiftIt action %@", newHotKey, identifier];
+		FMTLogDebug(@"Registering new hot key: %@ for shiftIt action %@", newHotKey, identifier);
 		[hotKeyManager_ registerHotKey:newHotKey handler:@selector(invokeShiftItActionByIdentifier_:) provider:self userData:identifier];
 		[allHotKeys_ setObject:newHotKey forKey:identifier];
 	}
@@ -384,7 +381,7 @@ NSDictionary *allShiftActions = nil;
 	
 	if ([notification object] != self) {
 		// save to user preferences
-		[logger_ logDebug:@"Updating user preferences with new hot key: %@ for shiftIt action %@", newHotKey, identifier];
+		FMTLogDebug(@"Updating user preferences with new hot key: %@ for shiftIt action %@", newHotKey, identifier);
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		[defaults setInteger:keyCode forKey:KeyCodePrefKey(identifier)];
 		[defaults setInteger:modifiers forKey:ModifiersPrefKey(identifier)];
@@ -395,7 +392,7 @@ NSDictionary *allShiftActions = nil;
 - (void) invokeShiftItActionByIdentifier_:(NSString *)identifier {
 	@synchronized(self) {
 		if (paused_) {
-			[logger_ logDebug:@"The functionality is temporarly paused"];
+			FMTLogDebug(@"The functionality is temporarly paused");
 			return ;
 		}
         
@@ -414,17 +411,17 @@ NSDictionary *allShiftActions = nil;
 		
         // check for fullscreen - if the window is in fullscreen we do not execute any action
         if ([windowSizer_ isCurrentWindowInFullScreen]) {
-            [logger_ logDebug:@"Current window is in fullscreen, not executing any action"];
+            FMTLogDebug(@"Current window is in fullscreen, not executing any action");
             return ;
         }
         
 		ShiftItAction *action = [allShiftActions objectForKey:identifier];
 		FMTAssertNotNil(action);
 		
-		[logger_ logInfo:@"Invoking action: %@", identifier];
+		FMTLogInfo(@"Invoking action: %@", identifier);
 		NSError *error = nil;
 		if (![windowSizer_ shiftFocusedWindowUsing:action error:&error]) {
-			[logger_ logError:@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error)];
+			FMTLogError(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
 		}
 	}
 }
@@ -436,7 +433,7 @@ NSDictionary *allShiftActions = nil;
 	NSString *identifier = [sender representedObject];
 	FMTAssertNotNil(identifier);
 	
-	[logger_ logDebug:@"ShitIt action activated from menu: %@", identifier];	
+	FMTLogDebug(@"ShitIt action activated from menu: %@", identifier);	
     
 	[self invokeShiftItActionByIdentifier_:identifier];
 }

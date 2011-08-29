@@ -27,12 +27,10 @@
 
 @class ShiftItAction;
 @class AXWindowManager;
-@class GTMLogger;
 
 @interface WindowSizer : NSObject {
  @private
     AXWindowManager *windowManager_;
-    GTMLogger *logger_;
 	int menuBarHeight_;
 }
 
