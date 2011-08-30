@@ -18,6 +18,7 @@
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
+		27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */; };
 		27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
 		27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */; };
 		27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */; };
@@ -72,6 +73,8 @@
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
+		27C072DF140D6B9E00C4E199 /* FMTNSDictionary+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDictionary+Extras.h"; path = "FMT/FMTNSDictionary+Extras.h"; sourceTree = "<group>"; };
+		27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSDictionary+Extras.m"; path = "FMT/FMTNSDictionary+Extras.m"; sourceTree = "<group>"; };
 		27F4FD4512730F2F00A65750 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTHotKey.h; path = FMT/FMTHotKey.h; sourceTree = "<group>"; };
 		27F4FD4612730F2F00A65750 /* FMTHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTHotKey.m; path = FMT/FMTHotKey.m; sourceTree = "<group>"; };
 		27F4FD4712730F2F00A65750 /* FMTHotKey+SRKeyCombo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTHotKey+SRKeyCombo.h"; path = "FMT/FMTHotKey+SRKeyCombo.h"; sourceTree = "<group>"; };
@@ -191,6 +194,8 @@
 				27F4FD5312730F4600A65750 /* FMTLoginItems.m */,
 				27F4FD5412730F4600A65750 /* FMTUtils.h */,
 				27F4FD5512730F4600A65750 /* FMTUtils.m */,
+				27C072DF140D6B9E00C4E199 /* FMTNSDictionary+Extras.h */,
+				27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */,
 			);
 			name = FMT;
 			sourceTree = "<group>";
@@ -346,6 +351,7 @@
 				27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */,
 				270DACA414094B9E0080DFBD /* AXWindowManager.m in Sources */,
 				270DACA914098AE30080DFBD /* GTMLogger.m in Sources */,
+				27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

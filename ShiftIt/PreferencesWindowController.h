@@ -23,11 +23,24 @@
 
 @interface PreferencesWindowController : NSWindowController {
  @private
+    NSDictionary *hotKeyControls_;
 	NSString *selectedTabIdentifier_;
 	
-	IBOutlet NSButton * openAtLogin_;
-    IBOutlet NSTabView * tabView_;
-	IBOutlet NSTextField * versionLabel_;
+    IBOutlet NSTabView *tabView_;
+	IBOutlet NSTextField *versionLabel_;
+    
+    IBOutlet SRRecorderControl *srLeft_;
+    IBOutlet SRRecorderControl *srRight_;
+    IBOutlet SRRecorderControl *srTop_;
+    IBOutlet SRRecorderControl *srBottom_;    
+    IBOutlet SRRecorderControl *srTL_;
+    IBOutlet SRRecorderControl *srTR_;
+    IBOutlet SRRecorderControl *srBR_;
+    IBOutlet SRRecorderControl *srBL_;    
+    IBOutlet SRRecorderControl *srMaximize_;
+    IBOutlet SRRecorderControl *srCenter_;
+    IBOutlet SRRecorderControl *srIncrease_;
+    IBOutlet SRRecorderControl *srReduce_;    
 }
 
 @property BOOL shouldStartAtLogin;

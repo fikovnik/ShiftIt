@@ -23,6 +23,7 @@
 #import "FMTLoginItems.h"
 #import "FMTDefines.h"
 #import "FMTUtils.h"
+#import "FMTNSDictionary+Extras.h"
 
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
@@ -34,11 +35,9 @@ NSString *const kActionIdentifierKey = @"kActionIdentifierKey";
 NSString *const kHotKeyKeyCodeKey = @"kHotKeyKeyCodeKey";
 NSString *const kHotKeyModifiersKey = @"kHotKeyModifiersKey";
 
-NSInteger const kSISRUITagPrefix = 1000;
-
 NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
-@interface PreferencesWindowController(Private)
+@interface PreferencesWindowController(Private) 
 
 - (void)windowMainStatusChanged_:(NSNotification *)notification;
 
@@ -57,7 +56,9 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
     return self;
 }
 
--(void)dealloc{    
+-(void)dealloc{
+    [hotKeyControls_ release];
+    
 	[super dealloc];
 }
 
@@ -67,14 +68,44 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
 -(void)awakeFromNib {
     [tabView_ selectTabViewItemAtIndex:0];
-
+    
 	NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
 	[versionLabel_ setStringValue:versionString];
-
+    
 	NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
 	[notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidResignMainNotification object:[self window]];
 	[notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidBecomeMainNotification object:[self window]];
 	
+    // This is just temporary here - till new version
+    NSArray *controls = [NSArray arrayWithObjects:srLeft_, 
+                         srBottom_,
+                         srTop_, 
+                         srRight_, 
+                         srTL_, 
+                         srTR_, 
+                         srBR_, 
+                         srBL_, 
+                         srMaximize_, 
+                         srCenter_, 
+                         srIncrease_,
+                         srReduce_, 
+                         nil];
+    NSArray *keys = [NSArray arrayWithObjects:@"left", 
+                     @"bottom",
+                     @"top", 
+                     @"right",
+                     @"tl", 
+                     @"tr",
+                     @"br", 
+                     @"bl",
+                     @"maximize",
+                     @"center",
+                     @"increase",
+                     @"reduce", 
+                     nil];
+    
+    hotKeyControls_ = [[NSDictionary dictionaryWithObjects:controls forKeys:keys] retain];
+    
 	[self updateRecorderCombos];
 }
 
@@ -86,16 +117,16 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
 -(IBAction)revertDefaults:(id)sender {
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
+    
 	NSString *path = FMTGetMainBundleResourcePath(kShiftItUserDefaults, @"plist");
 	NSDictionary *initialDefaults = [NSDictionary dictionaryWithContentsOfFile:path];
 	[defaults registerDefaults:initialDefaults];
-
+    
 	for (ShiftItAction *action in [allShiftActions allValues]) {
 		NSString *identifier = [action identifier];
 		
 		NSNumber *n = nil;
-
+        
 		n = [initialDefaults objectForKey:KeyCodePrefKey(identifier)];
 		[defaults setInteger:[n integerValue] forKey:KeyCodePrefKey(identifier)];
 		
@@ -121,7 +152,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
 - (void)setShouldStartAtLogin:(BOOL)flag {
 	FMTLogDebug(@"ShiftIt should start at login: %d", flag);
-
+    
 	NSString *path = [[NSBundle mainBundle] bundlePath];
 	[[FMTLoginItems sharedSessionLoginItems] toggleApplicationInLoginItemsWithPath:path enabled:flag];
 }
@@ -129,14 +160,10 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 #pragma mark Shortcut Recorder methods
 
 - (void)shortcutRecorder:(SRRecorderControl *)recorder keyComboDidChange:(KeyCombo)newKeyCombo{
-	NSInteger tag = [recorder tag] - kSISRUITagPrefix;
+    NSString *identifier = [hotKeyControls_ keyForObject:recorder];
+    FMTAssertNotNil(identifier);
 	
-	ShiftItAction *action = nil;
-	for (action in [allShiftActions allValues]) {
-		if ([action uiTag] == tag) {
-			break;
-		}
-	}
+	ShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
 	
 	FMTLogDebug(@"ShiftIt action %@ hotkey changed: ", [action identifier]);
@@ -155,12 +182,12 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	FMTAssertNotNil(hotKeysView);
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
+    
 	for (ShiftItAction *action in [allShiftActions allValues]) {
-		SRRecorderControl *recorder = [hotKeysView viewWithTag:kSISRUITagPrefix+[action uiTag]];
-		FMTAssertNotNil(recorder);
-
 		NSString *identifier = [action identifier];
+		SRRecorderControl *recorder = [hotKeyControls_ objectForKey:identifier];
+		FMTAssertNotNil(recorder);
+        
 		
 		KeyCombo combo;
 		combo.code = [defaults integerForKey:KeyCodePrefKey(identifier)];
@@ -183,7 +210,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
 - (void)windowMainStatusChanged_:(NSNotification *)notification {
 	NSString *name = [notification name];
-
+    
 	if ([name isEqualToString:NSWindowDidBecomeMainNotification] && [selectedTabIdentifier_ isEqualToString:kHotKeysTabViewItemIdentifier]) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDidStartEditingHotKeysPrefNotification object:nil];
 	} else if ([name isEqualToString:NSWindowDidResignMainNotification]) {
