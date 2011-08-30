@@ -10,4 +10,6 @@
 
 @interface NSDictionary (FMTNSDictionary_Extras)
 
+- (id) keyForObject:(id)object;
+
 @end
