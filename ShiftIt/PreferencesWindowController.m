@@ -24,6 +24,8 @@
 #import "FMTDefines.h"
 #import "FMTUtils.h"
 #import "FMTNSDictionary+Extras.h"
+#import "FMTNSDate+Extras.h"
+#import "GTMLogger.h"
 
 NSString *const kKeyCodePrefKeySuffix = @"KeyCode";
 NSString *const kModifiersPrefKeySuffix = @"Modifiers";
@@ -47,6 +49,8 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 @implementation PreferencesWindowController
 
 @dynamic shouldStartAtLogin;
+@dynamic debugLogging;
+@synthesize debugLoggingFile = debugLoggingFile_;
 
 -(id)init{
     if (![super initWithWindowNibName:@"PreferencesWindow"]) {
@@ -76,6 +80,9 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	[notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidResignMainNotification object:[self window]];
 	[notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidBecomeMainNotification object:[self window]];
 	
+    // no debug logging by default
+    [self setDebugLoggingFile:@""];
+    
     // This is just temporary here - till new version
     NSArray *controls = [NSArray arrayWithObjects:srLeft_, 
                          srBottom_,
@@ -142,6 +149,31 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	[self updateRecorderCombos];
 }
 
+#pragma mark debugLogging dynamic property methods
+
+- (BOOL) debugLogging {
+    return !([[GTMLogger sharedLogger] writer] == [NSFileHandle fileHandleWithStandardOutput]);
+}
+
+- (void)setDebugLogging:(BOOL)flag {
+    id<GTMLogWriter> writer = nil; 
+
+    if (flag) {
+        NSString *logFile = FMTStr(@"%@/ShiftIt-debug-log-%@.txt", 
+                                   NSTemporaryDirectory(), 
+                                   [[NSDate date] stringWithFormat:@"YYYYMMDD-HHmm"]);
+        
+        FMTLogInfo(@"Enabling debug logging into file: %@", logFile);
+        writer = [NSFileHandle fileHandleForLoggingAtPath:logFile mode:0644];
+        [self setDebugLoggingFile:logFile];
+    } else {
+        FMTLogInfo(@"Enabling debug logging into stdout");
+        writer = [NSFileHandle fileHandleWithStandardOutput];
+        [self setDebugLoggingFile:@""];
+    }
+    
+    [[GTMLogger sharedLogger] setWriter:writer]; 
+}
 
 #pragma mark shouldStartAtLogin dynamic property methods
 

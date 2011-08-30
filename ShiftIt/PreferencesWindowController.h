@@ -25,6 +25,7 @@
  @private
     NSDictionary *hotKeyControls_;
 	NSString *selectedTabIdentifier_;
+    NSString *debugLoggingFile_;
 	
     IBOutlet NSTabView *tabView_;
 	IBOutlet NSTextField *versionLabel_;
@@ -44,6 +45,8 @@
 }
 
 @property BOOL shouldStartAtLogin;
+@property BOOL debugLogging;
+@property(copy) NSString *debugLoggingFile;
 
 -(void)updateRecorderCombos;
 -(IBAction)showPreferences:(id)sender;
