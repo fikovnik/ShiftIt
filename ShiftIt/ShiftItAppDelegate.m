@@ -309,7 +309,7 @@ NSDictionary *allShiftActions = nil;
 	[dict setObject:bl forKey:[bl identifier]];
 	ShiftItAction *br = [[ShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 action:&ShiftIt_BottomRight];
 	[dict setObject:br forKey:[br identifier]];
-	ShiftItAction *fullscreen = [[ShiftItAction alloc] initWithIdentifier:@"fullscreen" label:@"Full Screen" uiTag:9 action:&ShiftIt_FullScreen];
+	ShiftItAction *fullscreen = [[ShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:9 action:&ShiftIt_FullScreen];
 	[dict setObject:fullscreen forKey:[fullscreen identifier]];
 	ShiftItAction *center = [[ShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:10 action:&ShiftIt_Center];
 	[dict setObject:center forKey:[center identifier]];
