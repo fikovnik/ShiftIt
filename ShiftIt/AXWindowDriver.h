@@ -17,29 +17,12 @@
  
  */
 
-#import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+#import "WindowDriver.h"
 
-@class ShiftItWindowManager;
-@class PreferencesWindowController;
-@class FMTHotKeyManager;
+// from whatever reason this attribute is missing in the AXAttributeConstants.h
+#define kAXFullScreenAttribute  CFSTR("AXFullScreen")
 
-@interface ShiftItAppDelegate : NSObject {
- @private
-    PreferencesWindowController *preferencesController_;
-	FMTHotKeyManager *hotKeyManager_;	
-	ShiftItWindowManager *windowManager_;
-
-	NSMutableDictionary *allHotKeys_;
-	BOOL paused_;
-
-	IBOutlet NSMenu *statusMenu_;
-	NSStatusItem *statusItem_;
-	NSImage *statusMenuItemIcon_;
-	
-	// to keep some pause between action invocations
-	CFAbsoluteTime beforeNow_;
-}
-
-- (IBAction)showPreferences:(id)sender;
+@interface AXWindowDriver : NSObject<WindowDriver>
 
 @end

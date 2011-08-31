@@ -22,7 +22,8 @@
 #import "ShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
-#import "WindowSizer.h"
+#import "ShiftItWindowManager.h"
+#import "AXWindowDriver.h"
 #import "FMTLoginItems.h"
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
@@ -122,6 +123,7 @@ NSDictionary *allShiftActions = nil;
 - (void) dealloc {
 	[statusMenuItemIcon_ release];
 	[allShiftActions release];
+    [windowManager_ release];
     
 	[super dealloc];
 }
@@ -181,7 +183,7 @@ NSDictionary *allShiftActions = nil;
     }
 	
 	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
-	windowSizer_ = [WindowSizer sharedWindowSize];
+	windowManager_ = [[ShiftItWindowManager alloc] initWithDriver:[[[AXWindowDriver alloc] init] autorelease]];
 	
 	[self initializeActions_];
 	[self updateMenuBarIcon_];
@@ -410,7 +412,7 @@ NSDictionary *allShiftActions = nil;
 		}
 		
         // check for fullscreen - if the window is in fullscreen we do not execute any action
-        if ([windowSizer_ isCurrentWindowInFullScreen]) {
+        if ([windowManager_ isCurrentWindowInFullScreen]) {
             FMTLogDebug(@"Current window is in fullscreen, not executing any action");
             return ;
         }
@@ -420,7 +422,7 @@ NSDictionary *allShiftActions = nil;
 		
 		FMTLogInfo(@"Invoking action: %@", identifier);
 		NSError *error = nil;
-		if (![windowSizer_ shiftFocusedWindowUsing:action error:&error]) {
+		if (![windowManager_ shiftFocusedWindowUsing:action error:&error]) {
 			FMTLogError(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
 		}
 	}

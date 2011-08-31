@@ -6,17 +6,17 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "AXWindowManager.h"
+#import "AXWindowDriver.h"
 #import "ShiftIt.h"
 #import "FMTDefines.h"
 
-@interface AXWindowManager(Private)
+@interface AXWindowDriver(Private)
 + (BOOL) isAttributeSettable_:(CFStringRef)attributeName element:(AXUIElementRef)element;
 @end
 
-@implementation AXWindowManager
+@implementation AXWindowDriver
 
-SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
+SINGLETON_BOILERPLATE(AXWindowDriver, sharedAXWindowManager);
 
 - (id)init {
 	if(![super init]){
@@ -26,7 +26,7 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
     return self;
 }
 
-- (BOOL) getFocusedWindow:(AXUIElementRef *)windowRef error:(NSError **)error {  
+- (BOOL) getFocusedWindow:(SIWindowRef *)windowRef error:(NSError **)error {  
     FMTAssertNotNil(windowRef);
     
     AXUIElementRef systemElementRef = AXUIElementCreateSystemWide();
@@ -59,19 +59,19 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
     return YES;
 }
 
-- (void) freeWindow:(AXUIElementRef)windowRef {
+- (void) freeWindow:(SIWindowRef)windowRef {
     FMTAssertNotNil(windowRef);
     
-    CFRelease(windowRef);
+    CFRelease((AXUIElementRef)windowRef);
 }
 
-- (BOOL) setPosition:(NSPoint)position window:(AXUIElementRef)windowRef error:(NSError **)error {
+- (BOOL) setPosition:(NSPoint)position window:(SIWindowRef)windowRef error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
     
 	CFTypeRef positionRef = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&position));
     AXError ret = 0;
 	
-    if ((ret = AXUIElementSetAttributeValue(windowRef, kAXPositionAttribute, positionRef)) != kAXErrorSuccess) {
+    if ((ret = AXUIElementSetAttributeValue((AXUIElementRef)windowRef, kAXPositionAttribute, positionRef)) != kAXErrorSuccess) {
 		CFRelease(positionRef);
         *error = SICreateError(FMTStr(@"AXError: kAXPositionAttribute set failed: %d", ret), kAXFailureErrorCode);
         return NO;
@@ -81,13 +81,13 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
     return YES;
 }
 
-- (BOOL) setSize:(NSSize)size window:(AXUIElementRef)windowRef error:(NSError **)error {
+- (BOOL) setSize:(NSSize)size window:(SIWindowRef)windowRef error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
 	
 	CFTypeRef sizeRef = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&size));
     AXError ret = 0;
 	
-    if ((ret = AXUIElementSetAttributeValue(windowRef, kAXSizeAttribute, sizeRef)) != kAXErrorSuccess){
+    if ((ret = AXUIElementSetAttributeValue((AXUIElementRef)windowRef, kAXSizeAttribute, sizeRef)) != kAXErrorSuccess){
         *error = SICreateError(FMTStr(@"AXError: kAXSizeAttribute set failed: %d", ret), kAXFailureErrorCode);
 		CFRelease(sizeRef);
         return NO;
@@ -97,7 +97,7 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
     return YES;
 }
 
-- (BOOL) getGeometry:(NSRect *)rect window:(AXUIElementRef)windowRef error:(NSError **)error {
+- (BOOL) getGeometry:(NSRect *)rect window:(SIWindowRef)windowRef error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
 	FMTAssertNotNil(rect);
 	
@@ -112,7 +112,7 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
     return YES;
 }
 
-- (BOOL) getDrawersGeometry:(NSRect *)rect window:(AXUIElementRef)windowRef error:(NSError **)error {
+- (BOOL) getDrawersGeometry:(NSRect *)rect window:(SIWindowRef)windowRef error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
 	FMTAssertNotNil(rect);
     
@@ -122,7 +122,7 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
     // by defult there are none
     *rect = NSMakeRect(0, 0, 0, 0);
     
-	if ((ret = AXUIElementCopyAttributeValue(windowRef, kAXChildrenAttribute, (CFTypeRef*)&children)) != kAXErrorSuccess) {
+	if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)windowRef, kAXChildrenAttribute, (CFTypeRef*)&children)) != kAXErrorSuccess) {
         *error = SICreateError(FMTStr(@"AXError: kAXChildrenAttribute copy failed: %d", ret), kAXFailureErrorCode);
 		return NO;
 	}
@@ -140,11 +140,11 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
         }
 		
 		if([role isEqualToString:NSAccessibilityDrawerRole]) {
-			if (![self getPosition:&(r.origin) element:(AXUIElementRef)child error:&cause]) {
+			if (![self getPosition:&(r.origin) element:(SIWindowRef)child error:&cause]) {
                 *error = SICreateErrorWithCause(@"AXError: Unable to position of a window drawer", kUnableToGetWindowDrawersErrorCode, cause);
                 return NO;                
             }
-			if (![self getSize:&(r.size) element:(AXUIElementRef)child error:&cause]) {
+			if (![self getSize:&(r.size) element:(SIWindowRef)child error:&cause]) {
                 *error = SICreateErrorWithCause(@"AXError: Unable to size of a window drawer", kUnableToGetWindowDrawersErrorCode, cause);
                 return NO;                                
             }
@@ -164,7 +164,7 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
 	return YES;
 }
 
-- (BOOL) getFullScreenMode:(BOOL *)fullScreen window:(AXUIElementRef)windowRef error:(NSError **)error {
+- (BOOL) getFullScreenMode:(BOOL *)fullScreen window:(SIWindowRef)windowRef error:(NSError **)error {
     FMTAssertNotNil(windowRef);
     FMTAssertNotNil(fullScreen);
 	
@@ -186,14 +186,14 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
 }
 
 
-- (BOOL) getPosition:(NSPoint *)position element:(AXUIElementRef)element error:(NSError **)error {
+- (BOOL) getPosition:(NSPoint *)position element:(SIWindowRef)element error:(NSError **)error {
 	FMTAssertNotNil(element);
 	FMTAssertNotNil(position);
     
 	CFTypeRef positionRef;
     AXError ret = 0;
 	
-	if ((ret = AXUIElementCopyAttributeValue(element,kAXPositionAttribute, &positionRef)) != kAXErrorSuccess) {
+	if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)element,kAXPositionAttribute, &positionRef)) != kAXErrorSuccess) {
         *error = SICreateError(FMTStr(@"AXError: kAXPositionAttribute copy failed: %d", ret), kAXFailureErrorCode);
 		return NO;
 	}
@@ -212,14 +212,14 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
 	return YES;
 }
 
-- (BOOL) getSize:(NSSize *)size element:(AXUIElementRef)element error:(NSError **)error {
+- (BOOL) getSize:(NSSize *)size element:(SIWindowRef)element error:(NSError **)error {
 	FMTAssertNotNil(element);
 	FMTAssertNotNil(size);
     
 	CFTypeRef sizeRef;
     AXError ret = 0;
     
-	if ((ret = AXUIElementCopyAttributeValue(element, kAXSizeAttribute, &sizeRef)) != kAXErrorSuccess) {
+	if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)element, kAXSizeAttribute, &sizeRef)) != kAXErrorSuccess) {
         *error = SICreateError(FMTStr(@"AXError: kAXSizeAttribute copy failed: %d", ret), kAXFailureErrorCode);
 		return NO;
 	}
@@ -237,15 +237,15 @@ SINGLETON_BOILERPLATE(AXWindowManager, sharedAXWindowManager);
 	return YES;
 }
 
-- (BOOL) isWindowResizeable:(AXUIElementRef)window {
-    return [AXWindowManager isAttributeSettable_:kAXSizeAttribute element:window];
+- (BOOL) isWindowResizeable:(SIWindowRef)window {
+    return [AXWindowDriver isAttributeSettable_:kAXSizeAttribute element:window];
 }
 
-- (BOOL) isWindowMoveable:(AXUIElementRef)window {
-    return [AXWindowManager isAttributeSettable_:kAXPositionAttribute element:window];
+- (BOOL) isWindowMoveable:(SIWindowRef)window {
+    return [AXWindowDriver isAttributeSettable_:kAXPositionAttribute element:window];
 }
 
-+ (BOOL) isAttributeSettable_:(CFStringRef)attributeName element:(AXUIElementRef)element {
++ (BOOL) isAttributeSettable_:(CFStringRef)attributeName element:(SIWindowRef)element {
     Boolean isSettable = false;
     
     AXUIElementIsAttributeSettable(element, (CFStringRef)attributeName, &isSettable);

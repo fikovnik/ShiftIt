@@ -19,22 +19,22 @@
 
 
 #import <Foundation/Foundation.h>
-
+#import "WindowManager.h"
+#import "WindowDriver.h"
 /**
  * This unit provides support for sizing application using Apple accessibiity API
  *
  */
 
 @class ShiftItAction;
-@class AXWindowManager;
 
-@interface WindowSizer : NSObject {
+@interface ShiftItWindowManager : NSObject<WindowManager> {
  @private
-    AXWindowManager *windowManager_;
+    id<WindowDriver> driver_;
 	int menuBarHeight_;
 }
 
-+ (WindowSizer *) sharedWindowSize;
+- (id) initWithDriver:(id<WindowDriver>)driver;
 
 - (BOOL) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error;
 - (NSScreen *)chooseScreenForWindow_:(NSRect)windowRect;

@@ -19,10 +19,10 @@
 
 #import <Carbon/Carbon.h>
 
-#import "WindowSizer.h"
+#import "ShiftItWindowManager.h"
 #import "ShiftIt.h"
 #import "ShiftItAction.h"
-#import "AXWindowManager.h"
+#import "AXWindowDriver.h"
 #import "FMTDefines.h"
 
 #define POINT_STR(point) FMTStr(@"[%f %f]", (point).x, (point).y)
@@ -70,7 +70,7 @@ extern short GetMBarHeight(void);
 @end
 
 
-@interface WindowSizer (Private)
+@interface ShiftItWindowManager (Private)
 
 - (NSScreen *)chooseScreenForWindow_:(NSRect)windowRect;
 - (NSScreen *)nextScreenForAction_:(ShiftItAction*)action window:(NSRect)windowRect;
@@ -78,38 +78,37 @@ extern short GetMBarHeight(void);
 @end
 
 
-@implementation WindowSizer
+@implementation ShiftItWindowManager
 
-SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
-
-// TODO: remove
-- (id)init {
+- (id)initWithDriver:(id<WindowDriver>)driver {
+    FMTAssertNotNil(driver);
+    
 	if (![super init]) {
 		return nil;
 	}
     
-    windowManager_ = [[AXWindowManager sharedAXWindowManager] retain];
+    driver_ = [driver retain];
     
 	return self;
 }
 
 - (void) dealloc {	
-    [windowManager_ release];
+    [driver_ release];
     
 	[super dealloc];
 }
 
 - (BOOL) isCurrentWindowInFullScreen {
-    AXUIElementRef window = NULL;
+    SIWindowRef window = NULL;
     NSError *error = nil;
     
-    if (![windowManager_ getFocusedWindow:&window error:&error]) {
+    if (![driver_ getFocusedWindow:&window error:&error]) {
         FMTLogInfo(@"Unable to get active window reference");
 		return NO;
     }
     
     BOOL fullScreenMode;
-    if (![windowManager_ getFullScreenMode:&fullScreenMode window:window error:&error]) {
+    if (![driver_ getFullScreenMode:&fullScreenMode window:window error:&error]) {
         FMTLogInfo(@"Unable to check window full screen mode");
 		return NO;
     }
@@ -139,13 +138,11 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
  * 
  * [2] http://www.linuxjournal.com/article/4879
  */
-// TODO: get rid of the c like functions from AXUIUtils
 - (BOOL) shiftFocusedWindowUsing:(ShiftItAction *)action error:(NSError **)error {
 	FMTAssertNotNil(action);
     
 	// window reference - windowing system agnostic
-	AXUIElementRef window = nil;
-    
+	SIWindowRef window = nil;
 	
     NSRect windowRectWithoutDrawers = NSMakeRect(0, 0, 0, 0); // window rect
 	NSRect drawersRect = NSMakeRect(0, 0, 0, 0); // drawers of the window
@@ -160,22 +157,22 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
     NSError *cause = nil;
     
 	// first try to get the window using accessibility API
-	if (![windowManager_ getFocusedWindow:&window error:&cause]) {
+	if (![driver_ getFocusedWindow:&window error:&cause]) {
 		*error = SICreateErrorWithCause(@"Unable to get active window", kUnableToGetActiveWindowErrorCode, cause);
 		return NO;
 	} 
     
-    if (![windowManager_ getGeometry:&windowRectWithoutDrawers window:window error:&cause]) {
+    if (![driver_ getGeometry:&windowRectWithoutDrawers window:window error:&cause]) {
         *error = SICreateErrorWithCause(@"Unable to get window geometry", kUnableToGetWindowGeometryErrorCode, cause);
         return NO;
     }
     
-    if (![windowManager_ isWindowMoveable:window]) {
+    if (![driver_ isWindowMoveable:window]) {
         FMTLogInfo(@"Window is not moveable");
         return YES;
     }
 
-    if (![windowManager_ isWindowResizeable:window]) {
+    if (![driver_ isWindowResizeable:window]) {
         FMTLogInfo(@"Window is not resizeable");
         return YES;
     }
@@ -184,7 +181,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
     
     // drawers
     if (useDrawers) {
-        if (![windowManager_ getDrawersGeometry:&drawersRect window:window error:&cause]) {
+        if (![driver_ getDrawersGeometry:&drawersRect window:window error:&cause]) {
             FMTLogInfo(@"Unable to get window drawers: %@", [cause description]);
         } else if (drawersRect.size.width > 0) {
             // there are some drawers
@@ -267,7 +264,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	if (!NSEqualRects(windowRect, shiftedRect)) {				
 		// move window
 		FMTLogDebug(@"Moving window to: %@", POINT_STR(shiftedRect.origin));		
-		if (![windowManager_ setPosition:shiftedRect.origin window:window error:&cause] != 0) {
+		if (![driver_ setPosition:shiftedRect.origin window:window error:&cause] != 0) {
 			*error = SICreateErrorWithCause(@"Unable to move window", kUnableToChangeWindowPositionErrorCode, cause);
 			return NO;
 		}
@@ -279,14 +276,14 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
             for (int i=1; i<=numberOfTries; i++) {
                 // resize window
                 FMTLogDebug(@"Resizing to: %@ (%d. attempt)", SIZE_STR(shiftedRect.size), i);
-                if (![windowManager_ setSize:shiftedRect.size window:window error:&cause] != 0) {
+                if (![driver_ setSize:shiftedRect.size window:window error:&cause] != 0) {
                     *error = SICreateErrorWithCause(@"Unable to resize window", kUnableToChangeWindowSizeErrorCode, cause);
                     return NO;
                 }
                 
                 // check how was it resized
                 NSRect windowRect3;
-                if (![windowManager_ getGeometry:&windowRect3 window:window error:&cause]) {
+                if (![driver_ getGeometry:&windowRect3 window:window error:&cause]) {
                     *error = SICreateErrorWithCause(@"Unable to get window geometry", kUnableToGetWindowGeometryErrorCode, cause);
                     return NO;
                 }
@@ -315,7 +312,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		if (shiftedRect.origin.x + shiftedRect.size.width == visibleScreenRect.size.width 
             || shiftedRect.origin.y + shiftedRect.size.height == visibleScreenRect.size.height + mbarAdj) {
             NSRect windowRect2;
-            if (![windowManager_ getGeometry:&windowRect2 window:window error:&cause]) {
+            if (![driver_ getGeometry:&windowRect2 window:window error:&cause]) {
                 *error = SICreateErrorWithCause(@"Unable to get window geometry", kUnableToGetWindowGeometryErrorCode, cause);
                 return NO;
             }
@@ -338,7 +335,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 				// there have to be two separate move actions. cocoa window could not be resize over the screen boundaries
 				FMTLogDebug(@"Adjusting by delta: %dx%d", dx, dy);
                 NSPoint dp = NSMakePoint(shiftedRect.origin.x+dx, shiftedRect.origin.y+dy);        
-				if (![windowManager_ setPosition:dp window:window error:&cause]) {
+				if (![driver_ setPosition:dp window:window error:&cause]) {
 					*error = SICreateErrorWithCause(@"Unable to move window", kUnableToChangeWindowPositionErrorCode, cause);
 					return NO;
 				}		
@@ -351,7 +348,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		FMTLogInfo(@"Shifted window origin and dimensions are the same");
 	}
 	
-    [windowManager_ freeWindow:window];
+    [driver_ freeWindow:window];
     return YES;
 }
 

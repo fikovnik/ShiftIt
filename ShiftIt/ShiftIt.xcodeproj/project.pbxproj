@@ -11,7 +11,7 @@
 		256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
 		2708BF011260E10900192883 /* ShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF001260E10900192883 /* ShiftItAction.m */; };
 		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
-		270DACA414094B9E0080DFBD /* AXWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA314094B9E0080DFBD /* AXWindowManager.m */; };
+		270DACA414094B9E0080DFBD /* AXWindowDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA314094B9E0080DFBD /* AXWindowDriver.m */; };
 		270DACA914098AE30080DFBD /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
 		270EC26C12FF1965002A5F22 /* ShiftIt-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */; };
 		271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
@@ -34,7 +34,7 @@
 		F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		F2708277117FE51100C0A04C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		F2DC1A321133829D009BDCA5 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */; };
-		F2DC61251127ACDE000E1A5B /* WindowSizer.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61241127ACDE000E1A5B /* WindowSizer.m */; };
+		F2DC61251127ACDE000E1A5B /* ShiftItWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61241127ACDE000E1A5B /* ShiftItWindowManager.m */; };
 		F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DC61EE1127C862000E1A5B /* Carbon.framework */; };
 /* End PBXBuildFile section */
 
@@ -64,14 +64,16 @@
 		2708BF101260E5BB00192883 /* DefaultShiftItActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShiftItActions.h; sourceTree = "<group>"; };
 		2708BF111260E5BB00192883 /* DefaultShiftItActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultShiftItActions.m; sourceTree = "<group>"; };
 		2708C2551261C8E800192883 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
-		270DACA214094B9E0080DFBD /* AXWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXWindowManager.h; sourceTree = "<group>"; };
-		270DACA314094B9E0080DFBD /* AXWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXWindowManager.m; sourceTree = "<group>"; };
+		270DACA214094B9E0080DFBD /* AXWindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXWindowDriver.h; sourceTree = "<group>"; };
+		270DACA314094B9E0080DFBD /* AXWindowDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXWindowDriver.m; sourceTree = "<group>"; };
 		270DACA614098AE30080DFBD /* GTMGarbageCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMGarbageCollection.h; path = GTM/GTMGarbageCollection.h; sourceTree = "<group>"; };
 		270DACA714098AE30080DFBD /* GTMLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMLogger.h; path = GTM/GTMLogger.h; sourceTree = "<group>"; };
 		270DACA814098AE30080DFBD /* GTMLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GTMLogger.m; path = GTM/GTMLogger.m; sourceTree = "<group>"; };
 		270DACAA14098B250080DFBD /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = GTM/GTMDefines.h; sourceTree = "<group>"; };
 		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
+		2743F1A1140EFBA600C23A67 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
+		2743F1A2140EFC8E00C23A67 /* WindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowDriver.h; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
 		27C072DF140D6B9E00C4E199 /* FMTNSDictionary+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDictionary+Extras.h"; path = "FMT/FMTNSDictionary+Extras.h"; sourceTree = "<group>"; };
@@ -99,8 +101,8 @@
 		F2520B631133874D00DB826F /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
 		F2708222117FCF9400C0A04C /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreferencesWindow.xib; sourceTree = "<group>"; };
-		F2DC61231127ACDE000E1A5B /* WindowSizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowSizer.h; sourceTree = "<group>"; };
-		F2DC61241127ACDE000E1A5B /* WindowSizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowSizer.m; sourceTree = "<group>"; };
+		F2DC61231127ACDE000E1A5B /* ShiftItWindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItWindowManager.h; sourceTree = "<group>"; };
+		F2DC61241127ACDE000E1A5B /* ShiftItWindowManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItWindowManager.m; sourceTree = "<group>"; };
 		F2DC61EE1127C862000E1A5B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
@@ -122,10 +124,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2743F1A3140EFCB300C23A67 /* ShiftIt Framework */,
 				2708C1CC1261388A00192883 /* External */,
 				F2D9C239112F9D0E003E9435 /* Preferences */,
-				F2DC61231127ACDE000E1A5B /* WindowSizer.h */,
-				F2DC61241127ACDE000E1A5B /* WindowSizer.m */,
 				256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */,
 				2708BEFF1260E10900192883 /* ShiftItAction.h */,
@@ -133,8 +134,6 @@
 				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
 				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
 				2708C2551261C8E800192883 /* ShiftIt.h */,
-				270DACA214094B9E0080DFBD /* AXWindowManager.h */,
-				270DACA314094B9E0080DFBD /* AXWindowManager.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -214,6 +213,27 @@
 				270DACA814098AE30080DFBD /* GTMLogger.m */,
 			);
 			name = GTM;
+			sourceTree = "<group>";
+		};
+		2743F1A3140EFCB300C23A67 /* ShiftIt Framework */ = {
+			isa = PBXGroup;
+			children = (
+				2743F1A1140EFBA600C23A67 /* WindowManager.h */,
+				2743F1A2140EFC8E00C23A67 /* WindowDriver.h */,
+				2743F1A4140EFCC700C23A67 /* Implementation */,
+			);
+			name = "ShiftIt Framework";
+			sourceTree = "<group>";
+		};
+		2743F1A4140EFCC700C23A67 /* Implementation */ = {
+			isa = PBXGroup;
+			children = (
+				F2DC61231127ACDE000E1A5B /* ShiftItWindowManager.h */,
+				F2DC61241127ACDE000E1A5B /* ShiftItWindowManager.m */,
+				270DACA214094B9E0080DFBD /* AXWindowDriver.h */,
+				270DACA314094B9E0080DFBD /* AXWindowDriver.m */,
+			);
+			name = Implementation;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* ShiftIt */ = {
@@ -345,7 +365,7 @@
 			files = (
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */,
-				F2DC61251127ACDE000E1A5B /* WindowSizer.m in Sources */,
+				F2DC61251127ACDE000E1A5B /* ShiftItWindowManager.m in Sources */,
 				F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */,
 				2708BF011260E10900192883 /* ShiftItAction.m in Sources */,
 				2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */,
@@ -354,7 +374,7 @@
 				27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */,
 				27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */,
 				27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */,
-				270DACA414094B9E0080DFBD /* AXWindowManager.m in Sources */,
+				270DACA414094B9E0080DFBD /* AXWindowDriver.m in Sources */,
 				270DACA914098AE30080DFBD /* GTMLogger.m in Sources */,
 				27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */,
 				27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */,

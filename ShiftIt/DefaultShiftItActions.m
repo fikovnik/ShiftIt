@@ -20,7 +20,7 @@
 #import "DefaultShiftItActions.h"
 #import "ShiftIt.h"
 #import "FMTDefines.h"
-#import "WindowSizer.h"
+#import "ShiftItWindowManager.h"
 
 NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	NSRect r;
