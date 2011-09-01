@@ -18,29 +18,20 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "WindowContext.h"
 
-/** 
- * A reference to a function that position
- * and size the window's geometry denoted by the windowRect argument
- * relatively to a screen rect that originates at [0,0] (top left corner)
- * and has a size screenSize. The windowRect is the whole window
- * including any sort window decorators.
- */
-typedef NSRect (*ShiftItFunctionRef)(NSSize screenSize, NSRect windowRect); 
-
-@interface ShiftItAction : NSObject {
+@interface AbstractShiftItAction : NSObject {
  @private
 	NSString *identifier_;
 	NSString *label_;
 	NSInteger uiTag_;
-	ShiftItFunctionRef action_;
 }
 
 @property (readonly) NSString *identifier;
 @property (readonly) NSString *label;
 @property (readonly) NSInteger uiTag;
-@property (readonly) ShiftItFunctionRef action;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFunctionRef)action;
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag;
+- (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error;
 
 @end

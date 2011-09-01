@@ -23,6 +23,9 @@
 // from whatever reason this attribute is missing in the AXAttributeConstants.h
 #define kAXFullScreenAttribute  CFSTR("AXFullScreen")
 
-@interface AXWindowDriver : NSObject<WindowDriver>
+@interface AXWindowDriver : NSObject<WindowDriver> {
+ @private
+    AXUIElementRef systemElementRef_;
+}
 
 @end

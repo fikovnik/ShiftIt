@@ -17,21 +17,19 @@
  
  */
 
-#import "ShiftItAction.h"
+#import "AbstractShiftItAction.h"
 #import "FMTDefines.h"
 
-@implementation ShiftItAction
+@implementation AbstractShiftItAction
 
 @synthesize identifier = identifier_;
 @synthesize label = label_;
 @synthesize uiTag = uiTag_;
-@synthesize action = action_;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFunctionRef)action {
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag {
 	FMTAssertNotNil(identifier);
 	FMTAssertNotNil(label);
 	FMTAssert(uiTag > 0, @"uiTag must be greater than 0");
-	FMTAssertNotNil(action);
 
 	if (![super init]) {
 		return nil;
@@ -40,7 +38,6 @@
 	identifier_ = [identifier retain];
 	label_ = [label retain];
 	uiTag_ = uiTag;
-	action_ = action;
 	
 	return self;
 }
@@ -50,6 +47,12 @@
 	[label_ release];
 	
 	[super dealloc];
+}
+
+- (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:FMTStr(@"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+                                 userInfo:nil];
 }
 
 @end

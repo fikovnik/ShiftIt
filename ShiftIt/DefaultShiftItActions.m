@@ -21,8 +21,9 @@
 #import "ShiftIt.h"
 #import "FMTDefines.h"
 #import "ShiftItWindowManager.h"
+#import "SimpleShiftItAction.h"
 
-NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -31,10 +32,10 @@ NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	r.size.width = screenSize.width / 2;
 	r.size.height = screenSize.height;
 	
-	return r;
-}
+	return r;    
+};
 
-NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width/2;
@@ -44,9 +45,9 @@ NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 	r.size.height = screenSize.height;
 	
 	return r;
-}
+};
 
-NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItTop = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -56,9 +57,9 @@ NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 	r.size.height = screenSize.height / 2;
 	
 	return r;
-}
+};
 
-NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItBottom = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -68,9 +69,9 @@ NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 	r.size.height = screenSize.height / 2;
 	
 	return r;
-}
+};
 
-NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItTopLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -80,9 +81,9 @@ NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
 	r.size.height = screenSize.height / 2;
 	
 	return r;
-}
+};
 
-NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItTopRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width / 2;
@@ -92,9 +93,9 @@ NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
 	r.size.height = screenSize.height / 2;
 	
 	return r;
-}
+};
 
-NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItBottomLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -104,9 +105,9 @@ NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
 	r.size.height = screenSize.height / 2;
 	
 	return r;
-}
+};
 
-NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItBottomRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width / 2;
@@ -116,9 +117,9 @@ NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
 	r.size.height = screenSize.height / 2;
 	
 	return r;
-}
+};
 
-NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItFullScreen = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -128,9 +129,9 @@ NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
 	r.size.height = screenSize.height;
 	
 	return r;
-}
+};
 
-NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItCenter = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = (screenSize.width / 2)-(windowRect.size.width / 2);
@@ -139,7 +140,7 @@ NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	r.size = windowRect.size;
 	
 	return r;
-}
+};
 
 typedef enum {
 	kLeftDirection = 1 << 0,
@@ -280,10 +281,10 @@ NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, BOOL increa
 	return r;	
 }
 
-NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItIncrease = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	return ShiftIt_IncreaseReduce_(screenSize, windowRect, YES);
-}
+};
 
-NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect) {
+const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	return ShiftIt_IncreaseReduce_(screenSize, windowRect, NO);
-}
+};

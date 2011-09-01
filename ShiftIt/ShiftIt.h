@@ -71,19 +71,16 @@ extern NSString *const kSIMenuItemTitle;
 
 extern NSString *const SIErrorDomain;
 
-extern NSInteger const kUnableToGetActiveApplicationErrorCode;
-extern NSInteger const kUnableToGetActiveWindowErrorCode;
-extern NSInteger const kUnableToChangeWindowPositionErrorCode;
-extern NSInteger const kUnableToGetWindowGeometryErrorCode;
-extern NSInteger const kUnableToChangeWindowSizeErrorCode;
-extern NSInteger const kUnableToGetWindowDrawersErrorCode;
-extern NSInteger const kUnableToCheckWindowFullScreenModeErrorCode;
-extern NSInteger const kUnableToElementPositionErrorCode;
-extern NSInteger const kUnableToElementSizeErrorCode;
+extern NSInteger const kWindowManagerFailureErrorCode;
 extern NSInteger const kAXFailureErrorCode;
+extern NSInteger const kShiftItActionFaiureErrorCode;
 
 #define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
 #define ModifiersPrefKey(identifier) FMTStr(@"%@%@", (identifier), kModifiersPrefKeySuffix)
 
 extern NSError* SICreateError(NSString *localizedDescription, NSInteger errorCode);
 extern NSError* SICreateErrorWithCause(NSString *localizedDescription, NSInteger errorCode, NSError *cause);
+
+#define POINT_STR(point) FMTStr(@"[%f %f]", (point).x, (point).y)
+#define SIZE_STR(size) FMTStr(@"[%f %f]", (size).width, (size).height)
+#define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)

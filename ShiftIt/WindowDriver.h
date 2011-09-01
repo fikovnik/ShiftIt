@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-typedef void* SIWindowRef;
+#import "WindowContext.h"
 
 @protocol WindowDriver <NSObject>
 
@@ -16,22 +15,18 @@ typedef void* SIWindowRef;
 
 - (void) freeWindow:(SIWindowRef)windowRef;
 
-- (BOOL) setPosition:(NSPoint)position window:(SIWindowRef)windowRef error:(NSError **)error;
+- (BOOL) setWindow:(SIWindowRef)windowRef position:(NSPoint)position error:(NSError **)error;
 
-- (BOOL) setSize:(NSSize)size window:(SIWindowRef)windowRef error:(NSError **)error;
+- (BOOL) setWindow:(SIWindowRef)windowRef size:(NSSize)size error:(NSError **)error;
 
-- (BOOL) getGeometry:(NSRect *)rect window:(SIWindowRef)windowRef error:(NSError **)error;
+- (BOOL) getWindow:(SIWindowRef)windowRef geometry:(NSRect *)geometry error:(NSError **)error;
 
-- (BOOL) getDrawersGeometry:(NSRect *)rect window:(SIWindowRef)windowRef error:(NSError **)error;
+- (BOOL) getWindow:(SIWindowRef)windowRef drawersGeometry:(NSRect *)geometry error:(NSError **)error;
 
-- (BOOL) getFullScreenMode:(BOOL *)fullScreen window:(SIWindowRef)windowRef error:(NSError **)error;
+- (BOOL) isWindow:(SIWindowRef)windowRef inFullScreen:(BOOL *)fullScreen error:(NSError **)error;
 
-- (BOOL) getPosition:(NSPoint *)position element:(SIWindowRef)element error:(NSError **)error;
+- (BOOL) canWindow:(SIWindowRef)window resize:(BOOL *)resizeable error:(NSError **)error;
 
-- (BOOL) getSize:(NSSize *)size element:(SIWindowRef)element error:(NSError **)error;
-
-- (BOOL) isWindowResizeable:(SIWindowRef)window;
-
-- (BOOL) isWindowMoveable:(SIWindowRef)window;
+- (BOOL) canWindow:(SIWindowRef)window move:(BOOL *)moveable error:(NSError **)error;
 
 @end

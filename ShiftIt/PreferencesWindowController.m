@@ -19,7 +19,7 @@
 
 #import "PreferencesWindowController.h"
 #import "ShiftIt.h"
-#import "ShiftItAction.h"
+#import "AbstractShiftItAction.h"
 #import "FMTLoginItems.h"
 #import "FMTDefines.h"
 #import "FMTUtils.h"
@@ -129,7 +129,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	NSDictionary *initialDefaults = [NSDictionary dictionaryWithContentsOfFile:path];
 	[defaults registerDefaults:initialDefaults];
     
-	for (ShiftItAction *action in [allShiftActions allValues]) {
+	for (AbstractShiftItAction *action in [allShiftActions allValues]) {
 		NSString *identifier = [action identifier];
 		
 		NSNumber *n = nil;
@@ -195,7 +195,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
     NSString *identifier = [hotKeyControls_ keyForObject:recorder];
     FMTAssertNotNil(identifier);
 	
-	ShiftItAction *action = [allShiftActions objectForKey:identifier];
+	AbstractShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
 	
 	FMTLogDebug(@"ShiftIt action %@ hotkey changed: ", [action identifier]);
@@ -215,7 +215,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	
 	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-	for (ShiftItAction *action in [allShiftActions allValues]) {
+	for (AbstractShiftItAction *action in [allShiftActions allValues]) {
 		NSString *identifier = [action identifier];
 		SRRecorderControl *recorder = [hotKeyControls_ objectForKey:identifier];
 		FMTAssertNotNil(recorder);

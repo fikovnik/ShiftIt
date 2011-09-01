@@ -19,7 +19,7 @@
 
 #import "ShiftItAppDelegate.h"
 #import "ShiftIt.h"
-#import "ShiftItAction.h"
+#import "SimpleShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
 #import "ShiftItWindowManager.h"
@@ -65,15 +65,10 @@ NSInteger const kSIMenuUITagPrefix = 2000;
 
 // error related
 NSString *const SIErrorDomain = @"org.shiftitapp.shiftit.ErrorDomain";
-NSInteger const kUnableToGetActiveWindowErrorCode = 20100;
-NSInteger const kUnableToChangeWindowPositionErrorCode = 20101;
-NSInteger const kUnableToGetWindowGeometryErrorCode = 20102;
-NSInteger const kUnableToChangeWindowSizeErrorCode = 20103;
-NSInteger const kUnableToGetWindowDrawersErrorCode = 20104;
-NSInteger const kUnableToCheckWindowFullScreenModeErrorCode = 20105;
-NSInteger const kUnableToElementPositionErrorCode = 20106;
-NSInteger const kUnableToElementSizeErrorCode = 20107;
-NSInteger const kAXFailureErrorCode = 20108;
+
+NSInteger const kWindowManagerFailureErrorCode = 20101;
+NSInteger const kAXFailureErrorCode = 20102;
+NSInteger const kShiftItActionFaiureErrorCode = 20103;
 
 const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 1/3; // in seconds
 
@@ -85,7 +80,7 @@ NSDictionary *allShiftActions = nil;
 - (void)updateMenuBarIcon_;
 - (void)firstLaunch_;
 - (void)invokeShiftItActionByIdentifier_:(NSString *)identifier;
-- (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers;
+- (void)updateStatusMenuShortcutForAction_:(AbstractShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers;
 
 - (void)handleShowPreferencesRequest_:(NSNotification *) notification; 
 - (void) shiftItActionHotKeyChanged_:(NSNotification *) notification;
@@ -191,7 +186,7 @@ NSDictionary *allShiftActions = nil;
 	NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
 	[userDefaultsController addObserver:self forKeyPath:FMTStr(@"values.%@",kShowMenuPrefKey) options:0 context:self];
 	
-	for (ShiftItAction *action in [allShiftActions allValues]) {
+	for (AbstractShiftItAction *action in [allShiftActions allValues]) {
 		NSString *identifier = [action identifier];
 		
 		NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:3];
@@ -265,7 +260,7 @@ NSDictionary *allShiftActions = nil;
     [NSApp activateIgnoringOtherApps:YES];
 }
 
-- (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
+- (void)updateStatusMenuShortcutForAction_:(AbstractShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
 	FMTAssertNotNil(action);
 	FMTLogDebug(@"updateStatusMenuShortcutForAction_:%@ keyCode:%ld modifiers:%ld", [action identifier], keyCode, modifiers);
     
@@ -294,31 +289,26 @@ NSDictionary *allShiftActions = nil;
 	FMTAssert(allShiftActions == nil, @"Actions have been already initialized");
 	
 	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-	
-	ShiftItAction *left = [[ShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 action:&ShiftIt_Left];
-	[dict setObject:left forKey:[left identifier]];
-	ShiftItAction *right = [[ShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 action:&ShiftIt_Right];
-	[dict setObject:right forKey:[right identifier]];
-	ShiftItAction *top = [[ShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 action:&ShiftIt_Top];
-	[dict setObject:top forKey:[top identifier]];
-	ShiftItAction *bottom = [[ShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 action:&ShiftIt_Bottom];
-	[dict setObject:bottom forKey:[bottom identifier]];
-	ShiftItAction *tl = [[ShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 action:&ShiftIt_TopLeft];
-	[dict setObject:tl forKey:[tl identifier]];
-	ShiftItAction *tr = [[ShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 action:&ShiftIt_TopRight];
-	[dict setObject:tr forKey:[tr identifier]];
-	ShiftItAction *bl = [[ShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 action:&ShiftIt_BottomLeft];
-	[dict setObject:bl forKey:[bl identifier]];
-	ShiftItAction *br = [[ShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 action:&ShiftIt_BottomRight];
-	[dict setObject:br forKey:[br identifier]];
-	ShiftItAction *fullscreen = [[ShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:9 action:&ShiftIt_FullScreen];
-	[dict setObject:fullscreen forKey:[fullscreen identifier]];
-	ShiftItAction *center = [[ShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:10 action:&ShiftIt_Center];
-	[dict setObject:center forKey:[center identifier]];
-	ShiftItAction *increase = [[ShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:11 action:&ShiftIt_Increase];
-	[dict setObject:increase forKey:[increase identifier]];
-	ShiftItAction *reduce = [[ShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:12 action:&ShiftIt_Reduce];
-	[dict setObject:reduce forKey:[reduce identifier]];
+
+    // TODO: this is ugly but just temp
+    SimpleShiftItAction *action = nil;
+    
+#define REGISTER_ACTION(dict, a) \
+action = (a); \
+[(dict) setObject:action forKey:[action identifier]];
+    
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 block:shiftItLeft]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 block:shiftItRight]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 block:shiftItTop]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 block:shiftItBottom]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 block:shiftItTopLeft]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 block:shiftItTopRight]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 block:shiftItBottomLeft]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 block:shiftItBottomRight]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:9 block:shiftItFullScreen]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:10 block:shiftItCenter]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:11 block:shiftItIncrease]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:12 block:shiftItReduce]);
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }
@@ -353,7 +343,7 @@ NSDictionary *allShiftActions = nil;
 	
 	FMTLogDebug(@"Updating action %@ hotKey: keyCode=%ld modifiers=%ld", identifier, keyCode, modifiers);
 	
-	ShiftItAction *action = [allShiftActions objectForKey:identifier];
+	AbstractShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
 	
 	FMTHotKey *newHotKey = [[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers];
@@ -417,12 +407,12 @@ NSDictionary *allShiftActions = nil;
             return ;
         }
         
-		ShiftItAction *action = [allShiftActions objectForKey:identifier];
+		AbstractShiftItAction *action = [allShiftActions objectForKey:identifier];
 		FMTAssertNotNil(action);
 		
 		FMTLogInfo(@"Invoking action: %@", identifier);
 		NSError *error = nil;
-		if (![windowManager_ shiftFocusedWindowUsing:action error:&error]) {
+		if (![windowManager_ executeAction:action error:&error]) {
 			FMTLogError(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
 		}
 	}

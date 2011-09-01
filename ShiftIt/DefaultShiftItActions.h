@@ -18,16 +18,17 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "SimpleShiftItAction.h"
 
-NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Increase(NSSize screenSize, NSRect windowRect);
-NSRect ShiftIt_Reduce(NSSize screenSize, NSRect windowRect);
+const extern SimpleShiftItActionBlock shiftItLeft;
+const extern SimpleShiftItActionBlock shiftItRight;
+const extern SimpleShiftItActionBlock shiftItTop;
+const extern SimpleShiftItActionBlock shiftItBottom;
+const extern SimpleShiftItActionBlock shiftItTopLeft;
+const extern SimpleShiftItActionBlock shiftItTopRight;
+const extern SimpleShiftItActionBlock shiftItBottomLeft;
+const extern SimpleShiftItActionBlock shiftItBottomRight;
+const extern SimpleShiftItActionBlock shiftItFullScreen;
+const extern SimpleShiftItActionBlock shiftItCenter;
+const extern SimpleShiftItActionBlock shiftItIncrease;
+const extern SimpleShiftItActionBlock shiftItReduce;
