@@ -29,4 +29,8 @@
 
 - (BOOL) canWindow:(SIWindowRef)window move:(BOOL *)moveable error:(NSError **)error;
 
+- (BOOL) toggleZoomOnWindow:(SIWindowRef)window error:(NSError **)error;
+
+- (BOOL) toggleFullScreenOnWindow:(SIWindowRef)window error:(NSError **)error;
+
 @end

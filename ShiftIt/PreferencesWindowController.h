@@ -37,9 +37,11 @@
     IBOutlet SRRecorderControl *srTL_;
     IBOutlet SRRecorderControl *srTR_;
     IBOutlet SRRecorderControl *srBR_;
-    IBOutlet SRRecorderControl *srBL_;    
-    IBOutlet SRRecorderControl *srMaximize_;
+    IBOutlet SRRecorderControl *srBL_;
     IBOutlet SRRecorderControl *srCenter_;
+    IBOutlet SRRecorderControl *srZoom_;
+    IBOutlet SRRecorderControl *srMaximize_;
+    IBOutlet SRRecorderControl *srFullScreen_;
     IBOutlet SRRecorderControl *srIncrease_;
     IBOutlet SRRecorderControl *srReduce_;    
 }

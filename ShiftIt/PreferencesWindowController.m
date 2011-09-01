@@ -92,8 +92,10 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
                          srTR_, 
                          srBR_, 
                          srBL_, 
-                         srMaximize_, 
                          srCenter_, 
+                         srZoom_, 
+                         srMaximize_, 
+                         srFullScreen_, 
                          srIncrease_,
                          srReduce_, 
                          nil];
@@ -105,8 +107,10 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
                      @"tr",
                      @"br", 
                      @"bl",
-                     @"maximize",
                      @"center",
+                     @"zoom",
+                     @"maximize",
+                     @"fullScreen",
                      @"increase",
                      @"reduce", 
                      nil];

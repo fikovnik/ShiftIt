@@ -288,3 +288,54 @@ const SimpleShiftItActionBlock shiftItIncrease = ^NSRect(NSRect windowRect,NSSiz
 const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	return ShiftIt_IncreaseReduce_(screenSize, windowRect, NO);
 };
+
+@implementation ToggleZoomShiftItAction
+
+- (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error {
+    FMTAssertNotNil(windowContext);
+    FMTAssertNotNil(error);
+    
+    NSError *cause = nil;
+    SIWindow *window = nil;
+    
+    if(![windowContext getFocusedWindow:&window error:&cause]) {
+        *error = SICreateErrorWithCause(@"Unable to get active window", 
+                                        kShiftItActionFaiureErrorCode, 
+                                        cause);
+        return NO;
+    }
+
+    if(![windowContext toggleZoomOnWindow:window error:error]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+@end
+
+@implementation ToggleFullScreenShiftItAction
+
+- (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error {
+    FMTAssertNotNil(windowContext);
+    FMTAssertNotNil(error);
+    
+    NSError *cause = nil;
+    SIWindow *window = nil;
+    
+    if(![windowContext getFocusedWindow:&window error:&cause]) {
+        *error = SICreateErrorWithCause(@"Unable to get active window", 
+                                        kShiftItActionFaiureErrorCode, 
+                                        cause);
+        return NO;
+    }
+    
+    // TODO: escape
+    if(![windowContext toggleFullScreenOnWindow:window error:error]) {
+        return NO;
+    }
+    
+    return YES;
+}
+
+@end

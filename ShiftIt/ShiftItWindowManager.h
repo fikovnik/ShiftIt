@@ -34,6 +34,5 @@
 
 - (id) initWithDriver:(id<WindowDriver>)driver;
 - (BOOL) executeAction:(AbstractShiftItAction *)action error:(NSError **)error;
-- (BOOL) isCurrentWindowInFullScreen;
 
 @end

@@ -450,6 +450,15 @@ extern short GetMBarHeight(void);
     return YES;
 }
 
+- (BOOL) toggleZoomOnWindow:(SIWindow *)window error:(NSError **)error {
+    return [driver_ toggleZoomOnWindow:[window ref_] error:error];
+}
+
+- (BOOL) toggleFullScreenOnWindow:(SIWindow *)window error:(NSError **)error {
+    return [driver_ toggleFullScreenOnWindow:[window ref_] error:error];
+}
+
+
 @end
 
 /**
@@ -492,24 +501,6 @@ extern short GetMBarHeight(void);
     [driver_ release];
     
 	[super dealloc];
-}
-
-- (BOOL) isCurrentWindowInFullScreen {
-    SIWindowRef window = NULL;
-    NSError *error = nil;
-    
-    if (![driver_ getFocusedWindow:&window error:&error]) {
-        FMTLogInfo(@"Unable to get active window reference");
-		return NO;
-    }
-    
-    BOOL fullScreen;
-    if (![driver_ isWindow:window inFullScreen:&fullScreen error:&error]) {
-        FMTLogInfo(@"Unable to check window full screen mode");
-		return NO;
-    }
-    
-    return fullScreen;
 }
 
 - (BOOL) executeAction:(AbstractShiftItAction *)action error:(NSError **)error {

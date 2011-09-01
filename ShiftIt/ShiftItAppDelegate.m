@@ -293,9 +293,9 @@ NSDictionary *allShiftActions = nil;
     // TODO: this is ugly but just temp
     SimpleShiftItAction *action = nil;
     
-#define REGISTER_ACTION(dict, a) \
-action = (a); \
-[(dict) setObject:action forKey:[action identifier]];
+    #define REGISTER_ACTION(dict, a) \
+    action = (a); \
+    [(dict) setObject:action forKey:[action identifier]];
     
     REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 block:shiftItLeft]);
     REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 block:shiftItRight]);
@@ -305,10 +305,12 @@ action = (a); \
     REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 block:shiftItTopRight]);
     REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 block:shiftItBottomLeft]);
     REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 block:shiftItBottomRight]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:9 block:shiftItFullScreen]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:10 block:shiftItCenter]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:11 block:shiftItIncrease]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:12 block:shiftItReduce]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:9 block:shiftItCenter]);
+    REGISTER_ACTION(dict, [[ToggleZoomShiftItAction alloc] initWithIdentifier:@"zoom" label:@"Toggle Zoom" uiTag:10]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:11 block:shiftItFullScreen]);
+    REGISTER_ACTION(dict, [[ToggleFullScreenShiftItAction alloc] initWithIdentifier:@"fullScreen" label:@"Toggle Full Screen" uiTag:12]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:13 block:shiftItIncrease]);
+    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:14 block:shiftItReduce]);
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }
@@ -401,12 +403,6 @@ action = (a); \
 			beforeNow_ = now;
 		}
 		
-        // check for fullscreen - if the window is in fullscreen we do not execute any action
-        if ([windowManager_ isCurrentWindowInFullScreen]) {
-            FMTLogDebug(@"Current window is in fullscreen, not executing any action");
-            return ;
-        }
-        
 		AbstractShiftItAction *action = [allShiftActions objectForKey:identifier];
 		FMTAssertNotNil(action);
 		

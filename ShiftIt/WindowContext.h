@@ -49,4 +49,8 @@ typedef void* SIWindowRef;
 
 - (BOOL) setWindow:(SIWindow *)window geometry:(NSRect)geometry error:(NSError **)error;
 
+- (BOOL) toggleZoomOnWindow:(SIWindow *)window error:(NSError **)error;
+
+- (BOOL) toggleFullScreenOnWindow:(SIWindow *)window error:(NSError **)error;
+
 @end

@@ -32,3 +32,9 @@ const extern SimpleShiftItActionBlock shiftItFullScreen;
 const extern SimpleShiftItActionBlock shiftItCenter;
 const extern SimpleShiftItActionBlock shiftItIncrease;
 const extern SimpleShiftItActionBlock shiftItReduce;
+
+@interface ToggleZoomShiftItAction : AbstractShiftItAction
+@end
+
+@interface ToggleFullScreenShiftItAction : AbstractShiftItAction
+@end

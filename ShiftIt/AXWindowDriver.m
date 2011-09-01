@@ -12,7 +12,9 @@
 
 @interface AXWindowDriver(Private)
 
-+ (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(SIWindowRef)element change:(BOOL *)changeable error:(NSError **)error;
++ (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element change:(BOOL *)changeable error:(NSError **)error;
+
++ (BOOL) pressButton_:(CFStringRef)buttonName ofElement:(AXUIElementRef)element error:(NSError **)error;
 
 - (BOOL) getElement_:(SIWindowRef)element position:(NSPoint *)position error:(NSError **)error;
 
@@ -31,7 +33,7 @@
     // here is the assert for purpose because the app should not have gone 
 	// that far in execution if the AX api is not available
 	FMTAssertNotNil(systemElementRef_);
-
+    
     return self;
 }
 
@@ -262,11 +264,43 @@
     if (![AXWindowDriver canAttribute_:kAXPositionAttribute ofElement:window change:&changeable error:error]) {
 		return NO;
     }
-
+    
     return YES;
 }
 
-+ (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(SIWindowRef)element change:(BOOL *)changeable error:(NSError **)error {
+- (BOOL) toggleZoomOnWindow:(SIWindowRef)window error:(NSError **)error {    
+    return [AXWindowDriver pressButton_:kAXZoomButtonAttribute ofElement:window error:error];
+}
+
+- (BOOL) toggleFullScreenOnWindow:(SIWindowRef)window error:(NSError **)error {    
+    return [AXWindowDriver pressButton_:kAXFullScreenButtonAttribute ofElement:window error:error];
+}
+
+
++ (BOOL) pressButton_:(CFStringRef)buttonName ofElement:(AXUIElementRef)element error:(NSError **)error {
+    FMTAssertNotNil(buttonName);
+    FMTAssertNotNil(element);
+    
+    //get the focused application
+    AXUIElementRef button = nil;
+    AXError ret = 0;
+    
+    if ((ret = AXUIElementCopyAttributeValue(element,
+                                             (CFStringRef) buttonName,
+                                             (CFTypeRef *) &button)) != kAXErrorSuccess) {
+        *error = SICreateError(FMTStr(@"AXError: %@ copy failed: %d", (NSString *)buttonName, ret), kAXFailureErrorCode);
+        return NO;
+    }    
+    
+    if ((ret =AXUIElementPerformAction(button, kAXPressAction)) != kAXErrorSuccess) {
+        *error = SICreateError(FMTStr(@"AXError: perform action kAXPressAction failed: %d", ret), kAXFailureErrorCode);
+        return NO;        
+    }
+    
+    return YES;    
+}
+
++ (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element change:(BOOL *)changeable error:(NSError **)error {
     Boolean isSettable = false;
     
     if (AXUIElementIsAttributeSettable(element, (CFStringRef)attributeName, &isSettable) != kAXErrorSuccess) {

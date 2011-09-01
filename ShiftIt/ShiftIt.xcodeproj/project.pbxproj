@@ -133,8 +133,6 @@
 				F2D9C239112F9D0E003E9435 /* Preferences */,
 				256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */,
-				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
-				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
 				2708C2551261C8E800192883 /* ShiftIt.h */,
 			);
 			name = Classes;
@@ -245,6 +243,8 @@
 				2708BF001260E10900192883 /* AbstractShiftItAction.m */,
 				2743F1A9140F048B00C23A67 /* SimpleShiftItAction.h */,
 				2743F1AA140F048B00C23A67 /* SimpleShiftItAction.m */,
+				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
+				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
 			);
 			name = "ShiftIt Actions";
 			sourceTree = "<group>";

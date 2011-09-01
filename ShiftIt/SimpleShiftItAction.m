@@ -38,7 +38,10 @@
                                         cause);
         return NO;
     }
-            
+    
+    // TODO: check resizability and moveability
+    // TODO: check fullscreen
+    
     NSRect newGeometry = block_([window geometry], [[window screen] size]);
     
     if(![windowContext setWindow:window geometry:newGeometry error:&cause]) {
