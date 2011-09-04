@@ -206,9 +206,10 @@ extern short GetMBarHeight(void);
  @private
     id<WindowDriver> driver_;
     BOOL useDrawers_;
-    NSMutableArray *windows_;
     int numberOfTries_;
     int menuBarHeight_;
+
+    NSMutableArray *windows_;
 }
 
 - (id) initWithDriver:(id<WindowDriver>)driver;
@@ -325,6 +326,7 @@ extern short GetMBarHeight(void);
     return YES;
 }
 
+// TODO: make sure that the geometry makes sense
 - (BOOL) setWindow:(SIWindow *)window geometry:(NSRect)geometry error:(NSError **)error {
 	FMTLogDebug(@"Setting window geometry: %@", RECT_STR(geometry));
 	
@@ -451,10 +453,16 @@ extern short GetMBarHeight(void);
 }
 
 - (BOOL) toggleZoomOnWindow:(SIWindow *)window error:(NSError **)error {
+    FMTAssertNotNil(window);
+    FMTAssertNotNil(error);
+    
     return [driver_ toggleZoomOnWindow:[window ref_] error:error];
 }
 
 - (BOOL) toggleFullScreenOnWindow:(SIWindow *)window error:(NSError **)error {
+    FMTAssertNotNil(window);
+    FMTAssertNotNil(error);
+    
     return [driver_ toggleFullScreenOnWindow:[window ref_] error:error];
 }
 
