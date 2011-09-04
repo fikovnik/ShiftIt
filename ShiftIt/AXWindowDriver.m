@@ -280,7 +280,8 @@
 + (BOOL) pressButton_:(CFStringRef)buttonName ofElement:(AXUIElementRef)element error:(NSError **)error {
     FMTAssertNotNil(buttonName);
     FMTAssertNotNil(element);
-    
+    FMTAssertNotNil(error);
+
     //get the focused application
     AXUIElementRef button = nil;
     AXError ret = 0;
