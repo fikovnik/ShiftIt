@@ -299,9 +299,9 @@ const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize 
     SIWindow *window = nil;
     
     if(![windowContext getFocusedWindow:&window error:&cause]) {
-        *error = SICreateErrorWithCause(@"Unable to get active window", 
-                                        kShiftItActionFaiureErrorCode, 
-                                        cause);
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+                                        cause,
+                                        @"Unable to get active window");
         return NO;
     }
 
@@ -324,13 +324,13 @@ const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize 
     SIWindow *window = nil;
     
     if(![windowContext getFocusedWindow:&window error:&cause]) {
-        *error = SICreateErrorWithCause(@"Unable to get active window", 
-                                        kShiftItActionFaiureErrorCode, 
-                                        cause);
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+                                        cause,
+                                        @"Unable to get active window");
         return NO;
     }
     
-    // TODO: escape
+    // TODO: escape from fullscreen
     if(![windowContext toggleFullScreenOnWindow:window error:error]) {
         return NO;
     }

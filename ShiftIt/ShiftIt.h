@@ -78,8 +78,8 @@ extern NSInteger const kShiftItActionFaiureErrorCode;
 #define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
 #define ModifiersPrefKey(identifier) FMTStr(@"%@%@", (identifier), kModifiersPrefKeySuffix)
 
-extern NSError* SICreateError(NSString *localizedDescription, NSInteger errorCode);
-extern NSError* SICreateErrorWithCause(NSString *localizedDescription, NSInteger errorCode, NSError *cause);
+extern NSError* SICreateError(NSInteger errorCode, NSString *fmt, ...);
+extern NSError* SICreateErrorWithCause(NSInteger errorCode, NSError *cause, NSString *fmt, ...);
 
 #define POINT_STR(point) FMTStr(@"[%f %f]", (point).x, (point).y)
 #define SIZE_STR(size) FMTStr(@"[%f %f]", (size).width, (size).height)

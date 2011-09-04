@@ -33,9 +33,9 @@
     SIWindow *window = nil;
     
     if(![windowContext getFocusedWindow:&window error:&cause]) {
-        *error = SICreateErrorWithCause(@"Unable to get active window", 
-                                        kShiftItActionFaiureErrorCode, 
-                                        cause);
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+                                        cause,
+                                        @"Unable to get active window");
         return NO;
     }
     
@@ -45,9 +45,9 @@
     NSRect newGeometry = block_([window geometry], [[window screen] size]);
     
     if(![windowContext setWindow:window geometry:newGeometry error:&cause]) {
-        *error = SICreateErrorWithCause(@"Unable to set active window geometry", 
-                                        kShiftItActionFaiureErrorCode, 
-                                        cause);
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+                                        cause,
+                                        @"Unable to set active window geometry");
         return NO;        
     }
     

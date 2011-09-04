@@ -127,9 +127,9 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2708C1CC1261388A00192883 /* External */,
 				2743F1A5140F02D500C23A67 /* ShiftIt Actions */,
 				2743F1A3140EFCB300C23A67 /* ShiftIt Framework */,
-				2708C1CC1261388A00192883 /* External */,
 				F2D9C239112F9D0E003E9435 /* Preferences */,
 				256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */,

@@ -384,6 +384,7 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void) invokeShiftItActionByIdentifier_:(NSString *)identifier {
+    // TODO: use grand central dispatch instead synchronize!
 	@synchronized(self) {
 		if (paused_) {
 			FMTLogDebug(@"The functionality is temporarly paused");
@@ -429,23 +430,22 @@ NSDictionary *allShiftActions = nil;
 
 @end
 
-inline NSError* SICreateError(NSString *localizedDescription, NSInteger errorCode) {
-	FMTAssertNotNil(localizedDescription);
-	
-	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-	[userInfo setObject:localizedDescription forKey:NSLocalizedDescriptionKey];
-	
-	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errorCode userInfo:userInfo];	
-	return error;
+inline NSError* SICreateError(NSInteger errorCode, NSString *fmt, ...) {
+    va_list args;
+	return SICreateErrorWithCause(errorCode, nil, fmt, args);
 }
 
-inline NSError* SICreateErrorWithCause(NSString *localizedDescription, NSInteger errorCode, NSError *cause) {
-	FMTAssertNotNil(localizedDescription);
-	FMTAssertNotNil(cause);
-	
+inline NSError* SICreateErrorWithCause(NSInteger errorCode, NSError *cause, NSString *fmt, ...) {
+	FMTAssertNotNil(fmt);
+
+    va_list args;
+    NSString *msg = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
+
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-	[userInfo setObject:localizedDescription forKey:NSLocalizedDescriptionKey];
-	[userInfo setObject:cause forKey:NSUnderlyingErrorKey];
+	[userInfo setObject:msg forKey:NSLocalizedDescriptionKey];
+    if (cause != nil) {
+        [userInfo setObject:cause forKey:NSUnderlyingErrorKey];
+    }
 	
 	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errorCode userInfo:userInfo];	
 	return error;    
