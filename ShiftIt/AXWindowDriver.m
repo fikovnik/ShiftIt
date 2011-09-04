@@ -43,6 +43,7 @@
 
 - (BOOL) getFocusedWindow:(SIWindowRef *)windowRef error:(NSError **)error {  
     FMTAssertNotNil(windowRef);
+	FMTAssertNotNil(error);
     
     //get the focused application
     AXUIElementRef focusedAppRef = nil;
@@ -77,6 +78,7 @@
 
 - (BOOL) setWindow:(SIWindowRef)windowRef position:(NSPoint)position error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
+	FMTAssertNotNil(error);
     
 	CFTypeRef positionRef = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&position));
     AXError ret = 0;
@@ -93,6 +95,7 @@
 
 - (BOOL) setWindow:(SIWindowRef)windowRef size:(NSSize)size error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
+	FMTAssertNotNil(error);
 	
 	CFTypeRef sizeRef = (CFTypeRef)(AXValueCreate(kAXValueCGSizeType, (const void *)&size));
     AXError ret = 0;
@@ -110,6 +113,7 @@
 - (BOOL) getWindow:(SIWindowRef)windowRef geometry:(NSRect *)geometry error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
 	FMTAssertNotNil(geometry);
+	FMTAssertNotNil(error);
 	
 	if (![self getElement_:windowRef position:&(geometry->origin) error:error]) {
 		return NO;
@@ -125,6 +129,7 @@
 - (BOOL) getWindow:(SIWindowRef)windowRef drawersGeometry:(NSRect *)geometry error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
 	FMTAssertNotNil(geometry);
+	FMTAssertNotNil(error);
     
 	NSArray *children = nil;
     AXError ret = 0;
@@ -178,6 +183,7 @@
 - (BOOL) isWindow:(SIWindowRef)windowRef inFullScreen:(BOOL *)fullScreen error:(NSError **)error {
     FMTAssertNotNil(windowRef);
     FMTAssertNotNil(fullScreen);
+	FMTAssertNotNil(error);
 	
     CFBooleanRef fullScreenRef;
     AXError ret = 0;
@@ -200,6 +206,7 @@
 - (BOOL) getElement_:(SIWindowRef)element position:(NSPoint *)position error:(NSError **)error {
 	FMTAssertNotNil(element);
 	FMTAssertNotNil(position);
+	FMTAssertNotNil(error);
     
 	CFTypeRef positionRef;
     AXError ret = 0;
@@ -226,6 +233,7 @@
 - (BOOL) getElement_:(SIWindowRef)element size:(NSSize *)size error:(NSError **)error {
 	FMTAssertNotNil(element);
 	FMTAssertNotNil(size);
+	FMTAssertNotNil(error);
     
 	CFTypeRef sizeRef;
     AXError ret = 0;
@@ -236,6 +244,7 @@
 	}
 	
 	FMTAssertNotNil(sizeRef);
+    
 	if(AXValueGetType(sizeRef) == kAXValueCGSizeType) {
 		AXValueGetValue(sizeRef, kAXValueCGSizeType, size);
 	} else {
@@ -248,7 +257,8 @@
 	return YES;
 }
 
-- (BOOL) canWindow:(SIWindowRef)window resize:(BOOL *)resizeable error:(NSError **)error {
+- (BOOL) canWindow:(SIWindowRef)window resize:(BOOL *)resizeable error:(NSError **)error {    // args asserted in the nested call
+    // args asserted in the nested call
     BOOL changeable;
     
     if (![AXWindowDriver canAttribute_:kAXSizeAttribute ofElement:window change:&changeable error:error]) {
@@ -259,6 +269,7 @@
 }
 
 - (BOOL) canWindow:(SIWindowRef)window move:(BOOL *)moveable error:(NSError **)error {
+    // args asserted in the nested call
     BOOL changeable;
     
     if (![AXWindowDriver canAttribute_:kAXPositionAttribute ofElement:window change:&changeable error:error]) {
@@ -269,10 +280,12 @@
 }
 
 - (BOOL) toggleZoomOnWindow:(SIWindowRef)window error:(NSError **)error {    
+    // args asserted in the nested call
     return [AXWindowDriver pressButton_:kAXZoomButtonAttribute ofElement:window error:error];
 }
 
-- (BOOL) toggleFullScreenOnWindow:(SIWindowRef)window error:(NSError **)error {    
+- (BOOL) toggleFullScreenOnWindow:(SIWindowRef)window error:(NSError **)error {
+    // args asserted in the nested call
     return [AXWindowDriver pressButton_:kAXFullScreenButtonAttribute ofElement:window error:error];
 }
 
@@ -291,17 +304,26 @@
                                              (CFTypeRef *) &button)) != kAXErrorSuccess) {
         *error = SICreateError(FMTStr(@"AXError: %@ copy failed: %d", (NSString *)buttonName, ret), kAXFailureErrorCode);
         return NO;
-    }    
+    }
     
-    if ((ret =AXUIElementPerformAction(button, kAXPressAction)) != kAXErrorSuccess) {
+    FMTAssertNotNil(button);
+    
+    if ((ret = AXUIElementPerformAction(button, kAXPressAction)) != kAXErrorSuccess) {
+        CFRelease(button);
         *error = SICreateError(FMTStr(@"AXError: perform action kAXPressAction failed: %d", ret), kAXFailureErrorCode);
         return NO;        
     }
     
+    CFRelease(button);
     return YES;    
 }
 
 + (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element change:(BOOL *)changeable error:(NSError **)error {
+    FMTAssertNotNil(attributeName);
+    FMTAssertNotNil(element);
+    FMTAssertNotNil(changeable);
+    FMTAssertNotNil(error);
+
     Boolean isSettable = false;
     
     if (AXUIElementIsAttributeSettable(element, (CFStringRef)attributeName, &isSettable) != kAXErrorSuccess) {
