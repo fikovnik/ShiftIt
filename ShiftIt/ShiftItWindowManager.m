@@ -512,7 +512,6 @@ extern short GetMBarHeight(void);
     // TODO: in try catch
     if (![action execute:ctx error:&cause]) {
         *error = SICreateErrorWithCause(FMTStr(@"Failed to execute action: %@", [action label]), kWindowManagerFailureErrorCode, cause);
-        [ctx release];
         
         return NO;
     }
