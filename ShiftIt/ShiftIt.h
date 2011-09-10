@@ -84,4 +84,4 @@ extern NSError* SICreateErrorWithCause(NSInteger errorCode, NSError *cause, NSSt
 
 #define POINT_STR(point) FMTStr(@"[%f %f]", (point).x, (point).y)
 #define SIZE_STR(size) FMTStr(@"[%f %f]", (size).width, (size).height)
-#define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
+#define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).origin.x+(rect).size.width, (rect).origin.y+(rect).size.height, (rect).size.width, (rect).size.height)

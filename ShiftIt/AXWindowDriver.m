@@ -26,27 +26,19 @@
 // even if the user settings is higher - this defines the absolute max of tries
 const int kMaxNumberOfTries = 20;
 
-#pragma mark Utility Functions
+#pragma mark AX Utils
 
 @interface AXWindowDriver(AXUtils)
 
 + (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element change:(BOOL *)changeable error:(NSError **)error;
 + (BOOL) pressButton_:(CFStringRef)buttonName ofElement:(AXUIElementRef)element error:(NSError **)error;
 
-+ (BOOL) setElement_:(AXUIElementRef)element size:(NSSize)size error:(NSError **)error;
++ (BOOL) getOrigin_:(NSPoint *)origin ofElement:(AXUIElementRef)element error:(NSError **)error;
++ (BOOL) getSize_:(NSSize *)size ofElement:(AXUIElementRef)element error:(NSError **)error;
++ (BOOL) getDrawersGeometry_:(NSRect *)geometry ofElement:(AXUIElementRef)windowRef error:(NSError **)error;
 
-+ (BOOL) getElement_:(AXUIElementRef)element origin:(NSPoint *)origin error:(NSError **)error;
-+ (BOOL) getElement_:(AXUIElementRef)element size:(NSSize *)size error:(NSError **)error;
-
-+ (BOOL) getWindow_:(AXUIElementRef)windowRef geometry:(NSRect *)geometry error:(NSError **)error;
-+ (BOOL) getWindow_:(AXUIElementRef)windowRef drawersGeometry:(NSRect *)geometry error:(NSError **)error;
-
-@end
-
-@interface AXWindowDriver(WindowDelegate)
-- (BOOL) setWindow_:(id<SIWindow>)window origin:(NSPoint)origin error:(NSError **)error;
-- (BOOL) setWindow_:(id<SIWindow>)window size:(NSSize)size error:(NSError **)error;
-- (void) freeWindow_:(id<SIWindow>)window;
++ (BOOL) setSize_:(NSSize)size ofElement:(AXUIElementRef)element error:(NSError **)error;
++ (BOOL) setOrigin_:(NSPoint)origin ofElement:(AXUIElementRef)element error:(NSError **)error;
 
 @end
 
@@ -56,32 +48,23 @@ const int kMaxNumberOfTries = 20;
 @private
     AXUIElementRef ref_;
     AXWindowDriver *driver_;
-    
-    NSRect windowRect_;
-    NSRect drawersRect_;
-    NSRect geometry_;
-    
-    SIScreen *screen_;
 }
 
 @property (readonly) AXUIElementRef ref_;
 @property (readonly) AXWindowDriver *driver_;
 
-@property (readonly) NSRect windowRect_;
-@property (readonly) NSRect drawersRect_;
-@property (readonly) BOOL hasDrawers_;
-
-@property (readonly) NSRect geometry;
-@property (readonly) NSPoint origin;
-@property (readonly) NSSize size;
-
-@property (readonly) SIScreen *screen;
-
 - (id) initWithRef:(AXUIElementRef)ref
-            driver:(AXWindowDriver *)driver
-        windowRect:(NSRect)windowRect 
-       drawersRect:(NSRect)drawersRect 
-            screen:(SIScreen *)screen;
+            driver:(AXWindowDriver *)driver;
+
+@end
+
+#pragma mark Window Delegate Functions
+
+@interface AXWindowDriver(WindowDelegate)
+
+- (BOOL) getGeometry_:(NSRect *)geometry windowRect:(NSRect *)windowRect drawersRect:(NSRect *)drawersRect ofWindow:(AXUIElementRef)windowRef error:(NSError **)error;
+- (BOOL) setGeometry_:(NSRect)geometry ofWindow:(AXUIElementRef)windowRef error:(NSError **)error;
+- (void) freeWindow_:(AXUIElementRef)windowRef;
 
 @end
 
@@ -92,25 +75,11 @@ const int kMaxNumberOfTries = 20;
 @synthesize ref_;
 @synthesize driver_;
 
-@synthesize windowRect_;
-@synthesize drawersRect_;
-@dynamic hasDrawers_;
-
-@synthesize geometry = geometry_;
-@dynamic origin;
-@dynamic size;
-
-@synthesize screen = screen_;
-
 - (id) initWithRef:(AXUIElementRef)ref 
-            driver:(AXWindowDriver *)driver
-        windowRect:(NSRect)windowRect 
-       drawersRect:(NSRect)drawersRect 
-            screen:(SIScreen *)screen {
+            driver:(AXWindowDriver *)driver {
     
-	// TODO: check for invalid wids
 	FMTAssertNotNil(ref);
-	FMTAssertNotNil(screen);
+	FMTAssertNotNil(driver);
     
 	if (![super init]) {
 		return nil;
@@ -119,53 +88,50 @@ const int kMaxNumberOfTries = 20;
     // TODO: check th eownership policy for Core Foundation
 	ref_ = ref;
     driver_ = [driver retain];
-	windowRect_ = windowRect;
-    drawersRect_ = drawersRect;
-    
-    if (drawersRect_.size.width > 0) {
-        geometry_ = NSUnionRect(windowRect_, drawersRect_);            
-    } else {
-        geometry_ = windowRect_;                
-    }    
-    
-	screen_ = [screen retain];
     
 	return self;
 }
 
 - (void) dealloc {
-    [driver_ freeWindow_:self];
+    [driver_ freeWindow_:ref_];
     
     [driver_ release];
-	[screen_ release];
     
 	[super dealloc];
 }
 
-#pragma mark SIWindow dynamic properties
-
-- (BOOL) hasDrawers_ {
-    return drawersRect_.size.width > 0;
+- (BOOL) getGeometry:(NSRect *)geometry error:(NSError **)error {
+    FMTAssertNotNil(geometry);
+    FMTAssertNotNil(error);
+    
+    NSRect unused;
+    
+    if (![driver_ getGeometry_:geometry windowRect:&unused drawersRect:&unused ofWindow:ref_ error:error]) {
+        return NO;
+    }
+    
+    return YES;            
 }
 
-- (NSPoint) origin {
-	return geometry_.origin;
+- (BOOL) getScreen:(SIScreen **)screen error:(NSError **)error {
+    FMTAssertNotNil(screen);
+    FMTAssertNotNil(error);
+
+    NSRect geometry;
+    
+    if (![self getGeometry:&geometry error:error]) {
+        return NO;
+    }
+    
+    *screen = [SIScreen screenForWindowGeometry:geometry];
+    return YES;
 }
 
-- (NSSize) size {
-	return geometry_.size;
-}
 
 // TODO: make sure that the origin makes sense
-- (BOOL) moveTo:(NSPoint)origin error:(NSError **)error {
-    return [driver_ setWindow_:self origin:origin error:error];
+- (BOOL) setGeometry:(NSRect)geometry error:(NSError **)error {
+    return [driver_ setGeometry_:geometry ofWindow:ref_ error:error];
 }
-
-// TODO: make sure that the size makes sense
-- (BOOL) resizeTo:(NSSize)size error:(NSError **)error {
-    return [driver_ setWindow_:self size:size error:error];    
-}
-
 
 @end
 
@@ -232,31 +198,6 @@ static int numberOfTries_ = kMaxNumberOfTries;
         return NO;
     }
     
-    NSRect windowRect = NSMakeRect(0, 0, 0, 0); // window rect
-	NSRect drawersRect = NSMakeRect(0, 0, 0, 0); // drawers of the window
-    NSRect geometry;
-    
-    if (![AXWindowDriver getWindow_:windowRef geometry:&windowRect error:error]) {
-        return NO;
-    }
-    
-    FMTLogDebug(@"Window geometry without drawers: %@", RECT_STR(windowRect));
-    
-    if (shouldUseDrawers_) {
-        NSError *cause = nil;
-        
-        if (![AXWindowDriver getWindow_:windowRef drawersGeometry:&drawersRect error:&cause]) {
-            FMTLogInfo(@"Unable to get window drawers: %@", [cause description]);
-            geometry = windowRect;
-        } else if (drawersRect.size.width > 0) {
-            // there are some drawers            
-            FMTLogDebug(@"Drawers geometry: %@", RECT_STR(drawersRect));            
-            geometry = NSUnionRect(windowRect, drawersRect);
-            FMTLogDebug(@"Window geometry with drawers: %@", RECT_STR(geometry));
-        } else {
-            geometry = windowRect;
-        }
-    }
     
     //    BOOL flag;
     //    
@@ -281,8 +222,7 @@ static int numberOfTries_ = kMaxNumberOfTries;
     //    }
     
     
-    SIScreen *screen = [SIScreen screenForWindowGeometry:geometry];
-    *window = [[AXWindow alloc] initWithRef:windowRef driver:self windowRect:windowRect drawersRect:drawersRect screen:screen];
+    *window = [[AXWindow alloc] initWithRef:windowRef driver:self];
     
     return YES;
 }
@@ -414,7 +354,7 @@ static int numberOfTries_ = kMaxNumberOfTries;
     return YES;
 }
 
-+ (BOOL) getElement_:(AXUIElementRef)element origin:(NSPoint *)origin error:(NSError **)error {
++ (BOOL) getOrigin_:(NSPoint *)origin ofElement:(AXUIElementRef)element error:(NSError **)error {
 	FMTAssertNotNil(element);
 	FMTAssertNotNil(origin);
 	FMTAssertNotNil(error);
@@ -441,7 +381,7 @@ static int numberOfTries_ = kMaxNumberOfTries;
 	return YES;
 }
 
-+ (BOOL) getElement_:(AXUIElementRef)element size:(NSSize *)size error:(NSError **)error {
++ (BOOL) getSize_:(NSSize *)size ofElement:(AXUIElementRef)element error:(NSError **)error {
 	FMTAssertNotNil(element);
 	FMTAssertNotNil(size);
 	FMTAssertNotNil(error);
@@ -468,23 +408,7 @@ static int numberOfTries_ = kMaxNumberOfTries;
 	return YES;
 }
 
-+ (BOOL) getWindow_:(AXUIElementRef)windowRef geometry:(NSRect *)geometry error:(NSError **)error {
-	FMTAssertNotNil(windowRef);
-	FMTAssertNotNil(geometry);
-	FMTAssertNotNil(error);
-	
-	if (![AXWindowDriver getElement_:windowRef origin:&(geometry->origin) error:error]) {
-		return NO;
-	}
-    
-	if (![AXWindowDriver getElement_:windowRef size:&(geometry->size) error:error]) {
-		return NO;
-	}
-    
-    return YES;
-}
-
-+ (BOOL) getWindow_:(AXUIElementRef)windowRef drawersGeometry:(NSRect *)geometry error:(NSError **)error {
++ (BOOL) getDrawersGeometry_:(NSRect *)geometry ofElement:(AXUIElementRef)windowRef error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
 	FMTAssertNotNil(geometry);
 	FMTAssertNotNil(error);
@@ -513,15 +437,15 @@ static int numberOfTries_ = kMaxNumberOfTries;
         }
 		
 		if([role isEqualToString:NSAccessibilityDrawerRole]) {
-			if (![AXWindowDriver getElement_:(AXUIElementRef)child origin:&(r.origin) error:&cause]) {
+			if (![AXWindowDriver getOrigin_:&(r.origin) ofElement:(AXUIElementRef)child error:&cause]) {
                 *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"AXError: Unable to position of a window drawer");
                 return NO;                
             }
-			if (![AXWindowDriver getElement_:(AXUIElementRef)child size:&(r.size) error:&cause]) {
+			if (![AXWindowDriver getSize_:&(r.size) ofElement:(AXUIElementRef)child error:&cause]) {
                 *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"AXError: Unable to size of a window drawer");
                 return NO;                                
             }
-			
+            
 			if (first) {
 				*geometry = r;
 				first = NO;
@@ -537,7 +461,7 @@ static int numberOfTries_ = kMaxNumberOfTries;
 	return YES;
 }
 
-+ (BOOL) setElement_:(AXUIElementRef)element size:(NSSize)size error:(NSError **)error {
++ (BOOL) setSize_:(NSSize)size ofElement:(AXUIElementRef)element error:(NSError **)error {
     FMTAssertNotNil(element);
     FMTAssertNotNil(error);
     
@@ -547,6 +471,7 @@ static int numberOfTries_ = kMaxNumberOfTries;
     if ((ret = AXUIElementSetAttributeValue(element, kAXSizeAttribute, sizeRef)) != kAXErrorSuccess){
         *error = AX_SET_ATTR_ERROR(kAXSizeAttribute, ret);
         CFRelease(sizeRef);
+        
         return NO;
     }		
     
@@ -554,106 +479,178 @@ static int numberOfTries_ = kMaxNumberOfTries;
     return YES;
 }
 
++ (BOOL) setOrigin_:(NSPoint)origin ofElement:(AXUIElementRef)element error:(NSError **)error {
+    FMTAssertNotNil(element);
+    FMTAssertNotNil(error);
+    
+	CFTypeRef originRef = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&origin));
+    AXError ret = 0;
+	
+    if ((ret = AXUIElementSetAttributeValue(element, kAXPositionAttribute, originRef)) != kAXErrorSuccess) {
+        CFRelease(originRef);
+        *error = AX_SET_ATTR_ERROR(kAXPositionAttribute, ret);
+        
+        return NO;
+    }          
+    
+    CFRelease(originRef);
+    return YES;
+}
+
 @end
 
 @implementation AXWindowDriver (WindowDelegate)
 
-- (BOOL) setWindow_:(AXWindow *)window origin:(NSPoint)origin error:(NSError **)error {
-	FMTAssertNotNil(window);
-	FMTAssertNotNil(error);
+- (BOOL) getGeometry_:(NSRect *)geometry windowRect:(NSRect *)windowRect drawersRect:(NSRect *)drawersRect ofWindow:(AXUIElementRef)windowRef error:(NSError **)error {
+    FMTAssertNotNil(windowRef);
+    FMTAssertNotNil(geometry);
+    FMTAssertNotNil(windowRect);
+    FMTAssertNotNil(drawersRect);
     
-    NSRect windowRect = [window windowRect_];
-    NSRect windowRectWithDrawers = [window geometry];
+    // by default no drawers
+	*drawersRect = NSMakeRect(0, 0, 0, 0);
     
-    // readjust the drawers:
-	// when moving the drawers are not taken into an account so need to manually
-    // adjust the new position and size relative to the rect of drawers
-    NSPoint newOrigin = origin;
-	if (shouldUseDrawers_ && [window hasDrawers_]) {
-        int dx = windowRect.origin.x - windowRectWithDrawers.origin.x;
-        int dy = windowRectWithDrawers.origin.y - windowRect.origin.y;
-        
-		newOrigin.x += dx;
-		newOrigin.y -= dy;
-		
-		FMTLogDebug(@"New window origin after drawers adjustment: %@", POINT_STR(newOrigin));
+    if (![AXWindowDriver getOrigin_:&(windowRect->origin) ofElement:windowRef error:error]) {
+		return NO;
 	}
     
-	CFTypeRef newOriginRef = (CFTypeRef)(AXValueCreate(kAXValueCGPointType, (const void *)&newOrigin));
-    AXError ret = 0;
-	
-    if ((ret = AXUIElementSetAttributeValue([window ref_], kAXPositionAttribute, newOriginRef)) != kAXErrorSuccess) {
-		CFRelease(newOriginRef);
-        *error = AX_SET_ATTR_ERROR(kAXPositionAttribute, ret);
-        return NO;
+	if (![AXWindowDriver getSize_:&(windowRect->size) ofElement:windowRef error:error]) {
+		return NO;
 	}
     
-	CFRelease(newOriginRef);
-    return YES;
-}
-
-- (BOOL) setWindow_:(AXWindow *)window size:(NSSize)size error:(NSError **)error {
-	FMTAssertNotNil(window);
-	FMTAssertNotNil(error);
-	
-    NSRect windowRect = [window windowRect_];
-    NSRect windowRectWithDrawers = [window geometry];
-    
-    // readjust the drawers
-	// when moving the drawers are not taken into an account so need to manually
-    // adjust the new position and size relative to the rect of drawers
-    NSSize newSize = size;    
-	if (shouldUseDrawers_ && [window hasDrawers_]) {
-        int dw = windowRectWithDrawers.size.width - windowRect.size.width;
-        int dh = windowRectWithDrawers.size.height - windowRect.size.height;
-        
-		newSize.width -= dw;
-		newSize.height -= dh;
-		
-		FMTLogDebug(@"Setting window geometry after drawers adjustements: %@", SIZE_STR(newSize));
-	}
-        
-    // workaround for: http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html
-    NSError *cause = nil;
-    NSSize lastTry;
-    for (int i=1; i<=numberOfTries_; i++) {
-        // try to resize
-        FMTLogDebug(@"Resizing to: %@ (%d. attempt)", SIZE_STR(newSize), i);
-        if (![AXWindowDriver setElement_:[window ref_] size:newSize error:&cause]) {
-            *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
-                                            cause, 
-                                            @"Unable to set window size to: %@", SIZE_STR(size));
-            return NO;
+    if (shouldUseDrawers_) {
+        NSError *cause = nil;
+        if (![AXWindowDriver getDrawersGeometry_:drawersRect ofElement:windowRef error:&cause]) {
+            *geometry = *windowRect;
+            FMTLogDebug(@"Unable to get window drawers: %@", [cause localizedDescription]);
+        } else if (drawersRect->size.width > 0) {
+            // there are some drawers            
+            *geometry = NSUnionRect(*windowRect, *drawersRect);
+        } else {
+            *geometry = *windowRect;
         }
-
-        // see what has happened
-        NSSize actual;
-        if (![AXWindowDriver getElement_:[window ref_] size:&actual error:&cause]) {
-            *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
-                                            cause, 
-                                            @"Unable to get window size to: %@", SIZE_STR(size));
-            return NO;
-        }        
-        FMTLogDebug(@"Window resized to: %@ (%d. attempt)", SIZE_STR(actual), i);
-        
-        // compare to the expected
-        if (NSEqualSizes(actual, newSize)) {
-            break;
-        } else if (i > 1 && (NSEqualSizes(actual, lastTry))) {
-            // it seems that more attempts wont change anything
-            FMTLogDebug(@"The %d attempt is the same as %d so no effect (likely a discretely sizing window)", i, i-1);
-            break;
-        }
-        lastTry = actual;
     }
     
     return YES;
 }
 
-- (void) freeWindow_:(AXWindow *)window {
-    FMTAssertNotNil(window);
+- (BOOL) setGeometry_:(NSRect)geometry ofWindow:(AXUIElementRef)windowRef error:(NSError **)error {
+	FMTAssertNotNil(windowRef);
+	FMTAssertNotNil(error);
     
-    CFRelease([window ref_]);
+    FMTLogDebug(@"Setting window geometry to: %@", RECT_STR(geometry));
+    
+    NSRect currentGeometry;
+    NSRect windowRect;
+    NSRect drawersRect;
+    
+    if (![self getGeometry_:&currentGeometry windowRect:&windowRect drawersRect:&drawersRect ofWindow:windowRef error:error]) {
+        return NO;
+    }
+    
+    BOOL hasDrawers = drawersRect.size.width > 0;
+    
+    if (hasDrawers) {
+        FMTLogDebug(@"Window geometry without drawers: %@", RECT_STR(windowRect));
+        FMTLogDebug(@"Drawers geometry: %@", RECT_STR(drawersRect));            
+    }
+    FMTLogDebug(@"Window geometry with drawers: %@", RECT_STR(currentGeometry));
+    
+    SIScreen *screen = [SIScreen screenForWindowGeometry:geometry];
+    
+	// STEP 1: readjust adjust the visibility
+	// the geometry is the new application window geometry relative to the screen originating at [0,0]
+	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
+	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
+    NSRect visibleScreenRect = [screen visibleRect];    
+    
+	geometry.origin.x += visibleScreenRect.origin.x;
+	geometry.origin.y += visibleScreenRect.origin.y;// - ([screen isPrimary] ? GetMBarHeight() : 0);
+	
+	// we need to translate from cocoa coordinates
+	FMTLogDebug(@"Setting window geometry after readjusting the visiblity: %@", RECT_STR(geometry));	
+
+    // STEP 2: readjust the drawers
+	// when moving the drawers are not taken into an account so need to manually
+    // adjust the new position and size relative to the rect of drawers
+    NSRect newGeometry = geometry;
+	if (shouldUseDrawers_ && hasDrawers) {
+        int dx = windowRect.origin.x - currentGeometry.origin.x;
+        int dy = currentGeometry.origin.y - windowRect.origin.y;
+        int dw = currentGeometry.size.width - windowRect.size.width;
+        int dh = currentGeometry.size.height - windowRect.size.height;
+        
+		newGeometry.origin.x += dx;
+		newGeometry.origin.y -= dy;
+		newGeometry.size.width -= dw;
+		newGeometry.size.height -= dh;
+		
+		FMTLogDebug(@"Target window geometry after drawers adjustment: %@", RECT_STR(newGeometry));
+	}
+    
+    NSError *cause = nil;
+    
+    // MOVE
+    FMTLogDebug(@"Moving to: %@", POINT_STR(newGeometry.origin));
+    if (!NSEqualPoints(currentGeometry.origin, newGeometry.origin)) {
+        if (![AXWindowDriver setOrigin_:newGeometry.origin ofElement:windowRef error:&cause]) {
+            *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
+                                            cause, 
+                                            @"Unable to set window origin to: %@", POINT_STR(newGeometry.origin));
+            return NO;
+        }   
+    } else {
+        FMTLogDebug(@"New origin and existing window origin are the same - no action");        
+    }
+    
+    // RESIZE
+	if (!NSEqualSizes(currentGeometry.size, newGeometry.size)) {
+        FMTLogDebug(@"Resizing to: %@", SIZE_STR(newGeometry.size));
+        
+        // workaround for: http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html
+        NSSize lastTry;
+        for (int i=1; i<=numberOfTries_; i++) {
+            // try to resize
+            FMTLogDebug(@"Resizing to: %@ (%d. attempt)", SIZE_STR(newGeometry.size), i);
+            if (![AXWindowDriver setSize_:newGeometry.size ofElement:windowRef error:&cause]) {
+                *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
+                                                cause, 
+                                                @"Unable to set window size to: %@", SIZE_STR(newGeometry.size));
+                return NO;
+            }
+            
+            // see what has happened
+            NSRect actual;
+            NSRect unused;
+            if (![self getGeometry_:&unused windowRect:&actual drawersRect:&unused ofWindow:windowRef error:&cause]) {
+                *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
+                                                cause, 
+                                                @"Unable to get window size");
+                return NO;
+            }        
+            FMTLogDebug(@"Window resized to: %@ (%d. attempt)", SIZE_STR(actual.size), i);
+            
+            // compare to the expected
+            if (NSEqualSizes(actual.size, newGeometry.size)) {
+                break;
+            } else if (i > 1 && (NSEqualSizes(actual.size, lastTry))) {
+                // it seems that more attempts wont change anything
+                FMTLogDebug(@"The %d attempt is the same as %d so no effect (likely a discretely sizing window)", i, i-1);
+                break;
+            }
+            lastTry = actual.size;
+        }
+    } else {
+        FMTLogDebug(@"New size and existing window size are the same - no action");        
+    }
+    
+    return YES;
+}
+
+- (void) freeWindow_:(AXUIElementRef)windowRef {
+    FMTAssertNotNil(windowRef);
+    
+    CFRelease(windowRef);
 }
 
 @end

@@ -34,13 +34,10 @@
 @protocol SIWindow <NSObject>
 
 @required
-- (NSRect) geometry;
-- (NSPoint) origin;
-- (NSSize) size;
-- (SIScreen *) screen;
+- (BOOL) getGeometry:(NSRect *)geometry error:(NSError **)error;
+- (BOOL) getScreen:(SIScreen **)screen error:(NSError **)error;
 
-- (BOOL) moveTo:(NSPoint)origin error:(NSError **)error;
-- (BOOL) resizeTo:(NSSize)size error:(NSError **)error;
+- (BOOL) setGeometry:(NSRect)geometry error:(NSError **)error;
 
 @end
 
