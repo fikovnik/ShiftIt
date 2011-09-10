@@ -213,9 +213,19 @@ extern short GetMBarHeight(void);
     
     // find wid
     NSRect geometry;
-    if (![*window getGeometry:&geometry error:&cause]) {
-        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to get focused window geometry");
-        return NO;        
+    // if there is a chance that there are drawers we need to get the geometry
+    // without as each drawer is actually a windows on itws own
+    if ([*window respondsToSelector:@selector(getWindowRect:drawersRect:error:)]) {
+        NSRect unused;
+        if (![*window getWindowRect:&geometry drawersRect:&unused error:&cause]) {
+            *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to get focused window geometry");
+            return NO;        
+        }        
+    } else {
+        if (![*window getGeometry:&geometry error:&cause]) {
+            *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to get focused window geometry");
+            return NO;        
+        }
     }
     
 	NSArray *windowsInfoList = (NSArray *) CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly + kCGWindowListExcludeDesktopElements, 

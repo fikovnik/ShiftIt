@@ -72,7 +72,7 @@ NSInteger const kAXFailureErrorCode = 20102;
 NSInteger const kShiftItActionFaiureErrorCode = 20103;
 NSInteger const kAXWindowDriverErrorCode = 20104;
 
-const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 1/2; // in seconds
+const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.5; // in seconds
 
 NSDictionary *allShiftActions = nil;
 

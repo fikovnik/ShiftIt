@@ -43,6 +43,7 @@
 - (BOOL) canEnterFullScreen:(BOOL *)flag error:(NSError **)error;
 
 @optional
+- (BOOL) getWindowRect:(NSRect *)windowRect drawersRect:(NSRect *)drawersRect error:(NSError **)error;
 - (BOOL) getFullScreen:(BOOL *)flag error:(NSError **)error;
 - (BOOL) toggleFullScreen:(NSError **)error;
 - (BOOL) toggleZoom:(NSError **)error;

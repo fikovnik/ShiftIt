@@ -25,6 +25,7 @@
 
 // even if the user settings is higher - this defines the absolute max of tries
 const int kMaxNumberOfTries = 20;
+const double kDelay = 0.25;
 
 #pragma mark AX Utils
 
@@ -117,6 +118,17 @@ const int kMaxNumberOfTries = 20;
     
     return [driver_ getGeometry_:geometry windowRect:&unused drawersRect:&unused ofWindow:ref_ error:error];            
 }
+
+- (BOOL) getWindowRect:(NSRect *)windowRect drawersRect:(NSRect *)drawersRect error:(NSError **)error {
+    FMTAssertNotNil(windowRect);
+    FMTAssertNotNil(drawersRect);
+    FMTAssertNotNil(error);
+    
+    NSRect unused;
+    
+    return [driver_ getGeometry_:&unused windowRect:windowRect drawersRect:drawersRect ofWindow:ref_ error:error];                
+}
+
 
 - (BOOL) getScreen:(SIScreen **)screen error:(NSError **)error {
     FMTAssertNotNil(screen);
@@ -585,24 +597,51 @@ static int numberOfTries_ = kMaxNumberOfTries;
     NSError *cause = nil;
     
     // MOVE
-    FMTLogDebug(@"Moving to: %@", POINT_STR(newGeometry.origin));
     if (!NSEqualPoints(currentGeometry.origin, newGeometry.origin)) {
-        if (![AXWindowDriver setOrigin_:newGeometry.origin ofElement:windowRef error:&cause]) {
-            *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
-                                            cause, 
-                                            @"Unable to set window origin to: %@", POINT_STR(newGeometry.origin));
-            return NO;
-        }   
+        NSPoint lastTry;
+        // workaround for: http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html
+        for (int i=1; i<=numberOfTries_; i++) {
+            // try to resize
+            FMTLogDebug(@"Moving to: %@ (%d. attempt)", POINT_STR(newGeometry.origin), i);
+            if (![AXWindowDriver setOrigin_:newGeometry.origin ofElement:windowRef error:&cause]) {
+                *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
+                                                cause, 
+                                                @"Unable to set window origin to: %@", POINT_STR(newGeometry.origin));
+                return NO;
+            }
+            
+            // TODO: extract and turn into a semaphore
+            [NSThread sleepForTimeInterval:kDelay];
+            
+            // see what has happened
+            NSRect actual;
+            NSRect unused;
+            if (![self getGeometry_:&unused windowRect:&actual drawersRect:&unused ofWindow:windowRef error:&cause]) {
+                *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
+                                                cause, 
+                                                @"Unable to get window size");
+                return NO;
+            }        
+            FMTLogDebug(@"Window moved to: %@ (%d. attempt)", POINT_STR(actual.origin), i);
+            
+            // compare to the expected
+            if (NSEqualPoints(actual.origin, newGeometry.origin)) {
+                break;
+            } else if (i > 1 && (NSEqualPoints(actual.origin, lastTry))) {
+                // it seems that more attempts wont change anything
+                FMTLogDebug(@"The %d attempt is the same as %d so no effect", i, i-1);
+                break;
+            }
+            lastTry = actual.origin;
+        }
     } else {
         FMTLogDebug(@"New origin and existing window origin are the same - no action");        
     }
     
     // RESIZE
 	if (!NSEqualSizes(currentGeometry.size, newGeometry.size)) {
-        FMTLogDebug(@"Resizing to: %@", SIZE_STR(newGeometry.size));
-        
-        // workaround for: http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html
         NSSize lastTry;
+        // workaround for: http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html
         for (int i=1; i<=numberOfTries_; i++) {
             // try to resize
             FMTLogDebug(@"Resizing to: %@ (%d. attempt)", SIZE_STR(newGeometry.size), i);
@@ -613,6 +652,9 @@ static int numberOfTries_ = kMaxNumberOfTries;
                 return NO;
             }
             
+            // TODO: extract and turn into a semaphore
+            [NSThread sleepForTimeInterval:kDelay];
+
             // see what has happened
             NSRect actual;
             NSRect unused;
