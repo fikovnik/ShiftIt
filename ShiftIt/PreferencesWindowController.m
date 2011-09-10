@@ -235,6 +235,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 #pragma mark TabView delegate methods
 
 - (void)tabView:(NSTabView *)tabView didSelectTabViewItem:(NSTabViewItem *)tabViewItem {
+    // TODO: why not to use the tabViewItem
 	if ([selectedTabIdentifier_ isEqualTo:kHotKeysTabViewItemIdentifier]) {
 		[[NSNotificationCenter defaultCenter] postNotificationName:kDidStartEditingHotKeysPrefNotification object:nil];
 	} else {

@@ -28,6 +28,7 @@
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
 #import "FMTUtils.h"
+#import "FMTNSError+Extras.h"
 #import "FMTDefines.h"
 
 NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
@@ -410,7 +411,8 @@ NSDictionary *allShiftActions = nil;
 		FMTLogInfo(@"Invoking action: %@", identifier);
 		NSError *error = nil;
 		if (![windowManager_ executeAction:action error:&error]) {
-			FMTLogError(@"ShiftIt action: %@ failed: %@", [action identifier], FMTGetErrorDescription(error));
+			FMTLogError(@"Execution of ShiftIt action: %@ failed: %@", [action identifier], [error localizedDescription]);
+            FMTLogDebug([error fullDescription]);
 		}
 	}
 }
@@ -430,17 +432,35 @@ NSDictionary *allShiftActions = nil;
 
 @end
 
+NSError* SICreateErrorWithCause_(NSInteger errorCode, NSError *cause, NSString *fmt, va_list args);
+
 inline NSError* SICreateError(NSInteger errorCode, NSString *fmt, ...) {
+    NSError *error;
     va_list args;
-	return SICreateErrorWithCause(errorCode, nil, fmt, args);
+    
+    va_start(args, fmt);
+	error = SICreateErrorWithCause_(errorCode, nil, fmt, args);
+    va_end(args);
+    
+    return error;
 }
 
 inline NSError* SICreateErrorWithCause(NSInteger errorCode, NSError *cause, NSString *fmt, ...) {
-	FMTAssertNotNil(fmt);
-
+    NSError *error;
     va_list args;
-    NSString *msg = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
+    
+    va_start(args, fmt);
+	error = SICreateErrorWithCause_(errorCode, cause, fmt, args);
+    va_end(args);
+    
+    return error;
+}
 
+inline NSError* SICreateErrorWithCause_(NSInteger errorCode, NSError *cause, NSString *fmt, va_list args) {
+	FMTAssertNotNil(fmt);
+    
+    NSString *msg = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
+    
 	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
 	[userInfo setObject:msg forKey:NSLocalizedDescriptionKey];
     if (cause != nil) {

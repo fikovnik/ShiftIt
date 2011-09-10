@@ -10,12 +10,11 @@
 #import "ShiftIt.h"
 #import "FMTDefines.h"
 
-#define AX_COPY_ATTR_ERROR(attr, ret) SICreateError(kAXFailureErrorCode, @"AXUICopyAttributeValue failure: attribute: (attr) error: (ret)")
-#define AX_SET_ATTR_ERROR(attr, ret) SICreateError(kAXFailureErrorCode, @"AXUISetAttributeValue failure: attribute: (attr) error: (ret)")
-#define AX_PERF_ACTION_ERROR(action, ret) SICreateError(kAXFailureErrorCode, @"AXUIPerformAction failure: action: (action) error: (ret)")
-#define AX_IS_ATTR_SETTABLE_ERROR(attr, ret) SICreateError(kAXFailureErrorCode, @"AXUIIsAttributeSettable failure: action: (attr) error: (ret)")
-
-#define AX_VALUE_TYPE_ERROR(expected, actual) SICreateError(kAXFailureErrorCode, @"AXTypeError: expected: (expected) got: (actual)")
+#define AX_COPY_ATTR_ERROR(attr, ret) SICreateError(kAXFailureErrorCode, @"AXUIElementCopyAttributeValue failure: attribute: %@ error: %d", @#attr, (ret))
+#define AX_SET_ATTR_ERROR(attr, ret) SICreateError(kAXFailureErrorCode, @"AXUIElementSetAttributeValue failure: attribute: %@ error: %d", @#attr, (ret))
+#define AX_PERF_ACTION_ERROR(action, ret) SICreateError(kAXFailureErrorCode, @"AXUIElementPerformAction failure: action: %@ error: %d", @#action, (ret))
+#define AX_IS_ATTR_SETTABLE_ERROR(attr, ret) SICreateError(kAXFailureErrorCode, @"AXUIElementIsAttributeSettable failure: action: %@ error: %d", @#attr, (ret))
+#define AX_VALUE_TYPE_ERROR(expected, actual) SICreateError(kAXFailureErrorCode, @"AXTypeError: expected: %@ actual: %@", @#expected, (actual))
 
 #pragma mark Utility Functions
 
@@ -58,7 +57,7 @@
     
     //get the focused application
     AXUIElementRef focusedAppRef = nil;
-    AXError ret = 0;
+    AXError ret = kAXErrorFailure;
     
     if ((ret = AXUIElementCopyAttributeValue(systemElementRef_,
                                              kAXFocusedApplicationAttribute,
@@ -242,8 +241,28 @@
 }
 
 - (BOOL) toggleFullScreenOnWindow:(SIWindowRef)window error:(NSError **)error {
-    // args asserted in the nested call
-    return [AXWindowDriver pressButton_:kAXFullScreenButtonAttribute ofElement:window error:error];
+    FMTAssertNotNil(window);
+	FMTAssertNotNil(error);
+	
+    BOOL fullScreen = NO;
+    NSError *cause = nil;
+    if(![self isWindow:window inFullScreen:&fullScreen error:&cause]) {
+        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"AXError: Unable to determine whether window is in full screen or not");
+        return NO;
+    }
+    
+    AXError ret = 0;
+	
+    if ((ret = AXUIElementSetAttributeValue((AXUIElementRef)window, 
+                                            kAXFullScreenAttribute, 
+                                            fullScreen ? kCFBooleanFalse : kCFBooleanTrue)) != kAXErrorSuccess){
+        *error = AX_SET_ATTR_ERROR(kAXFullScreenAttribute, ret);
+        return NO;
+	}		
+    
+    return YES;
+    
+    //  return [AXWindowDriver pressButton_:kAXFullScreenButtonAttribute ofElement:window error:error];
 }
 
 @end
@@ -287,8 +306,9 @@
     FMTAssertNotNil(error);
     
     Boolean isSettable = false;
+    AXError ret = 0;
     
-    if (AXUIElementIsAttributeSettable(element, (CFStringRef)attributeName, &isSettable) != kAXErrorSuccess) {
+    if ((ret = AXUIElementIsAttributeSettable(element, (CFStringRef)attributeName, &isSettable)) != kAXErrorSuccess) {
         *error = AX_IS_ATTR_SETTABLE_ERROR((NSString *)attributeName, ret);
         return NO;
     }

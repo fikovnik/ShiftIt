@@ -515,12 +515,9 @@ extern short GetMBarHeight(void);
 	FMTAssertNotNil(action);
 
     DefaultWindowContext *ctx = [[[DefaultWindowContext alloc] initWithDriver:driver_] autorelease];
-    NSError *cause = nil;
     
     // TODO: in try catch
-    if (![action execute:ctx error:&cause]) {
-        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Failed to execute action: %@", [action label]);
-        
+    if (![action execute:ctx error:error]) {        
         return NO;
     }
     

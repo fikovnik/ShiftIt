@@ -133,7 +133,3 @@ return self;                                     \
 }                                                  \
 
 #endif // SINGLETON_BOILERPLATE_FULL
-
-#ifndef FMTGetErrorDescription
-#define FMTGetErrorDescription(error)	[[(error) userInfo] objectForKey:NSLocalizedDescriptionKey]
-#endif // FMTGetErrorDescription
