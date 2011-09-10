@@ -29,6 +29,7 @@ const int kMaxNumberOfTries = 20;
 #pragma mark AX Utils
 
 @interface AXWindowDriver(AXUtils)
++ (BOOL) getFocusedWindow_:(AXUIElementRef *)windowRef ofApplication:(AXUIElementRef)applicationRef error:(NSError **)error;
 
 + (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element change:(BOOL *)changeable error:(NSError **)error;
 + (BOOL) isAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element present:(BOOL *)flag error:(NSError **)error;
@@ -114,11 +115,7 @@ const int kMaxNumberOfTries = 20;
     
     NSRect unused;
     
-    if (![driver_ getGeometry_:geometry windowRect:&unused drawersRect:&unused ofWindow:ref_ error:error]) {
-        return NO;
-    }
-    
-    return YES;            
+    return [driver_ getGeometry_:geometry windowRect:&unused drawersRect:&unused ofWindow:ref_ error:error];            
 }
 
 - (BOOL) getScreen:(SIScreen **)screen error:(NSError **)error {
@@ -221,20 +218,39 @@ static int numberOfTries_ = kMaxNumberOfTries;
     
     FMTAssertNotNil(focusedAppRef);
     
+    AXUIElementRef windowRef;
     //get the focused window
-    AXUIElementRef windowRef = nil;
-    if ((ret = AXUIElementCopyAttributeValue(focusedAppRef,
-                                             kAXFocusedWindowAttribute,
-                                             (CFTypeRef*) &windowRef)) != kAXErrorSuccess) {
-        
-        *error = AX_COPY_ATTR_ERROR(kAXFocusedWindowAttribute, ret);
+    if (![AXWindowDriver getFocusedWindow_:&windowRef ofApplication:focusedAppRef error:error]) {
         CFRelease(focusedAppRef);
         return NO;
     }
     
-    *window = [[AXWindow alloc] initWithRef:windowRef driver:self];
+    *window = [[[AXWindow alloc] initWithRef:windowRef driver:self] autorelease];
     
+    CFRelease(focusedAppRef);
     return YES;
+}
+
+- (BOOL) findFocusedWindow:(id<SIWindow> *)window ofPID:(NSInteger)pid error:(NSError **)error {
+	FMTAssertNotNil(error);
+
+    AXUIElementRef appRef = AXUIElementCreateApplication(pid);
+    if (appRef == nil) {
+        *error = SICreateError(kAXFailureErrorCode, @"Unable to create AXUIElementRef for the application with PID: %d", pid);
+        return NO;
+    }
+    
+    AXUIElementRef windowRef;
+    //get the focused window
+    if (![AXWindowDriver getFocusedWindow_:&windowRef ofApplication:appRef error:error]) {
+        CFRelease(appRef);
+        return NO;
+    }
+    
+    *window = [[[AXWindow alloc] initWithRef:windowRef driver:self] autorelease];
+    
+    CFRelease(appRef);
+    return YES;    
 }
 
 @end
@@ -242,6 +258,23 @@ static int numberOfTries_ = kMaxNumberOfTries;
 #pragma mark Utility Functions Implementation
 
 @implementation AXWindowDriver (AXUtils)
+
++ (BOOL) getFocusedWindow_:(AXUIElementRef *)windowRef ofApplication:(AXUIElementRef)applicationRef error:(NSError **)error {
+    FMTAssertNotNil(windowRef);
+    FMTAssertNotNil(applicationRef);
+    FMTAssertNotNil(error);
+    
+    AXError ret = kAXFailureErrorCode;
+    
+    if ((ret = AXUIElementCopyAttributeValue(applicationRef,
+                                             kAXFocusedWindowAttribute,
+                                             (CFTypeRef *) windowRef)) != kAXErrorSuccess) {
+        *error = AX_COPY_ATTR_ERROR(kAXFocusedWindowAttribute, ret);
+        return NO;
+    }
+        
+    return YES;
+}
 
 + (BOOL) pressButton_:(CFStringRef)buttonName ofElement:(AXUIElementRef)element error:(NSError **)error {
     FMTAssertNotNil(buttonName);
@@ -456,35 +489,40 @@ static int numberOfTries_ = kMaxNumberOfTries;
 
 @implementation AXWindowDriver (WindowDelegate)
 
-- (BOOL) getGeometry_:(NSRect *)geometry windowRect:(NSRect *)windowRect drawersRect:(NSRect *)drawersRect ofWindow:(AXUIElementRef)windowRef error:(NSError **)error {
+- (BOOL) getGeometry_:(NSRect *)geometryRef windowRect:(NSRect *)windowRectRef drawersRect:(NSRect *)drawersRectRef ofWindow:(AXUIElementRef)windowRef error:(NSError **)error {
     FMTAssertNotNil(windowRef);
-    FMTAssertNotNil(geometry);
-    FMTAssertNotNil(windowRect);
-    FMTAssertNotNil(drawersRect);
+    FMTAssertNotNil(geometryRef);
+    FMTAssertNotNil(windowRectRef);
+    FMTAssertNotNil(drawersRectRef);
     
-    // by default no drawers
-	*drawersRect = NSMakeRect(0, 0, 0, 0);
+    NSRect geometry = NSMakeRect(0, 0, 0, 0);
+    NSRect windowRect = NSMakeRect(0, 0, 0, 0);
+	NSRect drawersRect = NSMakeRect(0, 0, 0, 0);
     
-    if (![AXWindowDriver getOrigin_:&(windowRect->origin) ofElement:windowRef error:error]) {
+    if (![AXWindowDriver getOrigin_:&(windowRect.origin) ofElement:windowRef error:error]) {
 		return NO;
 	}
     
-	if (![AXWindowDriver getSize_:&(windowRect->size) ofElement:windowRef error:error]) {
+	if (![AXWindowDriver getSize_:&(windowRect.size) ofElement:windowRef error:error]) {
 		return NO;
 	}
     
     if (shouldUseDrawers_) {
         NSError *cause = nil;
-        if (![AXWindowDriver getDrawersGeometry_:drawersRect ofElement:windowRef error:&cause]) {
-            *geometry = *windowRect;
+        if (![AXWindowDriver getDrawersGeometry_:&drawersRect ofElement:windowRef error:&cause]) {
+            geometry = windowRect;
             FMTLogDebug(@"Unable to get window drawers: %@", [cause localizedDescription]);
-        } else if (drawersRect->size.width > 0) {
+        } else if (drawersRect.size.width > 0) {
             // there are some drawers            
-            *geometry = NSUnionRect(*windowRect, *drawersRect);
+            geometry = NSUnionRect(windowRect, drawersRect);
         } else {
-            *geometry = *windowRect;
+            geometry = windowRect;
         }
     }
+    
+    *geometryRef = geometry;
+    *windowRectRef = windowRect;
+    *drawersRectRef = drawersRect;
     
     return YES;
 }

@@ -22,6 +22,7 @@
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
 		27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */; };
 		27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */; };
+		27F4687B141C1318001209F6 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4687A141C1318001209F6 /* FMTNSArray+Extras.m */; };
 		27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
 		27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */; };
 		27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */; };
@@ -75,7 +76,7 @@
 		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
 		2743F1A2140EFC8E00C23A67 /* WindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowDriver.h; sourceTree = "<group>"; };
-		2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WindowGeometryShiftItAction.h; sourceTree = "<group>"; };
+		2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowGeometryShiftItAction.h; sourceTree = "<group>"; };
 		2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowGeometryShiftItAction.m; sourceTree = "<group>"; };
 		279588FD1417D64000D04461 /* FMTNSError+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMTNSError+Extras.h"; sourceTree = "<group>"; };
 		279588FE1417D64100D04461 /* FMTNSError+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMTNSError+Extras.m"; sourceTree = "<group>"; };
@@ -86,6 +87,8 @@
 		27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSDictionary+Extras.m"; path = "FMT/FMTNSDictionary+Extras.m"; sourceTree = "<group>"; };
 		27C072E2140D981E00C4E199 /* FMTNSDate+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDate+Extras.h"; path = "FMT/FMTNSDate+Extras.h"; sourceTree = "<group>"; };
 		27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSDate+Extras.m"; path = "FMT/FMTNSDate+Extras.m"; sourceTree = "<group>"; };
+		27F46879141C1318001209F6 /* FMTNSArray+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMTNSArray+Extras.h"; sourceTree = "<group>"; };
+		27F4687A141C1318001209F6 /* FMTNSArray+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMTNSArray+Extras.m"; sourceTree = "<group>"; };
 		27F4FD4512730F2F00A65750 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTHotKey.h; path = FMT/FMTHotKey.h; sourceTree = "<group>"; };
 		27F4FD4612730F2F00A65750 /* FMTHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTHotKey.m; path = FMT/FMTHotKey.m; sourceTree = "<group>"; };
 		27F4FD4712730F2F00A65750 /* FMTHotKey+SRKeyCombo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTHotKey+SRKeyCombo.h"; path = "FMT/FMTHotKey+SRKeyCombo.h"; sourceTree = "<group>"; };
@@ -205,6 +208,8 @@
 				27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */,
 				279588FD1417D64000D04461 /* FMTNSError+Extras.h */,
 				279588FE1417D64100D04461 /* FMTNSError+Extras.m */,
+				27F46879141C1318001209F6 /* FMTNSArray+Extras.h */,
+				27F4687A141C1318001209F6 /* FMTNSArray+Extras.m */,
 			);
 			name = FMT;
 			sourceTree = "<group>";
@@ -398,6 +403,7 @@
 				27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */,
 				2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */,
 				279588FF1417D64100D04461 /* FMTNSError+Extras.m in Sources */,
+				27F4687B141C1318001209F6 /* FMTNSArray+Extras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

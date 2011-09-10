@@ -24,7 +24,7 @@
 #import "AbstractShiftItAction.h"
 #import "AXWindowDriver.h"
 #import "FMTDefines.h"
-
+#import "FMTNSArray+Extras.h"
 
 extern short GetMBarHeight(void);
 
@@ -192,8 +192,56 @@ extern short GetMBarHeight(void);
 
 - (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error {
     
-    return [driver_ getFocusedWindow:window error:error];
+    FMTLogDebug(@"Looking for front process");
+    ProcessSerialNumber psn;
+    if (GetFrontProcess(&psn) == procNotFound) {
+        *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find front process");
+        return NO;
+    }
     
+    pid_t pid;
+    GetProcessPID(&psn, &pid);
+
+    FMTLogDebug(@"Found front process with pid: %d", pid);
+        
+    FMTLogDebug(@"Searching driver: %@ for focused window of pid: %d", [driver_ description], pid);
+    NSError *cause = nil;
+    if (![driver_ findFocusedWindow:window ofPID:pid error:&cause]) {
+        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to find focused window for PID: %d", pid);
+        return NO;
+    }
+    
+    // find wid
+    NSRect geometry;
+    if (![*window getGeometry:&geometry error:&cause]) {
+        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to get focused window geometry");
+        return NO;        
+    }
+    
+	NSArray *windowsInfoList = (NSArray *) CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly + kCGWindowListExcludeDesktopElements, 
+                                                                      kCGNullWindowID);
+    NSDictionary *windowInfo = [windowsInfoList findFirst:^BOOL(NSDictionary *item) {
+        pid_t wPid = [[item objectForKey:(id)kCGWindowOwnerPID] integerValue];
+        NSRect rect;
+        CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)[item objectForKey:(id)kCGWindowBounds], &rect);
+
+        return wPid == pid && NSEqualRects(rect, geometry);
+    }];
+    
+    if (!windowInfo) {
+        *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find any window for pid: %d", pid);
+        return NO;
+    }
+    
+    CGWindowID wid = [[windowInfo objectForKey:(id)kCGWindowNumber] integerValue];
+    
+    FMTLogDebug(@"Associated wid: %d", wid);
+
+    [windowsInfoList release];
+    
+    [windows_ addObject:[*window retain]];
+    
+    return YES;
 }
 
 @end

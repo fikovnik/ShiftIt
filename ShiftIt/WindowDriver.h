@@ -13,5 +13,6 @@
 
 @required
 - (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error;
+- (BOOL) findFocusedWindow:(id<SIWindow> *)window ofPID:(NSInteger)pid error:(NSError **)error;
 
 @end
