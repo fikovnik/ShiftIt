@@ -36,8 +36,16 @@
 @required
 - (BOOL) getGeometry:(NSRect *)geometry error:(NSError **)error;
 - (BOOL) getScreen:(SIScreen **)screen error:(NSError **)error;
-
 - (BOOL) setGeometry:(NSRect)geometry error:(NSError **)error;
+- (BOOL) canMove:(BOOL *)flag error:(NSError **)error;
+- (BOOL) canResize:(BOOL *)flag error:(NSError **)error;
+- (BOOL) canZoom:(BOOL *)flag error:(NSError **)error;
+- (BOOL) canEnterFullScreen:(BOOL *)flag error:(NSError **)error;
+
+@optional
+- (BOOL) getFullScreen:(BOOL *)flag error:(NSError **)error;
+- (BOOL) toggleFullScreen:(NSError **)error;
+- (BOOL) toggleZoom:(NSError **)error;
 
 @end
 

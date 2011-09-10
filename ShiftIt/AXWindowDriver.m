@@ -31,6 +31,7 @@ const int kMaxNumberOfTries = 20;
 @interface AXWindowDriver(AXUtils)
 
 + (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element change:(BOOL *)changeable error:(NSError **)error;
++ (BOOL) isAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element present:(BOOL *)flag error:(NSError **)error;
 + (BOOL) pressButton_:(CFStringRef)buttonName ofElement:(AXUIElementRef)element error:(NSError **)error;
 
 + (BOOL) getOrigin_:(NSPoint *)origin ofElement:(AXUIElementRef)element error:(NSError **)error;
@@ -65,6 +66,13 @@ const int kMaxNumberOfTries = 20;
 - (BOOL) getGeometry_:(NSRect *)geometry windowRect:(NSRect *)windowRect drawersRect:(NSRect *)drawersRect ofWindow:(AXUIElementRef)windowRef error:(NSError **)error;
 - (BOOL) setGeometry_:(NSRect)geometry ofWindow:(AXUIElementRef)windowRef error:(NSError **)error;
 - (void) freeWindow_:(AXUIElementRef)windowRef;
+- (BOOL) getFullScreen_:(BOOL *)fullScreen ofWindow:(AXUIElementRef)windowRef error:(NSError **)error;
+- (BOOL) toggleZoomOfWindow_:(AXUIElementRef)windowRef error:(NSError **)error;
+- (BOOL) toggleFullScreenOfWindow_:(AXUIElementRef)windowRef error:(NSError **)error;
+- (BOOL) canResize_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error;
+- (BOOL) canMove_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error;
+- (BOOL) canZoom_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error;
+- (BOOL) canEnterFullScreen_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error;
 
 @end
 
@@ -127,10 +135,36 @@ const int kMaxNumberOfTries = 20;
     return YES;
 }
 
-
-// TODO: make sure that the origin makes sense
 - (BOOL) setGeometry:(NSRect)geometry error:(NSError **)error {
     return [driver_ setGeometry_:geometry ofWindow:ref_ error:error];
+}
+
+- (BOOL) canZoom:(BOOL *)flag error:(NSError **)error {
+    return [driver_ canZoom_:flag window:ref_ error:error];
+}
+
+- (BOOL) canEnterFullScreen:(BOOL *)flag error:(NSError **)error {
+    return [driver_ canEnterFullScreen_:flag window:ref_ error:error];    
+}
+
+- (BOOL) canMove:(BOOL *)flag error:(NSError **)error {
+    return [driver_ canMove_:flag window:ref_ error:error];
+}
+
+- (BOOL) canResize:(BOOL *)flag error:(NSError **)error {
+    return [driver_ canResize_:flag window:ref_ error:error];    
+}
+
+- (BOOL) getFullScreen:(BOOL *)flag error:(NSError **)error {
+    return [driver_ getFullScreen_:flag ofWindow:ref_ error:error];
+}
+
+- (BOOL) toggleFullScreen:(NSError **)error {
+    return [driver_ toggleFullScreenOfWindow_:ref_ error:error];
+}
+
+- (BOOL) toggleZoom:(NSError **)error {
+    return [driver_ toggleZoomOfWindow_:ref_ error:error];    
 }
 
 @end
@@ -198,109 +232,11 @@ static int numberOfTries_ = kMaxNumberOfTries;
         return NO;
     }
     
-    
-    //    BOOL flag;
-    //    
-    //    // check if it is moveable
-    //    if (![driver_ canWindow:window move:&flag error:&cause]) {
-    //        *error = SICreateErrorWithCause(@"Unable to check if window is moveable", kWindowManagerFailureErrorCode, cause);
-    //        return NO;        
-    //    }
-    //    if (!flag) {
-    //        FMTLogInfo(@"Window is not moveable");
-    //        return YES;
-    //    }
-    //    
-    //    // check if it is moveable
-    //    if (![driver_ canWindow:window resize:&flag error:&cause]) {
-    //        *error = SICreateErrorWithCause(@"Unable to check if window is resizeable", kWindowManagerFailureErrorCode, cause);
-    //        return NO;        
-    //    }
-    //    if (!flag) {
-    //        FMTLogInfo(@"Window is not resizeable");
-    //        return YES;
-    //    }
-    
-    
     *window = [[AXWindow alloc] initWithRef:windowRef driver:self];
     
     return YES;
 }
 
-//- (BOOL) isWindow:(AXWindow *)window inFullScreen:(BOOL *)fullScreen error:(NSError **)error {
-//    FMTAssertNotNil(window);
-//    FMTAssertNotNil(fullScreen);
-//	FMTAssertNotNil(error);
-//	
-//    CFBooleanRef fullScreenRef;
-//    AXError ret = 0;
-//    
-//    if ((ret = AXUIElementCopyAttributeValue([window ref_],
-//                                             (CFStringRef) kAXFullScreenAttribute,
-//                                             (CFTypeRef *) &fullScreenRef)) != kAXErrorSuccess) {
-//        
-//        *error = AX_COPY_ATTR_ERROR(kAXFullScreenAttribute, ret);
-//        return NO;
-//    }
-//    
-//    *fullScreen = fullScreenRef == kCFBooleanTrue ? YES : NO;
-//	CFRelease(fullScreenRef);
-//	
-//	return YES;
-//}
-//
-//
-//- (BOOL) canWindow:(AXWindow *)window resize:(BOOL *)resizeable error:(NSError **)error {    // args asserted in the nested call
-//    // args asserted in the nested call
-//    BOOL changeable;
-//    
-//    if (![AXWindowDriver canAttribute_:kAXSizeAttribute ofElement:[window ref_] change:&changeable error:error]) {
-//		return NO;
-//    }
-//    
-//    return YES;
-//}
-//
-//- (BOOL) canWindow:(AXWindow *)window move:(BOOL *)moveable error:(NSError **)error {
-//    // args asserted in the nested call
-//    BOOL changeable;
-//    
-//    if (![AXWindowDriver canAttribute_:kAXPositionAttribute ofElement:[window ref_] change:&changeable error:error]) {
-//		return NO;
-//    }
-//    
-//    return YES;
-//}
-//
-//- (BOOL) toggleZoomOnWindow:(AXWindow *)window error:(NSError **)error {    
-//    // args asserted in the nested call
-//    return [AXWindowDriver pressButton_:kAXZoomButtonAttribute ofElement:[window ref_] error:error];
-//}
-//
-//- (BOOL) toggleFullScreenOnWindow:(AXWindow *)window error:(NSError **)error {
-//    FMTAssertNotNil(window);
-//	FMTAssertNotNil(error);
-//	
-//    BOOL fullScreen = NO;
-//    NSError *cause = nil;
-//    if(![self isWindow:window inFullScreen:&fullScreen error:&cause]) {
-//        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"AXError: Unable to determine whether window is in full screen or not");
-//        return NO;
-//    }
-//    
-//    AXError ret = 0;
-//	
-//    if ((ret = AXUIElementSetAttributeValue([window ref_], 
-//                                            kAXFullScreenAttribute, 
-//                                            fullScreen ? kCFBooleanFalse : kCFBooleanTrue)) != kAXErrorSuccess){
-//        *error = AX_SET_ATTR_ERROR(kAXFullScreenAttribute, ret);
-//        return NO;
-//	}		
-//    
-//    return YES;
-//    
-//    //  return [AXWindowDriver pressButton_:kAXFullScreenButtonAttribute ofElement:window error:error];
-//}
 @end
 
 #pragma mark Utility Functions Implementation
@@ -333,6 +269,25 @@ static int numberOfTries_ = kMaxNumberOfTries;
     
     CFRelease(button);
     return YES;    
+}
+
++ (BOOL) isAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element present:(BOOL *)flag error:(NSError **)error {
+    FMTAssertNotNil(attributeName);
+    FMTAssertNotNil(element);
+    FMTAssertNotNil(flag);
+    FMTAssertNotNil(error);
+    
+    CFTypeRef value;
+    AXError ret = 0;
+    
+	if ((ret = AXUIElementCopyAttributeValue(element, kAXSizeAttribute, &value)) != kAXErrorSuccess) {
+        *flag = NO;
+		return YES;
+	}
+    
+    CFRelease(value);
+    *flag = YES;
+    return YES;
 }
 
 + (BOOL) canAttribute_:(CFStringRef)attributeName ofElement:(AXUIElementRef)element change:(BOOL *)changeable error:(NSError **)error {
@@ -534,6 +489,7 @@ static int numberOfTries_ = kMaxNumberOfTries;
     return YES;
 }
 
+// TODO: make sure that the origin makes sense
 - (BOOL) setGeometry_:(NSRect)geometry ofWindow:(AXUIElementRef)windowRef error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
 	FMTAssertNotNil(error);
@@ -652,5 +608,93 @@ static int numberOfTries_ = kMaxNumberOfTries;
     
     CFRelease(windowRef);
 }
+
+- (BOOL) getFullScreen_:(BOOL *)fullScreen ofWindow:(AXUIElementRef)windowRef error:(NSError **)error {
+    FMTAssertNotNil(windowRef);
+    FMTAssertNotNil(fullScreen);
+	FMTAssertNotNil(error);
+	
+    CFBooleanRef fullScreenRef;
+    AXError ret = 0;
+    
+    if ((ret = AXUIElementCopyAttributeValue(windowRef,
+                                             (CFStringRef) kAXFullScreenAttribute,
+                                             (CFTypeRef *) &fullScreenRef)) != kAXErrorSuccess) {
+        
+        *error = AX_COPY_ATTR_ERROR(kAXFullScreenAttribute, ret);
+        return NO;
+    }
+    
+    *fullScreen = fullScreenRef == kCFBooleanTrue ? YES : NO;
+	CFRelease(fullScreenRef);
+	
+	return YES;
+}
+
+- (BOOL) toggleZoomOfWindow_:(AXUIElementRef)windowRef error:(NSError **)error {    
+    // args asserted in the nested call
+    return [AXWindowDriver pressButton_:kAXZoomButtonAttribute ofElement:windowRef error:error];
+}
+
+- (BOOL) toggleFullScreenOfWindow_:(AXUIElementRef)windowRef error:(NSError **)error {
+    FMTAssertNotNil(windowRef);
+	FMTAssertNotNil(error);
+	
+    BOOL fullScreen = NO;
+    NSError *cause = nil;
+    if(![self getFullScreen_:&fullScreen ofWindow:windowRef error:&cause]) {
+        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"AXError: Unable to determine whether window is in full screen or not");
+        return NO;
+    }
+    
+    AXError ret = 0;
+	
+    if ((ret = AXUIElementSetAttributeValue(windowRef, 
+                                            kAXFullScreenAttribute, 
+                                            fullScreen ? kCFBooleanFalse : kCFBooleanTrue)) != kAXErrorSuccess){
+        *error = AX_SET_ATTR_ERROR(kAXFullScreenAttribute, ret);
+        return NO;
+	}		
+    
+    return YES;
+}
+
+
+- (BOOL) canResize_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error {
+    // args asserted in the nested call
+    if (![AXWindowDriver canAttribute_:kAXSizeAttribute ofElement:windowRef change:flag error:error]) {
+		return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL) canMove_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error {
+    // args asserted in the nested call
+    if (![AXWindowDriver canAttribute_:kAXPositionAttribute ofElement:windowRef change:flag error:error]) {
+		return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL) canZoom_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error {
+    // args asserted in the nested call
+    if (![AXWindowDriver isAttribute_:kAXZoomButtonAttribute ofElement:windowRef present:flag error:error]) {
+		return NO;
+    }
+    
+    return YES;
+}
+
+- (BOOL) canEnterFullScreen_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error {
+    // args asserted in the nested call
+    if (![AXWindowDriver canAttribute_:kAXFullScreenAttribute ofElement:windowRef change:flag error:error]) {
+		return NO;
+    }
+    
+    return YES;
+}
+
 
 @end
