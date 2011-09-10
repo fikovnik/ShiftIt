@@ -6,12 +6,12 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import "SimpleShiftItAction.h"
+#import "WindowGeometryShiftItAction.h"
 #import "FMTDefines.h"
 
-@implementation SimpleShiftItAction
+@implementation WindowGeometryShiftItAction
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag block:(SimpleShiftItActionBlock)block {
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag block:(SimpleWindowGeometryChangeBlock)block {
     FMTAssertNotNil(identifier);
     FMTAssertNotNil(label);
     FMTAssertNotNil(block);

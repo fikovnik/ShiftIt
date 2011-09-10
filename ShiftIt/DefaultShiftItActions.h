@@ -18,20 +18,20 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "SimpleShiftItAction.h"
+#import "WindowGeometryShiftItAction.h"
 
-const extern SimpleShiftItActionBlock shiftItLeft;
-const extern SimpleShiftItActionBlock shiftItRight;
-const extern SimpleShiftItActionBlock shiftItTop;
-const extern SimpleShiftItActionBlock shiftItBottom;
-const extern SimpleShiftItActionBlock shiftItTopLeft;
-const extern SimpleShiftItActionBlock shiftItTopRight;
-const extern SimpleShiftItActionBlock shiftItBottomLeft;
-const extern SimpleShiftItActionBlock shiftItBottomRight;
-const extern SimpleShiftItActionBlock shiftItFullScreen;
-const extern SimpleShiftItActionBlock shiftItCenter;
-const extern SimpleShiftItActionBlock shiftItIncrease;
-const extern SimpleShiftItActionBlock shiftItReduce;
+const extern SimpleWindowGeometryChangeBlock shiftItLeft;
+const extern SimpleWindowGeometryChangeBlock shiftItRight;
+const extern SimpleWindowGeometryChangeBlock shiftItTop;
+const extern SimpleWindowGeometryChangeBlock shiftItBottom;
+const extern SimpleWindowGeometryChangeBlock shiftItTopLeft;
+const extern SimpleWindowGeometryChangeBlock shiftItTopRight;
+const extern SimpleWindowGeometryChangeBlock shiftItBottomLeft;
+const extern SimpleWindowGeometryChangeBlock shiftItBottomRight;
+const extern SimpleWindowGeometryChangeBlock shiftItFullScreen;
+const extern SimpleWindowGeometryChangeBlock shiftItCenter;
+const extern SimpleWindowGeometryChangeBlock shiftItIncrease;
+const extern SimpleWindowGeometryChangeBlock shiftItReduce;
 
 @interface ToggleZoomShiftItAction : AbstractShiftItAction
 @end

@@ -15,7 +15,7 @@
 		270DACA914098AE30080DFBD /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
 		270EC26C12FF1965002A5F22 /* ShiftIt-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */; };
 		271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
-		2743F1AB140F048B00C23A67 /* SimpleShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* SimpleShiftItAction.m */; };
+		2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */; };
 		279588FF1417D64100D04461 /* FMTNSError+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 279588FE1417D64100D04461 /* FMTNSError+Extras.m */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
@@ -75,8 +75,8 @@
 		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
 		2743F1A2140EFC8E00C23A67 /* WindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowDriver.h; sourceTree = "<group>"; };
-		2743F1A9140F048B00C23A67 /* SimpleShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleShiftItAction.h; sourceTree = "<group>"; };
-		2743F1AA140F048B00C23A67 /* SimpleShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleShiftItAction.m; sourceTree = "<group>"; };
+		2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WindowGeometryShiftItAction.h; sourceTree = "<group>"; };
+		2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowGeometryShiftItAction.m; sourceTree = "<group>"; };
 		279588FD1417D64000D04461 /* FMTNSError+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMTNSError+Extras.h"; sourceTree = "<group>"; };
 		279588FE1417D64100D04461 /* FMTNSError+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMTNSError+Extras.m"; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
@@ -246,8 +246,8 @@
 			children = (
 				2708BEFF1260E10900192883 /* AbstractShiftItAction.h */,
 				2708BF001260E10900192883 /* AbstractShiftItAction.m */,
-				2743F1A9140F048B00C23A67 /* SimpleShiftItAction.h */,
-				2743F1AA140F048B00C23A67 /* SimpleShiftItAction.m */,
+				2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */,
+				2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */,
 				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
 				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
 			);
@@ -396,7 +396,7 @@
 				270DACA914098AE30080DFBD /* GTMLogger.m in Sources */,
 				27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */,
 				27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */,
-				2743F1AB140F048B00C23A67 /* SimpleShiftItAction.m in Sources */,
+				2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */,
 				279588FF1417D64100D04461 /* FMTNSError+Extras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

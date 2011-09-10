@@ -19,7 +19,7 @@
 
 #import "ShiftItAppDelegate.h"
 #import "ShiftIt.h"
-#import "SimpleShiftItAction.h"
+#import "WindowGeometryShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
 #import "ShiftItWindowManager.h"
@@ -293,26 +293,26 @@ NSDictionary *allShiftActions = nil;
 	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     // TODO: this is ugly but just temp
-    SimpleShiftItAction *action = nil;
+    WindowGeometryShiftItAction *action = nil;
     
     #define REGISTER_ACTION(dict, a) \
     action = (a); \
     [(dict) setObject:action forKey:[action identifier]];
     
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 block:shiftItLeft]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 block:shiftItRight]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 block:shiftItTop]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 block:shiftItBottom]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 block:shiftItTopLeft]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 block:shiftItTopRight]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 block:shiftItBottomLeft]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 block:shiftItBottomRight]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:9 block:shiftItCenter]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 block:shiftItLeft]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 block:shiftItRight]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 block:shiftItTop]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 block:shiftItBottom]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 block:shiftItTopLeft]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 block:shiftItTopRight]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 block:shiftItBottomLeft]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 block:shiftItBottomRight]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:9 block:shiftItCenter]);
     REGISTER_ACTION(dict, [[ToggleZoomShiftItAction alloc] initWithIdentifier:@"zoom" label:@"Toggle Zoom" uiTag:10]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:11 block:shiftItFullScreen]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:11 block:shiftItFullScreen]);
     REGISTER_ACTION(dict, [[ToggleFullScreenShiftItAction alloc] initWithIdentifier:@"fullScreen" label:@"Toggle Full Screen" uiTag:12]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:13 block:shiftItIncrease]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:14 block:shiftItReduce]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:13 block:shiftItIncrease]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:14 block:shiftItReduce]);
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }
