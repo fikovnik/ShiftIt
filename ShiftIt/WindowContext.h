@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "ShiftIt.h"
 
-typedef void* SIWindowRef;
+// TODO: following shoul actually go to something like ShiftIt.h
+#define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
 
 @interface SIScreen : NSObject {
 @private
@@ -19,38 +20,34 @@ typedef void* SIWindowRef;
 }
 
 @property (readonly) NSSize size;
+@property (readonly) NSRect visibleRect;
+@property (readonly) NSRect screenRect;
 @property (readonly) BOOL primary;
 
 + (SIScreen *) screenFromNSScreen:(NSScreen *)screen;
++ (SIScreen *) screenForWindowGeometry:(NSRect)geometry;
 
 - (id) initWithNSScreen:(NSScreen *)screen;
 
 @end
 
-@interface SIWindow : NSObject {
-@private	
-    SIWindowRef ref_;
-    NSRect windowRect_;
-    NSRect drawersRect_;
-    NSRect geometry_;
-    SIScreen *screen_;
-}
+@protocol SIWindow <NSObject>
 
-@property (readonly) NSRect geometry;
-@property (readonly) NSPoint origin;
-@property (readonly) NSSize size;
-@property (readonly) SIScreen *screen;
+@required
+- (NSRect) geometry;
+- (NSPoint) origin;
+- (NSSize) size;
+- (SIScreen *) screen;
+
+- (BOOL) moveTo:(NSPoint)origin error:(NSError **)error;
+- (BOOL) resizeTo:(NSSize)size error:(NSError **)error;
 
 @end
 
 @protocol WindowContext <NSObject>
 
-- (BOOL) getFocusedWindow:(SIWindow **)window error:(NSError **)error;
+@required
 
-- (BOOL) setWindow:(SIWindow *)window geometry:(NSRect)geometry error:(NSError **)error;
-
-- (BOOL) toggleZoomOnWindow:(SIWindow *)window error:(NSError **)error;
-
-- (BOOL) toggleFullScreenOnWindow:(SIWindow *)window error:(NSError **)error;
+- (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error;
 
 @end

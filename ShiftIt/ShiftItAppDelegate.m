@@ -70,6 +70,7 @@ NSString *const SIErrorDomain = @"org.shiftitapp.shiftit.ErrorDomain";
 NSInteger const kWindowManagerFailureErrorCode = 20101;
 NSInteger const kAXFailureErrorCode = 20102;
 NSInteger const kShiftItActionFaiureErrorCode = 20103;
+NSInteger const kAXWindowDriverErrorCode = 20104;
 
 const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 1/3; // in seconds
 
@@ -411,8 +412,7 @@ NSDictionary *allShiftActions = nil;
 		FMTLogInfo(@"Invoking action: %@", identifier);
 		NSError *error = nil;
 		if (![windowManager_ executeAction:action error:&error]) {
-			FMTLogError(@"Execution of ShiftIt action: %@ failed: %@", [action identifier], [error localizedDescription]);
-            FMTLogDebug([error fullDescription]);
+			FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], [error localizedDescription], [error fullDescription]);
 		}
 	}
 }

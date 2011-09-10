@@ -292,22 +292,22 @@ const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize 
 @implementation ToggleZoomShiftItAction
 
 - (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error {
-    FMTAssertNotNil(windowContext);
-    FMTAssertNotNil(error);
-    
-    NSError *cause = nil;
-    SIWindow *window = nil;
-    
-    if(![windowContext getFocusedWindow:&window error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
-                                        cause,
-                                        @"Unable to get active window");
-        return NO;
-    }
-
-    if(![windowContext toggleZoomOnWindow:window error:error]) {
-        return NO;
-    }
+//    FMTAssertNotNil(windowContext);
+//    FMTAssertNotNil(error);
+//    
+//    NSError *cause = nil;
+//    SIWindow *window = nil;
+//    
+//    if(![windowContext getFocusedWindow:&window error:&cause]) {
+//        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+//                                        cause,
+//                                        @"Unable to get active window");
+//        return NO;
+//    }
+//
+//    if(![windowContext toggleZoomOnWindow:window error:error]) {
+//        return NO;
+//    }
     
     return YES;
 }
@@ -317,23 +317,23 @@ const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize 
 @implementation ToggleFullScreenShiftItAction
 
 - (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error {
-    FMTAssertNotNil(windowContext);
-    FMTAssertNotNil(error);
-    
-    NSError *cause = nil;
-    SIWindow *window = nil;
-    
-    if(![windowContext getFocusedWindow:&window error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
-                                        cause,
-                                        @"Unable to get active window");
-        return NO;
-    }
-    
-    // TODO: escape from fullscreen
-    if(![windowContext toggleFullScreenOnWindow:window error:error]) {
-        return NO;
-    }
+//    FMTAssertNotNil(windowContext);
+//    FMTAssertNotNil(error);
+//    
+//    NSError *cause = nil;
+//    SIWindow *window = nil;
+//    
+//    if(![windowContext getFocusedWindow:&window error:&cause]) {
+//        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+//                                        cause,
+//                                        @"Unable to get active window");
+//        return NO;
+//    }
+//    
+//    // TODO: escape from fullscreen
+//    if(![windowContext toggleFullScreenOnWindow:window error:error]) {
+//        return NO;
+//    }
     
     return YES;
 }

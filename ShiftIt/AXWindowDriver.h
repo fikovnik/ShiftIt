@@ -20,12 +20,12 @@
 #import <Foundation/Foundation.h>
 #import "WindowDriver.h"
 
-// from whatever reason this attribute is missing in the AXAttributeConstants.h
-#define kAXFullScreenAttribute  CFSTR("AXFullScreen")
-
 @interface AXWindowDriver : NSObject<WindowDriver> {
  @private
     AXUIElementRef systemElementRef_;
+    BOOL shouldUseDrawers_;    
 }
+
+@property(readonly) BOOL shouldUseDrawers;
 
 @end

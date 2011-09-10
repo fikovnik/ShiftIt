@@ -73,6 +73,7 @@ extern NSString *const SIErrorDomain;
 
 extern NSInteger const kWindowManagerFailureErrorCode;
 extern NSInteger const kAXFailureErrorCode;
+extern NSInteger const kAXWindowDriverErrorCode;
 extern NSInteger const kShiftItActionFaiureErrorCode;
 
 #define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
