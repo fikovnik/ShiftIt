@@ -25,14 +25,12 @@
  *
  */
 
-@class AbstractShiftItAction;
-
 @interface ShiftItWindowManager : NSObject {
  @private
     id<WindowDriver> driver_;
 }
 
 - (id) initWithDriver:(id<WindowDriver>)driver;
-- (BOOL) executeAction:(AbstractShiftItAction *)action error:(NSError **)error;
+- (BOOL) executeAction:(id<ShiftItAction>)action error:(NSError **)error;
 
 @end

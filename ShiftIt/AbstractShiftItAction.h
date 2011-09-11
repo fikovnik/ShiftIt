@@ -18,9 +18,11 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "WindowContext.h"
+#import "ShiftIt.h"
 
-@interface AbstractShiftItAction : NSObject {
+extern NSInteger const kShiftItActionFaiureErrorCode;
+
+@interface AbstractShiftItAction : NSObject<ShiftItAction> {
  @private
 	NSString *identifier_;
 	NSString *label_;
@@ -32,6 +34,5 @@
 @property (readonly) NSInteger uiTag;
 
 - (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag;
-- (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error;
 
 @end

@@ -20,13 +20,15 @@
 #import <Carbon/Carbon.h>
 
 #import "ShiftItWindowManager.h"
-#import "ShiftIt.h"
-#import "AbstractShiftItAction.h"
 #import "AXWindowDriver.h"
-#import "FMTDefines.h"
-#import "FMTNSArray+Extras.h"
+#import "ShiftIt.h"
 
 extern short GetMBarHeight(void);
+
+// error related
+NSString *const SIErrorDomain = @"org.shiftitapp.shifit.error";
+
+NSInteger const kWindowManagerFailureErrorCode = 20101;
 
 @interface NSScreen (Private)
 
@@ -137,6 +139,51 @@ extern short GetMBarHeight(void);
 
 @end
 
+#pragma mark WindowInfo implementation
+
+@interface SIWindowInfo ()
+
+- (id) initWithPid:(pid_t)pid wid:(CGWindowID)wid rect:(NSRect)rect;
+
+@end
+
+@implementation SIWindowInfo
+
+@synthesize pid = pid_;
+@synthesize wid = wid_;
+@synthesize rect = rect_;
+
+- (id) initWithPid:(pid_t)pid wid:(CGWindowID)wid rect:(NSRect)rect {
+    if (![self init]) {
+        return nil;
+    }
+    
+    pid_ = pid;
+    wid_ = wid;
+    rect_ = rect;
+    
+    return self;
+}
+
++ (SIWindowInfo *) windowInfoFromCGWindowInfoDictionary:(NSDictionary *)windowInfo {
+    FMTAssertNotNil(windowInfo);
+    
+    NSRect rect;
+    CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)[windowInfo objectForKey:(id)kCGWindowBounds], 
+                                           &rect);
+    
+    return [[SIWindowInfo alloc] initWithPid:[[windowInfo objectForKey:(id)kCGWindowOwnerPID] integerValue]
+                                         wid:[[windowInfo objectForKey:(id)kCGWindowNumber] integerValue]
+                                        rect:rect];
+}
+
+- (NSString *) description {
+    NSString *bounds = RECT_STR(rect_);
+    return FMTStr(@"wid: %d pid: %d rect: %@", wid_, pid_, bounds);
+}
+
+@end
+
 #pragma mark Default Window Context
 
 @interface DefaultWindowContext : NSObject<WindowContext> {
@@ -191,63 +238,36 @@ extern short GetMBarHeight(void);
 }
 
 - (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error {
-    
-    FMTLogDebug(@"Looking for front process");
-    ProcessSerialNumber psn;
-    if (GetFrontProcess(&psn) == procNotFound) {
-        *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find front process");
-        return NO;
-    }
-    
-    pid_t pid;
-    GetProcessPID(&psn, &pid);
 
-    FMTLogDebug(@"Found front process with pid: %d", pid);
-        
-    FMTLogDebug(@"Searching driver: %@ for focused window of pid: %d", [driver_ description], pid);
-    NSError *cause = nil;
-    if (![driver_ findFocusedWindow:window ofPID:pid error:&cause]) {
-        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to find focused window for PID: %d", pid);
-        return NO;
-    }
-    
-    // find wid
-    NSRect geometry;
-    // if there is a chance that there are drawers we need to get the geometry
-    // without as each drawer is actually a windows on itws own
-    if ([*window respondsToSelector:@selector(getWindowRect:drawersRect:error:)]) {
-        NSRect unused;
-        if (![*window getWindowRect:&geometry drawersRect:&unused error:&cause]) {
-            *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to get focused window geometry");
-            return NO;        
-        }        
-    } else {
-        if (![*window getGeometry:&geometry error:&cause]) {
-            *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to get focused window geometry");
-            return NO;        
-        }
-    }
-    
-	NSArray *windowsInfoList = (NSArray *) CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly + kCGWindowListExcludeDesktopElements, 
+    FMTLogDebug(@"Looking for focused window");
+
+    // get all windows order front to back
+    NSArray *allWindowsInfoList = (NSArray *) CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly + kCGWindowListExcludeDesktopElements, 
                                                                       kCGNullWindowID);
-    NSDictionary *windowInfo = [windowsInfoList findFirst:^BOOL(NSDictionary *item) {
-        pid_t wPid = [[item objectForKey:(id)kCGWindowOwnerPID] integerValue];
-        NSRect rect;
-        CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)[item objectForKey:(id)kCGWindowBounds], &rect);
-
-        return wPid == pid && NSEqualRects(rect, geometry);
+    // filter only real windows - layer 0
+    NSArray *windowInfoList = [allWindowsInfoList filter:^BOOL(NSDictionary *item) {
+        return [[item objectForKey:(id)kCGWindowLayer] integerValue] == 0;
     }];
     
-    if (!windowInfo) {
-        *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find any window for pid: %d", pid);
+    // get the first one - the front most window
+    if ([windowInfoList count] == 0) {
+        *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find front window");
+        return NO;        
+    }
+    SIWindowInfo *frontWindowInfo = [SIWindowInfo windowInfoFromCGWindowInfoDictionary:[windowInfoList objectAtIndex:0]];
+    
+    // extract properties
+    
+    FMTLogDebug(@"Found front window: %@", [frontWindowInfo description]);
+    FMTLogDebug(@"Querying driver: %@ to check it it is the owner", [driver_ description]);
+    
+    NSError *cause = nil;
+    if (![driver_ findFocusedWindow:window withInfo:frontWindowInfo error:&cause]) {
+        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to find focused window");
         return NO;
     }
     
-    CGWindowID wid = [[windowInfo objectForKey:(id)kCGWindowNumber] integerValue];
-    
-    FMTLogDebug(@"Associated wid: %d", wid);
-
-    [windowsInfoList release];
+    [allWindowsInfoList release];
     
     [windows_ addObject:[*window retain]];
     
@@ -298,7 +318,7 @@ extern short GetMBarHeight(void);
 	[super dealloc];
 }
 
-- (BOOL) executeAction:(AbstractShiftItAction *)action error:(NSError **)error {
+- (BOOL) executeAction:(id<ShiftItAction>)action error:(NSError **)error {
 	FMTAssertNotNil(action);
 
     DefaultWindowContext *ctx = [[[DefaultWindowContext alloc] initWithDriver:driver_] autorelease];

@@ -23,7 +23,12 @@
 // following assertions were taken from: GMTDefines.h from the google-mac-toolbox:
 // http://code.google.com/p/google-toolbox-for-mac/
 
+#import <Foundation/Foundation.h>
 #import "GTMLogger.h"
+
+// collections
+#define FMT_A(...) [NSArray arrayWithObjects:__VA_ARGS__, nil]
+#define FMT_D(...) [NSDictionary dictionaryWithObjectsAndKeys:__VA_ARGS__, nil]
 
 // debugging
 #define FMTLogDebug(...)  \
@@ -36,9 +41,8 @@
 [[GTMLogger sharedLogger] logFuncAssert:__func__ msg:__VA_ARGS__]
 
 
-// TODO: rename to NSStr
 #ifndef FMTStr
-#define FMTStr(fmt,...) [NSString stringWithFormat:fmt,##__VA_ARGS__]
+#define FMTStr(fmt, ...) [NSString stringWithFormat:fmt, ##__VA_ARGS__]
 #endif // FMTStr
 
 #define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding] 

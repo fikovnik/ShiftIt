@@ -9,9 +9,12 @@
 #import <Foundation/Foundation.h>
 
 typedef BOOL(^FMTPredicate)(id item);
+typedef BOOL(^FMTEachCallback)(id item);
 
 @interface NSArray (FMTNSArrayExtras)
 
-- (id) findFirst:(FMTPredicate)predicate;
+- (id) filterFirst:(FMTPredicate)predicate;
+- (NSArray *) filter:(FMTPredicate)predicate;
+- (void) each:(FMTEachCallback)callback;
 
 @end

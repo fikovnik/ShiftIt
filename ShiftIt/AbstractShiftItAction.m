@@ -20,6 +20,8 @@
 #import "AbstractShiftItAction.h"
 #import "FMTDefines.h"
 
+NSInteger const kShiftItActionFaiureErrorCode = 20103;
+
 @implementation AbstractShiftItAction
 
 @synthesize identifier = identifier_;

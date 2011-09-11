@@ -18,7 +18,7 @@
  */
 
 #import "DefaultShiftItActions.h"
-#import "ShiftIt.h"
+#import "ShiftItApp.h"
 #import "FMTDefines.h"
 #import "ShiftItWindowManager.h"
 #import "WindowGeometryShiftItAction.h"

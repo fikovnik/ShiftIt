@@ -18,7 +18,7 @@
  */
 
 #import "ShiftItAppDelegate.h"
-#import "ShiftIt.h"
+#import "ShiftItApp.h"
 #import "WindowGeometryShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
@@ -64,13 +64,11 @@ NSInteger const kSIMenuItemSize = 30;
 
 NSInteger const kSIMenuUITagPrefix = 2000;
 
-// error related
-NSString *const SIErrorDomain = @"org.shiftitapp.shiftit.ErrorDomain";
+// even if the user settings is higher - this defines the absolute max of tries
+NSInteger const kMaxNumberOfTries = 20;
 
-NSInteger const kWindowManagerFailureErrorCode = 20101;
-NSInteger const kAXFailureErrorCode = 20102;
-NSInteger const kShiftItActionFaiureErrorCode = 20103;
-NSInteger const kAXWindowDriverErrorCode = 20104;
+// error related
+NSString *const SIAErrorDomain = @"org.shiftitapp.app.error";
 
 const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.5; // in seconds
 
@@ -180,7 +178,18 @@ NSDictionary *allShiftActions = nil;
     }
 	
 	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
-	windowManager_ = [[ShiftItWindowManager alloc] initWithDriver:[[[AXWindowDriver alloc] init] autorelease]];
+    
+    AXWindowDriver *driver = [[[AXWindowDriver alloc] init] autorelease];
+
+    // TODO: should be a parameter for the constructor
+    [driver setShouldUseDrawers:[[NSUserDefaults standardUserDefaults] boolForKey:kIncludeDrawersPrefKey]];
+    int numberOfTries = [[NSUserDefaults standardUserDefaults] integerForKey:kNumberOfTriesPrefKey];
+    if (numberOfTries < 0 || numberOfTries > kMaxNumberOfTries) {
+        numberOfTries = 1;
+    }
+    [driver setNumberOfTries:numberOfTries];
+    
+	windowManager_ = [[ShiftItWindowManager alloc] initWithDriver:driver];
 	
 	[self initializeActions_];
 	[self updateMenuBarIcon_];
@@ -431,42 +440,3 @@ NSDictionary *allShiftActions = nil;
 
 
 @end
-
-NSError* SICreateErrorWithCause_(NSInteger errorCode, NSError *cause, NSString *fmt, va_list args);
-
-inline NSError* SICreateError(NSInteger errorCode, NSString *fmt, ...) {
-    NSError *error;
-    va_list args;
-    
-    va_start(args, fmt);
-	error = SICreateErrorWithCause_(errorCode, nil, fmt, args);
-    va_end(args);
-    
-    return error;
-}
-
-inline NSError* SICreateErrorWithCause(NSInteger errorCode, NSError *cause, NSString *fmt, ...) {
-    NSError *error;
-    va_list args;
-    
-    va_start(args, fmt);
-	error = SICreateErrorWithCause_(errorCode, cause, fmt, args);
-    va_end(args);
-    
-    return error;
-}
-
-inline NSError* SICreateErrorWithCause_(NSInteger errorCode, NSError *cause, NSString *fmt, va_list args) {
-	FMTAssertNotNil(fmt);
-    
-    NSString *msg = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
-    
-	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-	[userInfo setObject:msg forKey:NSLocalizedDescriptionKey];
-    if (cause != nil) {
-        [userInfo setObject:cause forKey:NSUnderlyingErrorKey];
-    }
-	
-	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errorCode userInfo:userInfo];	
-	return error;    
-}

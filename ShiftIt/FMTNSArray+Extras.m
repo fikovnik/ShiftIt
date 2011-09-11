@@ -10,7 +10,7 @@
 
 @implementation NSArray (FMTNSArrayExtras)
 
-- (id) findFirst:(FMTPredicate)predicate {
+- (id) filterFirst:(FMTPredicate)predicate {
     for (id item in self) {
         if (predicate(item)) {
             return item;
@@ -18,6 +18,27 @@
     }
     
     return nil;
+}
+
+- (NSArray *) filter:(FMTPredicate)predicate {
+    NSMutableArray *res = [NSMutableArray array];
+
+    for (id item in self) {
+        if (predicate(item)) {
+            [res addObject:item];
+        }
+    }
+    
+    return [NSArray arrayWithArray:res];
+}
+
+
+- (void) each:(FMTEachCallback)callback {
+    for (id item in self) {
+        if (!callback(item)) {
+            break;
+        }
+    }
 }
 
 @end

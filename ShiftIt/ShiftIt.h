@@ -1,87 +1,89 @@
-/*
- ShiftIt: Resize windows with Hotkeys
- Copyright (C) 2010  Filip Krikava
- 
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- 
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- 
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <http://www.gnu.org/licenses/>.
- 
- */
+//
+//  ShiftIt.h
+//  ShiftIt
+//
+//  Created by Filip Krikava on 9/11/11.
+//  Copyright 2011 __MyCompanyName__. All rights reserved.
+//
 
-extern NSString *const kShiftItAppBundleId;
-
-// indexed using the ShiftItAction identifier
-extern NSDictionary *allShiftActions;
-
-extern NSString *const kShiftItUserDefaults;
-
-extern NSString *const kKeyCodePrefKeySuffix;
-extern NSString *const kModifiersPrefKeySuffix;
-
-// preferences keys
-extern NSString *const kHasStartedBeforePrefKey;
-extern NSString *const kShowMenuPrefKey;
-extern NSString *const kMarginsEnabledPrefKey;
-extern NSString *const kLeftMarginPrefKey;
-extern NSString *const kTopMarginPrefKey;
-extern NSString *const kBottomMarginPrefKey;
-extern NSString *const kRightMarginPrefKey;
-extern NSString *const kSizeDeltaTypePrefKey;
-extern NSString *const kFixedSizeWidthDeltaPrefKey;
-extern NSString *const kFixedSizeHeightDeltaPrefKey;
-extern NSString *const kWindowSizeDeltaPrefKey;
-extern NSString *const kScreenSizeDeltaPrefKey;
-extern NSString *const kIncludeDrawersPrefKey;
-extern NSString *const kNumberOfTriesPrefKey;
-
-typedef enum {
-	kFixedSizeDeltaType = 3001,
-	kWindowSizeDeltaType = 3002,
-	kScreenSizeDeltaType = 3003
-} SizeDeltaType;
-
-// distributed notifications
-extern NSString *const kShowPreferencesRequestNotification;
-
-// local notifications
-extern NSString *const kDidFinishEditingHotKeysPrefNotification;
-extern NSString *const kDidStartEditingHotKeysPrefNotification;
-extern NSString *const kHotKeyChangedNotification;
-
-// kHotKeyChangedNotification userInfo keys
-extern NSString *const kActionIdentifierKey;
-extern NSString *const kHotKeyKeyCodeKey;
-extern NSString *const kHotKeyModifiersKey;
-
-extern NSInteger const kSIMenuUITagPrefix;
-extern NSInteger const kSISRUITagPrefix;
-
-extern NSString *const kSIIconName;
-extern NSString *const kSIIconType;
-extern NSString *const kSIMenuItemTitle;
+#import "FMTDefines.h"
+#import "FMTUtils.h"
+#import "FMTNSArray+Extras.h"
 
 extern NSString *const SIErrorDomain;
-
 extern NSInteger const kWindowManagerFailureErrorCode;
-extern NSInteger const kAXFailureErrorCode;
-extern NSInteger const kAXWindowDriverErrorCode;
-extern NSInteger const kShiftItActionFaiureErrorCode;
-
-#define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
-#define ModifiersPrefKey(identifier) FMTStr(@"%@%@", (identifier), kModifiersPrefKeySuffix)
-
-extern NSError* SICreateError(NSInteger errorCode, NSString *fmt, ...);
-extern NSError* SICreateErrorWithCause(NSInteger errorCode, NSError *cause, NSString *fmt, ...);
 
 #define POINT_STR(point) FMTStr(@"[%f %f]", (point).x, (point).y)
 #define SIZE_STR(size) FMTStr(@"[%f %f]", (size).width, (size).height)
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).origin.x+(rect).size.width, (rect).origin.y+(rect).size.height, (rect).size.width, (rect).size.height)
+#define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
+
+#define SICreateError(errorCode, fmt, ...) FMTCreateError(SIErrorDomain, errorCode, fmt, ##__VA_ARGS__)
+#define SICreateErrorWithCause(errorCode, cause, fmt, ...) FMTCreateErrorWithCause(SIErrorDomain, errorCode, cause, fmt, ##__VA_ARGS__)
+
+@interface SIWindowInfo : NSObject {
+@private
+    pid_t pid_;
+    CGWindowID wid_;
+    NSRect rect_;
+}
+
+@property (readonly) pid_t pid;
+@property (readonly) CGWindowID wid;
+@property (readonly) NSRect rect;
+
++ (SIWindowInfo *) windowInfoFromCGWindowInfoDictionary:(NSDictionary *)windowInfo;
+
+@end
+
+@interface SIScreen : NSObject {
+@private
+	NSRect visibleRect_;
+	NSRect screenRect_;
+	BOOL primary_;
+}
+
+@property (readonly) NSSize size;
+@property (readonly) NSRect visibleRect;
+@property (readonly) NSRect screenRect;
+@property (readonly) BOOL primary;
+
++ (SIScreen *) screenFromNSScreen:(NSScreen *)screen;
++ (SIScreen *) screenForWindowGeometry:(NSRect)geometry;
+
+- (id) initWithNSScreen:(NSScreen *)screen;
+
+@end
+
+@protocol SIWindow <NSObject>
+
+@required
+- (BOOL) getGeometry:(NSRect *)geometry error:(NSError **)error;
+- (BOOL) getScreen:(SIScreen **)screen error:(NSError **)error;
+- (BOOL) setGeometry:(NSRect)geometry error:(NSError **)error;
+- (BOOL) canMove:(BOOL *)flag error:(NSError **)error;
+- (BOOL) canResize:(BOOL *)flag error:(NSError **)error;
+- (BOOL) canZoom:(BOOL *)flag error:(NSError **)error;
+- (BOOL) canEnterFullScreen:(BOOL *)flag error:(NSError **)error;
+
+@optional
+- (BOOL) getWindowRect:(NSRect *)windowRect drawersRect:(NSRect *)drawersRect error:(NSError **)error;
+- (BOOL) getFullScreen:(BOOL *)flag error:(NSError **)error;
+- (BOOL) toggleFullScreen:(NSError **)error;
+- (BOOL) toggleZoom:(NSError **)error;
+
+@end
+
+@protocol WindowContext <NSObject>
+
+@required
+- (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error;
+
+@end
+
+@protocol ShiftItAction <NSObject>
+
+@required
+- (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error;
+
+@end

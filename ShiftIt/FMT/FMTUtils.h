@@ -33,3 +33,6 @@ BOOL FMTOpenSystemPreferencePane(NSString *prefPaneId);
 BOOL FMTIsProcessWithBundleIdRunning(NSString *bundleId);
 
 NSInteger FMTNumberOfRunningProcessesWithBundleId(NSString *bundleId);
+
+NSError* FMTCreateError(NSString *erroDomain, NSInteger errorCode, NSString *fmt, ...);
+NSError* FMTCreateErrorWithCause(NSString *errorDomain, NSInteger errorCode, NSError *cause, NSString *fmt, ...);

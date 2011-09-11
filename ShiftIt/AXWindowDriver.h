@@ -23,9 +23,11 @@
 @interface AXWindowDriver : NSObject<WindowDriver> {
  @private
     AXUIElementRef systemElementRef_;
-    BOOL shouldUseDrawers_;    
+    BOOL shouldUseDrawers_;
+    NSInteger numberOfTries_;
 }
 
-@property(readonly) BOOL shouldUseDrawers;
+@property(assign) BOOL shouldUseDrawers;
+@property(assign) NSInteger numberOfTries; 
 
 @end

@@ -23,8 +23,9 @@
 
 #pragma mark Constants
 
-// even if the user settings is higher - this defines the absolute max of tries
-const int kMaxNumberOfTries = 20;
+NSInteger const kAXFailureErrorCode = 20102;
+NSInteger const kAXWindowDriverErrorCode = 20104;
+
 const double kDelay = 0.25;
 
 #pragma mark AX Utils
@@ -180,18 +181,10 @@ const double kDelay = 0.25;
 
 #pragma mark AX Window Driver Implementation
 
-static int numberOfTries_ = kMaxNumberOfTries;
-
 @implementation AXWindowDriver
 
 @synthesize shouldUseDrawers = shouldUseDrawers_;
-
-+ (void) initialize {
-    numberOfTries_ = [[NSUserDefaults standardUserDefaults] integerForKey:kNumberOfTriesPrefKey];
-    if (numberOfTries_ < 0 || numberOfTries_ > kMaxNumberOfTries) {
-        numberOfTries_ = 1;
-    }
-}
+@synthesize numberOfTries = numberOfTries_;
 
 - (id)init {
 	if(![super init]){
@@ -203,9 +196,6 @@ static int numberOfTries_ = kMaxNumberOfTries;
 	// that far in execution if the AX api is not available
 	FMTAssertNotNil(systemElementRef_);
     
-    // TODO: should be a parameter for the constructor
-    shouldUseDrawers_ = [[NSUserDefaults standardUserDefaults] boolForKey:kIncludeDrawersPrefKey];
-    
     return self;
 }
 
@@ -213,42 +203,12 @@ static int numberOfTries_ = kMaxNumberOfTries;
     CFRelease(systemElementRef_);
 }
 
-- (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error {  
-    FMTAssertNotNil(window);
-	FMTAssertNotNil(error);
-    
-    //get the focused application
-    AXUIElementRef focusedAppRef = nil;
-    AXError ret = kAXErrorFailure;
-    
-    if ((ret = AXUIElementCopyAttributeValue(systemElementRef_,
-                                             kAXFocusedApplicationAttribute,
-                                             (CFTypeRef *) &focusedAppRef)) != kAXErrorSuccess) {
-        *error = AX_COPY_ATTR_ERROR(kAXFocusedApplicationAttribute, ret);
-        return NO;
-    }    
-    
-    FMTAssertNotNil(focusedAppRef);
-    
-    AXUIElementRef windowRef;
-    //get the focused window
-    if (![AXWindowDriver getFocusedWindow_:&windowRef ofApplication:focusedAppRef error:error]) {
-        CFRelease(focusedAppRef);
-        return NO;
-    }
-    
-    *window = [[[AXWindow alloc] initWithRef:windowRef driver:self] autorelease];
-    
-    CFRelease(focusedAppRef);
-    return YES;
-}
-
-- (BOOL) findFocusedWindow:(id<SIWindow> *)window ofPID:(NSInteger)pid error:(NSError **)error {
+- (BOOL) findFocusedWindow:(id<SIWindow> *)window withInfo:(SIWindowInfo *)windowInfo error:(NSError **)error {
 	FMTAssertNotNil(error);
 
-    AXUIElementRef appRef = AXUIElementCreateApplication(pid);
+    AXUIElementRef appRef = AXUIElementCreateApplication([windowInfo pid]);
     if (appRef == nil) {
-        *error = SICreateError(kAXFailureErrorCode, @"Unable to create AXUIElementRef for the application with PID: %d", pid);
+        *error = SICreateError(kAXFailureErrorCode, @"Unable to create AXUIElementRef for the application with PID: %d", [windowInfo pid]);
         return NO;
     }
     
