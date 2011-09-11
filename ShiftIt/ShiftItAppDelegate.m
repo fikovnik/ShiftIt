@@ -18,8 +18,8 @@
  */
 
 #import "ShiftItAppDelegate.h"
-#import "ShiftIt.h"
-#import "SimpleShiftItAction.h"
+#import "ShiftItApp.h"
+#import "WindowGeometryShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
 #import "ShiftItWindowManager.h"
@@ -64,14 +64,13 @@ NSInteger const kSIMenuItemSize = 30;
 
 NSInteger const kSIMenuUITagPrefix = 2000;
 
+// even if the user settings is higher - this defines the absolute max of tries
+NSInteger const kMaxNumberOfTries = 20;
+
 // error related
-NSString *const SIErrorDomain = @"org.shiftitapp.shiftit.ErrorDomain";
+NSString *const SIAErrorDomain = @"org.shiftitapp.app.error";
 
-NSInteger const kWindowManagerFailureErrorCode = 20101;
-NSInteger const kAXFailureErrorCode = 20102;
-NSInteger const kShiftItActionFaiureErrorCode = 20103;
-
-const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 1/3; // in seconds
+const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.5; // in seconds
 
 NSDictionary *allShiftActions = nil;
 
@@ -179,7 +178,18 @@ NSDictionary *allShiftActions = nil;
     }
 	
 	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
-	windowManager_ = [[ShiftItWindowManager alloc] initWithDriver:[[[AXWindowDriver alloc] init] autorelease]];
+    
+    AXWindowDriver *driver = [[[AXWindowDriver alloc] init] autorelease];
+
+    // TODO: should be a parameter for the constructor
+    [driver setShouldUseDrawers:[[NSUserDefaults standardUserDefaults] boolForKey:kIncludeDrawersPrefKey]];
+    int numberOfTries = [[NSUserDefaults standardUserDefaults] integerForKey:kNumberOfTriesPrefKey];
+    if (numberOfTries < 0 || numberOfTries > kMaxNumberOfTries) {
+        numberOfTries = 1;
+    }
+    [driver setNumberOfTries:numberOfTries];
+    
+	windowManager_ = [[ShiftItWindowManager alloc] initWithDriver:driver];
 	
 	[self initializeActions_];
 	[self updateMenuBarIcon_];
@@ -292,26 +302,26 @@ NSDictionary *allShiftActions = nil;
 	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     // TODO: this is ugly but just temp
-    SimpleShiftItAction *action = nil;
+    WindowGeometryShiftItAction *action = nil;
     
     #define REGISTER_ACTION(dict, a) \
     action = (a); \
     [(dict) setObject:action forKey:[action identifier]];
     
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 block:shiftItLeft]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 block:shiftItRight]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 block:shiftItTop]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 block:shiftItBottom]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 block:shiftItTopLeft]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 block:shiftItTopRight]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 block:shiftItBottomLeft]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 block:shiftItBottomRight]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:9 block:shiftItCenter]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 block:shiftItLeft]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 block:shiftItRight]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 block:shiftItTop]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 block:shiftItBottom]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 block:shiftItTopLeft]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 block:shiftItTopRight]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 block:shiftItBottomLeft]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 block:shiftItBottomRight]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:9 block:shiftItCenter]);
     REGISTER_ACTION(dict, [[ToggleZoomShiftItAction alloc] initWithIdentifier:@"zoom" label:@"Toggle Zoom" uiTag:10]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:11 block:shiftItFullScreen]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:11 block:shiftItFullScreen]);
     REGISTER_ACTION(dict, [[ToggleFullScreenShiftItAction alloc] initWithIdentifier:@"fullScreen" label:@"Toggle Full Screen" uiTag:12]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:13 block:shiftItIncrease]);
-    REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:14 block:shiftItReduce]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:13 block:shiftItIncrease]);
+    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:14 block:shiftItReduce]);
 	
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }
@@ -411,8 +421,7 @@ NSDictionary *allShiftActions = nil;
 		FMTLogInfo(@"Invoking action: %@", identifier);
 		NSError *error = nil;
 		if (![windowManager_ executeAction:action error:&error]) {
-			FMTLogError(@"Execution of ShiftIt action: %@ failed: %@", [action identifier], [error localizedDescription]);
-            FMTLogDebug([error fullDescription]);
+			FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], [error localizedDescription], [error fullDescription]);
 		}
 	}
 }
@@ -431,42 +440,3 @@ NSDictionary *allShiftActions = nil;
 
 
 @end
-
-NSError* SICreateErrorWithCause_(NSInteger errorCode, NSError *cause, NSString *fmt, va_list args);
-
-inline NSError* SICreateError(NSInteger errorCode, NSString *fmt, ...) {
-    NSError *error;
-    va_list args;
-    
-    va_start(args, fmt);
-	error = SICreateErrorWithCause_(errorCode, nil, fmt, args);
-    va_end(args);
-    
-    return error;
-}
-
-inline NSError* SICreateErrorWithCause(NSInteger errorCode, NSError *cause, NSString *fmt, ...) {
-    NSError *error;
-    va_list args;
-    
-    va_start(args, fmt);
-	error = SICreateErrorWithCause_(errorCode, cause, fmt, args);
-    va_end(args);
-    
-    return error;
-}
-
-inline NSError* SICreateErrorWithCause_(NSInteger errorCode, NSError *cause, NSString *fmt, va_list args) {
-	FMTAssertNotNil(fmt);
-    
-    NSString *msg = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
-    
-	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
-	[userInfo setObject:msg forKey:NSLocalizedDescriptionKey];
-    if (cause != nil) {
-        [userInfo setObject:cause forKey:NSUnderlyingErrorKey];
-    }
-	
-	NSError *error = [NSError errorWithDomain:SIErrorDomain code:errorCode userInfo:userInfo];	
-	return error;    
-}

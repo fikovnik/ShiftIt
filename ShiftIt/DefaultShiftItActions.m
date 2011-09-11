@@ -18,12 +18,12 @@
  */
 
 #import "DefaultShiftItActions.h"
-#import "ShiftIt.h"
+#import "ShiftItApp.h"
 #import "FMTDefines.h"
 #import "ShiftItWindowManager.h"
-#import "SimpleShiftItAction.h"
+#import "WindowGeometryShiftItAction.h"
 
-const SimpleShiftItActionBlock shiftItLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -35,7 +35,7 @@ const SimpleShiftItActionBlock shiftItLeft = ^NSRect(NSRect windowRect,NSSize sc
 	return r;    
 };
 
-const SimpleShiftItActionBlock shiftItRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width/2;
@@ -47,7 +47,7 @@ const SimpleShiftItActionBlock shiftItRight = ^NSRect(NSRect windowRect,NSSize s
 	return r;
 };
 
-const SimpleShiftItActionBlock shiftItTop = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItTop = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -59,7 +59,7 @@ const SimpleShiftItActionBlock shiftItTop = ^NSRect(NSRect windowRect,NSSize scr
 	return r;
 };
 
-const SimpleShiftItActionBlock shiftItBottom = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItBottom = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -71,7 +71,7 @@ const SimpleShiftItActionBlock shiftItBottom = ^NSRect(NSRect windowRect,NSSize 
 	return r;
 };
 
-const SimpleShiftItActionBlock shiftItTopLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItTopLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -83,7 +83,7 @@ const SimpleShiftItActionBlock shiftItTopLeft = ^NSRect(NSRect windowRect,NSSize
 	return r;
 };
 
-const SimpleShiftItActionBlock shiftItTopRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItTopRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width / 2;
@@ -95,7 +95,7 @@ const SimpleShiftItActionBlock shiftItTopRight = ^NSRect(NSRect windowRect,NSSiz
 	return r;
 };
 
-const SimpleShiftItActionBlock shiftItBottomLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItBottomLeft = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -107,7 +107,7 @@ const SimpleShiftItActionBlock shiftItBottomLeft = ^NSRect(NSRect windowRect,NSS
 	return r;
 };
 
-const SimpleShiftItActionBlock shiftItBottomRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItBottomRight = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width / 2;
@@ -119,7 +119,7 @@ const SimpleShiftItActionBlock shiftItBottomRight = ^NSRect(NSRect windowRect,NS
 	return r;
 };
 
-const SimpleShiftItActionBlock shiftItFullScreen = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItFullScreen = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -131,7 +131,7 @@ const SimpleShiftItActionBlock shiftItFullScreen = ^NSRect(NSRect windowRect,NSS
 	return r;
 };
 
-const SimpleShiftItActionBlock shiftItCenter = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	NSRect r;
 	
 	r.origin.x = (screenSize.width / 2)-(windowRect.size.width / 2);
@@ -281,11 +281,11 @@ NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, BOOL increa
 	return r;	
 }
 
-const SimpleShiftItActionBlock shiftItIncrease = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItIncrease = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	return ShiftIt_IncreaseReduce_(screenSize, windowRect, YES);
 };
 
-const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize screenSize) {
+const SimpleWindowGeometryChangeBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize screenSize) {
 	return ShiftIt_IncreaseReduce_(screenSize, windowRect, NO);
 };
 
@@ -296,7 +296,7 @@ const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize 
     FMTAssertNotNil(error);
     
     NSError *cause = nil;
-    SIWindow *window = nil;
+    id<SIWindow> window = nil;
     
     if(![windowContext getFocusedWindow:&window error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
@@ -305,7 +305,18 @@ const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize 
         return NO;
     }
 
-    if(![windowContext toggleZoomOnWindow:window error:error]) {
+    BOOL flag = NO;
+    if (![window canZoom:&flag error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+                                        cause,
+                                        @"Unable to find out if window can zoom");            
+    }
+    if (!flag) {
+        *error = SICreateError(kShiftItActionFaiureErrorCode, @"Window cannot zoom");
+        return NO;
+    }
+    
+    if(![window toggleZoom:error]) {
         return NO;
     }
     
@@ -321,7 +332,7 @@ const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize 
     FMTAssertNotNil(error);
     
     NSError *cause = nil;
-    SIWindow *window = nil;
+    id<SIWindow> window = nil;
     
     if(![windowContext getFocusedWindow:&window error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
@@ -330,8 +341,18 @@ const SimpleShiftItActionBlock shiftItReduce = ^NSRect(NSRect windowRect,NSSize 
         return NO;
     }
     
-    // TODO: escape from fullscreen
-    if(![windowContext toggleFullScreenOnWindow:window error:error]) {
+    BOOL flag = NO;
+    if (![window canEnterFullScreen:&flag error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+                                        cause,
+                                        @"Unable to find out if window can enter fullscreen");            
+    }
+    if (!flag) {
+        *error = SICreateError(kShiftItActionFaiureErrorCode, @"Window cannot enter fullscreen");
+        return NO;
+    }
+    
+    if(![window toggleFullScreen:error]) {
         return NO;
     }
     

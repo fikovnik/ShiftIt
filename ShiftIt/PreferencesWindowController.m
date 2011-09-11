@@ -18,7 +18,7 @@
  */
 
 #import "PreferencesWindowController.h"
-#import "ShiftIt.h"
+#import "ShiftItApp.h"
 #import "AbstractShiftItAction.h"
 #import "FMTLoginItems.h"
 #import "FMTDefines.h"

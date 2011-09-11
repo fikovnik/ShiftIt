@@ -15,13 +15,14 @@
 		270DACA914098AE30080DFBD /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
 		270EC26C12FF1965002A5F22 /* ShiftIt-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */; };
 		271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
-		2743F1AB140F048B00C23A67 /* SimpleShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* SimpleShiftItAction.m */; };
+		2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */; };
 		279588FF1417D64100D04461 /* FMTNSError+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 279588FE1417D64100D04461 /* FMTNSError+Extras.m */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
 		27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */; };
 		27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */; };
+		27F4687B141C1318001209F6 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4687A141C1318001209F6 /* FMTNSArray+Extras.m */; };
 		27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
 		27F4FD4C12730F2F00A65750 /* FMTHotKey+SRKeyCombo.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4812730F2F00A65750 /* FMTHotKey+SRKeyCombo.m */; };
 		27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4A12730F2F00A65750 /* FMTHotKeyManager.m */; };
@@ -65,7 +66,7 @@
 		2708BF001260E10900192883 /* AbstractShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractShiftItAction.m; sourceTree = "<group>"; };
 		2708BF101260E5BB00192883 /* DefaultShiftItActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShiftItActions.h; sourceTree = "<group>"; };
 		2708BF111260E5BB00192883 /* DefaultShiftItActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultShiftItActions.m; sourceTree = "<group>"; };
-		2708C2551261C8E800192883 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
+		2708C2551261C8E800192883 /* ShiftItApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItApp.h; sourceTree = "<group>"; };
 		270DACA214094B9E0080DFBD /* AXWindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXWindowDriver.h; sourceTree = "<group>"; };
 		270DACA314094B9E0080DFBD /* AXWindowDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXWindowDriver.m; sourceTree = "<group>"; };
 		270DACA614098AE30080DFBD /* GTMGarbageCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMGarbageCollection.h; path = GTM/GTMGarbageCollection.h; sourceTree = "<group>"; };
@@ -75,17 +76,19 @@
 		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
 		2743F1A2140EFC8E00C23A67 /* WindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowDriver.h; sourceTree = "<group>"; };
-		2743F1A9140F048B00C23A67 /* SimpleShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleShiftItAction.h; sourceTree = "<group>"; };
-		2743F1AA140F048B00C23A67 /* SimpleShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleShiftItAction.m; sourceTree = "<group>"; };
+		2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowGeometryShiftItAction.h; sourceTree = "<group>"; };
+		2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowGeometryShiftItAction.m; sourceTree = "<group>"; };
 		279588FD1417D64000D04461 /* FMTNSError+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMTNSError+Extras.h"; sourceTree = "<group>"; };
 		279588FE1417D64100D04461 /* FMTNSError+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMTNSError+Extras.m"; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
-		27B9F42F140FF7CC0047FA29 /* WindowContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowContext.h; sourceTree = "<group>"; };
 		27C072DF140D6B9E00C4E199 /* FMTNSDictionary+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDictionary+Extras.h"; path = "FMT/FMTNSDictionary+Extras.h"; sourceTree = "<group>"; };
 		27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSDictionary+Extras.m"; path = "FMT/FMTNSDictionary+Extras.m"; sourceTree = "<group>"; };
 		27C072E2140D981E00C4E199 /* FMTNSDate+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDate+Extras.h"; path = "FMT/FMTNSDate+Extras.h"; sourceTree = "<group>"; };
 		27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSDate+Extras.m"; path = "FMT/FMTNSDate+Extras.m"; sourceTree = "<group>"; };
+		27F46879141C1318001209F6 /* FMTNSArray+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FMTNSArray+Extras.h"; sourceTree = "<group>"; };
+		27F4687A141C1318001209F6 /* FMTNSArray+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FMTNSArray+Extras.m"; sourceTree = "<group>"; };
+		27F4687F141CC08F001209F6 /* ShiftIt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt.h; sourceTree = "<group>"; };
 		27F4FD4512730F2F00A65750 /* FMTHotKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMTHotKey.h; path = FMT/FMTHotKey.h; sourceTree = "<group>"; };
 		27F4FD4612730F2F00A65750 /* FMTHotKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTHotKey.m; path = FMT/FMTHotKey.m; sourceTree = "<group>"; };
 		27F4FD4712730F2F00A65750 /* FMTHotKey+SRKeyCombo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTHotKey+SRKeyCombo.h"; path = "FMT/FMTHotKey+SRKeyCombo.h"; sourceTree = "<group>"; };
@@ -136,7 +139,7 @@
 				F2D9C239112F9D0E003E9435 /* Preferences */,
 				256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */,
-				2708C2551261C8E800192883 /* ShiftIt.h */,
+				2708C2551261C8E800192883 /* ShiftItApp.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -205,6 +208,8 @@
 				27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */,
 				279588FD1417D64000D04461 /* FMTNSError+Extras.h */,
 				279588FE1417D64100D04461 /* FMTNSError+Extras.m */,
+				27F46879141C1318001209F6 /* FMTNSArray+Extras.h */,
+				27F4687A141C1318001209F6 /* FMTNSArray+Extras.m */,
 			);
 			name = FMT;
 			sourceTree = "<group>";
@@ -223,11 +228,11 @@
 		2743F1A3140EFCB300C23A67 /* ShiftIt Framework */ = {
 			isa = PBXGroup;
 			children = (
-				27B9F42F140FF7CC0047FA29 /* WindowContext.h */,
 				2743F1A2140EFC8E00C23A67 /* WindowDriver.h */,
 				F2DC61231127ACDE000E1A5B /* ShiftItWindowManager.h */,
 				F2DC61241127ACDE000E1A5B /* ShiftItWindowManager.m */,
 				2743F1A4140EFCC700C23A67 /* Implementation */,
+				27F4687F141CC08F001209F6 /* ShiftIt.h */,
 			);
 			name = "ShiftIt Framework";
 			sourceTree = "<group>";
@@ -246,8 +251,8 @@
 			children = (
 				2708BEFF1260E10900192883 /* AbstractShiftItAction.h */,
 				2708BF001260E10900192883 /* AbstractShiftItAction.m */,
-				2743F1A9140F048B00C23A67 /* SimpleShiftItAction.h */,
-				2743F1AA140F048B00C23A67 /* SimpleShiftItAction.m */,
+				2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */,
+				2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */,
 				2708BF101260E5BB00192883 /* DefaultShiftItActions.h */,
 				2708BF111260E5BB00192883 /* DefaultShiftItActions.m */,
 			);
@@ -396,8 +401,9 @@
 				270DACA914098AE30080DFBD /* GTMLogger.m in Sources */,
 				27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */,
 				27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */,
-				2743F1AB140F048B00C23A67 /* SimpleShiftItAction.m in Sources */,
+				2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */,
 				279588FF1417D64100D04461 /* FMTNSError+Extras.m in Sources */,
+				27F4687B141C1318001209F6 /* FMTNSArray+Extras.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,8 +496,20 @@
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_OVERRIDING_PLUGINS_AND_FRAMEWORKS_DIR = "";
 				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
@@ -511,8 +529,20 @@
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
+				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
 				GCC_VERSION = 4.2;
+				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_MULTIPLE_DEFINITION_TYPES_FOR_SELECTOR = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = NO;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNKNOWN_PRAGMAS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				INSTALL_PATH = /Applications;
