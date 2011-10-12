@@ -9,6 +9,7 @@
 #import "FMTDefines.h"
 #import "FMTUtils.h"
 #import "FMTNSArray+Extras.h"
+#import "FMTNSError+Extras.h"
 
 extern NSString *const SIErrorDomain;
 extern NSInteger const kWindowManagerFailureErrorCode;
@@ -38,14 +39,12 @@ extern NSInteger const kWindowManagerFailureErrorCode;
 
 @interface SIScreen : NSObject {
 @private
-	NSRect visibleRect_;
-	NSRect screenRect_;
-	BOOL primary_;
+    NSScreen *screen_;
 }
 
 @property (readonly) NSSize size;
 @property (readonly) NSRect visibleRect;
-@property (readonly) NSRect screenRect;
+@property (readonly) NSRect rect;
 @property (readonly) BOOL primary;
 
 + (SIScreen *) screenFromNSScreen:(NSScreen *)screen;
@@ -58,16 +57,15 @@ extern NSInteger const kWindowManagerFailureErrorCode;
 @protocol SIWindow <NSObject>
 
 @required
-- (BOOL) getGeometry:(NSRect *)geometry error:(NSError **)error;
-- (BOOL) getScreen:(SIScreen **)screen error:(NSError **)error;
-- (BOOL) setGeometry:(NSRect)geometry error:(NSError **)error;
+- (BOOL) getGeometry:(NSRect *)geometry screen:(SIScreen **)screen error:(NSError **)error;
+- (BOOL) setGeometry:(NSRect)geometry screen:(SIScreen *)screen error:(NSError **)error;
 - (BOOL) canMove:(BOOL *)flag error:(NSError **)error;
 - (BOOL) canResize:(BOOL *)flag error:(NSError **)error;
 - (BOOL) canZoom:(BOOL *)flag error:(NSError **)error;
 - (BOOL) canEnterFullScreen:(BOOL *)flag error:(NSError **)error;
 
 @optional
-- (BOOL) getWindowRect:(NSRect *)windowRect drawersRect:(NSRect *)drawersRect error:(NSError **)error;
+- (BOOL) getWindowRect:(NSRect *)windowRect screen:(SIScreen **)screen drawersRect:(NSRect *)drawersRect error:(NSError **)error;
 - (BOOL) getFullScreen:(BOOL *)flag error:(NSError **)error;
 - (BOOL) toggleFullScreen:(NSError **)error;
 - (BOOL) toggleZoom:(NSError **)error;
@@ -87,3 +85,13 @@ extern NSInteger const kWindowManagerFailureErrorCode;
 - (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error;
 
 @end
+
+// TODO: move to FMT
+static inline double SIDistanceBetweenPoints(NSPoint r, NSPoint s) {
+    return sqrt((r.x-s.x)*(r.x-s.x) +(r.y-s.y)*(r.y-s.y));
+}
+
+// TODO: move to FMT
+static inline double SIRectArea(NSRect r) {
+    return r.size.width * r.size.height;
+}

@@ -43,18 +43,11 @@
     // TODO: check fullscreen
     
     NSRect currentGeometry;
-    if (![window getGeometry:&currentGeometry error:&cause]) {
+    SIScreen *screen;
+    if (![window getGeometry:&currentGeometry screen:&screen error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
                                         cause,
                                         @"Unable to get window geometry");
-        return NO;        
-    }
-    
-    SIScreen *screen;
-    if (![window getScreen:&screen error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
-                                        cause,
-                                        @"Unable to get window screen");
         return NO;        
     }
     
@@ -92,7 +85,7 @@
 	// we need to translate from cocoa coordinates
 	FMTLogDebug(@"Setting window geometry after readjusting the visiblity: %@", RECT_STR(geometry));	
     
-    if (![window setGeometry:geometry error:&cause]) {
+    if (![window setGeometry:geometry screen:screen error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
                                         cause, 
                                         @"Unable to move window to %@", POINT_STR(geometry.origin));

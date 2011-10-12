@@ -24,10 +24,15 @@
  @private
     AXUIElementRef systemElementRef_;
     BOOL shouldUseDrawers_;
-    NSInteger numberOfTries_;
+    BOOL converge_;
+    double delayBetweenOperations_;
 }
 
 @property(assign) BOOL shouldUseDrawers;
-@property(assign) NSInteger numberOfTries; 
+@property(assign) BOOL converge;
+@property(assign) double delayBetweenOperations;
+
+- (id)initWithError:(NSError **)error;
+
 
 @end

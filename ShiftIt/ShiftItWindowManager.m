@@ -74,9 +74,9 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 @implementation SIScreen
 
 @dynamic size;
-@synthesize primary = primary_;
-@synthesize screenRect = screenRect_;
-@synthesize visibleRect = visibleRect_;
+@dynamic primary;
+@dynamic rect;
+@dynamic visibleRect;
 
 - (id) initWithNSScreen:(NSScreen *)screen {
 	FMTAssertNotNil(screen);
@@ -85,20 +85,37 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 		return nil;
 	}
     
-	// screen coordinates of the best fit window
-	screenRect_ = [screen frame];
-	COCOA_TO_SCREEN_COORDINATES(screenRect_);
-    
-	// visible screen coordinates of the best fit window
-	// the visible screen denotes some inner rect of the screen frame
-	// which is visible - not occupied by menu bar or dock
-	visibleRect_ = [screen visibleFrame];
-	COCOA_TO_SCREEN_COORDINATES(visibleRect_);
-    
-	primary_ = [screen isPrimary];
+    screen_ = screen;
     
 	return self;
 }
+
+- (BOOL) primary {
+    return [screen_ isPrimary];
+}
+
+- (NSRect) rect {
+	// screen coordinates of the best fit window
+	NSRect r = [screen_ frame];
+	COCOA_TO_SCREEN_COORDINATES(r);
+    
+    return r;
+}
+
+- (NSRect) visibleRect {
+	// visible screen coordinates of the best fit window
+	// the visible screen denotes some inner rect of the screen frame
+	// which is visible - not occupied by menu bar or dock
+	NSRect r = [screen_ visibleFrame];
+	COCOA_TO_SCREEN_COORDINATES(r);
+    
+    return r;    
+}
+
+- (NSSize) size {
+	return [self visibleRect].size;
+}
+
 
 + (SIScreen *) screenFromNSScreen:(NSScreen *)screen {
     return [[[SIScreen alloc] initWithNSScreen:screen] autorelease];
@@ -133,8 +150,9 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 	return [SIScreen screenFromNSScreen:fitScreen];
 }
 
-- (NSSize) size {
-	return visibleRect_.size;
+- (NSString *) description {
+    NSDictionary *info = [screen_ deviceDescription];
+    return FMTStr(@"[id=%@, primary=%d, rect=%@]", [info objectForKey: @"NSScreenNumber"], [self primary], [self rect]);
 }
 
 @end
@@ -188,26 +206,26 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 
 @interface DefaultWindowContext : NSObject<WindowContext> {
  @private
-    id<WindowDriver> driver_;
+    NSArray *drivers_;
     int menuBarHeight_;
 
     NSMutableArray *windows_;
 }
 
-- (id) initWithDriver:(id<WindowDriver>)driver;
+- (id) initWithDrivers:(NSArray *)drivers;
 
 @end
 
 @implementation DefaultWindowContext
 
-- (id) initWithDriver:(id<WindowDriver>)driver {
-    FMTAssertNotNil(driver);
+- (id) initWithDrivers:(NSArray *)drivers {
+    FMTAssertNotNil(drivers);
     
     if (![self init]) {
         return nil;
     }
     
-    driver_ = [driver retain];
+    drivers_ = [drivers retain];
     windows_ = [[NSMutableArray alloc] init];
     menuBarHeight_ = GetMBarHeight();
 
@@ -232,7 +250,7 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
     }
     
     [windows_ release];
-    [driver_ release];
+    [drivers_ release];
     
     [super dealloc];
 }
@@ -259,16 +277,28 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
     // extract properties
     
     FMTLogDebug(@"Found front window: %@", [frontWindowInfo description]);
-    FMTLogDebug(@"Querying driver: %@ to check it it is the owner", [driver_ description]);
     
-    NSError *cause = nil;
-    if (![driver_ findFocusedWindow:window withInfo:frontWindowInfo error:&cause]) {
-        *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"Unable to find focused window");
-        return NO;
+    __block id<SIWindow> w = nil;
+    [drivers_ each:^BOOL(id<WindowDriver> driver) {
+        FMTLogDebug(@"Querying driver: %@ to check it it is the owner", [driver description]);
+        
+        NSError *problem = nil;
+        if (![driver findFocusedWindow:&w withInfo:frontWindowInfo error:&problem]) {
+            FMTLogDebug(@"Driver %@ did not locate window: %@", [driver description], [problem fullDescription]);
+            return YES; /// continue
+        } else {
+            return NO;
+        }
+    }];
+    
+    if (w == nil) {
+        *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find focused window");
+        return NO;        
     }
     
     [allWindowsInfoList release];
     
+    *window = w;
     [windows_ addObject:[*window retain]];
     
     return YES;
@@ -300,20 +330,20 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
  */
 @implementation ShiftItWindowManager
 
-- (id)initWithDriver:(id<WindowDriver>)driver {
-    FMTAssertNotNil(driver);
+- (id) initWithDrivers:(NSArray *)drivers {
+    FMTAssertNotNil(drivers);
     
 	if (![super init]) {
 		return nil;
 	}
     
-    driver_ = [driver retain];
+    drivers_ = [drivers retain];
     
 	return self;
 }
 
 - (void) dealloc {	
-    [driver_ release];
+    [drivers_ release];
     
 	[super dealloc];
 }
@@ -321,7 +351,7 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 - (BOOL) executeAction:(id<ShiftItAction>)action error:(NSError **)error {
 	FMTAssertNotNil(action);
 
-    DefaultWindowContext *ctx = [[[DefaultWindowContext alloc] initWithDriver:driver_] autorelease];
+    DefaultWindowContext *ctx = [[[DefaultWindowContext alloc] initWithDrivers:drivers_] autorelease];
     
     // TODO: in try catch
     if (![action execute:ctx error:error]) {        

@@ -99,7 +99,7 @@
 
 static NSMutableDictionary *allHotKeys;
 
-OSStatus hotKeyHandler(EventHandlerCallRef inHandlerCallRef,EventRef inEvent,
+static inline OSStatus hotKeyHandler(EventHandlerCallRef inHandlerCallRef,EventRef inEvent,
 					   void *userData)
 {
 	EventHotKeyID hotKeyID;

@@ -149,7 +149,7 @@ typedef enum {
 	kRightDirection =  1 << 3
 } Direction;
 
-NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, BOOL increase) {	
+static inline NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, BOOL increase) {	
 	float kw = 0;
 	float kh = 0;
 	

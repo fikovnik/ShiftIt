@@ -24,6 +24,7 @@
 #import "PreferencesWindowController.h"
 #import "ShiftItWindowManager.h"
 #import "AXWindowDriver.h"
+#import "X11WindowDriver.h"
 #import "FMTLoginItems.h"
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
@@ -50,7 +51,8 @@ NSString *const kFixedSizeHeightDeltaPrefKey = @"fixedSizeHeightDelta";
 NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
 NSString *const kIncludeDrawersPrefKey = @"includeDrawers";
-NSString *const kNumberOfTriesPrefKey = @"numberOfTries";
+NSString *const kAXDriverConvergePrefKey = @"axdriver_converge";
+NSString *const kAXDriverDelayBetweenOperationsPrefKey = @"axdriver_DelayBetweenOperations";
 
 // notifications
 NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";
@@ -179,17 +181,23 @@ NSDictionary *allShiftActions = nil;
 	
 	hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
     
-    AXWindowDriver *driver = [[[AXWindowDriver alloc] init] autorelease];
-
-    // TODO: should be a parameter for the constructor
-    [driver setShouldUseDrawers:[[NSUserDefaults standardUserDefaults] boolForKey:kIncludeDrawersPrefKey]];
-    int numberOfTries = [[NSUserDefaults standardUserDefaults] integerForKey:kNumberOfTriesPrefKey];
-    if (numberOfTries < 0 || numberOfTries > kMaxNumberOfTries) {
-        numberOfTries = 1;
+    // initialize AX driver
+    AXWindowDriver *axDriver = [[[AXWindowDriver alloc] init] autorelease];
+    // set defaults
+    if ([defaults objectForKey:kIncludeDrawersPrefKey]) {
+        [axDriver setShouldUseDrawers:[defaults boolForKey:kIncludeDrawersPrefKey]];
     }
-    [driver setNumberOfTries:numberOfTries];
+    if ([defaults objectForKey:kAXDriverConvergePrefKey]) {
+        [axDriver setConverge:[defaults boolForKey:kAXDriverConvergePrefKey]];
+    }
+    if ([defaults objectForKey:kAXDriverDelayBetweenOperationsPrefKey]) {
+        [axDriver setDelayBetweenOperations:[defaults doubleForKey:kAXDriverDelayBetweenOperationsPrefKey]];
+    }
     
-	windowManager_ = [[ShiftItWindowManager alloc] initWithDriver:driver];
+//    X11WindowDriver *x11Driver = [[[X11WindowDriver alloc] init] autorelease];
+    
+//	windowManager_ = [[ShiftItWindowManager alloc] initWithDrivers:FMT_A(axDriver, x11Driver, nil)];
+	windowManager_ = [[ShiftItWindowManager alloc] initWithDrivers:FMT_A(axDriver)];
 	
 	[self initializeActions_];
 	[self updateMenuBarIcon_];

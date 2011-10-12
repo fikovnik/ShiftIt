@@ -27,10 +27,10 @@
 
 @interface ShiftItWindowManager : NSObject {
  @private
-    id<WindowDriver> driver_;
+    NSArray *drivers_;
 }
 
-- (id) initWithDriver:(id<WindowDriver>)driver;
+- (id) initWithDrivers:(NSArray *)drivers;
 - (BOOL) executeAction:(id<ShiftItAction>)action error:(NSError **)error;
 
 @end
