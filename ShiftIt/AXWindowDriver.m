@@ -559,20 +559,38 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         // multiple times.
         
         // the distance between actual and target origin
-        double d1 = SIDistanceBetweenPoints(currentGeometry.origin, newGeometry.origin);
-        double d2 = d1;
+        // current
+        int c_d = (int) SIDistanceBetweenPoints(currentGeometry.origin, newGeometry.origin);
+        // new
+        int n_d = c_d;
+        // previous
+        int p_d = 0;
 
-        for (int i = 1; 
-             i == 1 // run at leat once
-             || (converge_ // convergence is enabled
-                 && (i == 2 // it only makes sense to test if we are converging
-                            // at the second attempt as the first attempt may
-                            // do nothing hence leaving d2 >> d1
-                     || (d2 != 0 // have we reached our destination
-                         || d2 < d1))); // is distance getting any smaller
-                                                
-             i++) {
+        for (int i = 1; ; i++) {
             
+            // run at least once
+            if (i > 1) {
+                if (!converge_) {
+                    break;
+                }
+                
+                if (n_d == 0) { // converged
+                    break;
+                }
+                
+            }
+            if (converge_ && i > 2) { // test convergence after second run 
+                
+                if (n_d == p_d) { // not converging - the same two values
+                    // likely the case of discrete sizing
+                    break;
+                }
+                
+                if (n_d >= c_d) { // not converging
+                    break;
+                }                
+            }
+                        
             // try to resize
             FMTLogDebug(@"Moving to: %@ (%d. attempt)", POINT_STR(newGeometry.origin), i);
             
@@ -606,8 +624,9 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             }      
             
             FMTLogDebug(@"Window moved to: %@ (%d. attempt)", POINT_STR(actual.origin), i);
-            d1 = d2;
-            d2 = SIDistanceBetweenPoints(actual.origin, newGeometry.origin);
+            c_d = n_d;
+            n_d = (int) SIDistanceBetweenPoints(actual.origin, newGeometry.origin);
+            p_d = c_d;
         }
     } else {
         FMTLogDebug(@"New origin and existing window origin are the same - no action");        
@@ -621,18 +640,37 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         // multiple times.
         
         // the difference of area of the actual and the target window size
-        double a1 = SIRectArea(currentGeometry) - SIRectArea(newGeometry);
-        double a2 = a1;
+        // current
+        int c_d = (int) fabs(SIRectArea(currentGeometry) - SIRectArea(newGeometry));
+        // new
+        int n_d = c_d;
+        // previous
+        int p_d = 0;
         
-        for (int i = 1; 
-             i == 1 // run at leat once
-             || (converge_ // convergence is enabled
-                 && (i == 2 // it only makes sense to test if we are converging
-                     // at the second attempt as the first attempt may
-                     // do nothing hence leaving a2 >> a1
-                     || (a2 != 0 // have we reached the same same areas?
-                         || a2 < a1))); // is the difference getting any smaller
-             i++) {
+        for (int i = 1; ; i++) {
+            
+            // run at least once
+            if (i > 1) {
+                if (!converge_) {
+                    break;
+                }
+                
+                if (n_d == 0) { // converged
+                    break;
+                }
+                
+            }
+            if (converge_ && i > 2) { // test convergence after second run 
+                
+                if (n_d == p_d) { // not converging - the same two values
+                    // likely the case of discrete sizing
+                    break;
+                }
+                
+                if (n_d >= c_d) { // not converging
+                    break;
+                }                
+            }
             
             // try to resize
             FMTLogDebug(@"Resizing to: %@ (%d. attempt)", SIZE_STR(newGeometry.size), i);
@@ -667,8 +705,9 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             }        
             
             FMTLogDebug(@"Window resized to: %@ (%d. attempt)", SIZE_STR(actual.size), i);
-            a1 = a2;
-            a2 = SIRectArea(actual) - SIRectArea(newGeometry);
+            c_d = n_d;
+            n_d = (int) (fabs(SIRectArea(actual) - SIRectArea(newGeometry)));
+            p_d = c_d;
         }
     } else {
         FMTLogDebug(@"New size and existing window size are the same - no action");        
