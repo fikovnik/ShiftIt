@@ -40,10 +40,17 @@
 #define FMTLogAssert(...) \
 [[GTMLogger sharedLogger] logFuncAssert:__func__ msg:__VA_ARGS__]
 
-
-#ifndef FMTStr
-#define FMTStr(fmt, ...) [NSString stringWithFormat:fmt, ##__VA_ARGS__]
-#endif // FMTStr
+// strings
+static inline NSString* FMTStr(NSString *fmt, ...) {
+    NSString *s;
+    va_list args;
+    
+    va_start(args, fmt);
+	s = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
+    va_end(args);
+    
+    return s;
+}
 
 #define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding] 
 
