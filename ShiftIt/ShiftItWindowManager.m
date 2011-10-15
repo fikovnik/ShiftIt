@@ -229,17 +229,15 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
     windows_ = [[NSMutableArray alloc] init];
     menuBarHeight_ = GetMBarHeight();
 
-#ifndef NDEBUG
-	// dump screen info
-	for (NSScreen *screen in [NSScreen screens]) {
-		NSRect frame = [screen frame];
-		NSRect visibleFrame = [screen visibleFrame];
-		
-		COCOA_TO_SCREEN_COORDINATES(frame);
-		COCOA_TO_SCREEN_COORDINATES(visibleFrame);
-		FMTLogDebug(@"Screen info: %@ frame: %@ visible frame: %@",screen, RECT_STR(frame), RECT_STR(visibleFrame));
-	}
-#endif
+    // dump screen info
+    FMTInDebugOnly(^{
+        int screenNo = 0;
+        
+        for (NSScreen *nsscreen in [NSScreen screens]) {
+            SIScreen *screen = [SIScreen screenFromNSScreen:nsscreen];
+            FMTLogDebug(@"screen[%d]: %@", screenNo++, screen);
+        }        
+    });
 
     return self;
 }

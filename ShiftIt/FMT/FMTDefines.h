@@ -30,7 +30,7 @@
 #define FMT_A(...) [NSArray arrayWithObjects:__VA_ARGS__, nil]
 #define FMT_D(...) [NSDictionary dictionaryWithObjectsAndKeys:__VA_ARGS__, nil]
 
-// debugging
+// logging
 #define FMTLogDebug(...)  \
 [[GTMLogger sharedLogger] logFuncDebug:__func__ msg:__VA_ARGS__]
 #define FMTLogInfo(...)   \
@@ -53,6 +53,14 @@ static inline NSString* FMTStr(NSString *fmt, ...) {
 }
 
 #define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding] 
+
+// debug blocks
+typedef void (^FMTDebugBlock)(void);
+static inline void FMTInDebugOnly(FMTDebugBlock block) {
+#ifndef NDEBUG
+    block();
+#endif
+}
 
 #ifndef FMTAssert
 
