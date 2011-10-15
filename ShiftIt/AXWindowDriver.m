@@ -492,7 +492,6 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     return YES;
 }
 
-// TODO: make sure that the origin makes sense
 - (BOOL) setGeometry_:(NSRect)geometry screen:(SIScreen *)screen ofWindow:(AXUIElementRef)windowRef error:(NSError **)error {
 	FMTAssertNotNil(windowRef);
 	FMTAssertNotNil(error);
@@ -501,10 +500,11 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     FMTLogDebug(@"Setting window geometry to: %@ at screen: %@", RECT_STR(geometry), screen);
     
     NSRect currentGeometry;
+    SIScreen *currentScreen;
     NSRect windowRect;
     NSRect drawersRect;
     
-    if (![self getGeometry_:&currentGeometry screen:nil windowRect:&windowRect drawersRect:&drawersRect ofWindow:windowRef error:error]) {
+    if (![self getGeometry_:&currentGeometry screen:&currentScreen windowRect:&windowRect drawersRect:&drawersRect ofWindow:windowRef error:error]) {
         return NO;
     }
     
@@ -518,7 +518,6 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     
     // the coordinates given in the geometry are relative to the given screen
     // we need to translate them into global coordinates
-    
     
 	// STEP 1: readjust adjust the visibility
 	// the geometry is the new application window geometry relative to the screen originating at [0,0]
@@ -567,18 +566,24 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
              i == 1 // run at leat once
              || (converge_ // convergence is enabled
                  && (i == 2 // it only makes sense to test if we are converging
-                            // at the second attempt as the first one might make
-                            // do just nothing hence d2 >> d1
-                     || (d2 != 0 && d2 < d1))); // check if the distance is
-                                                // getting any smaller
-                                                // or 0 which is the final goal
+                            // at the second attempt as the first attempt may
+                            // do nothing hence leaving d2 >> d1
+                     || (d2 != 0 // have we reached our destination
+                         || d2 < d1))); // is distance getting any smaller
+                                                
              i++) {
+            
             // try to resize
             FMTLogDebug(@"Moving to: %@ (%d. attempt)", POINT_STR(newGeometry.origin), i);
-            if (![AXWindowDriver setOrigin_:newGeometry.origin ofElement:windowRef error:&cause]) {
+            
+            if (![AXWindowDriver setOrigin_:newGeometry.origin 
+                                  ofElement:windowRef 
+                                      error:&cause]) {
+                
                 *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
                                                 cause, 
-                                                @"Unable to set window origin to: %@", POINT_STR(newGeometry.origin));
+                                                @"Unable to set window origin to: %@", 
+                                                POINT_STR(newGeometry.origin));
                 return NO;
             }
             
@@ -587,12 +592,19 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             
             // see what has happened
             NSRect actual;
-            if (![self getGeometry_:nil screen:nil windowRect:&actual drawersRect:nil ofWindow:windowRef error:&cause]) {
+            if (![self getGeometry_:nil 
+                             screen:nil 
+                         windowRect:&actual 
+                        drawersRect:nil 
+                           ofWindow:windowRef 
+                              error:&cause]) {
+                
                 *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
                                                 cause, 
                                                 @"Unable to get window size");
                 return NO;
-            }        
+            }      
+            
             FMTLogDebug(@"Window moved to: %@ (%d. attempt)", POINT_STR(actual.origin), i);
             d1 = d2;
             d2 = SIDistanceBetweenPoints(actual.origin, newGeometry.origin);
@@ -616,18 +628,23 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
              i == 1 // run at leat once
              || (converge_ // convergence is enabled
                  && (i == 2 // it only makes sense to test if we are converging
-                     // at the second attempt as the first one might make
-                     // do just nothing hence a2 >> a1
-                     || (a2 != 0 && a2 < a1))); // check if the area difference 
-                                                // is getting any smaller
-                                                // or 0 which is the final goal
+                     // at the second attempt as the first attempt may
+                     // do nothing hence leaving a2 >> a1
+                     || (a2 != 0 // have we reached the same same areas?
+                         || a2 < a1))); // is the difference getting any smaller
              i++) {
+            
             // try to resize
             FMTLogDebug(@"Resizing to: %@ (%d. attempt)", SIZE_STR(newGeometry.size), i);
-            if (![AXWindowDriver setSize_:newGeometry.size ofElement:windowRef error:&cause]) {
+            
+            if (![AXWindowDriver setSize_:newGeometry.size 
+                                ofElement:windowRef 
+                                    error:&cause]) {
+                
                 *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
                                                 cause, 
-                                                @"Unable to set window size to: %@", SIZE_STR(newGeometry.size));
+                                                @"Unable to set window size to: %@", 
+                                                SIZE_STR(newGeometry.size));
                 return NO;
             }
             
@@ -636,12 +653,19 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
             // see what has happened
             NSRect actual;
-            if (![self getGeometry_:nil screen:nil windowRect:&actual drawersRect:nil ofWindow:windowRef error:&cause]) {
+            if (![self getGeometry_:nil 
+                             screen:nil 
+                         windowRect:&actual 
+                        drawersRect:nil 
+                           ofWindow:windowRef 
+                              error:&cause]) {
+                
                 *error = SICreateErrorWithCause(kAXWindowDriverErrorCode, 
                                                 cause, 
                                                 @"Unable to get window size");
                 return NO;
             }        
+            
             FMTLogDebug(@"Window resized to: %@ (%d. attempt)", SIZE_STR(actual.size), i);
             a1 = a2;
             a2 = SIRectArea(actual) - SIRectArea(newGeometry);
