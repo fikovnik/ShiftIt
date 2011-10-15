@@ -116,6 +116,11 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 	return [self visibleRect].size;
 }
 
+- (NSString *) description {
+    NSDictionary *info = [screen_ deviceDescription];
+    
+    return FMTStr(@"id=%@, primary=%d, rect=(%@)", [info objectForKey: @"NSScreenNumber"], [self primary], RECT_STR([self rect]));
+}
 
 + (SIScreen *) screenFromNSScreen:(NSScreen *)screen {
     return [[[SIScreen alloc] initWithNSScreen:screen] autorelease];
@@ -148,11 +153,6 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 	}
 	
 	return [SIScreen screenFromNSScreen:fitScreen];
-}
-
-- (NSString *) description {
-    NSDictionary *info = [screen_ deviceDescription];
-    return FMTStr(@"[id=%@, primary=%d, rect=%@]", [info objectForKey: @"NSScreenNumber"], [self primary], [self rect]);
 }
 
 @end
@@ -197,7 +197,7 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 
 - (NSString *) description {
     NSString *bounds = RECT_STR(rect_);
-    return FMTStr(@"wid: %d pid: %d rect: %@", wid_, pid_, bounds);
+    return FMTStr(@"wid=%d pid=%d rect=(%@)", wid_, pid_, bounds);
 }
 
 @end
@@ -254,9 +254,6 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 }
 
 - (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error {
-
-    FMTLogDebug(@"Looking for focused window");
-
     // get all windows order front to back
     NSArray *allWindowsInfoList = (NSArray *) CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly + kCGWindowListExcludeDesktopElements, 
                                                                       kCGNullWindowID);
@@ -278,8 +275,6 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
     
     __block id<SIWindow> w = nil;
     [drivers_ each:^BOOL(id<WindowDriver> driver) {
-        FMTLogDebug(@"Querying driver: %@ to check it it is the owner", [driver description]);
-        
         NSError *problem = nil;
         if (![driver findFocusedWindow:&w withInfo:frontWindowInfo error:&problem]) {
             FMTLogDebug(@"Driver %@ did not locate window: %@", [driver description], [problem fullDescription]);
@@ -290,8 +285,10 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
     }];
     
     if (w == nil) {
-        *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find focused window");
+        *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find focused window owner");
         return NO;        
+    } else {
+        FMTLogDebug(@"Window: %@", w);
     }
     
     [allWindowsInfoList release];

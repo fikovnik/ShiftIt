@@ -310,7 +310,7 @@ NSDictionary *allShiftActions = nil;
 	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     // TODO: this is ugly but just temp
-    WindowGeometryShiftItAction *action = nil;
+    AbstractShiftItAction *action = nil;
     
     #define REGISTER_ACTION(dict, a) \
     action = (a); \

@@ -81,10 +81,7 @@
     
 
     FMTLogDebug(@"Setting window geometry: %@", RECT_STR(geometry));
-    
-	// we need to translate from cocoa coordinates
-	FMTLogDebug(@"Setting window geometry after readjusting the visiblity: %@", RECT_STR(geometry));	
-    
+        
     if (![window setGeometry:geometry screen:screen error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
                                         cause, 
