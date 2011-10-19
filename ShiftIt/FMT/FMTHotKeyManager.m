@@ -152,7 +152,7 @@ SINGLETON_BOILERPLATE(FMTHotKeyManager, sharedHotKeyManager);
 	GTMLoggerDebug(@"Unregistering hotKey %@", hotKey);
 	
 	// search for the registration
-	TWHotKeyRegistartion *hotKeyReg;
+	TWHotKeyRegistartion *hotKeyReg = nil;
 	for (TWHotKeyRegistartion *e in [allHotKeys allValues]) {
 		if ([hotKey isEqualTo:[e hotKey]]) {
 			hotKeyReg = e;
@@ -193,11 +193,12 @@ SINGLETON_BOILERPLATE(FMTHotKeyManager, sharedHotKeyManager);
 	}
 	
 	// safe
-	TWHotKeyRegistartion *hotKeyReg = [[TWHotKeyRegistartion alloc] initWithHotKey:hotKey 
+	TWHotKeyRegistartion *hotKeyReg = [[[TWHotKeyRegistartion alloc] initWithHotKey:hotKey 
 																		   handler:handler 
 																		  provider:provider
 																		  userData:userData
-																			   ref:hotKeyRef];
+																			   ref:hotKeyRef]
+                                       autorelease];
 	
 	[allHotKeys setObject:hotKeyReg forKey:[NSNumber numberWithInt:hotKeyID.id]];	
 }

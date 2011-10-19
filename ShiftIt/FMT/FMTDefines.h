@@ -58,7 +58,7 @@ description:__VA_ARGS__];                             \
 }                                                                       \
 } while(0)
 
-#define FMTAssertNotNil(var) FMTAssert(var != nil, FMTStr(@"Variabe %@ must not be nil", @#var));
+#define FMTAssertNotNil(var) FMTAssert(var != nil, FMTStr(@"Variable %@ must not be nil", @#var));
 
 #else // !defined(NS_BLOCK_ASSERTIONS)
 #define FMTAssert(condition, ...) do { } while (0)

@@ -350,7 +350,7 @@ NSDictionary *allShiftActions = nil;
 	AbstractShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
 	
-	FMTHotKey *newHotKey = [[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers];
+	FMTHotKey *newHotKey = [[[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers] autorelease];
 	
 	FMTHotKey *hotKey = [allHotKeys_ objectForKey:identifier];
 	if (hotKey) {
