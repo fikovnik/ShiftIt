@@ -271,7 +271,7 @@ extern short GetMBarHeight(void);
     
     NSRect windowRect = NSMakeRect(0, 0, 0, 0); // window rect
 	NSRect drawersRect = NSMakeRect(0, 0, 0, 0); // drawers of the window
-    NSRect geometry;
+    NSRect geometry = NSMakeRect(0, 0, 0, 0);
     
     if (![driver_ getWindow:windowRef geometry:&windowRect error:error]) {
         return NO;
@@ -367,7 +367,8 @@ extern short GetMBarHeight(void);
 		// move window
 		FMTLogDebug(@"Moving window to: %@", POINT_STR(geometry.origin));		
 		if (![driver_ setWindow:[window ref_] position:geometry.origin error:&cause] != 0) {
-			*error = SICreateErrorWithCause(@"Unable to move window", kWindowManagerFailureErrorCode, cause);
+            if (error)
+                *error = SICreateErrorWithCause(@"Unable to move window", kWindowManagerFailureErrorCode, cause);
 			return NO;
 		}
 		
@@ -379,14 +380,16 @@ extern short GetMBarHeight(void);
                 // resize window
                 FMTLogDebug(@"Resizing to: %@ (%d. attempt)", SIZE_STR(geometry.size), i);
                 if (![driver_ setWindow:[window ref_] size:geometry.size error:&cause] != 0) {
-                    *error = SICreateErrorWithCause(@"Unable to resize window", kWindowManagerFailureErrorCode, cause);
+                    if (error)
+                        *error = SICreateErrorWithCause(@"Unable to resize window", kWindowManagerFailureErrorCode, cause);
                     return NO;
                 }
                 
                 // check how was it resized
                 NSRect windowRect3;
                 if (![driver_ getWindow:[window ref_] geometry:&windowRect3 error:&cause]) {
-                    *error = SICreateErrorWithCause(@"Unable to get window geometry", kWindowManagerFailureErrorCode, cause);
+                    if (error)
+                        *error = SICreateErrorWithCause(@"Unable to get window geometry", kWindowManagerFailureErrorCode, cause);
                     return NO;
                 }
                 FMTLogDebug(@"Window resized to: %@ (%d. attempt)", SIZE_STR(windowRect3.size), i);
@@ -511,9 +514,8 @@ extern short GetMBarHeight(void);
     
     // TODO: in try catch
     if (![action execute:ctx error:&cause]) {
-        *error = SICreateErrorWithCause(FMTStr(@"Failed to execute action: %@", [action label]), kWindowManagerFailureErrorCode, cause);
-        [ctx release];
-        
+        if (error)
+            *error = SICreateErrorWithCause(FMTStr(@"Failed to execute action: %@", [action label]), kWindowManagerFailureErrorCode, cause);
         return NO;
     }
     

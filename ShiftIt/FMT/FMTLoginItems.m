@@ -105,7 +105,8 @@
 		LSSharedFileListInsertItemURL(loginItems, kLSSharedFileListItemBeforeFirst, (CFStringRef)displayName, icon, URLToApp, /*propertiesToSet*/ NULL, /*propertiesToClear*/ NULL);
 	} else if (!enabled && (existingItem != NULL)) {
 		LSSharedFileListItemRemove(loginItems, existingItem);
-	}	
+	}
+    CFRelease(URLToApp);
 }
 
 #pragma mark Private methods

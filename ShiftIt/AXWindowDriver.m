@@ -51,7 +51,8 @@
     if ((ret = AXUIElementCopyAttributeValue(systemElementRef_,
                                              (CFStringRef) kAXFocusedApplicationAttribute,
                                              (CFTypeRef *) &focusedAppRef)) != kAXErrorSuccess) {
-        *error = SICreateError(FMTStr(@"AXError: kAXFocusedApplicationAttribute copy failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: kAXFocusedApplicationAttribute copy failed: %d", ret), kAXFailureErrorCode);
         return NO;
     }    
     FMTAssertNotNil(focusedAppRef);
@@ -60,8 +61,8 @@
     if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)focusedAppRef,
                                              (CFStringRef)kAXFocusedWindowAttribute,
                                              (CFTypeRef*)windowRef)) != kAXErrorSuccess) {
-        
-        *error = SICreateError(FMTStr(@"AXError: kAXFocusedWindowAttribute copy failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: kAXFocusedWindowAttribute copy failed: %d", ret), kAXFailureErrorCode);
         CFRelease(focusedAppRef);
         return NO;
     }
@@ -83,7 +84,8 @@
 	
     if ((ret = AXUIElementSetAttributeValue((AXUIElementRef)windowRef, kAXPositionAttribute, positionRef)) != kAXErrorSuccess) {
 		CFRelease(positionRef);
-        *error = SICreateError(FMTStr(@"AXError: kAXPositionAttribute set failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: kAXPositionAttribute set failed: %d", ret), kAXFailureErrorCode);
         return NO;
 	}
     
@@ -98,7 +100,8 @@
     AXError ret = 0;
 	
     if ((ret = AXUIElementSetAttributeValue((AXUIElementRef)windowRef, kAXSizeAttribute, sizeRef)) != kAXErrorSuccess){
-        *error = SICreateError(FMTStr(@"AXError: kAXSizeAttribute set failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: kAXSizeAttribute set failed: %d", ret), kAXFailureErrorCode);
 		CFRelease(sizeRef);
         return NO;
 	}		
@@ -134,7 +137,8 @@
     
     // TODO: we should check if there are actually drawers
 	if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)windowRef, kAXChildrenAttribute, (CFTypeRef*)&children)) != kAXErrorSuccess) {
-        *error = SICreateError(FMTStr(@"AXError: kAXChildrenAttribute copy failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: kAXChildrenAttribute copy failed: %d", ret), kAXFailureErrorCode);
 		return NO;
 	}
     
@@ -146,17 +150,20 @@
 		NSString *role = nil;
 		
 		if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)child, kAXRoleAttribute , (CFTypeRef*)&role)) != kAXErrorSuccess) {
-            *error = SICreateError(FMTStr(@"AXError: kAXRoleAttribute copy failed: %d", ret), kAXFailureErrorCode);
+            if (error)
+                *error = SICreateError(FMTStr(@"AXError: kAXRoleAttribute copy failed: %d", ret), kAXFailureErrorCode);
             return NO;
         }
 		
 		if([role isEqualToString:NSAccessibilityDrawerRole]) {
 			if (![self getElement_:(SIWindowRef)child position:&(r.origin) error:&cause]) {
-                *error = SICreateErrorWithCause(@"AXError: Unable to position of a window drawer", kWindowManagerFailureErrorCode, cause);
+                if (error)
+                    *error = SICreateErrorWithCause(@"AXError: Unable to position of a window drawer", kWindowManagerFailureErrorCode, cause);
                 return NO;                
             }
 			if (![self getElement_:(SIWindowRef)child size:&(r.size) error:&cause]) {
-                *error = SICreateErrorWithCause(@"AXError: Unable to size of a window drawer", kWindowManagerFailureErrorCode, cause);
+                if (error)
+                    *error = SICreateErrorWithCause(@"AXError: Unable to size of a window drawer", kWindowManagerFailureErrorCode, cause);
                 return NO;                                
             }
 			
@@ -185,8 +192,8 @@
     if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)windowRef,
                                              (CFStringRef) kAXFullScreenAttribute,
                                              (CFTypeRef *) &fullScreenRef)) != kAXErrorSuccess) {
-        
-        *error = SICreateError(FMTStr(@"AXError: kAXFullScreenAttribute copy failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: kAXFullScreenAttribute copy failed: %d", ret), kAXFailureErrorCode);
         return NO;
     }
     
@@ -205,7 +212,8 @@
     AXError ret = 0;
 	
 	if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)element,kAXPositionAttribute, &positionRef)) != kAXErrorSuccess) {
-        *error = SICreateError(FMTStr(@"AXError: kAXPositionAttribute copy failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: kAXPositionAttribute copy failed: %d", ret), kAXFailureErrorCode);
 		return NO;
 	}
 	
@@ -215,7 +223,8 @@
 		AXValueGetValue(positionRef, kAXValueCGPointType, position);
 	} else {
 		CFRelease(positionRef);
-        *error = SICreateError(FMTStr(@"AXError: invalid value type. Expected: kAXValueCGPointType, got: %d", AXValueGetType(positionRef)), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: invalid value type. Expected: kAXValueCGPointType, got: %d", AXValueGetType(positionRef)), kAXFailureErrorCode);
 		return NO;
 	}
 	
@@ -231,7 +240,8 @@
     AXError ret = 0;
     
 	if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef)element, kAXSizeAttribute, &sizeRef)) != kAXErrorSuccess) {
-        *error = SICreateError(FMTStr(@"AXError: kAXSizeAttribute copy failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: kAXSizeAttribute copy failed: %d", ret), kAXFailureErrorCode);
 		return NO;
 	}
 	
@@ -240,7 +250,8 @@
 		AXValueGetValue(sizeRef, kAXValueCGSizeType, size);
 	} else {
         CFRelease(sizeRef);
-        *error = SICreateError(FMTStr(@"AXError: invalid value type. Expected: kAXValueCGSizeType, got: %d", AXValueGetType(sizeRef)), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: invalid value type. Expected: kAXValueCGSizeType, got: %d", AXValueGetType(sizeRef)), kAXFailureErrorCode);
 		return NO;
 	}
 	
@@ -288,12 +299,14 @@
     if ((ret = AXUIElementCopyAttributeValue(element,
                                              (CFStringRef) buttonName,
                                              (CFTypeRef *) &button)) != kAXErrorSuccess) {
-        *error = SICreateError(FMTStr(@"AXError: %@ copy failed: %d", (NSString *)buttonName, ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: %@ copy failed: %d", (NSString *)buttonName, ret), kAXFailureErrorCode);
         return NO;
     }    
     
     if ((ret =AXUIElementPerformAction(button, kAXPressAction)) != kAXErrorSuccess) {
-        *error = SICreateError(FMTStr(@"AXError: perform action kAXPressAction failed: %d", ret), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: perform action kAXPressAction failed: %d", ret), kAXFailureErrorCode);
         return NO;        
     }
     
@@ -304,7 +317,8 @@
     Boolean isSettable = false;
     
     if (AXUIElementIsAttributeSettable(element, (CFStringRef)attributeName, &isSettable) != kAXErrorSuccess) {
-        *error = SICreateError(FMTStr(@"AXError: Unable to check whether attribute: %@ is settable", (NSString *)attributeName), kAXFailureErrorCode);
+        if (error)
+            *error = SICreateError(FMTStr(@"AXError: Unable to check whether attribute: %@ is settable", (NSString *)attributeName), kAXFailureErrorCode);
         return NO;
     }
     
