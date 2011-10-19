@@ -294,7 +294,7 @@ NSDictionary *allShiftActions = nil;
     SimpleShiftItAction *action = nil;
     
     #define REGISTER_ACTION(dict, a) \
-    action = (a); \
+    action = [(a) autorelease]; \
     [(dict) setObject:action forKey:[action identifier]];
     
     REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 block:shiftItLeft]);
@@ -312,6 +312,8 @@ NSDictionary *allShiftActions = nil;
     REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:13 block:shiftItIncrease]);
     REGISTER_ACTION(dict, [[SimpleShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:14 block:shiftItReduce]);
 	
+    #undef REGISTER_ACTION
+
 	allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }
 
@@ -348,7 +350,7 @@ NSDictionary *allShiftActions = nil;
 	AbstractShiftItAction *action = [allShiftActions objectForKey:identifier];
 	FMTAssertNotNil(action);
 	
-	FMTHotKey *newHotKey = [[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers];
+	FMTHotKey *newHotKey = [[[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers] autorelease];
 	
 	FMTHotKey *hotKey = [allHotKeys_ objectForKey:identifier];
 	if (hotKey) {
