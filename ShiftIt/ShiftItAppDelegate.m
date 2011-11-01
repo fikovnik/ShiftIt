@@ -341,6 +341,8 @@ NSDictionary *allShiftActions = nil;
     REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:13 block:shiftItIncrease]);
     REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:14 block:shiftItReduce]);
 
+#undef REGISTER_ACTION
+
     allShiftActions = [[NSDictionary dictionaryWithDictionary:dict] retain];
 }
 
