@@ -11,6 +11,9 @@
 #import "FMTNSArray+Extras.h"
 #import "FMTNSError+Extras.h"
 
+// FCE prototypes
+extern short GetMBarHeight(void);
+
 extern NSString *const SIErrorDomain;
 extern NSInteger const kWindowManagerFailureErrorCode;
 
