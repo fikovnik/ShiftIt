@@ -119,7 +119,7 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 - (NSString *) description {
     NSDictionary *info = [screen_ deviceDescription];
     
-    return FMTStr(@"id=%@, primary=%d, rect=(%@)", [info objectForKey: @"NSScreenNumber"], [self primary], RECT_STR([self rect]));
+    return FMTStr(@"id=%@, primary=%d, rect=(%@) visibleRect=(%@)", [info objectForKey: @"NSScreenNumber"], [self primary], RECT_STR([self rect]), RECT_STR([self visibleRect]));
 }
 
 + (SIScreen *) screenFromNSScreen:(NSScreen *)screen {
@@ -188,7 +188,7 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
     
     NSRect rect;
     CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)[windowInfo objectForKey:(id)kCGWindowBounds], 
-                                           &rect);
+                                           (struct CGRect *)&rect);
     
     return [[SIWindowInfo alloc] initWithPid:[[windowInfo objectForKey:(id)kCGWindowOwnerPID] integerValue]
                                          wid:[[windowInfo objectForKey:(id)kCGWindowNumber] integerValue]

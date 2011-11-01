@@ -6,8 +6,10 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
+#import <Carbon/Carbon.h>
 #import "WindowGeometryShiftItAction.h"
 #import "FMTDefines.h"
+#import "ShiftIt.h"
 
 @implementation WindowGeometryShiftItAction
 
@@ -31,17 +33,25 @@
     
     NSError *cause = nil;
     id<SIWindow> window = nil;
-    
+    BOOL flag = NO;
+
     if(![windowContext getFocusedWindow:&window error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
                                         cause,
                                         @"Unable to get active window");
         return NO;
     }
-    
-    // TODO: check resizability and moveability
-    // TODO: check fullscreen
-    
+
+    if (![window getFullScreen:&flag error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
+                                        cause,
+                                        @"Unable to get window fullScreen state");
+    }
+    if (flag) {
+        *error = SICreateError(kShiftItActionFaiureErrorCode, @"Windows in fullscreen are not supported");
+        return NO;
+    }
+
     NSRect currentGeometry;
     SIScreen *screen;
     if (![window getGeometry:&currentGeometry screen:&screen error:&cause]) {
@@ -50,11 +60,15 @@
                                         @"Unable to get window geometry");
         return NO;        
     }
-    
+    if ([screen primary]) {
+        // readjust the menu bar
+        currentGeometry.origin.y -= GetMBarHeight();
+    }
+    FMTLogDebug(@"Current window geometry: %@", RECT_STR(currentGeometry));
+
     NSRect geometry = block_(currentGeometry, [screen size]);
-    
-    BOOL flag = NO;
-    if (NSEqualPoints(currentGeometry.origin, geometry.origin)) {
+
+    if (!NSEqualPoints(currentGeometry.origin, geometry.origin)) {
         if (![window canMove:&flag error:&cause]) {
             *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
                                             cause,
@@ -66,7 +80,7 @@
         }
     }
 
-    if (NSEqualSizes(currentGeometry.size, geometry.size)) {
+    if (!NSEqualSizes(currentGeometry.size, geometry.size)) {
         if (![window canResize:&flag error:&cause]) {
             *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
                                             cause,
@@ -77,10 +91,8 @@
             return NO;
         }
     }
-    
-    
 
-    FMTLogDebug(@"Setting window geometry: %@", RECT_STR(geometry));
+    FMTLogDebug(@"New window geometry: %@", RECT_STR(geometry));
         
     if (![window setGeometry:geometry screen:screen error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 

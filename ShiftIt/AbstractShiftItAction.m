@@ -28,30 +28,30 @@ NSInteger const kShiftItActionFaiureErrorCode = 20103;
 @synthesize label = label_;
 @synthesize uiTag = uiTag_;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag {
-	FMTAssertNotNil(identifier);
-	FMTAssertNotNil(label);
-	FMTAssert(uiTag > 0, @"uiTag must be greater than 0");
+- (id)initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag {
+    FMTAssertNotNil(identifier);
+    FMTAssertNotNil(label);
+    FMTAssert(uiTag > 0, @"uiTag must be greater than 0");
 
-	if (![super init]) {
-		return nil;
-	}
-	
-	identifier_ = [identifier retain];
-	label_ = [label retain];
-	uiTag_ = uiTag;
-	
-	return self;
+    if (![super init]) {
+        return nil;
+    }
+
+    identifier_ = [identifier retain];
+    label_ = [label retain];
+    uiTag_ = uiTag;
+
+    return self;
 }
 
-- (void) dealloc {
-	[identifier_ release];
-	[label_ release];
-	
-	[super dealloc];
+- (void)dealloc {
+    [identifier_ release];
+    [label_ release];
+
+    [super dealloc];
 }
 
-- (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error {
+- (BOOL)execute:(id <WindowContext>)windowContext error:(NSError **)error {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:FMTStr(@"You must override %@ in a subclass", NSStringFromSelector(_cmd))
                                  userInfo:nil];

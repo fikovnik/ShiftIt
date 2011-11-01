@@ -92,6 +92,12 @@ static inline double SIDistanceBetweenPoints(NSPoint r, NSPoint s) {
 }
 
 // TODO: move to FMT
-static inline double SIRectArea(NSRect r) {
-    return r.size.width * r.size.height;
+static inline double SIArea(NSSize s) {
+    return s.width * s.height;
 }
+
+// TODO: move to FMT
+static inline double SIRectArea(NSRect r) {
+    return SIArea(r.size);
+}
+

@@ -44,15 +44,15 @@
 static inline NSString* FMTStr(NSString *fmt, ...) {
     NSString *s;
     va_list args;
-    
+
     va_start(args, fmt);
 	s = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
     va_end(args);
-    
+
     return s;
 }
 
-#define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding] 
+#define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding]
 
 // debug blocks
 typedef void (^FMTDebugBlock)(void);
