@@ -700,7 +700,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     // re-sized to the right position at the first time. It has to be tried
     // multiple times.
     if (converge_) {
-        if (![self untilConverge_:resize target:SIArea(newGeometry.size) error:error] && error) {
+        if (![self untilConverge_:resize target:SIArea(newGeometry.size) error:error] && *error) {
             return NO;
 
         }
@@ -708,18 +708,18 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             return NO;
 
         }
-        if (![self untilConverge_:resize target:SIArea(newGeometry.size) error:error] && error) {
+        if (![self untilConverge_:resize target:SIArea(newGeometry.size) error:error] && *error) {
             return NO;
 
         }
     } else {
-        if (!resize(error) && error) {
+        if (!resize(error) && *error) {
             return NO;
         }
-        if (!move(error) && error) {
+        if (!move(error) && *error) {
             return NO;
         }
-        if (!resize(error) && error) {
+        if (!resize(error) && *error) {
             return NO;
         }
     }
