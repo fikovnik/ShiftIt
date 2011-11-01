@@ -130,7 +130,11 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
     NSRect unused;
 
-    return [driver_ getGeometry_:geometry screen:screen windowRect:&unused drawersRect:&unused ofWindow:ref_ error:error];
+    return [driver_ getGeometry_:geometry
+                          screen:screen
+                      windowRect:&unused
+                     drawersRect:&unused
+                        ofWindow:ref_ error:error];
 }
 
 - (BOOL)getWindowRect:(NSRect *)windowRect screen:(SIScreen **)screen drawersRect:(NSRect *)drawersRect error:(NSError **)error {
@@ -140,7 +144,11 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
     NSRect unused;
 
-    return [driver_ getGeometry_:&unused screen:screen windowRect:windowRect drawersRect:drawersRect ofWindow:ref_ error:error];
+    return [driver_ getGeometry_:&unused
+                          screen:screen
+                      windowRect:windowRect
+                     drawersRect:drawersRect
+                        ofWindow:ref_ error:error];
 }
 
 - (BOOL)setGeometry:(NSRect)geometry screen:(SIScreen *)screen error:(NSError **)error {
@@ -212,7 +220,8 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
     AXUIElementRef appRef = AXUIElementCreateApplication([windowInfo pid]);
     if (appRef == nil) {
-        *error = SICreateError(kAXFailureErrorCode, @"Unable to create AXUIElementRef for the application with PID: %d", [windowInfo pid]);
+        *error = SICreateError(kAXFailureErrorCode, @"Unable to create AXUIElementRef for the application with PID: %d", [windowInfo
+                pid]);
         return NO;
     }
 
@@ -243,8 +252,8 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     AXError ret = kAXFailureErrorCode;
 
     if ((ret = AXUIElementCopyAttributeValue(applicationRef,
-            kAXFocusedWindowAttribute,
-            (CFTypeRef *) windowRef)) != kAXErrorSuccess) {
+                                             kAXFocusedWindowAttribute, (CFTypeRef *) windowRef)) != kAXErrorSuccess) {
+
         *error = AX_COPY_ATTR_ERROR(kAXFocusedWindowAttribute, ret);
         return NO;
     }
@@ -262,8 +271,9 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     AXError ret = 0;
 
     if ((ret = AXUIElementCopyAttributeValue(element,
-            (CFStringRef) buttonName,
-            (CFTypeRef *) &button)) != kAXErrorSuccess) {
+                                             (CFStringRef) buttonName,
+                                             (CFTypeRef *) &button)) != kAXErrorSuccess) {
+
         *error = AX_COPY_ATTR_ERROR((NSString *) buttonName, ret);
         return NO;
     }
@@ -383,7 +393,8 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     // by defult there are none
     *geometry = NSMakeRect(0, 0, 0, 0);
 
-    if ((ret = AXUIElementCopyAttributeValue(windowRef, kAXChildrenAttribute, (CFTypeRef *) &children)) != kAXErrorSuccess) {
+    if ((ret = AXUIElementCopyAttributeValue(windowRef, kAXChildrenAttribute,
+                                             (CFTypeRef *) &children)) != kAXErrorSuccess) {
         *error = AX_COPY_ATTR_ERROR(kAXChildrenAttribute, ret);
         return NO;
     }
@@ -395,7 +406,9 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     for (id child in children) {
         NSString *role = nil;
 
-        if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef) child, kAXRoleAttribute, (CFTypeRef *) &role)) != kAXErrorSuccess) {
+        if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef) child, kAXRoleAttribute,
+                                                 (CFTypeRef *) &role)) != kAXErrorSuccess) {
+
             *error = AX_COPY_ATTR_ERROR(kAXRoleAttribute, ret);
             return NO;
         }
@@ -479,12 +492,12 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     for (int i = 1; ; i++) {
 
         // run at least once
-        if (i > 1 &&c_d == target) { // converged
-                return YES;
+        if (i > 1 && c_d == target) { // converged
+            return YES;
         } else if (i > 2 && c_d >= n_d) { // not converging - greater than the last run
-                return NO;
+            return NO;
         } else if (i > 3 && c_d >= p_d) { // not converging - greater than the one before last
-                return NO;
+            return NO;
         }
 
         p_d = n_d;
@@ -557,7 +570,8 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     NSRect windowRect;
     NSRect drawersRect;
 
-    if (![self getGeometry_:&currentGeometry screen:&currentScreen windowRect:&windowRect drawersRect:&drawersRect ofWindow:windowRef error:error]) {
+    if (![self getGeometry_:&currentGeometry screen:&currentScreen windowRect:&windowRect drawersRect:&drawersRect
+                   ofWindow:windowRef error:error]) {
         return NO;
     }
 
@@ -588,12 +602,12 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     // when moving the drawers are not taken into an account so need to manually
     // adjust the new position and size relative to the rect of drawers
     NSRect newGeometry = geometry;
- 
+
     if (shouldUseDrawers_ && hasDrawers) {
-        int dx = windowRect.origin.x - currentGeometry.origin.x;
-        int dy = currentGeometry.origin.y - windowRect.origin.y;
-        int dw = currentGeometry.size.width - windowRect.size.width;
-        int dh = currentGeometry.size.height - windowRect.size.height;
+        int dx = (int) (windowRect.origin.x - currentGeometry.origin.x);
+        int dy = (int) (currentGeometry.origin.y - windowRect.origin.y);
+        int dw = (int) (currentGeometry.size.width - windowRect.size.width);
+        int dh = (int) (currentGeometry.size.height - windowRect.size.height);
 
         newGeometry.origin.x += dx;
         newGeometry.origin.y -= dy;
@@ -647,7 +661,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             FMTLogDebug(@"New origin and existing window origin are the same - no action");
             return 0;
         }
-        
+
         NSError *cause = nil;
         // try to move
         FMTLogDebug(@"Moving to: %@", POINT_STR(newGeometry.origin));
@@ -729,8 +743,8 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     AXError ret = 0;
 
     if ((ret = AXUIElementCopyAttributeValue(windowRef,
-            (CFStringRef) kAXFullScreenAttribute,
-            (CFTypeRef *) &fullScreenRef)) != kAXErrorSuccess) {
+                                             (CFStringRef) kAXFullScreenAttribute,
+                                             (CFTypeRef *) &fullScreenRef)) != kAXErrorSuccess) {
 
         *error = AX_COPY_ATTR_ERROR(kAXFullScreenAttribute, ret);
         return NO;
@@ -762,7 +776,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
     if ((ret = AXUIElementSetAttributeValue(windowRef,
             kAXFullScreenAttribute,
-            fullScreen ? kCFBooleanFalse : kCFBooleanTrue)) != kAXErrorSuccess) {
+                                            fullScreen ? kCFBooleanFalse : kCFBooleanTrue)) != kAXErrorSuccess) {
         *error = AX_SET_ATTR_ERROR(kAXFullScreenAttribute, ret);
         return NO;
     }
