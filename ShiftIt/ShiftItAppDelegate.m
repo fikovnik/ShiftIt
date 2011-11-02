@@ -191,8 +191,11 @@ NSDictionary *allShiftActions = nil;
 
     hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
 
+    NSMutableArray *drivers = [NSMutableArray array];
+    NSError *error = nil;
+
     // initialize AX driver
-    AXWindowDriver *axDriver = [[[AXWindowDriver alloc] init] autorelease];
+    AXWindowDriver *axDriver = [[[AXWindowDriver alloc] initWithError:&error] autorelease];
     // set defaults
     if ([defaults objectForKey:kAXIncludeDrawersPrefKey]) {
         [axDriver setShouldUseDrawers:[defaults boolForKey:kAXIncludeDrawersPrefKey]];
@@ -204,10 +207,30 @@ NSDictionary *allShiftActions = nil;
         [axDriver setDelayBetweenOperations:[defaults doubleForKey:kAXDriverDelayBetweenOperationsPrefKey]];
     }
 
-//    X11WindowDriver *x11Driver = [[[X11WindowDriver alloc] init] autorelease];
+    if (error) {
+        FMTLogDebug(@"Unable to load AX driver: %@%@", [error localizedDescription], [error fullDescription]);
+    } else {
+        FMTLogDebug(@"Added driver: %@", [axDriver description]);
+       [drivers addObject:axDriver];
+    }
 
-//	windowManager_ = [[ShiftItWindowManager alloc] initWithDrivers:FMT_A(axDriver, x11Driver, nil)];
-    windowManager_ = [[ShiftItWindowManager alloc] initWithDrivers:FMT_A(axDriver)];
+    // initialize X11 driver
+    X11WindowDriver *x11Driver = [[[X11WindowDriver alloc] initWithError:&error] autorelease];
+    if (error) {
+        FMTLogDebug(@"Unable to load X11 driver: %@%@", [error localizedDescription], [error fullDescription]);
+    } else {
+        FMTLogDebug(@"Added driver: %@", [x11Driver description]);
+       [drivers addObject:x11Driver];
+    }
+
+    if ([drivers count] == 0) {
+        FMTLogError(@"No driver could be loaded - exiting");
+        // TODO: externalize
+        [NSApp presentError:SICreateError(100, @"No driver could be loaded")];
+        [NSApp terminate:self];
+    }
+
+	windowManager_ = [[ShiftItWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
 
     [self initializeActions_];
     [self updateMenuBarIcon_];

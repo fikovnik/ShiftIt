@@ -226,7 +226,8 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     }
 
     AXUIElementRef windowRef;
-    //get the focused window
+    // get the focused window
+    // TODO: check the error code and act appropriately
     if (![AXWindowDriver getFocusedWindow_:&windowRef ofApplication:appRef error:error]) {
         CFRelease(appRef);
         return NO;

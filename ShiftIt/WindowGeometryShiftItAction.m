@@ -36,26 +36,28 @@
     BOOL flag = NO;
 
     if(![windowContext getFocusedWindow:&window error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
                                         cause,
                                         @"Unable to get active window");
         return NO;
     }
 
-    if (![window getFullScreen:&flag error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
-                                        cause,
-                                        @"Unable to get window fullScreen state");
-    }
-    if (flag) {
-        *error = SICreateError(kShiftItActionFaiureErrorCode, @"Windows in fullscreen are not supported");
-        return NO;
+    if ([window respondsToSelector:@selector(getFullScreen:error:)]) {
+        if (![window getFullScreen:&flag error:&cause]) {
+            *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
+                                            cause,
+                                            @"Unable to get window fullScreen state");
+        }
+        if (flag) {
+            *error = SICreateError(kShiftItActionFaiureErrorCode, @"Windows in fullscreen are not supported");
+            return NO;
+        }
     }
 
     NSRect currentGeometry;
     SIScreen *screen;
     if (![window getGeometry:&currentGeometry screen:&screen error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
                                         cause,
                                         @"Unable to get window geometry");
         return NO;        
@@ -70,9 +72,9 @@
 
     if (!NSEqualPoints(currentGeometry.origin, geometry.origin)) {
         if (![window canMove:&flag error:&cause]) {
-            *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+            *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
                                             cause,
-                                            @"Unable to find out if window is moveable");            
+                                            @"Unable to find out if window is moveable");
         }
         if (!flag) {
             *error = SICreateError(kShiftItActionFaiureErrorCode, @"Window is not moveable");
@@ -82,9 +84,9 @@
 
     if (!NSEqualSizes(currentGeometry.size, geometry.size)) {
         if (![window canResize:&flag error:&cause]) {
-            *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
+            *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
                                             cause,
-                                            @"Unable to find out if window is resizeable");            
+                                            @"Unable to find out if window is resizeable");
         }
         if (!flag) {
             *error = SICreateError(kShiftItActionFaiureErrorCode, @"Window is not resizeable");
@@ -95,8 +97,8 @@
     FMTLogDebug(@"New window geometry: %@", RECT_STR(geometry));
         
     if (![window setGeometry:geometry screen:screen error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode, 
-                                        cause, 
+        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
+                                        cause,
                                         @"Unable to move window to %@", POINT_STR(geometry.origin));
         return NO;
     }
