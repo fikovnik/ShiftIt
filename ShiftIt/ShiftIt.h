@@ -25,6 +25,13 @@ extern NSInteger const kWindowManagerFailureErrorCode;
 #define SICreateError(errorCode, fmt, ...) FMTCreateError(SIErrorDomain, errorCode, fmt, ##__VA_ARGS__)
 #define SICreateErrorWithCause(errorCode, cause, fmt, ...) FMTCreateErrorWithCause(SIErrorDomain, errorCode, cause, fmt, ##__VA_ARGS__)
 
+@interface NSScreen (ScreenCoordinates)
+
+- (NSRect)screenFrame;
+- (NSRect)screenVisibleFrame;
+
+@end
+
 @interface SIWindowInfo : NSObject {
 @private
     pid_t pid_;

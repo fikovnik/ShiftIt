@@ -63,6 +63,22 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 
 @end
 
+@implementation NSScreen (ScreenCoordinates)
+
+- (NSRect)screenFrame {
+    NSRect r = [self frame];
+    COCOA_TO_SCREEN_COORDINATES(r);
+    return  r;
+}
+
+- (NSRect)screenVisibleFrame {
+    NSRect r = [self visibleFrame];
+    COCOA_TO_SCREEN_COORDINATES(r);
+    return  r;
+}
+
+@end
+
 #pragma mark ShiftIt Window Manager private
 
 @interface ShiftItWindowManager (Private)
@@ -96,9 +112,8 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 
 - (NSRect) rect {
 	// screen coordinates of the best fit window
-	NSRect r = [screen_ frame];
-	COCOA_TO_SCREEN_COORDINATES(r);
-    
+	NSRect r = [screen_ screenFrame];
+
     return r;
 }
 
@@ -106,9 +121,8 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 	// visible screen coordinates of the best fit window
 	// the visible screen denotes some inner rect of the screen frame
 	// which is visible - not occupied by menu bar or dock
-	NSRect r = [screen_ visibleFrame];
-	COCOA_TO_SCREEN_COORDINATES(r);
-    
+	NSRect r = [screen_ screenVisibleFrame];
+
     return r;    
 }
 
