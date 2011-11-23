@@ -39,6 +39,7 @@ static int (*XGetErrorTextRef)(Display *display, int code, char *buffer_return, 
 static int (*XSyncRef)(Display *display, Bool discard);
 static int (*XMoveWindowRef)(Display *display, Window w, int x, int y);
 static int (*XResizeWindowRef)(Display *display, Window w, unsigned width, unsigned height);
+static int (*XMoveResizeWindowRef)(Display *display, Window w, int x, int y, unsigned width, unsigned height);
 static Status (*XGetWindowAttributesRef)(Display *display, Window w, XWindowAttributes *window_attributes_return);
 static int (*XGetWindowPropertyRef)(Display *display, Window w, Atom property, long long_offset, long long_length, Bool delete, Atom
                              req_type, Atom *actual_type_return, int *actual_format_return, unsigned long *nitems_return, unsigned long
@@ -60,6 +61,7 @@ static void *X11Symbols_[][2] = {
     X11_SYMBOL(XGetWindowProperty),
     X11_SYMBOL(XInternAtom),
     X11_SYMBOL(XMoveWindow),
+    X11_SYMBOL(XMoveResizeWindow),
     X11_SYMBOL(XOpenDisplay),
     X11_SYMBOL(XResizeWindow),
     X11_SYMBOL(XSetErrorHandler),
@@ -127,8 +129,8 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 
 @interface X11WindowDriver(WindowDelegate)
 
-- (BOOL) getGeometry_:(NSRect *)geometry screen:(SIScreen **)screen ofWindow:(Window *)windowRef error:(NSError **)error;
-- (BOOL) setGeometry_:(NSRect)geometry screen:(SIScreen *)screen ofWindow:(Window *)windowRef error:(NSError **)error;
+- (BOOL) getGeometry_:(NSRect *)geometry ofWindow:(Window *)windowRef error:(NSError **)error;
+- (BOOL) setGeometry_:(NSRect)geometry ofWindow:(Window *)windowRef error:(NSError **)error;
 - (void) freeWindow_:(Window *)windowRef;
 //- (BOOL) canResize_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error;
 //- (BOOL) canMove_:(BOOL *)flag window:(AXUIElementRef)windowRef error:(NSError **)error;
@@ -165,12 +167,61 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 	[super dealloc];
 }
 
-- (BOOL)getGeometry:(NSRect *)geometry screen:(SIScreen **)screen error:(NSError **)error {
-    return [driver_ getGeometry_:geometry screen:screen ofWindow:ref_ error:error];
+- (BOOL)getGeometry:(NSRect *)geometry screen:(SIScreen **)screenRef error:(NSError **)error {
+    // TODO: assert
+    // TODO: change the names -Ref
+    BOOL ret = [driver_ getGeometry_:geometry ofWindow:ref_ error:error];
+    FMTLogDebug(@"AXWindowDriver: window geometry (x11coord): %@", RECT_STR(*geometry));
+
+    if (ret) {
+        // TODO: extract
+        // following will make the X11 reference coordinate system
+		// X11 coordinates starts at the very top left corner of the most top left window
+		// basically it is a union of all screens with the beginning at the top left
+		NSRect ref = [[NSScreen primaryScreen] screenVisibleFrame];
+		for (NSScreen *s in [NSScreen screens]) {
+            NSRect r = [s screenVisibleFrame];
+            ref = NSUnionRect(ref, r);
+		}
+
+        // convert from X11 coordinates to Quartz CG coordinates
+        geometry->origin.x += ref.origin.x;
+        geometry->origin.y += ref.origin.y;
+        FMTLogDebug(@"AXWindowDriver: window geometry (gccoord): %@", RECT_STR(*geometry));
+
+        // convert the geometry to screen origin
+        SIScreen *screen = [SIScreen screenForWindowGeometry:*geometry];
+        TO_SCREEN_ORIGIN(*geometry, screen);
+        FMTLogDebug(@"AXWindowDriver: window geometry (sccoord): %@", RECT_STR(*geometry));
+
+        if (screenRef) {
+            *screenRef = screen;
+        }
+    }
+    
+    return ret;
 }
 
 - (BOOL)setGeometry:(NSRect)geometry screen:(SIScreen *)screen error:(NSError **)error {
-    return [driver_ setGeometry_:geometry screen:screen ofWindow:ref_ error:error];
+    // TODO: assert
+    NSRect _geometry = geometry;
+    FMTLogDebug(@"AXWindowDriver: window geometry (sccoord): %@", RECT_STR(_geometry));
+
+    TO_CG_ORIGIN(_geometry, screen);
+    FMTLogDebug(@"AXWindowDriver: window geometry (gccoord): %@", RECT_STR(_geometry));
+
+    // TODO: extract
+    NSRect ref = [[NSScreen primaryScreen] screenVisibleFrame];
+    for (NSScreen *s in [NSScreen screens]) {
+        ref = NSUnionRect(ref, [s screenVisibleFrame]);
+    }
+
+    // convert from X11 coordinates to Quartz CG coordinates
+    _geometry.origin.x -= ref.origin.x;
+    _geometry.origin.y -= ref.origin.y;
+    FMTLogDebug(@"AXWindowDriver: window geometry (x11coord): %@", RECT_STR(_geometry));
+
+    return [driver_ setGeometry_:_geometry ofWindow:ref_ error:error];
 }
 
 - (BOOL) canZoom:(BOOL *)flag error:(NSError **)error {
@@ -179,18 +230,21 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 }
 
 - (BOOL) canEnterFullScreen:(BOOL *)flag error:(NSError **)error {
+    // TODO: it can be done for any window similarly to Cocoa windows
+    // more info: http://tonyobryan.com/index.php?article=9
     *flag = NO;
     return YES;
 }
 
 - (BOOL) canMove:(BOOL *)flag error:(NSError **)error {
-    // TODO: do the actual check
+    // it seems that all X11 windows can be moved
     *flag = YES;
     return YES;
 }
 
 - (BOOL) canResize:(BOOL *)flag error:(NSError **)error {
     // TODO: do the actual check
+    // using the WM_SIZE_HINTS using the PMinSize, PMaxSize and PBaseSize
     *flag = YES;
     return YES;
 }
@@ -312,7 +366,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 
 @implementation X11WindowDriver (WindowDelegate)
 
-- (BOOL)getGeometry_:(__block NSRect *)geometry screen:(__block SIScreen **)screen ofWindow:(Window *)windowRef error:(NSError **)error {
+- (BOOL)getGeometry_:(__block NSRect *)geometryRef ofWindow:(Window *)windowRef error:(NSError **)error {
     return execWithDisplay_(^BOOL(Display *dpy, NSError **error) {
         Window root = DefaultRootWindow(dpy);
         XWindowAttributes wa;
@@ -339,38 +393,22 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         x -= wa.x;
         y -= wa.y;
 
-        if (geometry) {
-            *geometry = NSMakeRect(x, y, width, height);
-        }
-        if (screen) {
-            *screen = [SIScreen screenForWindowGeometry:*geometry];
+        // make geometry
+        NSRect geometry = NSMakeRect(x, y, width, height);
+
+        if (geometryRef) {
+            *geometryRef = geometry;
         }
 
         return YES;
 	}, error);
 }
 
-- (BOOL)setGeometry_:(NSRect)geometry screen:(SIScreen **)screen ofWindow:(Window *)windowRef error:(NSError **)error {
-    FMTAssertNotNil(screen);
+- (BOOL)setGeometry_:(NSRect)geometry ofWindow:(Window *)windowRef error:(NSError **)error {
+    FMTAssertNotNil(windowRef);
 
     return execWithDisplay_(^BOOL(Display *dpy, NSError **error) {
-        // TODO: combine the operations
-        // we don't need to adjust the x and y since they are from the top left window
-            if (!XMoveWindowRef(dpy, *windowRef, geometry.origin.x, geometry.origin.y)){
-                if (error) {
-                    *error = SICreateError(kX11WindowDriverErrorCode, @"Unable to get move window (XMoveWindow)");
-                }
-                return NO;
-            }
-
-            // do it now - this will block
-            if (!XSyncRef(dpy, False)) {
-                if (error) {
-                    *error = SICreateError(kX11WindowDriverErrorCode, @"X11Error: Unable to sync X11 (XSync)");
-                }
-                return NO;
-            }
-        
+        // TODO: combine the operations        
         XWindowAttributes wa;
         if(!XGetWindowAttributesRef(dpy, *windowRef, &wa)) {
             if (error) {
@@ -384,7 +422,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         unsigned int width = (unsigned int) (geometry.size.width - wa.x);
         unsigned int height = (unsigned int) (geometry.size.height - wa.y);
 
-        if (!XResizeWindowRef(dpy, *windowRef, width, height)){
+        if (!XMoveResizeWindowRef(dpy, *windowRef, (int) geometry.origin.x, (int) geometry.origin.y, width, height)){
             if (error) {
                 *error = SICreateError(kX11WindowDriverErrorCode, @"X11Error: Unable to change window geometry (XMoveResizeWindow)");
             }

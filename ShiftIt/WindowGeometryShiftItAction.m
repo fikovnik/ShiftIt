@@ -62,10 +62,10 @@
                                         @"Unable to get window geometry");
         return NO;        
     }
-    if ([screen primary]) {
-        // readjust the menu bar
-        currentGeometry.origin.y -= GetMBarHeight();
-    }
+//    if ([screen primary]) {
+//        // readjust the menu bar
+//        currentGeometry.origin.y -= GetMBarHeight();
+//    }
     FMTLogDebug(@"Current window geometry: %@", RECT_STR(currentGeometry));
 
     NSRect geometry = block_(currentGeometry, [screen size]);

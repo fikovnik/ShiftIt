@@ -30,15 +30,7 @@ NSString *const SIErrorDomain = @"org.shiftitapp.shifit.error";
 
 NSInteger const kWindowManagerFailureErrorCode = 20101;
 
-@interface NSScreen (Private)
-
-+ (NSScreen *)primaryScreen;
-- (BOOL)isPrimary;
-- (BOOL)isBelowPrimary;
-
-@end
-
-@implementation NSScreen (Private)
+@implementation NSScreen (Extras)
 
 + (NSScreen *)primaryScreen {
 	return [[NSScreen screens] objectAtIndex:0];
@@ -60,10 +52,6 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 	}
 	return isBellow;
 }
-
-@end
-
-@implementation NSScreen (ScreenCoordinates)
 
 - (NSRect)screenFrame {
     NSRect r = [self frame];

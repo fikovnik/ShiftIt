@@ -130,11 +130,18 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
     NSRect unused;
 
-    return [driver_ getGeometry_:geometry
+    BOOL ret = [driver_ getGeometry_:geometry
                           screen:screen
                       windowRect:&unused
                      drawersRect:&unused
                         ofWindow:ref_ error:error];
+
+    if (ret) {
+        TO_SCREEN_ORIGIN(*geometry, *screen);
+        FMTLogDebug(@"AXWindowDriver: window geometry shifted to screen origin: %@", RECT_STR(*geometry));
+    }
+
+    return ret;
 }
 
 - (BOOL)getWindowRect:(NSRect *)windowRect screen:(SIScreen **)screen drawersRect:(NSRect *)drawersRect error:(NSError **)error {
@@ -144,15 +151,33 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
     NSRect unused;
 
-    return [driver_ getGeometry_:&unused
-                          screen:screen
-                      windowRect:windowRect
-                     drawersRect:drawersRect
-                        ofWindow:ref_ error:error];
+    BOOL ret = [driver_ getGeometry_:&unused
+                              screen:screen
+                          windowRect:windowRect
+                         drawersRect:drawersRect
+                            ofWindow:ref_ error:error];
+    
+    if (ret) {
+        TO_SCREEN_ORIGIN(*windowRect, *screen);
+        FMTLogDebug(@"AXWindowDriver: window rect shifted to screen origin: %@", RECT_STR(*windowRect));
+
+        TO_SCREEN_ORIGIN(*drawersRect, *screen);
+        FMTLogDebug(@"AXWindowDriver: drawers rect shifted to screen origin: %@", RECT_STR(*drawersRect));
+    }
+    
+    return ret;
 }
 
 - (BOOL)setGeometry:(NSRect)geometry screen:(SIScreen *)screen error:(NSError **)error {
-    return [driver_ setGeometry_:geometry screen:screen ofWindow:ref_ error:error];
+    // STEP 1: readjust adjust the visibility
+    // the geometry is the new application window geometry relative to the screen originating at [0,0]
+    // we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
+    // take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
+    NSRect _geometry = geometry;
+    TO_CG_ORIGIN(_geometry, screen);
+    FMTLogDebug(@"AXWindowDriver: window geometry shifted to gc origin: %@", RECT_STR(_geometry));
+
+    return [driver_ setGeometry_:_geometry screen:screen ofWindow:ref_ error:error];
 }
 
 - (BOOL)canZoom:(BOOL *)flag error:(NSError **)error {
@@ -527,7 +552,10 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     if (![AXWindowDriver getSize_:&(windowRect.size) ofElement:windowRef error:error]) {
         return NO;
     }
+    
+    geometry = windowRect;
 
+    // try to get drawers positions if needed
     if (shouldUseDrawers_) {
         NSError *cause = nil;
         if (![AXWindowDriver getDrawersGeometry_:&drawersRect ofElement:windowRef error:&cause]) {
@@ -536,12 +564,14 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         } else if (drawersRect.size.width > 0) {
             // there are some drawers            
             geometry = NSUnionRect(windowRect, drawersRect);
-        } else {
-            geometry = windowRect;
         }
     }
 
+    FMTLogDebug(@"AXWindowDriver: window geometry: %@", RECT_STR(geometry));
+
+    // get suitable screen
     SIScreen *screen = [SIScreen screenForWindowGeometry:geometry];
+    FMTLogDebug(@"AXWindowDriver: window screen: %@", [screen description]);
 
     if (geometryRef) {
         *geometryRef = geometry;
@@ -564,7 +594,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     FMTAssertNotNil(error);
     FMTAssertNotNil(screen);
 
-    FMTLogDebug(@"Setting window geometry to: %@ at screen: %@", RECT_STR(geometry), screen);
+    FMTLogDebug(@"AXWindowDriver: Setting window geometry to: %@ at screen: %@", RECT_STR(geometry), screen);
 
     __block NSRect currentGeometry;
     SIScreen *currentScreen;
@@ -579,25 +609,16 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     BOOL hasDrawers = drawersRect.size.width > 0;
 
     if (hasDrawers) {
-        FMTLogDebug(@"Window geometry without drawers: %@", RECT_STR(windowRect));
-        FMTLogDebug(@"Drawers geometry: %@", RECT_STR(drawersRect));
+        FMTLogDebug(@"AXWindowDriver: Current window geometry without drawers: %@", RECT_STR(windowRect));
+        FMTLogDebug(@"AXWindowDriver: Drawers geometry: %@", RECT_STR(drawersRect));
     }
-    FMTLogDebug(@"Window geometry with drawers: %@", RECT_STR(currentGeometry));
+    FMTLogDebug(@"AXWindowDriver: Current window geometry including drawers: %@", RECT_STR(currentGeometry));
 
     // the coordinates given in the geometry are relative to the given screen
     // we need to translate them into global coordinates
 
-    // STEP 1: readjust adjust the visibility
-    // the geometry is the new application window geometry relative to the screen originating at [0,0]
-    // we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
-    // take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
-    NSRect visibleScreenRect = [screen visibleRect];
-
-    geometry.origin.x += visibleScreenRect.origin.x;
-    geometry.origin.y += visibleScreenRect.origin.y;
-
     // we need to translate from cocoa coordinates
-    FMTLogDebug(@"Setting window geometry after readjusting to the screen origin: %@", RECT_STR(geometry));
+    FMTLogDebug(@"AXWindowDriver: Target window geometry after shifting to screen origin: %@", RECT_STR(geometry));
 
     // STEP 2: readjust the drawers
     // when moving the drawers are not taken into an account so need to manually
@@ -615,18 +636,18 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         newGeometry.size.width -= dw;
         newGeometry.size.height -= dh;
 
-        FMTLogDebug(@"Target window geometry after drawers adjustment: %@", RECT_STR(newGeometry));
+        FMTLogDebug(@"AXWindowDriver: Target window geometry after drawers adjustment: %@", RECT_STR(newGeometry));
     }
 
     int (^resize)(NSError **) = ^(NSError **error) {
         if (NSEqualSizes(currentGeometry.size, newGeometry.size)) {
-            FMTLogDebug(@"New size and existing window size are the same - no action");
-            return 0;
+            FMTLogDebug(@"AXWindowDriver: New size and existing window size are the same - no action");
+            return (int) SIArea(newGeometry.size);
         }
 
         NSError *cause = nil;
         // try to resize
-        FMTLogDebug(@"Resizing to: %@", SIZE_STR(newGeometry.size));
+        FMTLogDebug(@"AXWindowDriver: Resizing to: %@", SIZE_STR(newGeometry.size));
 
         if (![AXWindowDriver setSize_:newGeometry.size
                             ofElement:windowRef
@@ -653,13 +674,13 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             return -1;
         }
 
-        FMTLogDebug(@"Window resized to: %@", SIZE_STR(currentGeometry.size));
+        FMTLogDebug(@"AXWindowDriver: Window resized to: %@", SIZE_STR(currentGeometry.size));
         return (int) SIArea(currentGeometry.size);
     };
 
     int (^move)(NSError **) = ^(NSError **error) {
         if (NSEqualPoints(currentGeometry.origin, newGeometry.origin)) {
-            FMTLogDebug(@"New origin and existing window origin are the same - no action");
+            FMTLogDebug(@"AXWindowDriver: New origin and existing window origin are the same - no action");
             return 0;
         }
 
@@ -692,7 +713,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             return -1;
         }
 
-        FMTLogDebug(@"Window moved to: %@", POINT_STR(currentGeometry.origin));
+        FMTLogDebug(@"AXWindowDriver: Window moved to: %@", POINT_STR(currentGeometry.origin));
         return (int) SIDistanceBetweenPoints(currentGeometry.origin, newGeometry.origin);
     };
 
@@ -701,7 +722,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     // re-sized to the right position at the first time. It has to be tried
     // multiple times.
     if (converge_) {
-        if (![self untilConverge_:resize target:SIArea(newGeometry.size) error:error] && *error) {
+        if (![self untilConverge_:resize target:(int) SIArea(newGeometry.size) error:error] && *error) {
             return NO;
 
         }
@@ -709,7 +730,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             return NO;
 
         }
-        if (![self untilConverge_:resize target:SIArea(newGeometry.size) error:error] && *error) {
+        if (![self untilConverge_:resize target:(int) SIArea(newGeometry.size) error:error] && *error) {
             return NO;
 
         }

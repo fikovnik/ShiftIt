@@ -25,8 +25,21 @@ extern NSInteger const kWindowManagerFailureErrorCode;
 #define SICreateError(errorCode, fmt, ...) FMTCreateError(SIErrorDomain, errorCode, fmt, ##__VA_ARGS__)
 #define SICreateErrorWithCause(errorCode, cause, fmt, ...) FMTCreateErrorWithCause(SIErrorDomain, errorCode, cause, fmt, ##__VA_ARGS__)
 
-@interface NSScreen (ScreenCoordinates)
+#define TO_SCREEN_ORIGIN(geometry, screen) \
+    (geometry).origin.x -= [(screen) visibleRect].origin.x; \
+    (geometry).origin.y -= [(screen) visibleRect].origin.y;
+//    (geometry).origin.x = -([(screen) rect].origin.x - (geometry).origin.x); \
+//    (geometry).origin.y = -([(screen) rect].origin.y - (geometry).origin.y);
 
+#define TO_CG_ORIGIN(geometry, screen) \
+    (geometry).origin.x += [(screen) visibleRect].origin.x; \
+    (geometry).origin.y += [(screen) visibleRect].origin.y;
+
+@interface NSScreen (Extras)
+
++ (NSScreen *)primaryScreen;
+- (BOOL)isPrimary;
+- (BOOL)isBelowPrimary;
 - (NSRect)screenFrame;
 - (NSRect)screenVisibleFrame;
 
