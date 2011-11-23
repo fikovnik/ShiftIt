@@ -5,5 +5,5 @@ ShiftIt/ShiftIt.xcodeproj/*.pbxuser
 ShiftIt/ShiftIt.xcodeproj/*.perspectivev3
 misc
 
-ShiftIt/ShiftIt.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/UserInterfaceState.xcuserstate
-ShiftIt/ShiftIt.xcodeproj/xcuserdata/*.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
+/ShiftIt/ShiftIt.xcodeproj/project.xcworkspace/xcuserdata/*.xcuserdatad/UserInterfaceState.xcuserstate
+/ShiftIt/ShiftIt.xcodeproj/xcuserdata/*.xcuserdatad/xcdebugger/Breakpoints.xcbkptlist
