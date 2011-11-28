@@ -290,7 +290,7 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
         *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find focused window owner");
         return NO;        
     } else {
-        FMTLogDebug(@"Window: %@", w);
+        FMTLogDebug(@"Driver mapped window: %@", [w description]);
     }
     
     [allWindowsInfoList release];

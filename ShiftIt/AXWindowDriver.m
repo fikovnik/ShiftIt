@@ -138,7 +138,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
     if (ret) {
         TO_SCREEN_ORIGIN(*geometry, *screen);
-        FMTLogDebug(@"AXWindowDriver: window geometry shifted to screen origin: %@", RECT_STR(*geometry));
+        FMTLogDebug(@"Window geometry (SCO): %@", RECT_STR(*geometry));
     }
 
     return ret;
@@ -175,7 +175,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     // take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
     NSRect _geometry = geometry;
     TO_CG_ORIGIN(_geometry, screen);
-    FMTLogDebug(@"AXWindowDriver: window geometry shifted to gc origin: %@", RECT_STR(_geometry));
+    FMTLogDebug(@"Window geometry (CGO): %@", RECT_STR(_geometry));
 
     return [driver_ setGeometry_:_geometry screen:screen ofWindow:ref_ error:error];
 }
@@ -567,11 +567,10 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         }
     }
 
-    FMTLogDebug(@"AXWindowDriver: window geometry: %@", RECT_STR(geometry));
-
     // get suitable screen
     SIScreen *screen = [SIScreen screenForWindowGeometry:geometry];
-    FMTLogDebug(@"AXWindowDriver: window screen: %@", [screen description]);
+
+    FMTLogDebug(@"Window geometry (GCO): %@ at screen: %@",RECT_STR(geometry), [screen description]);
 
     if (geometryRef) {
         *geometryRef = geometry;
@@ -594,7 +593,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     FMTAssertNotNil(error);
     FMTAssertNotNil(screen);
 
-    FMTLogDebug(@"AXWindowDriver: Setting window geometry to: %@ at screen: %@", RECT_STR(geometry), screen);
+    FMTLogDebug(@"Setting window geometry (CGO) to: %@ at screen: %@", RECT_STR(geometry), screen);
 
     __block NSRect currentGeometry;
     SIScreen *currentScreen;
@@ -609,16 +608,10 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     BOOL hasDrawers = drawersRect.size.width > 0;
 
     if (hasDrawers) {
-        FMTLogDebug(@"AXWindowDriver: Current window geometry without drawers: %@", RECT_STR(windowRect));
-        FMTLogDebug(@"AXWindowDriver: Drawers geometry: %@", RECT_STR(drawersRect));
+        FMTLogDebug(@"Window geometry (CGO) without drawers: %@", RECT_STR(windowRect));
+        FMTLogDebug(@"Window drawers geometry (CGO): %@", RECT_STR(drawersRect));
     }
-    FMTLogDebug(@"AXWindowDriver: Current window geometry including drawers: %@", RECT_STR(currentGeometry));
-
-    // the coordinates given in the geometry are relative to the given screen
-    // we need to translate them into global coordinates
-
-    // we need to translate from cocoa coordinates
-    FMTLogDebug(@"AXWindowDriver: Target window geometry after shifting to screen origin: %@", RECT_STR(geometry));
+    FMTLogDebug(@"Window geometry (CGO) including drawers: %@", RECT_STR(currentGeometry));
 
     // STEP 2: readjust the drawers
     // when moving the drawers are not taken into an account so need to manually
@@ -636,7 +629,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         newGeometry.size.width -= dw;
         newGeometry.size.height -= dh;
 
-        FMTLogDebug(@"AXWindowDriver: Target window geometry after drawers adjustment: %@", RECT_STR(newGeometry));
+        FMTLogDebug(@"New window geometry (CGO) after drawers adjustment: %@", RECT_STR(newGeometry));
     }
 
     int (^resize)(NSError **) = ^(NSError **error) {
