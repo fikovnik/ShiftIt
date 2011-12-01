@@ -29,6 +29,8 @@ extern short GetMBarHeight(void);
 NSString *const SIErrorDomain = @"org.shiftitapp.shifit.error";
 
 NSInteger const kWindowManagerFailureErrorCode = 20101;
+NSInteger const kShiftItActionFailureErrorCode = 20103;
+NSInteger const kShiftItManagerFailureErrorCode = 2014;
 
 @implementation NSScreen (Extras)
 
@@ -64,12 +66,6 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
     COCOA_TO_SCREEN_COORDINATES(r);
     return  r;
 }
-
-@end
-
-#pragma mark ShiftIt Window Manager private
-
-@interface ShiftItWindowManager (Private)
 
 @end
 
@@ -301,6 +297,75 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
     return YES;
 }
 
+- (BOOL)getAnchorMargins:(int *)leftMargin topMargin:(int *)topMargin bottomMargin:(int *)bottomMargin rightMargin:(int *)rightMargin {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    (*leftMargin) = [defaults integerForKey:kLeftMarginPrefKey];
+    (*topMargin) = [defaults integerForKey:kTopMarginPrefKey];
+    (*bottomMargin) = [defaults integerForKey:kBottomMarginPrefKey];
+    (*rightMargin) = [defaults integerForKey:kRightMarginPrefKey];
+}
+
+- (BOOL) anchorWindow:(id<SIWindow>)window error:(NSError **)error {
+    NSRect geometry;
+    SIScreen *screen;
+    NSError *cause = nil;
+
+    if (![window getGeometry:&geometry screen:&screen error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItManagerFailureErrorCode, cause, @"Unable to get window geometry");
+        return NO;
+    }
+
+    NSSize screenSize = [screen size];
+
+    int leftMargin;
+    int topMargin;
+    int bottomMargin;
+    int rightMargin;
+    [self getAnchorMargins:&leftMargin topMargin:&topMargin bottomMargin:&bottomMargin rightMargin:&rightMargin];
+
+    int anchor = 0;
+
+    // determine whether we should anchor the window
+    if (geometry.origin.x <= leftMargin) {
+        anchor |= kLeftDirection;
+    }
+    if (geometry.origin.y <= topMargin) {
+        anchor |= kTopDirection;
+    }
+    if (geometry.origin.y + geometry.size.height >= screenSize.height - bottomMargin) {
+        anchor |= kBottomDirection;
+    }
+    if (geometry.origin.x + geometry.size.width >= screenSize.width - rightMargin) {
+        anchor |= kRightDirection;
+    }
+
+    // adjust anchors if needed
+    if (anchor & kLeftDirection) {
+        geometry.origin.x = 0;
+    }
+    if (anchor & kTopDirection) {
+        geometry.origin.y = 0;
+    }
+    if (anchor & kBottomDirection && !(anchor & kTopDirection)) {
+        geometry.origin.y = screenSize.height - geometry.size.height;
+    }
+    if (anchor & kRightDirection && !(anchor & kLeftDirection)) {
+        geometry.origin.x = screenSize.width - geometry.size.width;
+    }
+
+    if (anchor) {
+        FMTLogInfo(@"Anchoring window to: %d : %@", anchor, RECT_STR(geometry));
+    }
+
+    if (![window setGeometry:geometry screen:screen error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItManagerFailureErrorCode, cause, @"Unable to set window geometry");
+        return NO;
+    }
+
+    return YES;
+}
+
 @end
 
 /**
@@ -345,7 +410,7 @@ NSInteger const kWindowManagerFailureErrorCode = 20101;
 	[super dealloc];
 }
 
-- (BOOL) executeAction:(id<ShiftItAction>)action error:(NSError **)error {
+- (BOOL) executeAction:(id<ShiftItActionDelegate>)action error:(NSError **)error {
 	FMTAssertNotNil(action);
 
     DefaultWindowContext *ctx = [[[DefaultWindowContext alloc] initWithDrivers:drivers_] autorelease];

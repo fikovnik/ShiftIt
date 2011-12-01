@@ -142,34 +142,40 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
     return r;
 };
 
-typedef enum {
-    kLeftDirection = 1 << 0,
-    kTopDirection = 1 << 1,
-    kBottomDirection = 1 << 2,
-    kRightDirection = 1 << 3
-} Direction;
+@implementation IncreaseReduceShiftItAction
 
-static inline NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRect, BOOL increase) {
+- (id)initWithMode:(BOOL)increase {
+    
+    if (![self init]) {
+        return nil;
+    }
+
+    increase_ = increase;
+    
+    return self;
+}
+
+- (NSRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<WindowContext>)windowContext {
     float kw = 0;
     float kh = 0;
 
-    NSUserDefaults *defauts = [NSUserDefaults standardUserDefaults];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     // get the size delta settings - in pixels
-    int sizeDeltaType = [defauts integerForKey:kSizeDeltaTypePrefKey];
+    int sizeDeltaType = [defaults integerForKey:kSizeDeltaTypePrefKey];
     float coef = 0;
     switch (sizeDeltaType) {
         case kFixedSizeDeltaType:
-            kw = [defauts integerForKey:kFixedSizeWidthDeltaPrefKey];
-            kh = [defauts integerForKey:kFixedSizeHeightDeltaPrefKey];
+            kw = [defaults integerForKey:kFixedSizeWidthDeltaPrefKey];
+            kh = [defaults integerForKey:kFixedSizeHeightDeltaPrefKey];
             break;
         case kWindowSizeDeltaType:
-            coef = [defauts floatForKey:kWindowSizeDeltaPrefKey] / 100;
+            coef = [defaults floatForKey:kWindowSizeDeltaPrefKey] / 100;
             kw = windowRect.size.width * coef;
             kh = windowRect.size.height * coef;
             break;
         case kScreenSizeDeltaType:
-            coef = [defauts floatForKey:kScreenSizeDeltaPrefKey] / 100;
+            coef = [defaults floatForKey:kScreenSizeDeltaPrefKey] / 100;
             kw = screenSize.width * coef;
             kh = screenSize.height * coef;
             break;
@@ -178,12 +184,12 @@ static inline NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRec
     }
 
     if (kw <= 0) {
-        NSLog(@"Invalid size for width delta: %f (type: %d)", kw, sizeDeltaType);
+        FMTLogError(@"Invalid size for width delta: %f (type: %d)", kw, sizeDeltaType);
         return windowRect;
     }
 
     if (kh <= 0) {
-        NSLog(@"Invalid size for height delta: %f (type: %d)", kh, sizeDeltaType);
+        FMTLogError(@"Invalid size for height delta: %f (type: %d)", kh, sizeDeltaType);
         return windowRect;
     }
 
@@ -192,48 +198,36 @@ static inline NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRec
     int bottomMargin = 0;
     int rightMargin = 0;
 
-    // get margin settings - in pixels
-    if ([defauts boolForKey:kMarginsEnabledPrefKey]) {
-        leftMargin = [defauts integerForKey:kLeftMarginPrefKey];
-        topMargin = [defauts integerForKey:kTopMarginPrefKey];
-        bottomMargin = [defauts integerForKey:kBottomMarginPrefKey];
-        rightMargin = [defauts integerForKey:kRightMarginPrefKey];
-    }
-
+    [windowContext getAnchorMargins:&leftMargin topMargin:&topMargin bottomMargin:&bottomMargin rightMargin:&rightMargin];
+    
     // target window rect
     NSRect r = windowRect;
     // 1: increase, -1: reduce
-    int inc = increase ? 1 : -1;
+    int inc = increase_ ? 1 : -1;
     // into which direction we are going to increase/reduce size
     int directions = kLeftDirection | kTopDirection | kBottomDirection | kRightDirection;
-    // which anchors were detected
-    int anchor = 0;
 
     if (r.origin.x <= leftMargin) {
         // do not resize to left
         directions ^= kLeftDirection;
-        anchor |= kLeftDirection;
     }
     if (r.origin.y <= topMargin) {
         // do not resize to top
         directions ^= kTopDirection;
-        anchor |= kTopDirection;
     }
     if (r.origin.y + r.size.height >= screenSize.height - bottomMargin) {
         // do not resize to bottom
         directions ^= kBottomDirection;
-        anchor |= kBottomDirection;
     }
     if (r.origin.x + r.size.width >= screenSize.width - rightMargin) {
         // do not resize to right
         directions ^= kRightDirection;
-        anchor |= kRightDirection;
     }
 
     // following first handle maximize
     // iff the window is in maximize than allow reducing the size with no
     // anchors
-    if (!directions && !increase) {
+    if (!directions && !increase_) {
         directions = kLeftDirection | kTopDirection | kBottomDirection | kRightDirection;
     }
 
@@ -269,20 +263,6 @@ static inline NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRec
         r.size.width += khorz; // resize
     }
 
-    // adjust anchors if needed
-    if (anchor & kLeftDirection) {
-        r.origin.x = 0;
-    }
-    if (anchor & kTopDirection) {
-        r.origin.y = 0;
-    }
-    if (anchor & kBottomDirection) {
-        r.origin.y = screenSize.height - r.size.height;
-    }
-    if (anchor & kRightDirection) {
-        r.origin.x = screenSize.width - r.size.width;
-    }
-
     // check window rect - constrained by the screen size
     r.size.width = r.size.width < kw ? kw : r.size.width;
     r.size.width = r.size.width > screenSize.width ? screenSize.width : r.size.width;
@@ -296,16 +276,11 @@ static inline NSRect ShiftIt_IncreaseReduce_(NSSize screenSize, NSRect windowRec
     r.origin.y = r.origin.y < 0 ? 0 : r.origin.y;
     r.origin.y = r.origin.y > screenSize.height - r.size.height ? screenSize.height - r.size.height : r.origin.y;
 
-    return r;
+    return r;    
 }
 
-const SimpleWindowGeometryChangeBlock shiftItIncrease = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    return ShiftIt_IncreaseReduce_(screenSize, windowRect, YES);
-};
 
-const SimpleWindowGeometryChangeBlock shiftItReduce = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    return ShiftIt_IncreaseReduce_(screenSize, windowRect, NO);
-};
+@end
 
 @implementation ToggleZoomShiftItAction
 
@@ -317,7 +292,7 @@ const SimpleWindowGeometryChangeBlock shiftItReduce = ^NSRect(NSRect windowRect,
     id <SIWindow> window = nil;
 
     if (![windowContext getFocusedWindow:&window error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
+        *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
         cause,
         @"Unable to get active window");
         return NO;
@@ -325,12 +300,12 @@ const SimpleWindowGeometryChangeBlock shiftItReduce = ^NSRect(NSRect windowRect,
 
     BOOL flag = NO;
     if (![window canZoom:&flag error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
+        *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
         cause,
         @"Unable to find out if window can zoom");
     }
     if (!flag) {
-        *error = SICreateError(kShiftItActionFaiureErrorCode, @"Window cannot zoom");
+        *error = SICreateError(kShiftItActionFailureErrorCode, @"Window cannot zoom");
         return NO;
     }
 
@@ -353,7 +328,7 @@ const SimpleWindowGeometryChangeBlock shiftItReduce = ^NSRect(NSRect windowRect,
     id <SIWindow> window = nil;
 
     if (![windowContext getFocusedWindow:&window error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
+        *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
         cause,
         @"Unable to get active window");
         return NO;
@@ -361,12 +336,12 @@ const SimpleWindowGeometryChangeBlock shiftItReduce = ^NSRect(NSRect windowRect,
 
     BOOL flag = NO;
     if (![window canEnterFullScreen:&flag error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItActionFaiureErrorCode,
+        *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
         cause,
         @"Unable to find out if window can enter fullscreen");
     }
     if (!flag) {
-        *error = SICreateError(kShiftItActionFaiureErrorCode, @"Window cannot enter fullscreen");
+        *error = SICreateError(kShiftItActionFailureErrorCode, @"Window cannot enter fullscreen");
         return NO;
     }
 

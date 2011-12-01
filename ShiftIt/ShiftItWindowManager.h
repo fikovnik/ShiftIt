@@ -31,6 +31,6 @@
 }
 
 - (id) initWithDrivers:(NSArray *)drivers;
-- (BOOL) executeAction:(id<ShiftItAction>)action error:(NSError **)error;
+- (BOOL) executeAction:(id<ShiftItActionDelegate>)action error:(NSError **)error;
 
 @end

@@ -78,6 +78,48 @@ const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.25; // in seconds
 // TODO: move to the class
 NSDictionary *allShiftActions = nil;
 
+@implementation ShiftItAction
+
+@synthesize identifier = identifier_;
+@synthesize label = label_;
+@synthesize uiTag = uiTag_;
+@synthesize delegate = delegate_;
+
+- (id)initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag delegate:(id <ShiftItActionDelegate>)delegate {
+    FMTAssertNotNil(identifier);
+    FMTAssertNotNil(label);
+    FMTAssert(uiTag > 0, @"uiTag must be greater than 0");
+    FMTAssertNotNil(delegate);
+
+    if (![super init]) {
+        return nil;
+    }
+
+    identifier_ = [identifier retain];
+    label_ = [label retain];
+    uiTag_ = uiTag;
+    delegate_ = [delegate retain];
+
+    return self;
+}
+
+- (void)dealloc {
+    [identifier_ release];
+    [label_ release];
+    [delegate_ release];
+
+    [super dealloc];
+}
+
+- (BOOL)execute:(id <WindowContext>)windowContext error:(NSError **)error {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:FMTStr(@"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+                                 userInfo:nil];
+}
+
+@end
+
+
 @interface ShiftItAppDelegate (Private)
 
 - (void)initializeActions_;
@@ -88,7 +130,7 @@ NSDictionary *allShiftActions = nil;
 
 - (void)invokeShiftItActionByIdentifier_:(NSString *)identifier;
 
-- (void)updateStatusMenuShortcutForAction_:(AbstractShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers;
+- (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers;
 
 - (void)handleShowPreferencesRequest_:(NSNotification *)notification;
 
@@ -238,7 +280,7 @@ NSDictionary *allShiftActions = nil;
     NSUserDefaultsController *userDefaultsController = [NSUserDefaultsController sharedUserDefaultsController];
     [userDefaultsController addObserver:self forKeyPath:FMTStr(@"values.%@", kShowMenuPrefKey) options:0 context:self];
 
-    for (AbstractShiftItAction *action in [allShiftActions allValues]) {
+    for (ShiftItAction *action in [allShiftActions allValues]) {
         NSString *identifier = [action identifier];
 
         NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:3];
@@ -312,7 +354,7 @@ NSDictionary *allShiftActions = nil;
     [NSApp activateIgnoringOtherApps:YES];
 }
 
-- (void)updateStatusMenuShortcutForAction_:(AbstractShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
+- (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
     FMTAssertNotNil(action);
     FMTLogDebug(@"updateStatusMenuShortcutForAction_:%@ keyCode:%ld modifiers:%ld", [action identifier], keyCode, modifiers);
 
@@ -343,26 +385,27 @@ NSDictionary *allShiftActions = nil;
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     // TODO: this is ugly but just temp
-    AbstractShiftItAction *action = nil;
+    ShiftItAction *action = nil;
 
-#define REGISTER_ACTION(dict, a) \
-    action = [(a) autorelease]; \
+#define REGISTER_ACTION(dict, anId, aLabel, aTag, aDelegate) \
+    action = [[ShiftItAction alloc] initWithIdentifier:(anId) label:(aLabel) uiTag:(aTag) delegate:(aDelegate)]; \
     [(dict) setObject:action forKey:[action identifier]];
 
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"left" label:@"Left" uiTag:1 block:shiftItLeft]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"right" label:@"Right" uiTag:2 block:shiftItRight]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"top" label:@"Top" uiTag:3 block:shiftItTop]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"bottom" label:@"Bottom" uiTag:4 block:shiftItBottom]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"tl" label:@"Top Left" uiTag:5 block:shiftItTopLeft]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"tr" label:@"Top Right" uiTag:6 block:shiftItTopRight]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"bl" label:@"Bottom Left" uiTag:7 block:shiftItBottomLeft]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"br" label:@"Bottom Right" uiTag:8 block:shiftItBottomRight]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"center" label:@"Center" uiTag:9 block:shiftItCenter]);
-    REGISTER_ACTION(dict, [[ToggleZoomShiftItAction alloc] initWithIdentifier:@"zoom" label:@"Toggle Zoom" uiTag:10]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"maximize" label:@"Maximize" uiTag:11 block:shiftItFullScreen]);
-    REGISTER_ACTION(dict, [[ToggleFullScreenShiftItAction alloc] initWithIdentifier:@"fullScreen" label:@"Toggle Full Screen" uiTag:12]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"increase" label:@"Increase" uiTag:13 block:shiftItIncrease]);
-    REGISTER_ACTION(dict, [[WindowGeometryShiftItAction alloc] initWithIdentifier:@"reduce" label:@"Reduce" uiTag:14 block:shiftItReduce]);
+    REGISTER_ACTION(dict, @"left", @"Left", 1, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItLeft] autorelease]);
+    REGISTER_ACTION(dict, @"right", @"Right", 2, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItRight] autorelease]);
+    REGISTER_ACTION(dict, @"top", @"Top", 3, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTop] autorelease]);
+    REGISTER_ACTION(dict, @"bottom", @"Bottom", 4, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottom] autorelease]);
+    REGISTER_ACTION(dict, @"tl", @"Top Left", 5, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopLeft] autorelease]);
+    REGISTER_ACTION(dict, @"tr", @"Top Right", 6, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopRight] autorelease]);
+    REGISTER_ACTION(dict, @"bl", @"Bottom Left", 7, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomLeft] autorelease]);
+    REGISTER_ACTION(dict, @"br", @"Bottom Right", 8, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomRight] autorelease]);
+    REGISTER_ACTION(dict, @"center", @"Center", 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
+    REGISTER_ACTION(dict, @"zoom", @"Toggle Zoom", 10, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"maximize", @"Maximize", 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
+    REGISTER_ACTION(dict, @"fullScreen", @"Toggle Full Screen", 12, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"increase", @"Increase", 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"reduce", @"Reduce", 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
+
 
 #undef REGISTER_ACTION
 
@@ -399,7 +442,7 @@ NSDictionary *allShiftActions = nil;
 
     FMTLogDebug(@"Updating action %@ hotKey: keyCode=%ld modifiers=%ld", identifier, keyCode, modifiers);
 
-    AbstractShiftItAction *action = [allShiftActions objectForKey:identifier];
+    ShiftItAction *action = [allShiftActions objectForKey:identifier];
     FMTAssertNotNil(action);
 
     FMTHotKey *newHotKey = [[[FMTHotKey alloc] initWithKeyCode:keyCode modifiers:modifiers] autorelease];
@@ -461,12 +504,12 @@ NSDictionary *allShiftActions = nil;
             beforeNow_ = now;
         }
 
-        AbstractShiftItAction *action = [allShiftActions objectForKey:identifier];
+        ShiftItAction *action = [allShiftActions objectForKey:identifier];
         FMTAssertNotNil(action);
 
         FMTLogInfo(@"Invoking action: %@", identifier);
         NSError *error = nil;
-        if (![windowManager_ executeAction:action error:&error]) {
+        if (![windowManager_ executeAction:[action delegate] error:&error]) {
             FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], [error localizedDescription], [error fullDescription]);
         }
     }

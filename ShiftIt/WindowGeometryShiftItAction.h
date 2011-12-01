@@ -7,15 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AbstractShiftItAction.h"
+#import "ShiftIt.h"
+
+
+@interface AbstractWindowGeometryShiftItAction : NSObject<ShiftItActionDelegate>
+
+- (NSRect) shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<WindowContext>)windowContext;
+
+@end
 
 typedef NSRect(^SimpleWindowGeometryChangeBlock)(NSRect, NSSize);
 
-@interface WindowGeometryShiftItAction : AbstractShiftItAction {
+@interface WindowGeometryShiftItAction : AbstractWindowGeometryShiftItAction {
  @private
     SimpleWindowGeometryChangeBlock block_;
 }
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag block:(SimpleWindowGeometryChangeBlock)block;
+- (id) initWithBlock:(SimpleWindowGeometryChangeBlock)block;
 
 @end

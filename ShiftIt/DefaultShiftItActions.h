@@ -30,11 +30,18 @@ const extern SimpleWindowGeometryChangeBlock shiftItBottomLeft;
 const extern SimpleWindowGeometryChangeBlock shiftItBottomRight;
 const extern SimpleWindowGeometryChangeBlock shiftItFullScreen;
 const extern SimpleWindowGeometryChangeBlock shiftItCenter;
-const extern SimpleWindowGeometryChangeBlock shiftItIncrease;
-const extern SimpleWindowGeometryChangeBlock shiftItReduce;
 
-@interface ToggleZoomShiftItAction : AbstractShiftItAction
+@interface IncreaseReduceShiftItAction : AbstractWindowGeometryShiftItAction {
+ @private
+    BOOL increase_;
+}
+
+- (id) initWithMode:(BOOL)increase;
+
 @end
 
-@interface ToggleFullScreenShiftItAction : AbstractShiftItAction
+@interface ToggleZoomShiftItAction : NSObject<ShiftItActionDelegate>
+@end
+
+@interface ToggleFullScreenShiftItAction : NSObject<ShiftItActionDelegate>
 @end

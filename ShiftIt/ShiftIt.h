@@ -15,11 +15,20 @@
 extern short GetMBarHeight(void);
 
 extern NSString *const SIErrorDomain;
+extern NSInteger const kShiftItManagerFailureErrorCode;
+// TODO: change this to be the AX error specific
 extern NSInteger const kWindowManagerFailureErrorCode;
+extern NSInteger const kShiftItActionFailureErrorCode;
 
-#define POINT_STR(point) FMTStr(@"[%f %f]", (point).x, (point).y)
-#define SIZE_STR(size) FMTStr(@"[%f %f]", (size).width, (size).height)
-#define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).origin.x+(rect).size.width, (rect).origin.y+(rect).size.height, (rect).size.width, (rect).size.height)
+extern NSString *const kMarginsEnabledPrefKey;
+extern NSString *const kLeftMarginPrefKey;
+extern NSString *const kTopMarginPrefKey;
+extern NSString *const kBottomMarginPrefKey;
+extern NSString *const kRightMarginPrefKey;
+
+#define POINT_STR(point) FMTStr(@"[%.1f %.1f]", (point).x, (point).y)
+#define SIZE_STR(size) FMTStr(@"[%.1f x %.1f]", (size).width, (size).height)
+#define RECT_STR(rect) FMTStr(@"[%.1f %.1f] [%.1f %.1f] [%.1f x %.1f]", (rect).origin.x, (rect).origin.y, (rect).origin.x+(rect).size.width, (rect).origin.y+(rect).size.height, (rect).size.width, (rect).size.height)
 #define COCOA_TO_SCREEN_COORDINATES(rect) (rect).origin.y = [[NSScreen primaryScreen] frame].size.height - (rect).size.height - (rect).origin.y
 
 #define SICreateError(errorCode, fmt, ...) FMTCreateError(SIErrorDomain, errorCode, fmt, ##__VA_ARGS__)
@@ -107,15 +116,23 @@ extern NSInteger const kWindowManagerFailureErrorCode;
 
 @required
 - (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error;
-
+- (BOOL) anchorWindow:(id<SIWindow>)window error:(NSError **)error;
+- (BOOL)getAnchorMargins:(int *)leftMargin topMargin:(int *)topMargin bottomMargin:(int *)bottomMargin rightMargin:(int *)rightMargin;
 @end
 
-@protocol ShiftItAction <NSObject>
+@protocol ShiftItActionDelegate <NSObject>
 
 @required
 - (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error;
 
 @end
+
+typedef enum {
+    kLeftDirection = 1 << 0,
+    kTopDirection = 1 << 1,
+    kBottomDirection = 1 << 2,
+    kRightDirection = 1 << 3
+} Direction;
 
 // TODO: move to FMT
 static inline double SIDistanceBetweenPoints(NSPoint r, NSPoint s) {
@@ -127,3 +144,4 @@ static inline double SIArea(NSSize s) {
     return s.width * s.height;
 }
 
+extern void GetAnchorMargin(int *leftMargin, int *topMargin, int *bottomMargin, int *rightMargin);

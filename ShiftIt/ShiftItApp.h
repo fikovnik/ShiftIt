@@ -19,6 +19,7 @@
 
 #import "FMTDefines.h"
 #import "FMTUtils.h"
+#import "ShiftIt.h"
 
 extern NSString *const kShiftItAppBundleId;
 
@@ -33,11 +34,6 @@ extern NSString *const kModifiersPrefKeySuffix;
 // preferences keys
 extern NSString *const kHasStartedBeforePrefKey;
 extern NSString *const kShowMenuPrefKey;
-extern NSString *const kMarginsEnabledPrefKey;
-extern NSString *const kLeftMarginPrefKey;
-extern NSString *const kTopMarginPrefKey;
-extern NSString *const kBottomMarginPrefKey;
-extern NSString *const kRightMarginPrefKey;
 extern NSString *const kSizeDeltaTypePrefKey;
 extern NSString *const kFixedSizeWidthDeltaPrefKey;
 extern NSString *const kFixedSizeHeightDeltaPrefKey;
@@ -73,6 +69,23 @@ extern NSString *const kSIIconType;
 extern NSString *const kSIMenuItemTitle;
 
 extern NSString *const SIAErrorDomain;
+
+@interface ShiftItAction : NSObject {
+ @private
+	NSString *identifier_;
+	NSString *label_;
+	NSInteger uiTag_;
+    id<ShiftItActionDelegate> delegate_;
+}
+
+@property (readonly) NSString *identifier;
+@property (readonly) NSString *label;
+@property (readonly) NSInteger uiTag;
+@property (readonly) id<ShiftItActionDelegate> delegate;
+
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag delegate:(id <ShiftItActionDelegate>)delegate;
+
+@end
 
 #define KeyCodePrefKey(identifier) FMTStr(@"%@%@", (identifier), kKeyCodePrefKeySuffix)
 #define ModifiersPrefKey(identifier) FMTStr(@"%@%@", (identifier), kModifiersPrefKeySuffix)
