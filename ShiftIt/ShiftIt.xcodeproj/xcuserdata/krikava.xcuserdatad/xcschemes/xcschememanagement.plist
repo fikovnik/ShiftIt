@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>ShiftIt-noX11.xcscheme</key>
+		<key>ShiftIt Tests.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>1</integer>
@@ -18,6 +18,21 @@
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
 		<key>27002DE61269CA1B0062B6D6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2714C0B01487F9BC00CC951D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2717BD941498B78E0012EF87</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>2717BDAA1498B7FD0012EF87</key>
 		<dict>
 			<key>primary</key>
 			<true/>

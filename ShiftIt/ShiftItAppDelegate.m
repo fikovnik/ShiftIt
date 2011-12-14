@@ -22,15 +22,8 @@
 #import "WindowGeometryShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
-#import "ShiftItWindowManager.h"
 #import "AXWindowDriver.h"
 #import "X11WindowDriver.h"
-#import "FMTLoginItems.h"
-#import "FMTHotKey.h"
-#import "FMTHotKeyManager.h"
-#import "FMTUtils.h"
-#import "FMTNSError+Extras.h"
-#import "FMTDefines.h"
 
 NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
 
@@ -85,7 +78,7 @@ NSDictionary *allShiftActions = nil;
 @synthesize uiTag = uiTag_;
 @synthesize delegate = delegate_;
 
-- (id)initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag delegate:(id <ShiftItActionDelegate>)delegate {
+- (id)initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag delegate:(id <SIActionDelegate>)delegate {
     FMTAssertNotNil(identifier);
     FMTAssertNotNil(label);
     FMTAssert(uiTag > 0, @"uiTag must be greater than 0");
@@ -111,7 +104,7 @@ NSDictionary *allShiftActions = nil;
     [super dealloc];
 }
 
-- (BOOL)execute:(id <WindowContext>)windowContext error:(NSError **)error {
+- (BOOL)execute:(id <SIWindowContext>)windowContext error:(NSError **)error {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:FMTStr(@"You must override %@ in a subclass", NSStringFromSelector(_cmd))
                                  userInfo:nil];
@@ -186,7 +179,7 @@ NSDictionary *allShiftActions = nil;
     NSString *appPath = [[NSBundle mainBundle] bundlePath];
 
     if (![loginItems isInLoginItemsApplicationWithPath:appPath]) {
-        int ret = NSRunAlertPanel(@"Start ShiftIt automatically?", @"Would you like to have ShiftIt automatically started at a login time?", @"Yes", @"No", NULL);
+        NSInteger ret = NSRunAlertPanel(@"Start ShiftIt automatically?", @"Would you like to have ShiftIt automatically started at a login time?", @"Yes", @"No", NULL);
         switch (ret) {
             case NSAlertDefaultReturn:
                 // do it!
@@ -215,7 +208,7 @@ NSDictionary *allShiftActions = nil;
     }
 
     if (!AXAPIEnabled()) {
-        int ret = NSRunAlertPanel(@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel", NULL);
+        NSInteger ret = NSRunAlertPanel(@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel", NULL);
         switch (ret) {
             case NSAlertDefaultReturn:
                 [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
@@ -272,7 +265,7 @@ NSDictionary *allShiftActions = nil;
         [NSApp terminate:self];
     }
 
-	windowManager_ = [[ShiftItWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
+	windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
 
     [self initializeActions_];
     [self updateMenuBarIcon_];

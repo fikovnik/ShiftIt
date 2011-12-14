@@ -18,10 +18,8 @@
  */
 
 #import "DefaultShiftItActions.h"
+// TODO: extract this to be out of here
 #import "ShiftItApp.h"
-#import "FMTDefines.h"
-#import "ShiftItWindowManager.h"
-#import "WindowGeometryShiftItAction.h"
 
 const SimpleWindowGeometryChangeBlock shiftItLeft = ^NSRect(NSRect windowRect, NSSize screenSize) {
     NSRect r;
@@ -155,27 +153,27 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
     return self;
 }
 
-- (NSRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<WindowContext>)windowContext {
-    float kw = 0;
-    float kh = 0;
+- (NSRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
+    double kw = 0;
+    double kh = 0;
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     // get the size delta settings - in pixels
-    int sizeDeltaType = [defaults integerForKey:kSizeDeltaTypePrefKey];
-    float coef = 0;
+    NSInteger sizeDeltaType = [defaults integerForKey:kSizeDeltaTypePrefKey];
+    double coef = 0;
     switch (sizeDeltaType) {
         case kFixedSizeDeltaType:
             kw = [defaults integerForKey:kFixedSizeWidthDeltaPrefKey];
             kh = [defaults integerForKey:kFixedSizeHeightDeltaPrefKey];
             break;
         case kWindowSizeDeltaType:
-            coef = [defaults floatForKey:kWindowSizeDeltaPrefKey] / 100;
+            coef = [defaults doubleForKey:kWindowSizeDeltaPrefKey] / 100;
             kw = windowRect.size.width * coef;
             kh = windowRect.size.height * coef;
             break;
         case kScreenSizeDeltaType:
-            coef = [defaults floatForKey:kScreenSizeDeltaPrefKey] / 100;
+            coef = [defaults doubleForKey:kScreenSizeDeltaPrefKey] / 100;
             kw = screenSize.width * coef;
             kh = screenSize.height * coef;
             break;
@@ -233,7 +231,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
 
     // max horizontal resize at a time is kw, so in case we do resize both
     // directions at the same time we do half to each
-    int khorz = inc * kw;
+    int khorz = (int) (inc * kw);
     if (directions & kLeftDirection
             && directions & kRightDirection) {
         khorz /= 2;
@@ -241,7 +239,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
 
     // max vertical resize at a time is kh, so in case we do resize both
     // directions at the same time we do half to each
-    int kvert = inc * kh;
+    int kvert = (int) (inc * kh);
     if (directions & kTopDirection
             && directions & kBottomDirection) {
         kvert /= 2;
@@ -284,7 +282,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
 
 @implementation ToggleZoomShiftItAction
 
-- (BOOL)execute:(id <WindowContext>)windowContext error:(NSError **)error {
+- (BOOL)execute:(id <SIWindowContext>)windowContext error:(NSError **)error {
     FMTAssertNotNil(windowContext);
     FMTAssertNotNil(error);
 
@@ -320,7 +318,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
 
 @implementation ToggleFullScreenShiftItAction
 
-- (BOOL)execute:(id <WindowContext>)windowContext error:(NSError **)error {
+- (BOOL)execute:(id <SIWindowContext>)windowContext error:(NSError **)error {
     FMTAssertNotNil(windowContext);
     FMTAssertNotNil(error);
 

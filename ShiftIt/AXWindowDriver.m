@@ -8,8 +8,6 @@
 
 #import <Carbon/Carbon.h>
 #import "AXWindowDriver.h"
-#import "ShiftIt.h"
-#import "FMTDefines.h"
 
 // from whatever reason this attribute is missing in the AXAttributeConstants.h
 #define kAXFullScreenAttribute  CFSTR("AXFullScreen")
@@ -632,7 +630,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         FMTLogDebug(@"New window geometry (CGO) after drawers adjustment: %@", RECT_STR(newGeometry));
     }
 
-    int (^resize)(NSError **) = ^(NSError **error) {
+    int (^resize)(NSError **) = ^(NSError **nestedError) {
         if (NSEqualSizes(currentGeometry.size, newGeometry.size)) {
             FMTLogDebug(@"AXWindowDriver: New size and existing window size are the same - no action");
             return (int) SIArea(newGeometry.size);
@@ -646,7 +644,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
                             ofElement:windowRef
                                 error:&cause]) {
 
-            *error = SICreateErrorWithCause(kAXWindowDriverErrorCode,
+            *nestedError = SICreateErrorWithCause(kAXWindowDriverErrorCode,
             cause,
             @"Unable to set window size to: %@",
             SIZE_STR(newGeometry.size));
@@ -661,7 +659,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
                     drawersRect:nil ofWindow:windowRef
                           error:&cause]) {
 
-            *error = SICreateErrorWithCause(kAXWindowDriverErrorCode,
+            *nestedError = SICreateErrorWithCause(kAXWindowDriverErrorCode,
             cause,
             @"Unable to get window size");
             return -1;
@@ -671,7 +669,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         return (int) SIArea(currentGeometry.size);
     };
 
-    int (^move)(NSError **) = ^(NSError **error) {
+    int (^move)(NSError **) = ^(NSError **nestedError) {
         if (NSEqualPoints(currentGeometry.origin, newGeometry.origin)) {
             FMTLogDebug(@"AXWindowDriver: New origin and existing window origin are the same - no action");
             return 0;
@@ -685,7 +683,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
                               ofElement:windowRef
                                   error:&cause]) {
 
-            *error = SICreateErrorWithCause(kAXWindowDriverErrorCode,
+            *nestedError = SICreateErrorWithCause(kAXWindowDriverErrorCode,
             cause,
             @"Unable to set window origin to: %@",
             POINT_STR(newGeometry.origin));
@@ -700,7 +698,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
                     drawersRect:nil ofWindow:windowRef
                           error:&cause]) {
 
-            *error = SICreateErrorWithCause(kAXWindowDriverErrorCode,
+            *nestedError = SICreateErrorWithCause(kAXWindowDriverErrorCode,
             cause,
             @"Unable to get window size");
             return -1;

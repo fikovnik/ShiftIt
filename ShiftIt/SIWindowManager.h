@@ -19,18 +19,14 @@
 
 
 #import <Foundation/Foundation.h>
-#import "WindowDriver.h"
-/**
- * This unit provides support for sizing application using Apple accessibiity API
- *
- */
+#import "ShiftIt.h"
 
-@interface ShiftItWindowManager : NSObject {
+@interface SIWindowManager : NSObject {
  @private
     NSArray *drivers_;
 }
 
 - (id) initWithDrivers:(NSArray *)drivers;
-- (BOOL) executeAction:(id<ShiftItActionDelegate>)action error:(NSError **)error;
+- (BOOL) executeAction:(id<SIActionDelegate>)action error:(NSError **)error;
 
 @end

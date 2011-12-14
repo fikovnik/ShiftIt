@@ -32,6 +32,15 @@
     return [NSArray arrayWithArray:res];
 }
 
+- (NSArray *) transform:(FMTItemTransformer)transformer {
+    NSMutableArray *res = [NSMutableArray arrayWithCapacity:[self count]];
+ 
+    for (id item in self) {
+        [res addObject:transformer(item)];
+    }
+    
+    return [NSArray arrayWithArray:res];
+}
 
 - (void) each:(FMTEachCallback)callback {
     for (id item in self) {

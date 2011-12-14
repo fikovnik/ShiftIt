@@ -19,6 +19,7 @@
 
 #import <Foundation/Foundation.h>
 #import "WindowGeometryShiftItAction.h"
+#import "ShiftIt.h"
 
 const extern SimpleWindowGeometryChangeBlock shiftItLeft;
 const extern SimpleWindowGeometryChangeBlock shiftItRight;
@@ -40,8 +41,8 @@ const extern SimpleWindowGeometryChangeBlock shiftItCenter;
 
 @end
 
-@interface ToggleZoomShiftItAction : NSObject<ShiftItActionDelegate>
+@interface ToggleZoomShiftItAction : NSObject<SIActionDelegate>
 @end
 
-@interface ToggleFullScreenShiftItAction : NSObject<ShiftItActionDelegate>
+@interface ToggleFullScreenShiftItAction : NSObject<SIActionDelegate>
 @end

@@ -8,12 +8,10 @@
 
 #import <Carbon/Carbon.h>
 #import "WindowGeometryShiftItAction.h"
-#import "FMTDefines.h"
-#import "ShiftIt.h"
 
 @implementation AbstractWindowGeometryShiftItAction
 
-- (BOOL) execute:(id<WindowContext>)windowContext error:(NSError **)error {
+- (BOOL) execute:(id<SIWindowContext>)windowContext error:(NSError **)error {
     FMTAssertNotNil(windowContext);
     FMTAssertNotNil(error);
     
@@ -100,6 +98,12 @@
     return YES;
 }
 
+- (NSRect) shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                   reason:FMTStr(@"You must override %@ in a subclass", NSStringFromSelector(_cmd))
+                                 userInfo:nil];
+}
+
 @end
 
 @implementation WindowGeometryShiftItAction
@@ -116,7 +120,7 @@
     return self;
 }
 
-- (NSRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<WindowContext>)windowContext {
+- (NSRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
     return block_(windowRect, screenSize);
 }
 

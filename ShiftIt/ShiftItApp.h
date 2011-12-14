@@ -17,8 +17,7 @@
  
  */
 
-#import "FMTDefines.h"
-#import "FMTUtils.h"
+#import "FMT.h"
 #import "ShiftIt.h"
 
 extern NSString *const kShiftItAppBundleId;
@@ -75,15 +74,15 @@ extern NSString *const SIAErrorDomain;
 	NSString *identifier_;
 	NSString *label_;
 	NSInteger uiTag_;
-    id<ShiftItActionDelegate> delegate_;
+    id<SIActionDelegate> delegate_;
 }
 
 @property (readonly) NSString *identifier;
 @property (readonly) NSString *label;
 @property (readonly) NSInteger uiTag;
-@property (readonly) id<ShiftItActionDelegate> delegate;
+@property (readonly) id<SIActionDelegate> delegate;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag delegate:(id <ShiftItActionDelegate>)delegate;
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag delegate:(id <SIActionDelegate>)delegate;
 
 @end
 

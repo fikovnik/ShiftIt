@@ -19,9 +19,7 @@
 
 #import <Carbon/Carbon.h>
 
-#import "ShiftItWindowManager.h"
-#import "AXWindowDriver.h"
-#import "ShiftIt.h"
+#import "SIWindowManager.h"
 
 extern short GetMBarHeight(void);
 
@@ -31,129 +29,6 @@ NSString *const SIErrorDomain = @"org.shiftitapp.shifit.error";
 NSInteger const kWindowManagerFailureErrorCode = 20101;
 NSInteger const kShiftItActionFailureErrorCode = 20103;
 NSInteger const kShiftItManagerFailureErrorCode = 2014;
-
-@implementation NSScreen (Extras)
-
-+ (NSScreen *)primaryScreen {
-	return [[NSScreen screens] objectAtIndex:0];
-}
-
-- (BOOL)isPrimary {
-	return self == [NSScreen primaryScreen];
-}
-
-- (BOOL)isBelowPrimary { 			
-	BOOL isBellow = NO;
-	for (NSScreen *s in [NSScreen screens]) {
-		NSRect r = [s frame];
-		COCOA_TO_SCREEN_COORDINATES(r);
-		if (r.origin.y > 0) {
-			isBellow = YES;
-			break;
-		}
-	}
-	return isBellow;
-}
-
-- (NSRect)screenFrame {
-    NSRect r = [self frame];
-    COCOA_TO_SCREEN_COORDINATES(r);
-    return  r;
-}
-
-- (NSRect)screenVisibleFrame {
-    NSRect r = [self visibleFrame];
-    COCOA_TO_SCREEN_COORDINATES(r);
-    return  r;
-}
-
-@end
-
-#pragma mark SI Screen
-
-@implementation SIScreen
-
-@dynamic size;
-@dynamic primary;
-@dynamic rect;
-@dynamic visibleRect;
-
-- (id) initWithNSScreen:(NSScreen *)screen {
-	FMTAssertNotNil(screen);
-    
-	if (![super init]) {
-		return nil;
-	}
-    
-    screen_ = screen;
-    
-	return self;
-}
-
-- (BOOL) primary {
-    return [screen_ isPrimary];
-}
-
-- (NSRect) rect {
-	// screen coordinates of the best fit window
-	NSRect r = [screen_ screenFrame];
-
-    return r;
-}
-
-- (NSRect) visibleRect {
-	// visible screen coordinates of the best fit window
-	// the visible screen denotes some inner rect of the screen frame
-	// which is visible - not occupied by menu bar or dock
-	NSRect r = [screen_ screenVisibleFrame];
-
-    return r;    
-}
-
-- (NSSize) size {
-	return [self visibleRect].size;
-}
-
-- (NSString *) description {
-    NSDictionary *info = [screen_ deviceDescription];
-    
-    return FMTStr(@"id=%@, primary=%d, rect=(%@) visibleRect=(%@)", [info objectForKey: @"NSScreenNumber"], [self primary], RECT_STR([self rect]), RECT_STR([self visibleRect]));
-}
-
-+ (SIScreen *) screenFromNSScreen:(NSScreen *)screen {
-    return [[[SIScreen alloc] initWithNSScreen:screen] autorelease];
-}
-
-/**
- * Chooses the best screen for the given window rect (screen coord).
- *
- * For each screen it computes the intersecting rectangle and its size. 
- * The biggest is the screen where is the most of the window hence the best fit.
- */
-+ (SIScreen *) screenForWindowGeometry:(NSRect)geometry {
-	NSScreen *fitScreen = [NSScreen mainScreen];
-	float maxSize = 0;
-	
-	for (NSScreen *screen in [NSScreen screens]) {
-		NSRect screenRect = [screen frame];
-		// need to convert coordinates
-		COCOA_TO_SCREEN_COORDINATES(screenRect);
-		
-		NSRect intersectRect = NSIntersectionRect(screenRect, geometry);
-		
-		if (intersectRect.size.width > 0 ) {
-			float size = intersectRect.size.width * intersectRect.size.height;
-			if (size > maxSize) {
-				fitScreen = screen;
-				maxSize = size;
-			}
-		}
-	}
-	
-	return [SIScreen screenFromNSScreen:fitScreen];
-}
-
-@end
 
 #pragma mark WindowInfo implementation
 
@@ -188,8 +63,8 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     CGRectMakeWithDictionaryRepresentation((CFDictionaryRef)[windowInfo objectForKey:(id)kCGWindowBounds], 
                                            (struct CGRect *)&rect);
     
-    return [[SIWindowInfo alloc] initWithPid:[[windowInfo objectForKey:(id)kCGWindowOwnerPID] integerValue]
-                                         wid:[[windowInfo objectForKey:(id)kCGWindowNumber] integerValue]
+    return [[SIWindowInfo alloc] initWithPid:[[windowInfo objectForKey:(id)kCGWindowOwnerPID] intValue]
+                                         wid:[[windowInfo objectForKey:(id)kCGWindowNumber] intValue]
                                         rect:rect];
 }
 
@@ -202,7 +77,7 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
 
 #pragma mark Default Window Context
 
-@interface DefaultWindowContext : NSObject<WindowContext> {
+@interface DefaultWindowContext : NSObject<SIWindowContext> {
  @private
     NSArray *drivers_;
     int menuBarHeight_;
@@ -272,7 +147,7 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     FMTLogDebug(@"Found front window: %@", [frontWindowInfo description]);
     
     __block id<SIWindow> w = nil;
-    [drivers_ each:^BOOL(id<WindowDriver> driver) {
+    [drivers_ each:^BOOL(id<SIWindowDriver> driver) {
         NSError *problem = nil;
         if (![driver findFocusedWindow:&w withInfo:frontWindowInfo error:&problem]) {
             FMTLogDebug(@"Driver %@ did not locate window: %@", [driver description], [problem fullDescription]);
@@ -297,13 +172,13 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     return YES;
 }
 
-- (BOOL)getAnchorMargins:(int *)leftMargin topMargin:(int *)topMargin bottomMargin:(int *)bottomMargin rightMargin:(int *)rightMargin {
+- (void) getAnchorMargins:(int *)leftMargin topMargin:(int *)topMargin bottomMargin:(int *)bottomMargin rightMargin:(int *)rightMargin {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     (*leftMargin) = [defaults integerForKey:kLeftMarginPrefKey];
     (*topMargin) = [defaults integerForKey:kTopMarginPrefKey];
     (*bottomMargin) = [defaults integerForKey:kBottomMarginPrefKey];
-    (*rightMargin) = [defaults integerForKey:kRightMarginPrefKey];
+    (*rightMargin) = [defaults integerForKey:kRightMarginPrefKey];    
 }
 
 - (BOOL) anchorWindow:(id<SIWindow>)window error:(NSError **)error {
@@ -390,7 +265,7 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
  * 
  * [2] http://www.linuxjournal.com/article/4879
  */
-@implementation ShiftItWindowManager
+@implementation SIWindowManager
 
 - (id) initWithDrivers:(NSArray *)drivers {
     FMTAssertNotNil(drivers);
@@ -410,7 +285,7 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
 	[super dealloc];
 }
 
-- (BOOL) executeAction:(id<ShiftItActionDelegate>)action error:(NSError **)error {
+- (BOOL) executeAction:(id<SIActionDelegate>)action error:(NSError **)error {
 	FMTAssertNotNil(action);
 
     DefaultWindowContext *ctx = [[[DefaultWindowContext alloc] initWithDrivers:drivers_] autorelease];

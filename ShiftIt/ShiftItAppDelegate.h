@@ -19,7 +19,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-@class ShiftItWindowManager;
+@class SIWindowManager;
 @class PreferencesWindowController;
 @class FMTHotKeyManager;
 
@@ -27,7 +27,7 @@
  @private
     PreferencesWindowController *preferencesController_;
 	FMTHotKeyManager *hotKeyManager_;	
-	ShiftItWindowManager *windowManager_;
+	SIWindowManager *windowManager_;
 
 	NSMutableDictionary *allHotKeys_;
 	BOOL paused_;

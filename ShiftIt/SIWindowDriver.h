@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ShiftIt.h"
+#import "SIWindow.h"
+#import "SIWindowInfo.h"
 
-@protocol WindowDriver <NSObject>
+@protocol SIWindowDriver <NSObject>
 
 @required
 - (BOOL) findFocusedWindow:(id<SIWindow> *)window withInfo:(SIWindowInfo *)windowInfo error:(NSError **)error;

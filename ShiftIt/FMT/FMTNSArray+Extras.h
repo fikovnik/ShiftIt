@@ -10,11 +10,13 @@
 
 typedef BOOL(^FMTPredicate)(id item);
 typedef BOOL(^FMTEachCallback)(id item);
+typedef id(^FMTItemTransformer)(id item);
 
 @interface NSArray (FMTNSArrayExtras)
 
 - (id) filterFirst:(FMTPredicate)predicate;
 - (NSArray *) filter:(FMTPredicate)predicate;
+- (NSArray *) transform:(FMTItemTransformer)transformer;
 - (void) each:(FMTEachCallback)callback;
 
 @end

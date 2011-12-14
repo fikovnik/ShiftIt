@@ -9,8 +9,8 @@
 #import <dlfcn.h>
 
 #import "X11WindowDriver.h"
-#import "FMTDefines.h"
-#import "ShiftIt.h"
+#import "SIDefines.h"
+#import "FMT.h"
 
 #pragma mark Constants
 
@@ -178,9 +178,9 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         // following will make the X11 reference coordinate system
 		// X11 coordinates starts at the very top left corner of the most top left window
 		// basically it is a union of all screens with the beginning at the top left
-		NSRect ref = [[NSScreen primaryScreen] screenVisibleFrame];
-		for (NSScreen *s in [NSScreen screens]) {
-            NSRect r = [s screenVisibleFrame];
+		NSRect ref = [[SIScreen primaryScreen] visibleRect];
+		for (SIScreen *s in [SIScreen screens]) {
+            NSRect r = [s visibleRect];
             ref = NSUnionRect(ref, r);
 		}
 
@@ -211,9 +211,9 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     FMTLogDebug(@"AXWindowDriver: window geometry (gccoord): %@", RECT_STR(_geometry));
 
     // TODO: extract
-    NSRect ref = [[NSScreen primaryScreen] screenVisibleFrame];
-    for (NSScreen *s in [NSScreen screens]) {
-        ref = NSUnionRect(ref, [s screenVisibleFrame]);
+    NSRect ref = [[SIScreen primaryScreen] visibleRect];
+    for (SIScreen *s in [SIScreen screens]) {
+        ref = NSUnionRect(ref, [s visibleRect]);
     }
 
     // convert from X11 coordinates to Quartz CG coordinates
@@ -328,7 +328,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     Window __block * windowRef;
 
     // find the focused window
-    execWithDisplay_(^BOOL(Display *dpy, NSError **error) {
+    execWithDisplay_(^BOOL(Display *dpy, NSError **nestedError) {
         Window root = DefaultRootWindow(dpy);
 
         // following are for the params that are not used
@@ -341,12 +341,12 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         if(XGetWindowPropertyRef(dpy, root, XInternAtomRef(dpy, "_NET_ACTIVE_WINDOW", False), 0, 0x7fffffff, False,
                                  XA_WINDOW, &actual_type, &not_used_int, &not_used_long, &not_used_long,
                                  &prop_return) != Success) {
-            *error = SICreateError(kX11WindowDriverErrorCode, @"Unable to get active window (XGetWindowProperty)");
+            *nestedError = SICreateError(kX11WindowDriverErrorCode, @"Unable to get active window (XGetWindowProperty)");
             return NO;
         }
 
         if (prop_return == NULL || *((Window *) prop_return) == 0) {
-            *error = SICreateError(kX11WindowDriverErrorCode, @"No X11 active window found");
+            *nestedError = SICreateError(kX11WindowDriverErrorCode, @"No X11 active window found");
             return NO;
         }
 
@@ -367,12 +367,12 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 @implementation X11WindowDriver (WindowDelegate)
 
 - (BOOL)getGeometry_:(__block NSRect *)geometryRef ofWindow:(Window *)windowRef error:(NSError **)error {
-    return execWithDisplay_(^BOOL(Display *dpy, NSError **error) {
+    return execWithDisplay_(^BOOL(Display *dpy, NSError **nestedError) {
         Window root = DefaultRootWindow(dpy);
         XWindowAttributes wa;
 
         if(!XGetWindowAttributesRef(dpy, *windowRef, &wa)) {
-            *error = SICreateError(kX11WindowDriverErrorCode, @"Unable to get window attributes (XGetWindowAttributes)");
+            *nestedError = SICreateError(kX11WindowDriverErrorCode, @"Unable to get window attributes (XGetWindowAttributes)");
             return NO;
         }
 
@@ -380,7 +380,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         unsigned int width, height;
         Window not_used_window;
         if(!XTranslateCoordinatesRef(dpy, *windowRef, root, -wa.border_width, -wa.border_width, &x, &y, &not_used_window)) {
-            *error = SICreateError(kX11WindowDriverErrorCode, @"Unable to translate coordinated (XTranslateCoordinates)");
+            *nestedError = SICreateError(kX11WindowDriverErrorCode, @"Unable to translate coordinated (XTranslateCoordinates)");
             return NO;
         }
 
@@ -407,12 +407,12 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 - (BOOL)setGeometry_:(NSRect)geometry ofWindow:(Window *)windowRef error:(NSError **)error {
     FMTAssertNotNil(windowRef);
 
-    return execWithDisplay_(^BOOL(Display *dpy, NSError **error) {
+    return execWithDisplay_(^BOOL(Display *dpy, NSError **nestedError) {
         // TODO: combine the operations        
         XWindowAttributes wa;
         if(!XGetWindowAttributesRef(dpy, *windowRef, &wa)) {
-            if (error) {
-                *error = SICreateError(kX11WindowDriverErrorCode, @"Unable to get window attributes (XGetWindowAttributes)");
+            if (nestedError) {
+                *nestedError = SICreateError(kX11WindowDriverErrorCode, @"Unable to get window attributes (XGetWindowAttributes)");
             }
             return NO;
         }
@@ -423,15 +423,15 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         unsigned int height = (unsigned int) (geometry.size.height - wa.y);
 
         if (!XMoveResizeWindowRef(dpy, *windowRef, (int) geometry.origin.x, (int) geometry.origin.y, width, height)){
-            if (error) {
-                *error = SICreateError(kX11WindowDriverErrorCode, @"X11Error: Unable to change window geometry (XMoveResizeWindow)");
+            if (nestedError) {
+                *nestedError = SICreateError(kX11WindowDriverErrorCode, @"X11Error: Unable to change window geometry (XMoveResizeWindow)");
             }
             return NO;
         }
 
         if (!XSyncRef(dpy, False)) {
-            if (error) {
-                *error = SICreateError(kX11WindowDriverErrorCode, @"X11Error: Unable to sync X11 (XSync)");
+            if (nestedError) {
+                *nestedError = SICreateError(kX11WindowDriverErrorCode, @"X11Error: Unable to sync X11 (XSync)");
             }
             return NO;
         }

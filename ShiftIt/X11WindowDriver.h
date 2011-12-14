@@ -14,9 +14,9 @@
 #undef Cursor
 
 #import <Foundation/Foundation.h>
-#import "WindowDriver.h"
+#import "SIWindowDriver.h"
 
-@interface X11WindowDriver : NSObject<WindowDriver> {
+@interface X11WindowDriver : NSObject<SIWindowDriver> {
 
 }
 

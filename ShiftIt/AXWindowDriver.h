@@ -18,9 +18,9 @@
  */
 
 #import <Foundation/Foundation.h>
-#import "WindowDriver.h"
+#import "ShiftIt.h"
 
-@interface AXWindowDriver : NSObject<WindowDriver> {
+@interface AXWindowDriver : NSObject<SIWindowDriver> {
  @private
     AXUIElementRef systemElementRef_;
     BOOL shouldUseDrawers_;

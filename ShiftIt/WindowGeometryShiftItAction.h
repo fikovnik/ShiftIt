@@ -10,9 +10,9 @@
 #import "ShiftIt.h"
 
 
-@interface AbstractWindowGeometryShiftItAction : NSObject<ShiftItActionDelegate>
+@interface AbstractWindowGeometryShiftItAction : NSObject<SIActionDelegate>
 
-- (NSRect) shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<WindowContext>)windowContext;
+- (NSRect) shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext;
 
 @end
 
