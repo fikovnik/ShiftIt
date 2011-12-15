@@ -29,13 +29,6 @@ extern NSString *const kRightMarginPrefKey;
     (geometry).origin.x += [(screen) visibleRect].origin.x; \
     (geometry).origin.y += [(screen) visibleRect].origin.y;
 
-typedef enum {
-    kLeftDirection = 1 << 0,
-    kTopDirection = 1 << 1,
-    kBottomDirection = 1 << 2,
-    kRightDirection = 1 << 3
-} SIDirection;
-
 // TODO: move to FMT
 static inline double SIDistanceBetweenPoints(NSPoint r, NSPoint s) {
     return sqrt((r.x-s.x)*(r.x-s.x) +(r.y-s.y)*(r.y-s.y));

@@ -16,3 +16,4 @@
 #import "FMTNSDictionary+Extras.h"
 #import "FMTNSError+Extras.h"
 #import "FMTUtils.h"
+#import "FMTGeometry.h"

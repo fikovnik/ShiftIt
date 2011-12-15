@@ -8,15 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-typedef BOOL(^FMTPredicate)(id item);
 typedef BOOL(^FMTEachCallback)(id item);
-typedef id(^FMTItemTransformer)(id item);
 
 @interface NSArray (FMTNSArrayExtras)
 
-- (id) filterFirst:(FMTPredicate)predicate;
-- (NSArray *) filter:(FMTPredicate)predicate;
-- (NSArray *) transform:(FMTItemTransformer)transformer;
+- (id) find:(BOOL (^)(id))predicate;
+- (NSUInteger) findIndex:(BOOL (^)(id))predicate;
+- (NSArray *) filter:(BOOL (^)(id))predicate;
+- (NSArray *) transform:(id(^)(id item))transformer;
 - (void) each:(FMTEachCallback)callback;
 
 @end

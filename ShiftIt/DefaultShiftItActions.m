@@ -351,3 +351,99 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
 }
 
 @end
+
+@implementation ScreenChangeShiftItAction {
+@private
+    BOOL next_;
+}
+
+- (id)initWithMode:(BOOL)next {
+    if (![super init]) {
+        return nil;
+    }
+
+    next_ = next;
+
+    return self;
+
+}
+
+- (BOOL)execute:(id <SIWindowContext>)windowContext error:(NSError **)error {
+    FMTAssertNotNil(windowContext);
+    FMTAssertNotNil(error);
+    
+    NSError *cause = nil;
+    id<SIWindow> window = nil;
+    BOOL flag = NO;
+
+    if(![windowContext getFocusedWindow:&window error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
+                                        cause,
+                                        @"Unable to get active window");
+        return NO;
+    }
+
+    if ([window respondsToSelector:@selector(getFullScreen:error:)]) {
+        if (![window getFullScreen:&flag error:&cause]) {
+            *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
+                                            cause,
+                                            @"Unable to get window fullScreen state");
+        }
+        if (flag) {
+            *error = SICreateError(kShiftItActionFailureErrorCode, @"Windows in fullscreen are not supported");
+            return NO;
+        }
+    }
+
+    NSRect currentGeometry;
+    SIScreen *currentScreen;
+    if (![window getGeometry:&currentGeometry screen:&currentScreen error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
+                                        cause,
+                                        @"Unable to get window geometry");
+        return NO;        
+    }
+
+    FMTLogInfo(@"Current window geometry: %@ screen: %@", RECT_STR(currentGeometry), currentScreen);
+
+    NSSize currentScreenSize = [currentScreen size];
+    SIScreen *screen = next_ ? [currentScreen nextScreen] : [currentScreen previousScreen];
+
+    if ([screen isEqual:currentScreen]) {
+        FMTLogInfo(@"Screens are the same");
+        return YES;
+    }
+
+    NSSize screenSize = [screen size];
+
+    CGFloat kw = screenSize.width / currentScreenSize.width;
+    CGFloat kh = screenSize.height / currentScreenSize.height;
+    
+    NSRect geometry = {
+            { currentGeometry.origin.x * kw , currentGeometry.origin.y * kh },
+            { currentGeometry.size.width * kw , currentGeometry.size.height * kh }
+    };
+
+    FMTLogInfo(@"New window geometry: %@ screen %@", RECT_STR(geometry), screen);
+
+    if (![window setGeometry:geometry screen:screen error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
+                                        cause,
+                                        @"Unable to set new geometry of a window to %@ at screen: %@", RECT_STR(geometry), screen);
+        return NO;
+    }
+
+    // TODO: only when it is active
+    if (![windowContext anchorWindow:window error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
+                                        cause,
+                                        @"Unable to anchor window");
+        return NO;
+    }
+    
+    // TODO: make sure window is always visible
+    
+    return YES;
+}
+
+@end

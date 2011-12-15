@@ -46,3 +46,9 @@ const extern SimpleWindowGeometryChangeBlock shiftItCenter;
 
 @interface ToggleFullScreenShiftItAction : NSObject<SIActionDelegate>
 @end
+
+@interface ScreenChangeShiftItAction : NSObject<SIActionDelegate>
+
+- (id) initWithMode:(BOOL)next;
+
+@end

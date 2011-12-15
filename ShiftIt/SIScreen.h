@@ -7,10 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SIScreen : NSObject {
-@private
-    NSScreen *screen_;
-}
+@interface SIScreen : NSObject
 
 @property (readonly) NSSize size;
 @property (readonly) NSRect visibleRect;
@@ -23,5 +20,8 @@
 + (SIScreen *) screenForWindowGeometry:(NSRect)geometry;
 
 - (id) initWithNSScreen:(NSScreen *)screen;
+- (SIScreen *) previousScreen;
+- (SIScreen *) nextScreen;
+- (BOOL)isEqualToScreen:(SIScreen *)screen;
 
 @end

@@ -202,17 +202,17 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     int anchor = 0;
 
     // determine whether we should anchor the window
-    if (geometry.origin.x <= leftMargin) {
+    if (geometry.origin.x > 0 && geometry.origin.x <= leftMargin) {
         anchor |= kLeftDirection;
     }
-    if (geometry.origin.y <= topMargin) {
+    if (geometry.origin.y > 0 && geometry.origin.y <= topMargin) {
         anchor |= kTopDirection;
     }
-    if (geometry.origin.y + geometry.size.height >= screenSize.height - bottomMargin) {
-        anchor |= kBottomDirection;
-    }
-    if (geometry.origin.x + geometry.size.width >= screenSize.width - rightMargin) {
+    if (geometry.origin.x + geometry.size.width < screenSize.width && geometry.origin.x + geometry.size.width >= screenSize.width - rightMargin) {
         anchor |= kRightDirection;
+    }
+    if (geometry.origin.y + geometry.size.height < screenSize.height && geometry.origin.y + geometry.size.height >= screenSize.height - bottomMargin) {
+        anchor |= kBottomDirection;
     }
 
     // adjust anchors if needed

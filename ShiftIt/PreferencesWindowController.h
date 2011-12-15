@@ -44,6 +44,7 @@
     IBOutlet SRRecorderControl *srFullScreen_;
     IBOutlet SRRecorderControl *srIncrease_;
     IBOutlet SRRecorderControl *srReduce_;    
+    IBOutlet SRRecorderControl *srNextScreen_;    
 }
 
 @property BOOL shouldStartAtLogin;

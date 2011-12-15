@@ -6,7 +6,11 @@
 
 #import "SIScreen.h"
 #import "SIDefines.h"
+#import "SIAdjacentRect.h"
 #import "FMT/FMT.h"
+
+const FMTDirection kDefaultDirections[] = {kRightDirection, kBottomDirection, kLeftDirection, kTopDirection};
+
 
 @interface NSScreen (Extras)
 
@@ -55,8 +59,18 @@
 
 @end
 
-@implementation SIScreen
+@interface SIScreen ()
+@property(readonly) NSScreen *screen;
 
++ (SIScreen *)screenRelativeTo_:(SIScreen *)screen withOffset:(NSInteger)offset;
+@end
+
+@implementation SIScreen {
+@private
+    NSScreen *screen_;
+}
+
+@synthesize screen = screen_;
 @dynamic size;
 @dynamic primary;
 @dynamic rect;
@@ -69,7 +83,7 @@
 		return nil;
 	}
 
-    screen_ = screen;
+    screen_ = [screen retain];
 
 	return self;
 }
@@ -102,6 +116,22 @@
     NSDictionary *info = [screen_ deviceDescription];
 
     return FMTStr(@"id=%@, primary=%d, rect=(%@) visibleRect=(%@)", [info objectForKey: @"NSScreenNumber"], [self primary], RECT_STR([self rect]), RECT_STR([self visibleRect]));
+}
+
+- (BOOL)isEqual:(id)object {
+    if (object == self)
+           return YES;
+       if (!object || ![object isKindOfClass:[self class]])
+           return NO;
+       return [self isEqualToScreen:(SIScreen *)object];
+}
+
+- (BOOL)isEqualToScreen:(SIScreen *)screen {
+    return [screen_ isEqual:[screen screen]];
+}
+
+- (NSUInteger)hash {
+    return [screen_ hash];
 }
 
 + (NSArray *) screens {
@@ -145,6 +175,42 @@
 	}
 
 	return [SIScreen screenFromNSScreen:fitScreen];
+}
+
+- (SIScreen *)previousScreen {
+    return [SIScreen screenRelativeTo_:self withOffset:-1];
+}
+
+- (SIScreen *)nextScreen {
+    return [SIScreen screenRelativeTo_:self withOffset:1];
+}
+
++ (SIScreen *)screenRelativeTo_:(SIScreen *)screen withOffset:(NSInteger)offset {
+    NSArray *screens = [SIScreen screens];
+    if ([screens count] < 2) {
+        return screen;
+    }
+
+    NSArray *rects = [screens transform:^id(id item) {
+       return [SIRectWithValue rect:[item rect] withValue:item];
+    }];
+
+    SIAdjacentRect *adjr = [SIAdjacentRect adjacentRect:rects];
+    NSArray *path = [adjr buildDirectionalPath:kDefaultDirections fromValue:[SIScreen primaryScreen]];
+    NSUInteger idx = [path findIndex:^BOOL(id item) {
+       return [screen isEqualToScreen:item];
+    }];
+
+    idx += offset;
+    idx %= [path count];
+
+    return [path objectAtIndex:idx];
+}
+
+- (void)dealloc {
+    [screen_ release];
+
+    [super dealloc];
 }
 
 @end

@@ -23,6 +23,11 @@
 		2717BE39149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
 		2717BE3A149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
 		2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */; };
+		2717BEAC14994C120012EF87 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714C0B21487F9BC00CC951D /* SenTestingKit.framework */; };
+		2717BEAE14994C120012EF87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BEAD14994C120012EF87 /* Cocoa.framework */; };
+		2717BEB714994C120012EF87 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2717BEB514994C120012EF87 /* InfoPlist.strings */; };
+		2717BEBA14994C120012EF87 /* FMTGeometryTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BEB914994C120012EF87 /* FMTGeometryTests.m */; };
+		2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
 		271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
 		2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */; };
 		27904A531460C6C300E5AEAD /* X11WindowDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4687D141C2238001209F6 /* X11WindowDriver.m */; };
@@ -95,7 +100,6 @@
 		270DACAA14098B250080DFBD /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = GTM/GTMDefines.h; sourceTree = "<group>"; };
 		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		2714C0B21487F9BC00CC951D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		2714C0BE1487F9BC00CC951D /* SIAdjacentRectTest.h */ = {isa = PBXFileReference; name = SIAdjacentRectTest.h; path = "ShiftIt Tests/SIAdjacentRectTest.h"; sourceTree = SOURCE_ROOT; };
 		2714C0BF1487F9BC00CC951D /* SIAdjacentRectTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SIAdjacentRectTest.m; path = "ShiftIt Tests/SIAdjacentRectTest.m"; sourceTree = SOURCE_ROOT; };
 		2717BDAB1498B7FD0012EF87 /* ShiftIt Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ShiftIt Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2717BDB01498B7FD0012EF87 /* ShiftIt Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShiftIt Tests-Info.plist"; sourceTree = "<group>"; };
@@ -108,6 +112,15 @@
 		2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSArray+Extras.m"; path = "FMT/FMTNSArray+Extras.m"; sourceTree = "<group>"; };
 		2717BE37149935EC0012EF87 /* FMTNSError+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSError+Extras.h"; path = "FMT/FMTNSError+Extras.h"; sourceTree = "<group>"; };
 		2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSError+Extras.m"; path = "FMT/FMTNSError+Extras.m"; sourceTree = "<group>"; };
+		2717BEAB14994C120012EF87 /* FMT Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FMT Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2717BEAD14994C120012EF87 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		2717BEAF14994C120012EF87 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		2717BEB014994C120012EF87 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2717BEB114994C120012EF87 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		2717BEB414994C120012EF87 /* FMT Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FMT Tests-Info.plist"; sourceTree = "<group>"; };
+		2717BEB614994C120012EF87 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		2717BEB914994C120012EF87 /* FMTGeometryTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FMTGeometryTests.m; sourceTree = "<group>"; };
+		2717BEBB14994C120012EF87 /* FMT Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FMT Tests-Prefix.pch"; sourceTree = "<group>"; };
 		271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "margin-background-image.png"; sourceTree = "<group>"; };
 		2743F1A2140EFC8E00C23A67 /* SIWindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIWindowDriver.h; sourceTree = "<group>"; };
 		2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowGeometryShiftItAction.h; sourceTree = "<group>"; };
@@ -168,6 +181,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2717BEA714994C120012EF87 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2717BEAC14994C120012EF87 /* SenTestingKit.framework in Frameworks */,
+				2717BEAE14994C120012EF87 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8D11072E0486CEB800E47090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -185,6 +207,7 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2717BDAE1498B7FD0012EF87 /* ShiftIt Tests */,
 				2708C1CC1261388A00192883 /* External */,
 				2743F1A3140EFCB300C23A67 /* ShiftIt Framework */,
 				2743F1A5140F02D500C23A67 /* Actions */,
@@ -212,6 +235,9 @@
 		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2717BEAF14994C120012EF87 /* AppKit.framework */,
+				2717BEB014994C120012EF87 /* CoreData.framework */,
+				2717BEB114994C120012EF87 /* Foundation.framework */,
 			);
 			name = "Other Frameworks";
 			sourceTree = "<group>";
@@ -221,6 +247,7 @@
 			children = (
 				8D1107320486CEB800E47090 /* ShiftIt.app */,
 				2717BDAB1498B7FD0012EF87 /* ShiftIt Tests.octest */,
+				2717BEAB14994C120012EF87 /* FMT Tests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -250,6 +277,7 @@
 		2708C1CE126138A000192883 /* FMT */ = {
 			isa = PBXGroup;
 			children = (
+				2717BEB214994C120012EF87 /* FMT Tests */,
 				F2DC61EF1127C862000E1A6A /* FMTGeometry.h */,
 				F2DC61EF1127C862000E1A67 /* FMTGeometry.m */,
 				2708C1CD1261389000192883 /* HotKey */,
@@ -285,7 +313,6 @@
 		2717BDAE1498B7FD0012EF87 /* ShiftIt Tests */ = {
 			isa = PBXGroup;
 			children = (
-				2714C0BE1487F9BC00CC951D /* SIAdjacentRectTest.h */,
 				2714C0BF1487F9BC00CC951D /* SIAdjacentRectTest.m */,
 				2717BDAF1498B7FD0012EF87 /* Supporting Files */,
 			);
@@ -298,6 +325,25 @@
 				2717BDB01498B7FD0012EF87 /* ShiftIt Tests-Info.plist */,
 				2717BDB11498B7FD0012EF87 /* InfoPlist.strings */,
 				2717BDB71498B7FD0012EF87 /* ShiftIt Tests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2717BEB214994C120012EF87 /* FMT Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2717BEB914994C120012EF87 /* FMTGeometryTests.m */,
+				2717BEB314994C120012EF87 /* Supporting Files */,
+			);
+			path = "FMT Tests";
+			sourceTree = "<group>";
+		};
+		2717BEB314994C120012EF87 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				2717BEB414994C120012EF87 /* FMT Tests-Info.plist */,
+				2717BEB514994C120012EF87 /* InfoPlist.strings */,
+				2717BEBB14994C120012EF87 /* FMT Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -367,7 +413,6 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				2717BDAE1498B7FD0012EF87 /* ShiftIt Tests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -404,6 +449,7 @@
 			children = (
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				2714C0B21487F9BC00CC951D /* SenTestingKit.framework */,
+				2717BEAD14994C120012EF87 /* Cocoa.framework */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -438,6 +484,24 @@
 			name = "ShiftIt Tests";
 			productName = "ShiftIt Tests";
 			productReference = 2717BDAB1498B7FD0012EF87 /* ShiftIt Tests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+		2717BEAA14994C120012EF87 /* FMT Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2717BEBE14994C120012EF87 /* Build configuration list for PBXNativeTarget "FMT Tests" */;
+			buildPhases = (
+				2717BEA614994C120012EF87 /* Sources */,
+				2717BEA714994C120012EF87 /* Frameworks */,
+				2717BEA814994C120012EF87 /* Resources */,
+				2717BEA914994C120012EF87 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FMT Tests";
+			productName = "FMT Tests";
+			productReference = 2717BEAB14994C120012EF87 /* FMT Tests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		8D1107260486CEB800E47090 /* ShiftIt */ = {
@@ -484,6 +548,7 @@
 			targets = (
 				8D1107260486CEB800E47090 /* ShiftIt */,
 				2717BDAA1498B7FD0012EF87 /* ShiftIt Tests */,
+				2717BEAA14994C120012EF87 /* FMT Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -494,6 +559,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2717BDB31498B7FD0012EF87 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2717BEA814994C120012EF87 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2717BEB714994C120012EF87 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +601,19 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		2717BEA914994C120012EF87 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -540,6 +626,15 @@
 				2717BE3A149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
 				2717BDBB1498B8270012EF87 /* SIAdjacentRectTest.m in Sources */,
 				F2DC61EF1127C862000E1A69 /* FMTGeometry.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2717BEA614994C120012EF87 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2717BEBA14994C120012EF87 /* FMTGeometryTests.m in Sources */,
+				2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -606,6 +701,14 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		2717BEB514994C120012EF87 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2717BEB614994C120012EF87 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -657,6 +760,52 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.6;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+		2717BEBC14994C120012EF87 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FMT Tests/FMT Tests-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "FMT Tests/FMT Tests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		2717BEBD14994C120012EF87 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FMT Tests/FMT Tests-Prefix.pch";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				INFOPLIST_FILE = "FMT Tests/FMT Tests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -799,6 +948,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		2717BEBE14994C120012EF87 /* Build configuration list for PBXNativeTarget "FMT Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2717BEBC14994C120012EF87 /* Debug */,
+				2717BEBD14994C120012EF87 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "ShiftIt" */ = {
 			isa = XCConfigurationList;

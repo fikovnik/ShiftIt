@@ -6,7 +6,6 @@
 //  Copyright 2011 __MyCompanyName__. All rights reserved.
 //
 
-#import <Carbon/Carbon.h>
 #import "AXWindowDriver.h"
 
 // from whatever reason this attribute is missing in the AXAttributeConstants.h
@@ -41,6 +40,8 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 + (BOOL)getSize_:(NSSize *)size ofElement:(AXUIElementRef)element error:(NSError **)error;
 
 + (BOOL)getDrawersGeometry_:(NSRect *)geometry ofElement:(AXUIElementRef)windowRef error:(NSError **)error;
+
++ (BOOL)scaleDrawersGeometryHorizontally_:(CGFloat)kh vertically:(CGFloat)kv ofElement:(AXUIElementRef)windowRef error:(NSError **)error;
 
 + (BOOL)setSize_:(NSSize)size ofElement:(AXUIElementRef)element error:(NSError **)error;
 
@@ -107,8 +108,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
         return nil;
     }
 
-    // TODO: check th eownership policy for Core Foundation
-    ref_ = ref;
+    ref_ = CFRetain(ref);
     driver_ = [driver retain];
 
     return self;
@@ -116,8 +116,9 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
 - (void)dealloc {
     [driver_ freeWindow_:ref_];
-
     [driver_ release];
+
+    CFRelease(ref_);
 
     [super dealloc];
 }
@@ -406,6 +407,64 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     return YES;
 }
 
++ (BOOL)scaleDrawersGeometryHorizontally_:(CGFloat)kh vertically:(CGFloat)kv ofElement:(AXUIElementRef)windowRef error:(NSError **)error {
+    FMTAssertNotNil(windowRef);
+    FMTAssert(kh > 0, @"kh must be greater than 0");
+    FMTAssert(kv > 0, @"kh must be greater than 0");
+    FMTAssertNotNil(error);
+
+    NSArray *children = nil;
+    AXError ret = 0;
+
+    if ((ret = AXUIElementCopyAttributeValue(windowRef, kAXChildrenAttribute,
+                                             (CFTypeRef *) &children)) != kAXErrorSuccess) {
+        *error = AX_COPY_ATTR_ERROR(kAXChildrenAttribute, ret);
+        return NO;
+    }
+
+    NSRect r; // for the loop
+    NSError *cause = nil;
+
+    for (id child in children) {
+        NSString *role = nil;
+
+        if ((ret = AXUIElementCopyAttributeValue((AXUIElementRef) child, kAXRoleAttribute,
+                                                 (CFTypeRef *) &role)) != kAXErrorSuccess) {
+
+            *error = AX_COPY_ATTR_ERROR(kAXRoleAttribute, ret);
+            return NO;
+        }
+
+        if ([role isEqualToString:NSAccessibilityDrawerRole]) {
+            if (![AXWindowDriver getOrigin_:&(r.origin) ofElement:(AXUIElementRef) child error:&cause]) {
+                *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"AXError: Unable to get position of a window drawer");
+                return NO;
+            }
+            if (![AXWindowDriver getSize_:&(r.size) ofElement:(AXUIElementRef) child error:&cause]) {
+                *error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"AXError: Unable to get size of a window drawer");
+                return NO;
+            }
+
+            NSRect nr = {
+                {r.origin.x * kh, r.origin.y * kv},
+                {r.size.width * kh, r.size.height *kv}
+            };
+
+            // only size can be changed with drawers
+            if (![AXWindowDriver setSize_:nr.size ofElement:(AXUIElementRef) child error:&cause]) {
+                FMTLogDebug(@"Unable to set size of a drawer");
+                //*error = SICreateErrorWithCause(kWindowManagerFailureErrorCode, cause, @"AXError: Unable to set size of a window drawer");
+                //return NO;
+            }            
+        }
+
+        CFRelease((CFTypeRef) role);
+    }
+
+    [children release];
+    return YES;
+}
+
 + (BOOL)getDrawersGeometry_:(NSRect *)geometry ofElement:(AXUIElementRef)windowRef error:(NSError **)error {
     FMTAssertNotNil(windowRef);
     FMTAssertNotNil(geometry);
@@ -414,7 +473,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     NSArray *children = nil;
     AXError ret = 0;
 
-    // by defult there are none
+    // by default there are none
     *geometry = NSMakeRect(0, 0, 0, 0);
 
     if ((ret = AXUIElementCopyAttributeValue(windowRef, kAXChildrenAttribute,
@@ -617,15 +676,35 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     NSRect newGeometry = geometry;
 
     if (shouldUseDrawers_ && hasDrawers) {
-        int dx = (int) (windowRect.origin.x - currentGeometry.origin.x);
-        int dy = (int) (currentGeometry.origin.y - windowRect.origin.y);
-        int dw = (int) (currentGeometry.size.width - windowRect.size.width);
-        int dh = (int) (currentGeometry.size.height - windowRect.size.height);
 
-        newGeometry.origin.x += dx;
-        newGeometry.origin.y -= dy;
-        newGeometry.size.width -= dw;
-        newGeometry.size.height -= dh;
+// TODO: the problem here is that the drawers are not really willing to change its size
+//        CGFloat kh = geometry.size.width / currentGeometry.size.width;
+//        CGFloat kv = geometry.size.height / currentGeometry.size.height;
+//
+//        if (kh != 1 || kv != 1) {
+//            FMTLogDebug(@"Scaling drawers: horizontal=%.1f vertical=%.1f", kh, kv);
+//
+//            NSError *cause;
+//            if (![AXWindowDriver scaleDrawersGeometryHorizontally_:kh vertically:kv ofElement:windowRef error:&cause]) {
+//                SICreateErrorWithCause(kAXWindowDriverErrorCode, cause, @"Unable to scale drawers");
+//                return NO;
+//            }
+//
+//            // refresh the size
+//            if (![self getGeometry_:&currentGeometry screen:&currentScreen windowRect:&windowRect drawersRect:&drawersRect
+//                           ofWindow:windowRef error:error]) {
+//                return NO;
+//            }
+//
+//            FMTLogDebug(@"Window geometry (CGO) without drawers: %@", RECT_STR(windowRect));
+//            FMTLogDebug(@"Window drawers geometry (CGO): %@", RECT_STR(drawersRect));
+//            FMTLogDebug(@"Window geometry (CGO) including drawers: %@", RECT_STR(currentGeometry));
+//        }
+
+        newGeometry.origin.x -= (currentGeometry.origin.x - windowRect.origin.x);
+        newGeometry.origin.y -= (currentGeometry.origin.y - windowRect.origin.y);
+        newGeometry.size.width -= (currentGeometry.size.width - windowRect.size.width);
+        newGeometry.size.height -= (currentGeometry.size.height - windowRect.size.height);
 
         FMTLogDebug(@"New window geometry (CGO) after drawers adjustment: %@", RECT_STR(newGeometry));
     }
