@@ -806,7 +806,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             return NO;
 
         }
-        if (![self untilConverge_:move target:0 error:error] && error) {
+        if (![self untilConverge_:move target:0 error:error] && *error) {
             return NO;
 
         }
