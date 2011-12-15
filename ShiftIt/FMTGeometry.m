@@ -90,9 +90,9 @@ BOOL FMTIsRectInDirection(NSRect a, NSRect b, FMTDirection direction) {
         case kTopDirection:
             return a.origin.y < b.origin.y;
         case kBottomDirection:
-            return a.origin.y > b.origin.y + b.size.height;
+            return a.origin.y >= b.origin.y + b.size.height;
         case kRightDirection:
-            return a.origin.x > b.origin.x + b.size.width;
+            return a.origin.x >= b.origin.x + b.size.width;
         default:
             FMTAssert(NO, @"Unknown direction %d", direction);
     }

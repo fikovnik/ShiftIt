@@ -203,10 +203,11 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     int anchor = 0;
 
     // determine whether we should anchor the window
-    if (geometry.origin.x > 0 && geometry.origin.x <= leftMargin) {
+    // we need to use >= otherwise we might loose the anchor in favor of the opposite one
+    if (geometry.origin.x >= 0 && geometry.origin.x <= leftMargin) {
         anchor |= kLeftDirection;
     }
-    if (geometry.origin.y > 0 && geometry.origin.y <= topMargin) {
+    if (geometry.origin.y >= 0 && geometry.origin.y <= topMargin) {
         anchor |= kTopDirection;
     }
     if (geometry.origin.x + geometry.size.width < screenSize.width && geometry.origin.x + geometry.size.width >= screenSize.width - rightMargin) {
@@ -232,11 +233,11 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
 
     if (anchor) {
         FMTLogInfo(@"Anchoring window to: %d : %@", anchor, RECT_STR(geometry));
-    }
 
-    if (![window setGeometry:geometry screen:screen error:&cause]) {
-        *error = SICreateErrorWithCause(kShiftItManagerFailureErrorCode, cause, @"Unable to set window geometry");
-        return NO;
+        if (![window setGeometry:geometry screen:screen error:&cause]) {
+            *error = SICreateErrorWithCause(kShiftItManagerFailureErrorCode, cause, @"Unable to set window geometry");
+            return NO;
+        }
     }
 
     return YES;

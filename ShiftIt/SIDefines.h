@@ -17,6 +17,8 @@
 
  */
 
+#import "SIScreen.h"
+
 // FCE prototypes
 extern short GetMBarHeight(void);
 
@@ -40,13 +42,19 @@ extern NSString *const kRightMarginPrefKey;
 #define SICreateError(errorCode, fmt, ...) FMTCreateError(SIErrorDomain, errorCode, fmt, ##__VA_ARGS__)
 #define SICreateErrorWithCause(errorCode, cause, fmt, ...) FMTCreateErrorWithCause(SIErrorDomain, errorCode, cause, fmt, ##__VA_ARGS__)
 
-#define TO_SCREEN_ORIGIN(geometry, screen) \
-    (geometry).origin.x -= [(screen) visibleRect].origin.x; \
-    (geometry).origin.y -= [(screen) visibleRect].origin.y;
+static inline NSRect SIGCToScreenOrigin(NSRect rect, SIScreen *screen) {
+    NSRect r = rect;
+    r.origin.x -= [screen rect].origin.x;
+    r.origin.y -= [screen rect].origin.y;
+    return r;
+}
 
-#define TO_CG_ORIGIN(geometry, screen) \
-    (geometry).origin.x += [(screen) visibleRect].origin.x; \
-    (geometry).origin.y += [(screen) visibleRect].origin.y;
+static inline NSRect SIScreenToGCOrigin(NSRect rect, SIScreen *screen) {
+    NSRect r = rect;
+    r.origin.x += [screen rect].origin.x;
+    r.origin.y += [screen rect].origin.y;
+    return r;
+}
 
 // TODO: move to FMT
 static inline double SIDistanceBetweenPoints(NSPoint r, NSPoint s) {

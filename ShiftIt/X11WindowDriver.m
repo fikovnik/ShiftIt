@@ -202,7 +202,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 
         // convert the geometry to screen origin
         SIScreen *screen = [SIScreen screenForWindowGeometry:*geometry];
-        TO_SCREEN_ORIGIN(*geometry, screen);
+        *geometry = SIGCToScreenOrigin(*geometry, screen);
         FMTLogDebug(@"AXWindowDriver: window geometry (sccoord): %@", RECT_STR(*geometry));
 
         if (screenRef) {
@@ -215,10 +215,10 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 
 - (BOOL)setGeometry:(NSRect)geometry screen:(SIScreen *)screen error:(NSError **)error {
     // TODO: assert
-    NSRect _geometry = geometry;
-    FMTLogDebug(@"AXWindowDriver: window geometry (sccoord): %@", RECT_STR(_geometry));
 
-    TO_CG_ORIGIN(_geometry, screen);
+    FMTLogDebug(@"AXWindowDriver: window geometry (sccoord): %@", RECT_STR(geometry));
+
+    NSRect _geometry = SIScreenToGCOrigin(geometry, screen);
     FMTLogDebug(@"AXWindowDriver: window geometry (gccoord): %@", RECT_STR(_geometry));
 
     // TODO: extract

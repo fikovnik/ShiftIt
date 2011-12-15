@@ -147,7 +147,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
                         ofWindow:ref_ error:error];
 
     if (ret) {
-        TO_SCREEN_ORIGIN(*geometry, *screen);
+        *geometry = SIGCToScreenOrigin(*geometry, *screen);
         FMTLogDebug(@"Window geometry (SCO): %@", RECT_STR(*geometry));
     }
 
@@ -168,10 +168,10 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
                             ofWindow:ref_ error:error];
     
     if (ret) {
-        TO_SCREEN_ORIGIN(*windowRect, *screen);
+        *windowRect = SIGCToScreenOrigin(*windowRect, *screen);
         FMTLogDebug(@"AXWindowDriver: window rect shifted to screen origin: %@", RECT_STR(*windowRect));
 
-        TO_SCREEN_ORIGIN(*drawersRect, *screen);
+        *drawersRect = SIGCToScreenOrigin(*drawersRect, *screen);
         FMTLogDebug(@"AXWindowDriver: drawers rect shifted to screen origin: %@", RECT_STR(*drawersRect));
     }
     
@@ -183,8 +183,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     // the geometry is the new application window geometry relative to the screen originating at [0,0]
     // we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
     // take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
-    NSRect _geometry = geometry;
-    TO_CG_ORIGIN(_geometry, screen);
+    NSRect _geometry = SIScreenToGCOrigin(geometry, screen);
     FMTLogDebug(@"Window geometry (CGO): %@", RECT_STR(_geometry));
 
     return [driver_ setGeometry_:_geometry screen:screen ofWindow:ref_ error:error];

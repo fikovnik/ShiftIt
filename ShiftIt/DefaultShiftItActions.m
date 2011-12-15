@@ -424,6 +424,10 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
             { currentGeometry.size.width * kw , currentGeometry.size.height * kh }
     };
 
+    if ([currentScreen primary]) {
+        geometry.origin.y -= GetMBarHeight();
+    }
+
     FMTLogInfo(@"New window geometry: %@ screen %@", RECT_STR(geometry), screen);
 
     if (![window setGeometry:geometry screen:screen error:&cause]) {
