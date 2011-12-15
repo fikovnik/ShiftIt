@@ -20,6 +20,21 @@
 #import <Foundation/Foundation.h>
 #import "ShiftIt.h"
 
+/**
+ * In order to understand what exactly what is going on it is important
+ * to understand how the graphic coordinates works in OSX. There are two
+ * coordinates systems: screen (quartz core graphics) and cocoa. The
+ * former one has and origin on the top left corner of the primary
+ * screen (the one with a menu bar) and the coordinates grows in east
+ * and south direction. The latter has origin in the bottom left corner
+ * of the primary window and grows in east and north direction. The
+ * overview of the cocoa coordinates is in [1].
+ *
+ * In this method all coordinates are translated to be the screen
+ * coordinates.
+ *
+ * [1] http://bit.ly/aSmfae (apple official docs)
+ */
 @interface AXWindowDriver : NSObject<SIWindowDriver> {
  @private
     AXUIElementRef systemElementRef_;

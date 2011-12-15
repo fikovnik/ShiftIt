@@ -245,28 +245,6 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
 
 @end
 
-/**
- * The method is the heart of the ShiftIt app. It takes an
- * ShiftItAction and applies it to the current window.
- *
- * In order to understand what exactly what is going on it is important
- * to understand how the graphic coordinates works in OSX. There are two
- * coordinates systems: screen (quartz core graphics) and cocoa. The
- * former one has and origin on the top left corner of the primary
- * screen (the one with a menu bar) and the coordinates grows in east
- * and south direction. The latter has origin in the bottom left corner
- * of the primary window and grows in east and north direction. The
- * overview of the cocoa coordinates is in [1]. X11 on the other 
- * hand have its coordinate system originating on the
- * top left corner of the most top left window [2]. 
- *
- * In this method all coordinates are translated to be the screen
- * coordinates.
- * 
- * [1] http://bit.ly/aSmfae (apple official docs)
- * 
- * [2] http://www.linuxjournal.com/article/4879
- */
 @implementation SIWindowManager
 
 - (id) initWithDrivers:(NSArray *)drivers {
