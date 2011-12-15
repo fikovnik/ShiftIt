@@ -92,11 +92,10 @@
     if (![window setGeometry:geometry screen:screen error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                         cause,
-                                        @"Unable to move window to %@", POINT_STR(geometry.origin));
+                                        @"Unable to adjust window geometry to %@", RECT_STR(geometry));
         return NO;
     }
 
-    // TODO: only when it is active
     if (![windowContext anchorWindow:window error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                         cause,

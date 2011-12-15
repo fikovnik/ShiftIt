@@ -437,7 +437,6 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
         return NO;
     }
 
-    // TODO: only when it is active
     if (![windowContext anchorWindow:window error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                         cause,

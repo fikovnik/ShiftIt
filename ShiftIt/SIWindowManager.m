@@ -174,6 +174,7 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
 }
 
 - (void) getAnchorMargins:(int *)leftMargin topMargin:(int *)topMargin bottomMargin:(int *)bottomMargin rightMargin:(int *)rightMargin {
+    // TODO: IOC!
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     (*leftMargin) = [defaults integerForKey:kLeftMarginPrefKey];
@@ -183,6 +184,14 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
 }
 
 - (BOOL) anchorWindow:(id<SIWindow>)window error:(NSError **)error {
+    // TODO: IOC!
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+
+    if (![defaults boolForKey:kMarginsEnabledPrefKey]) {
+        FMTLogDebug(@"Anchoring is not enabled");
+        return YES;
+    }
+
     NSRect geometry;
     SIScreen *screen;
     NSError *cause = nil;
