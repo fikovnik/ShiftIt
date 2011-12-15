@@ -36,6 +36,8 @@ NSString *const kActionIdentifierKey = @"kActionIdentifierKey";
 NSString *const kHotKeyKeyCodeKey = @"kHotKeyKeyCodeKey";
 NSString *const kHotKeyModifiersKey = @"kHotKeyModifiersKey";
 
+NSString *const kShiftItGithubIssueURL = @"https://github.com/fikovnik/ShiftIt/issues";
+
 NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
 @interface PreferencesWindowController(Private) 
@@ -121,7 +123,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	[self updateRecorderCombos];
 }
 
--(IBAction)showPreferences:(id)sender{
+-(IBAction)showPreferences:(id)sender {
     [[self window] center];
     [NSApp activateIgnoringOtherApps:YES];
     [[self window] makeKeyAndOrderFront:sender];    
@@ -152,6 +154,16 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 	// looking at changes in the user defaults values itself, but since there is
 	// unfortunatelly 2 defaults for one key this won't work well
 	[self updateRecorderCombos];
+}
+
+-(IBAction)reportIssue:(id)sender {
+    NSInteger ret = NSRunAlertPanel(@"Before you report new issue",
+            @"Please make sure that you look at the other issues before you submit a new one.",
+            @"Take me to github.com", NULL, NULL);
+    
+    if (ret == NSAlertDefaultReturn) {
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kShiftItGithubIssueURL]];
+    }
 }
 
 #pragma mark debugLogging dynamic property methods
