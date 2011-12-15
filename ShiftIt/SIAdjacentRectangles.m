@@ -17,9 +17,7 @@
 
  */
 
-#import <Carbon/Carbon.h>
 #import "SIAdjacentRectangles.h"
-#import "FMT/FMT.h"
 
 @implementation SIValueRect {
 @private
@@ -166,13 +164,13 @@
 
 - (NSArray *)rectanglesInDirection:(FMTDirection)direction fromValue:(id)value {
     SIValueRect *rv = [rectValues_ find:^BOOL(id item) {
-        return ([[item value] isEqualToScreen:value]);
+        return ([[item value] isEqual:value]);
     }];
     
     return [self rectanglesInDirection:direction fromRect:[rv rect]];
 }
 
-- (NSArray *)buildDirectionalPath:(FMTDirection *)directions fromValue:(id)value {
+- (NSArray *)buildDirectionalPath:(const FMTDirection *)directions fromValue:(id)value {
     NSMutableArray *res = [NSMutableArray array];
     
     for (int i=0; i<4; i++) {
