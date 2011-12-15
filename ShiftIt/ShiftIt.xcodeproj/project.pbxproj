@@ -15,9 +15,9 @@
 		270EC26C12FF1965002A5F22 /* ShiftIt-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */; };
 		2717BDAC1498B7FD0012EF87 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714C0B21487F9BC00CC951D /* SenTestingKit.framework */; };
 		2717BDB31498B7FD0012EF87 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2717BDB11498B7FD0012EF87 /* InfoPlist.strings */; };
-		2717BDBB1498B8270012EF87 /* SIAdjacentRectTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2714C0BF1487F9BC00CC951D /* SIAdjacentRectTest.m */; };
+		2717BDBB1498B8270012EF87 /* SIAdjacentRectanglesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2714C0BF1487F9BC00CC951D /* SIAdjacentRectanglesTest.m */; };
 		2717BE18149933530012EF87 /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
-		2717BE1F149933840012EF87 /* SIAdjacentRect.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRect.m */; };
+		2717BE1F149933840012EF87 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
 		2717BE29149933E70012EF87 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BE28149933E70012EF87 /* Carbon.framework */; };
 		2717BE2B149933EE0012EF87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BE2A149933EE0012EF87 /* Cocoa.framework */; };
 		2717BE39149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
@@ -53,7 +53,7 @@
 		F2DC61251127ACDE000E1A5B /* SIWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61241127ACDE000E1A5B /* SIWindowManager.m */; };
 		F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DC61EE1127C862000E1A5B /* Carbon.framework */; };
 		F2DC61EF1127C862000E1A5D /* SIScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5C /* SIScreen.m */; };
-		F2DC61EF1127C862000E1A60 /* SIAdjacentRect.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRect.m */; };
+		F2DC61EF1127C862000E1A60 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
 		F2DC61EF1127C862000E1A68 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
 		F2DC61EF1127C862000E1A69 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
 /* End PBXBuildFile section */
@@ -100,7 +100,7 @@
 		270DACAA14098B250080DFBD /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = GTM/GTMDefines.h; sourceTree = "<group>"; };
 		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		2714C0B21487F9BC00CC951D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		2714C0BF1487F9BC00CC951D /* SIAdjacentRectTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SIAdjacentRectTest.m; path = "ShiftIt Tests/SIAdjacentRectTest.m"; sourceTree = SOURCE_ROOT; };
+		2714C0BF1487F9BC00CC951D /* SIAdjacentRectanglesTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SIAdjacentRectanglesTest.m; path = "ShiftIt Tests/SIAdjacentRectanglesTest.m"; sourceTree = SOURCE_ROOT; };
 		2717BDAB1498B7FD0012EF87 /* ShiftIt Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ShiftIt Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2717BDB01498B7FD0012EF87 /* ShiftIt Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShiftIt Tests-Info.plist"; sourceTree = "<group>"; };
 		2717BDB21498B7FD0012EF87 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -159,8 +159,8 @@
 		F2DC61EE1127C862000E1A5B /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
 		F2DC61EF1127C862000E1A5C /* SIScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIScreen.m; sourceTree = "<group>"; };
 		F2DC61EF1127C862000E1A5E /* SIScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIScreen.h; sourceTree = "<group>"; };
-		F2DC61EF1127C862000E1A5F /* SIAdjacentRect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAdjacentRect.m; sourceTree = "<group>"; };
-		F2DC61EF1127C862000E1A61 /* SIAdjacentRect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIAdjacentRect.h; sourceTree = "<group>"; };
+		F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAdjacentRectangles.m; sourceTree = "<group>"; };
+		F2DC61EF1127C862000E1A61 /* SIAdjacentRectangles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIAdjacentRectangles.h; sourceTree = "<group>"; };
 		F2DC61EF1127C862000E1A62 /* SIWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIWindow.h; sourceTree = "<group>"; };
 		F2DC61EF1127C862000E1A63 /* SIDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIDefines.h; sourceTree = "<group>"; };
 		F2DC61EF1127C862000E1A64 /* SIWindowInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIWindowInfo.h; sourceTree = "<group>"; };
@@ -313,7 +313,7 @@
 		2717BDAE1498B7FD0012EF87 /* ShiftIt Tests */ = {
 			isa = PBXGroup;
 			children = (
-				2714C0BF1487F9BC00CC951D /* SIAdjacentRectTest.m */,
+				2714C0BF1487F9BC00CC951D /* SIAdjacentRectanglesTest.m */,
 				2717BDAF1498B7FD0012EF87 /* Supporting Files */,
 			);
 			path = "ShiftIt Tests";
@@ -356,8 +356,8 @@
 				F2DC61EF1127C862000E1A64 /* SIWindowInfo.h */,
 				F2DC61EF1127C862000E1A63 /* SIDefines.h */,
 				F2DC61EF1127C862000E1A62 /* SIWindow.h */,
-				F2DC61EF1127C862000E1A61 /* SIAdjacentRect.h */,
-				F2DC61EF1127C862000E1A5F /* SIAdjacentRect.m */,
+				F2DC61EF1127C862000E1A61 /* SIAdjacentRectangles.h */,
+				F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */,
 				F2DC61EF1127C862000E1A5E /* SIScreen.h */,
 				F2DC61EF1127C862000E1A5C /* SIScreen.m */,
 				2743F1A2140EFC8E00C23A67 /* SIWindowDriver.h */,
@@ -622,9 +622,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2717BE18149933530012EF87 /* GTMLogger.m in Sources */,
-				2717BE1F149933840012EF87 /* SIAdjacentRect.m in Sources */,
+				2717BE1F149933840012EF87 /* SIAdjacentRectangles.m in Sources */,
 				2717BE3A149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
-				2717BDBB1498B8270012EF87 /* SIAdjacentRectTest.m in Sources */,
+				2717BDBB1498B8270012EF87 /* SIAdjacentRectanglesTest.m in Sources */,
 				F2DC61EF1127C862000E1A69 /* FMTGeometry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -659,7 +659,7 @@
 				27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */,
 				2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */,
 				F2DC61EF1127C862000E1A5D /* SIScreen.m in Sources */,
-				F2DC61EF1127C862000E1A60 /* SIAdjacentRect.m in Sources */,
+				F2DC61EF1127C862000E1A60 /* SIAdjacentRectangles.m in Sources */,
 				2717BE39149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
 				2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */,
 				F2DC61EF1127C862000E1A68 /* FMTGeometry.m in Sources */,

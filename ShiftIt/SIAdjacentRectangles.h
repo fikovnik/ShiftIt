@@ -21,7 +21,7 @@
 #import "SIDefines.h"
 #import "FMT/FMT.h"
 
-@interface SIRectWithValue : NSObject
+@interface SIValueRect : NSObject
 
 @property(readonly) NSRect rect;
 @property(readonly) id value;
@@ -32,7 +32,7 @@
 
 @end
 
-@interface SIRectDistance : NSObject
+@interface SIDistanceValueRect : NSObject
 
 @property(readonly) CGFloat distance;
 @property(readonly) NSRect rect;
@@ -42,13 +42,13 @@
 
 @end
 
-@interface SIAdjacentRect : NSObject
+@interface SIAdjacentRectangles : NSObject
 
 - (id)initWithRectValues:(NSArray *)rectValues;
 
-- (NSArray *)rectsInDirection:(FMTDirection)direction fromRect:(NSRect)rect;
+- (NSArray *)rectanglesInDirection:(FMTDirection)direction fromRect:(NSRect)rect;
 
-- (NSArray *)rectsInDirection:(FMTDirection)direction fromValue:(id)value;
+- (NSArray *)rectanglesInDirection:(FMTDirection)direction fromValue:(id)value;
 
 - (NSArray *)buildDirectionalPath:(const FMTDirection *)directions fromValue:(id)value;
 

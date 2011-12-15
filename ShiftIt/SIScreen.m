@@ -19,8 +19,7 @@
 
 #import "SIScreen.h"
 #import "SIDefines.h"
-#import "SIAdjacentRect.h"
-#import "FMT/FMT.h"
+#import "SIAdjacentRectangles.h"
 
 const FMTDirection kDefaultDirections[] = {kRightDirection, kBottomDirection, kLeftDirection, kTopDirection};
 
@@ -205,16 +204,23 @@ const FMTDirection kDefaultDirections[] = {kRightDirection, kBottomDirection, kL
     }
 
     NSArray *rects = [screens transform:^id(id item) {
-       return [SIRectWithValue rect:[item rect] withValue:item];
+       return [SIValueRect rect:[item rect] withValue:item];
     }];
 
-    SIAdjacentRect *adjr = [SIAdjacentRect adjacentRect:rects];
+    // build the adjacent rectangles
+    SIAdjacentRectangles *adjr = [SIAdjacentRectangles adjacentRect:rects];
+
+    // find the path, it will be always the same unless screens change hence we compute it again (it's cheap)
+    // seems maybe a bit of an overkill considering that ppl might not usually have more than 2 screens :)
     NSArray *path = [adjr buildDirectionalPath:kDefaultDirections fromValue:[SIScreen primaryScreen]];
     NSUInteger idx = [path findIndex:^BOOL(id item) {
        return [screen isEqualToScreen:item];
     }];
 
+    // count the offset
     idx += offset;
+
+    // so we wrap over
     idx %= [path count];
 
     return [path objectAtIndex:idx];

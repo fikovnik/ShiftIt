@@ -18,10 +18,10 @@
  */
 
 #import <Carbon/Carbon.h>
-#import "SIAdjacentRect.h"
+#import "SIAdjacentRectangles.h"
 #import "FMT/FMT.h"
 
-@implementation SIRectWithValue {
+@implementation SIValueRect {
 @private
     NSRect rect_;
     id value_;
@@ -47,13 +47,13 @@
 }
 
 + (id)rect:(NSRect)rect withValue:(id)value {
-    return [[[SIRectWithValue alloc] initWithRect:rect value:value] autorelease];
+    return [[[SIValueRect alloc] initWithRect:rect value:value] autorelease];
 }
 
 
 @end
 
-@implementation SIRectDistance {
+@implementation SIDistanceValueRect {
 @private
     CGFloat distance_;
     NSRect rect_;
@@ -83,7 +83,7 @@
 
 @end
 
-@implementation SIAdjacentRect {
+@implementation SIAdjacentRectangles {
 @private
     NSArray *rectValues_;
 }
@@ -105,7 +105,7 @@
     [super dealloc];
 }
 
-- (NSArray *)rectsInDirection:(FMTDirection)direction fromRect:(NSRect)rect {
+- (NSArray *)rectanglesInDirection:(FMTDirection)direction fromRect:(NSRect)rect {
     NSMutableArray *res = [NSMutableArray array];
 
     [rectValues_ enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -146,7 +146,7 @@
             }
 
             CGFloat dist = FMTPointDistanceToLine(a, b, p);
-            [res addObject:[[[SIRectDistance alloc] initWithDistance:dist rect:cRect value:[obj value]] autorelease]];
+            [res addObject:[[[SIDistanceValueRect alloc] initWithDistance:dist rect:cRect value:[obj value]] autorelease]];
         }
     }];
 
@@ -164,12 +164,12 @@
     }]];
 }
 
-- (NSArray *)rectsInDirection:(FMTDirection)direction fromValue:(id)value {
-    SIRectWithValue *rv = [rectValues_ find:^BOOL(id item) {
+- (NSArray *)rectanglesInDirection:(FMTDirection)direction fromValue:(id)value {
+    SIValueRect *rv = [rectValues_ find:^BOOL(id item) {
         return ([[item value] isEqualToScreen:value]);
     }];
     
-    return [self rectsInDirection:direction fromRect:[rv rect]];
+    return [self rectanglesInDirection:direction fromRect:[rv rect]];
 }
 
 - (NSArray *)buildDirectionalPath:(FMTDirection *)directions fromValue:(id)value {
@@ -179,7 +179,7 @@
         FMTDirection direction = directions[i];
         
         // get all the rectangles in the direction
-        NSArray *rects = [self rectsInDirection:direction fromValue:value];
+        NSArray *rects = [self rectanglesInDirection:direction fromValue:value];
                 
         // TODO: sort by the relative distance from the main one
         
@@ -199,7 +199,7 @@
 
 
 + (id)adjacentRect:(NSArray *)rectValues {
-    return [[[SIAdjacentRect alloc] initWithRectValues:rectValues] autorelease];
+    return [[[SIAdjacentRectangles alloc] initWithRectValues:rectValues] autorelease];
 }
 
 @end

@@ -18,12 +18,12 @@
  */
 
 #import <SenTestingKit/SenTestingKit.h>
-#import "SIAdjacentRect.h"
+#import "SIAdjacentRectangles.h"
 
-@interface SIAdjacentRectTest : SenTestCase
+@interface SIAdjacentRectanglesTest : SenTestCase
 @end
 
-@implementation SIAdjacentRectTest
+@implementation SIAdjacentRectanglesTest
 
 - (void)setUp {
     [super setUp];
@@ -47,21 +47,21 @@
     NSRect k = NSMakeRect(6, 1, 3, 3);
 
     NSArray *rectValues = [NSArray arrayWithObjects:
-            [SIRectWithValue rect:a withValue:@"A"],
-            [SIRectWithValue rect:b withValue:@"B"],
-            [SIRectWithValue rect:c withValue:@"C"],
-            [SIRectWithValue rect:d withValue:@"D"],
-            [SIRectWithValue rect:e withValue:@"E"],
-            [SIRectWithValue rect:f withValue:@"F"],
-            [SIRectWithValue rect:g withValue:@"G"],
-            [SIRectWithValue rect:h withValue:@"H"],
-            [SIRectWithValue rect:i withValue:@"I"],
-            [SIRectWithValue rect:j withValue:@"J"],
-            [SIRectWithValue rect:k withValue:@"K"],
+            [SIValueRect rect:a withValue:@"A"],
+            [SIValueRect rect:b withValue:@"B"],
+            [SIValueRect rect:c withValue:@"C"],
+            [SIValueRect rect:d withValue:@"D"],
+            [SIValueRect rect:e withValue:@"E"],
+            [SIValueRect rect:f withValue:@"F"],
+            [SIValueRect rect:g withValue:@"G"],
+            [SIValueRect rect:h withValue:@"H"],
+            [SIValueRect rect:i withValue:@"I"],
+            [SIValueRect rect:j withValue:@"J"],
+            [SIValueRect rect:k withValue:@"K"],
             nil
     ];
 
-    SIAdjacentRect *adjr = [SIAdjacentRect adjacentRect:rectValues];
+    SIAdjacentRectangles *adjr = [SIAdjacentRectangles adjacentRect:rectValues];
     FMTDirection directions[] = {kRightDirection, kBottomDirection, kLeftDirection, kTopDirection};
     NSArray *path = [adjr buildDirectionalPath:directions fromValue:@"A"];
 
@@ -74,12 +74,12 @@
     NSRect b = NSMakeRect(11, 6, 3, 3);
 
     NSArray *rectValues = [NSArray arrayWithObjects:
-            [SIRectWithValue rect:a withValue:@"A"],
-            [SIRectWithValue rect:b withValue:@"B"],
+            [SIValueRect rect:a withValue:@"A"],
+            [SIValueRect rect:b withValue:@"B"],
             nil
     ];
 
-    SIAdjacentRect *adjr = [SIAdjacentRect adjacentRect:rectValues];
+    SIAdjacentRectangles *adjr = [SIAdjacentRectangles adjacentRect:rectValues];
 
 }
 

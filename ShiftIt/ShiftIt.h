@@ -23,7 +23,7 @@
 #import "FMTNSError+Extras.h"
 
 #import "SIActionDelegate.h"
-#import "SIAdjacentRect.h"
+#import "SIAdjacentRectangles.h"
 #import "SIDefines.h"
 #import "SIScreen.h"
 #import "SIWindow.h"
