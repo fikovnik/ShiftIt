@@ -55,5 +55,6 @@
 -(IBAction)showPreferences:(id)sender;
 -(IBAction)revertDefaults:(id)sender;
 -(IBAction)reportIssue:(id)sender;
+-(IBAction)revealLogFileInFinder:(id)sender;
 
 @end

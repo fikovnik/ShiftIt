@@ -166,6 +166,14 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
     }
 }
 
+-(IBAction)revealLogFileInFinder:(id)sender {
+    if (debugLoggingFile_) {
+        NSURL *fileURL = [NSURL fileURLWithPath:debugLoggingFile_];
+        [[NSWorkspace sharedWorkspace] selectFile:[fileURL path] inFileViewerRootedAtPath:nil];
+    }
+}
+
+
 #pragma mark debugLogging dynamic property methods
 
 - (BOOL) debugLogging {
