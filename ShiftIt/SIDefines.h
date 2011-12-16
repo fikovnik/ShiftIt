@@ -44,15 +44,15 @@ extern NSString *const kRightMarginPrefKey;
 
 static inline NSRect SIGCToScreenOrigin(NSRect rect, SIScreen *screen) {
     NSRect r = rect;
-    r.origin.x -= [screen rect].origin.x;
-    r.origin.y -= [screen rect].origin.y;
+    r.origin.x -= [screen visibleRect].origin.x;
+    r.origin.y -= [screen visibleRect].origin.y;
     return r;
 }
 
 static inline NSRect SIScreenToGCOrigin(NSRect rect, SIScreen *screen) {
     NSRect r = rect;
-    r.origin.x += [screen rect].origin.x;
-    r.origin.y += [screen rect].origin.y;
+    r.origin.x += [screen visibleRect].origin.x;
+    r.origin.y += [screen visibleRect].origin.y;
     return r;
 }
 
