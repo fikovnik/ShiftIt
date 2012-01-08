@@ -20,14 +20,23 @@
 #import <Foundation/Foundation.h>
 #import "ShiftIt.h"
 
+typedef struct _AnchoredRect {
+  NSRect rect;
+  int anchor;
+} AnchoredRect;
+
+inline static AnchoredRect MakeAnchoredRect(NSRect rect, int anchor) {
+    AnchoredRect r = { rect, anchor };
+    return r;
+}
 
 @interface AbstractWindowGeometryShiftItAction : NSObject<SIActionDelegate>
 
-- (NSRect) shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext;
+- (AnchoredRect) shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext;
 
 @end
 
-typedef NSRect(^SimpleWindowGeometryChangeBlock)(NSRect, NSSize);
+typedef AnchoredRect(^SimpleWindowGeometryChangeBlock)(NSRect, NSSize);
 
 @interface WindowGeometryShiftItAction : AbstractWindowGeometryShiftItAction {
  @private

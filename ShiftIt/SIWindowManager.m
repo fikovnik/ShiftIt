@@ -183,14 +183,9 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     (*rightMargin) = [defaults integerForKey:kRightMarginPrefKey];    
 }
 
-- (BOOL) anchorWindow:(id<SIWindow>)window error:(NSError **)error {
+- (BOOL)anchorWindow:(id <SIWindow>)window to:(int)anchor error:(NSError **)error {
     // TODO: IOC!
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    if (![defaults boolForKey:kMarginsEnabledPrefKey]) {
-        FMTLogDebug(@"Anchoring is not enabled");
-        return YES;
-    }
 
     NSRect geometry;
     SIScreen *screen;
@@ -203,30 +198,32 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
 
     NSSize screenSize = [screen size];
 
-    int leftMargin;
-    int topMargin;
-    int bottomMargin;
-    int rightMargin;
-    [self getAnchorMargins:&leftMargin topMargin:&topMargin bottomMargin:&bottomMargin rightMargin:&rightMargin];
+    if ([defaults boolForKey:kMarginsEnabledPrefKey]) {
+        int leftMargin;
+        int topMargin;
+        int bottomMargin;
+        int rightMargin;
 
-    int anchor = 0;
+        [self getAnchorMargins:&leftMargin topMargin:&topMargin bottomMargin:&bottomMargin rightMargin:&rightMargin];
 
-    // determine whether we should anchor the window
-    // we need to use >= otherwise we might loose the anchor in favor of the opposite one
-    if (geometry.origin.x >= 0 && geometry.origin.x <= leftMargin) {
-        anchor |= kLeftDirection;
-    }
-    if (geometry.origin.y >= 0 && geometry.origin.y <= topMargin) {
-        anchor |= kTopDirection;
-    }
-    if (geometry.origin.x + geometry.size.width < screenSize.width && geometry.origin.x + geometry.size.width >= screenSize.width - rightMargin) {
-        anchor |= kRightDirection;
-    }
-    if (geometry.origin.y + geometry.size.height < screenSize.height && geometry.origin.y + geometry.size.height >= screenSize.height - bottomMargin) {
-        anchor |= kBottomDirection;
+        // determine whether we should anchor the window
+        // we need to use >= otherwise we might loose the anchor in favor of the opposite one
+        if (geometry.origin.x >= 0 && geometry.origin.x <= leftMargin) {
+            anchor |= kLeftDirection;
+        }
+        if (geometry.origin.y >= 0 && geometry.origin.y <= topMargin) {
+            anchor |= kTopDirection;
+        }
+        if (geometry.origin.x + geometry.size.width < screenSize.width && geometry.origin.x + geometry.size.width >= screenSize.width - rightMargin) {
+            anchor |= kRightDirection;
+        }
+        if (geometry.origin.y + geometry.size.height < screenSize.height && geometry.origin.y + geometry.size.height >= screenSize.height - bottomMargin) {
+            anchor |= kBottomDirection;
+        }
+    } else {
+        FMTLogDebug(@"Margins are not enabled enabled");
     }
 
-    // adjust anchors if needed
     if (anchor & kLeftDirection) {
         geometry.origin.x = 0;
     }

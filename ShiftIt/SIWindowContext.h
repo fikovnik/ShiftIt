@@ -23,6 +23,9 @@
 
 @required
 - (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error;
-- (BOOL) anchorWindow:(id<SIWindow>)window error:(NSError **)error;
+
+- (BOOL) anchorWindow:(id <SIWindow>)window to:(int)anchor error:(NSError **)error;
+
+// TODO: make it a struct
 - (void) getAnchorMargins:(int *)leftMargin topMargin:(int *)topMargin bottomMargin:(int *)bottomMargin rightMargin:(int *)rightMargin;
 @end

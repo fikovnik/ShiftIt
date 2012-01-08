@@ -61,13 +61,15 @@
     FMTLogInfo(@"Current window geometry: %@", RECT_STR(currentGeometry));
 
     NSSize screenSize = [screen size];
-    NSRect geometry = [self shiftWindowRect:currentGeometry screenSize:screenSize withContext:windowContext];
+    AnchoredRect anchoredRect = [self shiftWindowRect:currentGeometry screenSize:screenSize withContext:windowContext];
+    NSRect geometry = anchoredRect.rect;
 
     if (!NSEqualPoints(currentGeometry.origin, geometry.origin)) {
         if (![window canMove:&flag error:&cause]) {
             *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                             cause,
                                             @"Unable to find out if window is moveable");
+            return NO;
         }
         if (!flag) {
             *error = SICreateError(kShiftItActionFailureErrorCode, @"Window is not moveable");
@@ -80,10 +82,24 @@
             *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                             cause,
                                             @"Unable to find out if window is resizeable");
+            return NO;
         }
         if (!flag) {
-            *error = SICreateError(kShiftItActionFailureErrorCode, @"Window is not resizeable");
-            return NO;
+            if (anchoredRect.anchor & kRightDirection) {
+                geometry.origin.x += geometry.size.width - currentGeometry.size.width;
+            }
+
+            if (anchoredRect.anchor & kBottomDirection) {
+                geometry.origin.y += geometry.size.height - currentGeometry.size.height;
+            }
+
+            geometry.size.width = currentGeometry.size.width;
+            geometry.size.height = currentGeometry.size.height;
+
+            FMTLogInfo(@"Window seems not to be resizeable, will try to move it at least.\n "
+                        "Readjusting the geometry with respect to anchor %d: %@",
+                            anchoredRect.anchor,
+                            RECT_STR(geometry));
         }
     }
 
@@ -96,7 +112,7 @@
         return NO;
     }
 
-    if (![windowContext anchorWindow:window error:&cause]) {
+    if (![windowContext anchorWindow:window to:anchoredRect.anchor error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                         cause,
                                         @"Unable to anchor window");
@@ -130,7 +146,7 @@
     return self;
 }
 
-- (NSRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
+- (AnchoredRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
     return block_(windowRect, screenSize);
 }
 

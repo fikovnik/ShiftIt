@@ -21,8 +21,8 @@
 // TODO: extract this to be out of here
 #import "ShiftItApp.h"
 
-const SimpleWindowGeometryChangeBlock shiftItLeft = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = 0;
     r.origin.y = 0;
@@ -30,11 +30,11 @@ const SimpleWindowGeometryChangeBlock shiftItLeft = ^NSRect(NSRect windowRect, N
     r.size.width = screenSize.width / 2;
     r.size.height = screenSize.height;
 
-    return r;
+    return MakeAnchoredRect(r, kLeftDirection);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItRight = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItRight = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = screenSize.width / 2;
     r.origin.y = 0;
@@ -42,11 +42,11 @@ const SimpleWindowGeometryChangeBlock shiftItRight = ^NSRect(NSRect windowRect, 
     r.size.width = screenSize.width / 2;
     r.size.height = screenSize.height;
 
-    return r;
+    return MakeAnchoredRect(r, kRightDirection);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItTop = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItTop = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = 0;
     r.origin.y = 0;
@@ -54,11 +54,11 @@ const SimpleWindowGeometryChangeBlock shiftItTop = ^NSRect(NSRect windowRect, NS
     r.size.width = screenSize.width;
     r.size.height = screenSize.height / 2;
 
-    return r;
+    return MakeAnchoredRect(r, kTopDirection);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItBottom = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItBottom = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = 0;
     r.origin.y = screenSize.height / 2;
@@ -66,11 +66,11 @@ const SimpleWindowGeometryChangeBlock shiftItBottom = ^NSRect(NSRect windowRect,
     r.size.width = screenSize.width;
     r.size.height = screenSize.height / 2;
 
-    return r;
+    return MakeAnchoredRect(r, kBottomDirection);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItTopLeft = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItTopLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = 0;
     r.origin.y = 0;
@@ -78,11 +78,11 @@ const SimpleWindowGeometryChangeBlock shiftItTopLeft = ^NSRect(NSRect windowRect
     r.size.width = screenSize.width / 2;
     r.size.height = screenSize.height / 2;
 
-    return r;
+    return MakeAnchoredRect(r, kTopDirection | kLeftDirection);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItTopRight = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItTopRight = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = screenSize.width / 2;
     r.origin.y = 0;
@@ -90,11 +90,11 @@ const SimpleWindowGeometryChangeBlock shiftItTopRight = ^NSRect(NSRect windowRec
     r.size.width = screenSize.width / 2;
     r.size.height = screenSize.height / 2;
 
-    return r;
+    return MakeAnchoredRect(r, kTopDirection | kRightDirection);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItBottomLeft = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItBottomLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = 0;
     r.origin.y = screenSize.height / 2;
@@ -102,11 +102,11 @@ const SimpleWindowGeometryChangeBlock shiftItBottomLeft = ^NSRect(NSRect windowR
     r.size.width = screenSize.width / 2;
     r.size.height = screenSize.height / 2;
 
-    return r;
+    return MakeAnchoredRect(r, kBottomDirection | kLeftDirection);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItBottomRight = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItBottomRight = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = screenSize.width / 2;
     r.origin.y = screenSize.height / 2;
@@ -114,11 +114,11 @@ const SimpleWindowGeometryChangeBlock shiftItBottomRight = ^NSRect(NSRect window
     r.size.width = screenSize.width / 2;
     r.size.height = screenSize.height / 2;
 
-    return r;
+    return MakeAnchoredRect(r, kBottomDirection | kRightDirection);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItFullScreen = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItFullScreen = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = 0;
     r.origin.y = 0;
@@ -126,18 +126,18 @@ const SimpleWindowGeometryChangeBlock shiftItFullScreen = ^NSRect(NSRect windowR
     r.size.width = screenSize.width;
     r.size.height = screenSize.height;
 
-    return r;
+    return MakeAnchoredRect(r, 0);
 };
 
-const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r;
+const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = (screenSize.width / 2) - (windowRect.size.width / 2);
     r.origin.y = (screenSize.height / 2) - (windowRect.size.height / 2);
 
     r.size = windowRect.size;
 
-    return r;
+    return MakeAnchoredRect(r, 0);
 };
 
 @implementation IncreaseReduceShiftItAction
@@ -153,7 +153,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
     return self;
 }
 
-- (NSRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
+- (AnchoredRect)shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
     double kw = 0;
     double kh = 0;
 
@@ -183,12 +183,12 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
 
     if (kw <= 0) {
         FMTLogError(@"Invalid size for width delta: %f (type: %d)", kw, sizeDeltaType);
-        return windowRect;
+        return MakeAnchoredRect(windowRect, 0);
     }
 
     if (kh <= 0) {
         FMTLogError(@"Invalid size for height delta: %f (type: %d)", kh, sizeDeltaType);
-        return windowRect;
+        return MakeAnchoredRect(windowRect, 0);
     }
 
     int leftMargin = 0;
@@ -262,10 +262,11 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
     }
 
     // check window rect - constrained by the screen size
-    r.size.width = r.size.width < kw ? kw : r.size.width;
+    // TODO: this should got to the WindowGeometryShiftItAction
+    r.size.width = (CGFloat) r.size.width < kw ? kw : r.size.width;
     r.size.width = r.size.width > screenSize.width ? screenSize.width : r.size.width;
 
-    r.size.height = r.size.height < kh ? kh : r.size.height;
+    r.size.height = (CGFloat) r.size.height < kh ? kh : r.size.height;
     r.size.height = r.size.height > screenSize.height ? screenSize.height : r.size.height;
 
     r.origin.x = r.origin.x < 0 ? 0 : r.origin.x;
@@ -274,7 +275,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
     r.origin.y = r.origin.y < 0 ? 0 : r.origin.y;
     r.origin.y = r.origin.y > screenSize.height - r.size.height ? screenSize.height - r.size.height : r.origin.y;
 
-    return r;    
+    return MakeAnchoredRect(r, !directions);
 }
 
 
@@ -433,7 +434,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^NSRect(NSRect windowRect,
         return NO;
     }
 
-    if (![windowContext anchorWindow:window error:&cause]) {
+    if (![windowContext anchorWindow:window to:0 error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                         cause,
                                         @"Unable to anchor window");
