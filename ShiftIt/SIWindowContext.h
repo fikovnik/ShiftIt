@@ -19,6 +19,13 @@
 
 #import "SIWindow.h"
 
+typedef struct _Margins {
+    int left;
+    int top;
+    int bottom;
+    int right;
+} Margins;
+
 @protocol SIWindowContext <NSObject>
 
 @required
@@ -26,6 +33,5 @@
 
 - (BOOL) anchorWindow:(id <SIWindow>)window to:(int)anchor error:(NSError **)error;
 
-// TODO: make it a struct
-- (void) getAnchorMargins:(int *)leftMargin topMargin:(int *)topMargin bottomMargin:(int *)bottomMargin rightMargin:(int *)rightMargin;
+- (void) getAnchorMargins:(Margins *)margins;
 @end

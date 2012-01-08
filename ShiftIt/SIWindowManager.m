@@ -173,14 +173,14 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     return YES;
 }
 
-- (void) getAnchorMargins:(int *)leftMargin topMargin:(int *)topMargin bottomMargin:(int *)bottomMargin rightMargin:(int *)rightMargin {
+- (void) getAnchorMargins:(Margins *)margins {
     // TODO: IOC!
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
-    (*leftMargin) = [defaults integerForKey:kLeftMarginPrefKey];
-    (*topMargin) = [defaults integerForKey:kTopMarginPrefKey];
-    (*bottomMargin) = [defaults integerForKey:kBottomMarginPrefKey];
-    (*rightMargin) = [defaults integerForKey:kRightMarginPrefKey];    
+    (margins->left) = [defaults integerForKey:kLeftMarginPrefKey];
+    (margins->top) = [defaults integerForKey:kTopMarginPrefKey];
+    (margins->bottom) = [defaults integerForKey:kBottomMarginPrefKey];
+    (margins->right) = [defaults integerForKey:kRightMarginPrefKey];
 }
 
 - (BOOL)anchorWindow:(id <SIWindow>)window to:(int)anchor error:(NSError **)error {
@@ -199,25 +199,22 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     NSSize screenSize = [screen size];
 
     if ([defaults boolForKey:kMarginsEnabledPrefKey]) {
-        int leftMargin;
-        int topMargin;
-        int bottomMargin;
-        int rightMargin;
+        Margins margins;
 
-        [self getAnchorMargins:&leftMargin topMargin:&topMargin bottomMargin:&bottomMargin rightMargin:&rightMargin];
+        [self getAnchorMargins:&margins];
 
         // determine whether we should anchor the window
         // we need to use >= otherwise we might loose the anchor in favor of the opposite one
-        if (geometry.origin.x >= 0 && geometry.origin.x <= leftMargin) {
+        if (geometry.origin.x >= 0 && geometry.origin.x <= margins.left) {
             anchor |= kLeftDirection;
         }
-        if (geometry.origin.y >= 0 && geometry.origin.y <= topMargin) {
+        if (geometry.origin.y >= 0 && geometry.origin.y <= margins.top) {
             anchor |= kTopDirection;
         }
-        if (geometry.origin.x + geometry.size.width < screenSize.width && geometry.origin.x + geometry.size.width >= screenSize.width - rightMargin) {
+        if (geometry.origin.x + geometry.size.width < screenSize.width && geometry.origin.x + geometry.size.width >= screenSize.width - margins.right) {
             anchor |= kRightDirection;
         }
-        if (geometry.origin.y + geometry.size.height < screenSize.height && geometry.origin.y + geometry.size.height >= screenSize.height - bottomMargin) {
+        if (geometry.origin.y + geometry.size.height < screenSize.height && geometry.origin.y + geometry.size.height >= screenSize.height - margins.bottom) {
             anchor |= kBottomDirection;
         }
     } else {

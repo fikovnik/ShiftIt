@@ -191,12 +191,9 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
         return MakeAnchoredRect(windowRect, 0);
     }
 
-    int leftMargin = 0;
-    int topMargin = 0;
-    int bottomMargin = 0;
-    int rightMargin = 0;
+    Margins margins;
 
-    [windowContext getAnchorMargins:&leftMargin topMargin:&topMargin bottomMargin:&bottomMargin rightMargin:&rightMargin];
+    [windowContext getAnchorMargins:&margins];
     
     // target window rect
     NSRect r = windowRect;
@@ -205,19 +202,19 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
     // into which direction we are going to increase/reduce size
     int directions = kLeftDirection | kTopDirection | kBottomDirection | kRightDirection;
 
-    if (r.origin.x <= leftMargin) {
+    if (r.origin.x <= margins.left) {
         // do not resize to left
         directions ^= kLeftDirection;
     }
-    if (r.origin.y <= topMargin) {
+    if (r.origin.y <= margins.top) {
         // do not resize to top
         directions ^= kTopDirection;
     }
-    if (r.origin.y + r.size.height >= screenSize.height - bottomMargin) {
+    if (r.origin.y + r.size.height >= screenSize.height - margins.bottom) {
         // do not resize to bottom
         directions ^= kBottomDirection;
     }
-    if (r.origin.x + r.size.width >= screenSize.width - rightMargin) {
+    if (r.origin.x + r.size.width >= screenSize.width - margins.right) {
         // do not resize to right
         directions ^= kRightDirection;
     }
