@@ -165,7 +165,7 @@ NSDictionary *allShiftActions = nil;
     [statusMenuItemIcon_ release];
     [allShiftActions release];
     [windowManager_ release];
-
+    [allHotKeys_ release];
 
     [super dealloc];
 }
