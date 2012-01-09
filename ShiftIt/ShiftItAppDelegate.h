@@ -35,8 +35,7 @@
 
 	IBOutlet NSMenu *statusMenu_;
 	NSStatusItem *statusItem_;
-	NSImage *statusMenuItemIcon_;
-	
+
 	// to keep some pause between action invocations
 	CFAbsoluteTime beforeNow_;
 }

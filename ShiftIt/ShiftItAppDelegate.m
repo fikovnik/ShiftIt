@@ -152,8 +152,6 @@ NSDictionary *allShiftActions = nil;
         return nil;
     }
 
-    NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
-    statusMenuItemIcon_ = [[NSImage alloc] initWithContentsOfFile:iconPath];
     allHotKeys_ = [[NSMutableDictionary alloc] init];
 
     beforeNow_ = CFAbsoluteTimeGetCurrent();
@@ -162,10 +160,10 @@ NSDictionary *allShiftActions = nil;
 }
 
 - (void)dealloc {
-    [statusMenuItemIcon_ release];
     [allShiftActions release];
     [windowManager_ release];
     [allHotKeys_ release];
+    [preferencesController_ release];
 
     [super dealloc];
 }
@@ -324,11 +322,17 @@ NSDictionary *allShiftActions = nil;
         if (!statusItem_) {
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
-            if (statusMenuItemIcon_) {
-                [statusItem_ setImage:statusMenuItemIcon_];
+
+            NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
+            NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+
+            if (icon) {
+                [statusItem_ setImage:icon];
+                [icon release];
             } else {
                 [statusItem_ setTitle:kSIMenuItemTitle];
             }
+
             [statusItem_ setHighlightMode:YES];
         }
     } else {
