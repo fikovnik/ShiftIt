@@ -143,3 +143,14 @@ inline NSError* FMTCreateErrorWithCause_(NSString *errorDomain, NSInteger errorC
 	NSError *error = [NSError errorWithDomain:errorDomain code:errorCode userInfo:userInfo];	
 	return error;    
 }
+
+NSDictionary *FMTEncodeForSparkle(NSString *key, NSString *value, NSString *displayKey, NSString *displayValue) {
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+
+    [d setObject:key forKey:@"key"];
+    [d setObject:value forKey:@"value"];
+    [d setObject:displayKey forKey:@"displayKey"];
+    [d setObject:displayValue forKey:@"displayValue"];
+
+    return [NSDictionary dictionaryWithDictionary:d];
+}

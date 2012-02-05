@@ -25,19 +25,7 @@
 @class FMTHotKeyManager;
 
 @interface ShiftItAppDelegate : NSObject {
- @private
-    PreferencesWindowController *preferencesController_;
-	FMTHotKeyManager *hotKeyManager_;	
-	SIWindowManager *windowManager_;
-
-	NSMutableDictionary *allHotKeys_;
-	BOOL paused_;
-
-	IBOutlet NSMenu *statusMenu_;
-	NSStatusItem *statusItem_;
-
-	// to keep some pause between action invocations
-	CFAbsoluteTime beforeNow_;
+    IBOutlet NSMenu *statusMenu_;
 }
 
 - (IBAction)showPreferences:(id)sender;

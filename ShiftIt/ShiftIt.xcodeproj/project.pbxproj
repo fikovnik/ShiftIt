@@ -56,6 +56,9 @@
 		F2DC61EF1127C862000E1A60 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
 		F2DC61EF1127C862000E1A68 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
 		F2DC61EF1127C862000E1A69 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
+		F2DC61EF1127C862000E1A6D /* FMTNSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */; };
+		F2DC61EF1127C862000E1A6E /* FMTNSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */; };
+		F2DC61EF1127C862000E1A6F /* FMTNSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +171,8 @@
 		F2DC61EF1127C862000E1A66 /* SIActionDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIActionDelegate.h; sourceTree = "<group>"; };
 		F2DC61EF1127C862000E1A67 /* FMTGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTGeometry.m; sourceTree = "<group>"; };
 		F2DC61EF1127C862000E1A6A /* FMTGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTGeometry.h; sourceTree = "<group>"; };
+		F2DC61EF1127C862000E1A6B /* FMTNSFileManager+DirectoryLocations.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSFileManager+DirectoryLocations.h"; path = "FMT/FMTNSFileManager+DirectoryLocations.h"; sourceTree = "<group>"; };
+		F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSFileManager+DirectoryLocations.m"; path = "FMT/FMTNSFileManager+DirectoryLocations.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +282,8 @@
 		2708C1CE126138A000192883 /* FMT */ = {
 			isa = PBXGroup;
 			children = (
+				F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */,
+				F2DC61EF1127C862000E1A6B /* FMTNSFileManager+DirectoryLocations.h */,
 				2717BEB214994C120012EF87 /* FMT Tests */,
 				F2DC61EF1127C862000E1A6A /* FMTGeometry.h */,
 				F2DC61EF1127C862000E1A67 /* FMTGeometry.m */,
@@ -626,6 +633,7 @@
 				2717BE3A149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
 				2717BDBB1498B8270012EF87 /* SIAdjacentRectanglesTest.m in Sources */,
 				F2DC61EF1127C862000E1A69 /* FMTGeometry.m in Sources */,
+				F2DC61EF1127C862000E1A6E /* FMTNSFileManager+DirectoryLocations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -635,6 +643,7 @@
 			files = (
 				2717BEBA14994C120012EF87 /* FMTGeometryTests.m in Sources */,
 				2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */,
+				F2DC61EF1127C862000E1A6F /* FMTNSFileManager+DirectoryLocations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -663,6 +672,7 @@
 				2717BE39149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
 				2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */,
 				F2DC61EF1127C862000E1A68 /* FMTGeometry.m in Sources */,
+				F2DC61EF1127C862000E1A6D /* FMTNSFileManager+DirectoryLocations.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

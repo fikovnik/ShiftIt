@@ -17,6 +17,8 @@
  
  */
 
+#import <sys/stat.h>
+#import <Sparkle/Sparkle.h>
 #import "ShiftItAppDelegate.h"
 #import "ShiftItApp.h"
 #import "WindowGeometryShiftItAction.h"
@@ -24,6 +26,7 @@
 #import "PreferencesWindowController.h"
 #import "AXWindowDriver.h"
 #import "X11WindowDriver.h"
+#import "FMT/FMTNSFileManager+DirectoryLocations.h"
 
 NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
 
@@ -43,6 +46,7 @@ NSString *const kFixedSizeWidthDeltaPrefKey = @"fixedSizeWidthDelta";
 NSString *const kFixedSizeHeightDeltaPrefKey = @"fixedSizeHeightDelta";
 NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
+
 // AX Driver Options
 NSString *const kAXIncludeDrawersPrefKey = @"axdriver_includeDrawers";
 NSString *const kAXDriverConvergePrefKey = @"axdriver_converge";
@@ -54,6 +58,8 @@ NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.n
 // icon
 NSString *const kSIIconName = @"ShiftIt-menuIcon";
 NSString *const kSIMenuItemTitle = @"Shift";
+
+NSString *const kUsageStatisticsFileName = @"usage-statistics.plist";
 
 // the size that should be reserved for the menu item in the system menu in px
 NSInteger const kSIMenuItemSize = 30;
@@ -70,6 +76,101 @@ const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.25; // in seconds
 
 // TODO: move to the class
 NSDictionary *allShiftActions = nil;
+
+@interface SIUsageStatistics : NSObject {
+ @private
+    NSMutableDictionary *statistics_;
+    
+}
+
+- (id)initFromFile:(NSString *)path;
+- (void)increment:(NSString *)key;
+- (void)saveToFile:(NSString *)path;
+- (NSArray *)toSparkle;
+
+@end
+
+@implementation SIUsageStatistics
+
+- (id)initFromFile:(NSString *)path {
+    if (![super init]) {
+        return nil;
+    }
+
+    NSFileManager *fm = [NSFileManager defaultManager];
+
+    if (![fm fileExistsAtPath:path]) {
+        FMTLogInfo(@"Usage statistics do not exists");
+        statistics_ = [[NSMutableDictionary dictionary] retain];
+    } else {
+        NSData *data = nil;
+        NSString *errorDesc = nil;
+        NSPropertyListFormat format = NSPropertyListBinaryFormat_v1_0;
+
+        data = [fm contentsAtPath:path];
+        NSDictionary *d = (NSDictionary *)[NSPropertyListSerialization
+                propertyListFromData:data
+                    mutabilityOption:NSPropertyListMutableContainersAndLeaves
+                              format:&format
+                    errorDescription:&errorDesc];
+
+        if(d) {
+            FMTLogInfo(@"Loaded usage statistics from: %@", path);
+            statistics_ = [[NSMutableDictionary dictionaryWithDictionary:d] retain];
+        } else {
+            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %d", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
+            statistics_ = [[NSMutableDictionary dictionary] retain];
+        }
+    }
+
+    return self;
+}
+
+- (void)dealloc {
+    [statistics_ release];
+    
+    [super dealloc];
+}
+
+- (void)increment:(NSString *)key {
+    NSInteger value = 0;
+    
+    id stat = [statistics_ objectForKey:key];
+    if (stat) {
+        value = [(NSNumber *)stat integerValue];
+    }
+    
+    stat = [NSNumber numberWithInteger:(value + 1)];
+    [statistics_ setObject:stat forKey:key];
+}
+
+- (void)saveToFile:(NSString *)path {
+    NSData *data = nil;
+    NSString *errorDesc = nil;
+    
+    data = [NSPropertyListSerialization dataFromPropertyList:statistics_
+                                                      format:NSPropertyListBinaryFormat_v1_0
+                                            errorDescription:&errorDesc];
+    
+    if(data) {
+        [data writeToFile:path atomically:YES];
+        FMTLogInfo(@"Save usage statitics to: %@", path);
+    } else {
+        FMTLogError(@"Unable to serialize usage statistics to: %@ - %@", path, errorDesc);
+    }
+}
+
+
+- (NSArray *)toSparkle {
+    NSMutableArray *a = [NSMutableArray array];
+
+    [statistics_ enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
+        [a addObject:FMTEncodeForSparkle(key, value, key, value)];
+    }];
+
+    return [NSArray arrayWithArray:a];
+}
+@end
 
 @implementation ShiftItAction
 
@@ -135,8 +236,21 @@ NSDictionary *allShiftActions = nil;
 
 @end
 
+@implementation ShiftItAppDelegate {
+@private
+    PreferencesWindowController *preferencesController_;
+    FMTHotKeyManager *hotKeyManager_;
+    SIWindowManager *windowManager_;
 
-@implementation ShiftItAppDelegate
+    SIUsageStatistics *usageStatistics_;
+    NSMutableDictionary *allHotKeys_;
+    BOOL paused_;
+
+    NSStatusItem *statusItem_;
+
+    // to keep some pause between action invocations
+    CFAbsoluteTime beforeNow_;
+}
 
 + (void)initialize {
     // register defaults - we assume that the installation is correct
@@ -153,6 +267,8 @@ NSDictionary *allShiftActions = nil;
     }
 
     allHotKeys_ = [[NSMutableDictionary alloc] init];
+    NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];
+    usageStatistics_ = [[SIUsageStatistics alloc] initFromFile:usageStatisticsFile];
 
     beforeNow_ = CFAbsoluteTimeGetCurrent();
 
@@ -164,6 +280,7 @@ NSDictionary *allShiftActions = nil;
     [windowManager_ release];
     [allHotKeys_ release];
     [preferencesController_ release];
+    [usageStatistics_ release];
 
     [super dealloc];
 }
@@ -294,6 +411,10 @@ NSDictionary *allShiftActions = nil;
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     FMTLogInfo(@"Shutting down ShiftIt...");
+
+    // save usage statistics
+    NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];    
+    [usageStatistics_ saveToFile:usageStatisticsFile];
 
     // unregister hotkeys
     for (FMTHotKey *hotKey in [allHotKeys_ allValues]) {
@@ -507,7 +628,12 @@ NSDictionary *allShiftActions = nil;
         FMTLogInfo(@"Invoking action: %@", identifier);
         NSError *error = nil;
         if (![windowManager_ executeAction:[action delegate] error:&error]) {
-            FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], [error localizedDescription], [error fullDescription]);
+            FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], 
+                [error localizedDescription], 
+                [error fullDescription]);
+            [usageStatistics_ increment:FMTStr(@"action_%@_failed", identifier)];
+        } else {
+            [usageStatistics_ increment:FMTStr(@"action_%@", identifier)];
         }
     }
 }
@@ -522,6 +648,28 @@ NSDictionary *allShiftActions = nil;
     FMTLogDebug(@"ShitIt action activated from menu: %@", identifier);
 
     [self invokeShiftItActionByIdentifier_:identifier];
+}
+
+// This method allows you to add extra parameters to the appcast URL,
+// potentially based on whether or not Sparkle will also be sending along
+// the system profile. This method should return an array of dictionaries
+// with keys: "key", "value", "displayKey", "displayValue", the latter two
+// being human-readable variants of the former two.
+- (NSArray *)feedParametersForUpdater:(SUUpdater *)updater
+             sendingSystemProfile:(BOOL)sendingProfile {
+    NSMutableArray *a = [NSMutableArray arrayWithArray:[usageStatistics_ toSparkle]];
+
+    // get display information
+    NSArray *screens = [NSScreen screens];
+    NSInteger nScreen = [screens count];
+    [a addObject:FMTEncodeForSparkle(@"n_screens", FMTStr(@"%d", nScreen), @"Number of screens", FMTStr(@"%d", nScreen))];
+    
+    for (NSUInteger i=0; i<nScreen; i++) {
+        NSString *resolution = RECT_STR([[screens objectAtIndex:i] frame]);
+        [a addObject:FMTEncodeForSparkle(FMTStr(@"screen_%d", i), resolution, FMTStr(@"Screen #%d resolution", i), resolution)];
+    }
+
+    return [NSArray arrayWithArray:a];
 }
 
 
