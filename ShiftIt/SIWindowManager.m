@@ -187,14 +187,17 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     // TODO: IOC!
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
+    // TODO: initialize all rect to empty rect
     NSRect geometry;
-    SIScreen *screen;
+    SIScreen *screen = nil;
     NSError *cause = nil;
 
     if (![window getGeometry:&geometry screen:&screen error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItManagerFailureErrorCode, cause, @"Unable to get window geometry");
         return NO;
     }
+
+    FMTLogDebug(@"Window geometry before anchoring %@", RECT_STR(geometry));
 
     NSSize screenSize = [screen size];
 
@@ -221,26 +224,30 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
         FMTLogDebug(@"Margins are not enabled enabled");
     }
 
+    NSRect newGeometry = geometry;
+
     if (anchor & kLeftDirection) {
-        geometry.origin.x = 0;
+        newGeometry.origin.x = 0;
     }
     if (anchor & kTopDirection) {
-        geometry.origin.y = 0;
+        newGeometry.origin.y = 0;
     }
     if (anchor & kBottomDirection && !(anchor & kTopDirection)) {
-        geometry.origin.y = screenSize.height - geometry.size.height;
+        newGeometry.origin.y = screenSize.height - geometry.size.height;
     }
     if (anchor & kRightDirection && !(anchor & kLeftDirection)) {
-        geometry.origin.x = screenSize.width - geometry.size.width;
+        newGeometry.origin.x = screenSize.width - geometry.size.width;
     }
 
-    if (anchor) {
+    if (!NSEqualRects(newGeometry, geometry)) {
         FMTLogInfo(@"Anchoring window to: %d : %@", anchor, RECT_STR(geometry));
 
         if (![window setGeometry:geometry screen:screen error:&cause]) {
             *error = SICreateErrorWithCause(kShiftItManagerFailureErrorCode, cause, @"Unable to set window geometry");
             return NO;
         }
+    } else {
+        FMTLogDebug(@"No anchorning required (geometry is the same)");
     }
 
     return YES;
