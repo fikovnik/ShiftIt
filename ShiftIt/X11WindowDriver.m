@@ -218,8 +218,8 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 
     FMTLogDebug(@"AXWindowDriver: window geometry (sccoord): %@", RECT_STR(geometry));
 
-    NSRect _geometry = SIScreenToGCOrigin(geometry, screen);
-    FMTLogDebug(@"AXWindowDriver: window geometry (gccoord): %@", RECT_STR(_geometry));
+    NSRect gcGeometry = SIScreenToGCOrigin(geometry, screen);
+    FMTLogDebug(@"AXWindowDriver: window geometry (gccoord): %@", RECT_STR(gcGeometry));
 
     // TODO: extract
     NSRect ref = [[SIScreen primaryScreen] visibleRect];
@@ -228,11 +228,11 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     }
 
     // convert from X11 coordinates to Quartz CG coordinates
-    _geometry.origin.x -= ref.origin.x;
-    _geometry.origin.y -= ref.origin.y;
-    FMTLogDebug(@"AXWindowDriver: window geometry (x11coord): %@", RECT_STR(_geometry));
+    gcGeometry.origin.x -= ref.origin.x;
+    gcGeometry.origin.y -= ref.origin.y;
+    FMTLogDebug(@"AXWindowDriver: window geometry (x11coord): %@", RECT_STR(gcGeometry));
 
-    return [driver_ setGeometry_:_geometry ofWindow:ref_ error:error];
+    return [driver_ setGeometry_:gcGeometry ofWindow:ref_ error:error];
 }
 
 - (BOOL) canZoom:(BOOL *)flag error:(NSError **)error {
