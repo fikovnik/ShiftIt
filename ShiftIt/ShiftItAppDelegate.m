@@ -631,10 +631,8 @@ NSDictionary *allShiftActions = nil;
             FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], 
                 [error localizedDescription], 
                 [error fullDescription]);
-            [usageStatistics_ increment:FMTStr(@"action_%@_failed", identifier)];
-        } else {
-            [usageStatistics_ increment:FMTStr(@"action_%@", identifier)];
         }
+        [usageStatistics_ increment:FMTStr(@"action_%@", identifier)];
     }
 }
 
