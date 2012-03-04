@@ -285,7 +285,7 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		[(id)val release];
 
 		
-		if (frame.size.width >= width) {
+		if (frame.size.width > width) {
 			FMTDevLog(@"adjusting size to %dx%d", width/2, height/2);
 			errorCode = AXUISetWindowSize(window, width/2, height/2);
 		}
