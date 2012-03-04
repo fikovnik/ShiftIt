@@ -277,7 +277,19 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 			*error = SICreateError(FMTStrc(AXUIGetErrorMessage(errorCode)), kUnableToChangeWindowPositionErrorCode);
 			return;
 		}
+
+		NSRect frame;
+		CFTypeRef val = nil;
+		AXUIElementCopyAttributeValue(window, kAXSizeAttribute, &val);
+		AXValueGetValue(val, kAXValueCGSizeType, &frame.size);
+		[(id)val release];
+
 		
+		if (frame.size.width > width) {
+			FMTDevLog(@"adjusting size to %dx%d", width/2, height/2);
+			errorCode = AXUISetWindowSize(window, width/2, height/2);
+		}
+
 		FMTDevLog(@"adjusting size to %dx%d", width, height);
 		errorCode = AXUISetWindowSize(window, width, height);
 		if (errorCode != 0) {
