@@ -26,6 +26,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #import "AXUIUtils.h"
 #import "X11Utils.h"
 
+#import "NSScreen+DisplayName.h"
+
 #define RECT_STR(rect) FMTStr(@"[%f %f] [%f %f]", (rect).origin.x, (rect).origin.y, (rect).size.width, (rect).size.height)
 
 // reference to the carbon GetMBarHeight() function
@@ -203,15 +205,18 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 
 	// execute shift it action to reposition the application window
 	ShiftItFunctionRef actionFunction = [action action];
-	NSRect shiftedRect = actionFunction(visibleScreenRect.size, windowRect);
-	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
 	 
+	NSRect shiftedRect = actionFunction(visibleScreenRect.size, windowRect, window);
+	FMTDevLog(@"shifted window rect: %@", RECT_STR(shiftedRect));
+
 	// readjust adjust the visibility
 	// the shiftedRect is the new application window geometry relative to the screen originating at [0,0]
 	// we need to shift it accordingly that is to the origin of the best fit screen (screenRect) and
 	// take into account the visible area of such a screen - menu, dock, etc. which is in the visibleScreenRect
-	shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
-	shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
+	if (action.skip == 0) { 
+		shiftedRect.origin.x += screenRect.origin.x + visibleScreenRect.origin.x - screenRect.origin.x;
+		shiftedRect.origin.y += screenRect.origin.y + visibleScreenRect.origin.y - screenRect.origin.y;
+	}
 
 	// we need to translate from cocoa coordinates
 	FMTDevLog(@"shifted window within screen: %@", RECT_STR(shiftedRect));	
@@ -219,8 +224,10 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 #ifdef X11
 	if (activeWindowX11) {
 		// translate into X11 coordinates
-		shiftedRect.origin.x -= X11Ref.origin.x;
-		shiftedRect.origin.y -= X11Ref.origin.y;
+		if (action.skip == 0) { 
+			shiftedRect.origin.x -= X11Ref.origin.x;
+			shiftedRect.origin.y -= X11Ref.origin.y;
+		}
 		
 		// it seems that the X11 server 2.3.5 on snow leopard 10.6.4 on mac book pro
 		// changes the origin of the coordinates depending on the relative 
@@ -237,9 +244,10 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 				break;
 			}
 		}
-		
-		if (screenBelowPrimary || [screen isPrimary]) {
-			shiftedRect.origin.y -= GetMBarHeight();
+		if (action.skip == 0) { 
+			if (screenBelowPrimary || [screen isPrimary]) {
+				shiftedRect.origin.y -= GetMBarHeight();
+			}
 		}
 	} 
 #endif // X11
@@ -286,8 +294,8 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 		}
 #ifdef X11
 	}
-#endif // X11
-		 
+#endif // X11	
+	
 #ifdef X11
 	if (activeWindowX11) {
 		X11FreeWindowRef(window);
@@ -313,7 +321,9 @@ SINGLETON_BOILERPLATE(WindowSizer, sharedWindowSize);
 	float maxSize = 0;
 	
 	for (NSScreen *screen in [NSScreen screens]) {
+		
 		NSRect screenRect = [screen frame];
+		
 		// need to convert coordinates
 		COCOA_TO_SCREEN_COORDINATES(screenRect);
 		 

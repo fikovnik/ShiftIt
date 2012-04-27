@@ -19,8 +19,9 @@
 
 #import "DefaultShiftItActions.h"
 #import "FMTDefines.h"
+#import "NSScreen+DisplayName.h"
 
-NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -32,7 +33,7 @@ NSRect ShiftIt_Left(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width/2;
@@ -44,7 +45,7 @@ NSRect ShiftIt_Right(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -56,7 +57,7 @@ NSRect ShiftIt_Top(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -68,7 +69,7 @@ NSRect ShiftIt_Bottom(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -80,7 +81,7 @@ NSRect ShiftIt_TopLeft(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width / 2;
@@ -92,7 +93,7 @@ NSRect ShiftIt_TopRight(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -104,7 +105,7 @@ NSRect ShiftIt_BottomLeft(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = screenSize.width / 2;
@@ -116,7 +117,7 @@ NSRect ShiftIt_BottomRight(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = 0;
@@ -128,7 +129,7 @@ NSRect ShiftIt_FullScreen(NSSize screenSize, NSRect windowRect) {
 	return r;
 }
 
-NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
+NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
 	NSRect r;
 	
 	r.origin.x = (screenSize.width / 2)-(windowRect.size.width / 2);
@@ -137,4 +138,43 @@ NSRect ShiftIt_Center(NSSize screenSize, NSRect windowRect) {
 	r.size = windowRect.size;
 	
 	return r;
+}
+
+NSRect ShiftIt_AlterDisplay(NSSize screenSize, NSRect windowRect, AXUIElementRef windowRef) {
+	CGDirectDisplayID currentDisplayID;
+	CGDisplayCount count;
+	
+	if (CGGetDisplaysWithRect(windowRect, 1, &currentDisplayID, &count) == kCGErrorSuccess) {
+		NSArray *screens=[NSScreen screens];
+		NSScreen *currentScreen = nil;
+		int i, displayIndex=0, screenCount=[screens count];
+		
+		for(i=0; i<screenCount; i++){
+			NSScreen *check=[screens objectAtIndex:i];
+			NSNumber *checkDisplayID = [[check deviceDescription] objectForKey:@"NSScreenNumber"];
+			
+			if ([checkDisplayID intValue] == currentDisplayID) {
+				currentScreen=check;
+				displayIndex=i;
+				break;
+			}
+		}
+		
+		displayIndex = (displayIndex + 1) % screenCount;
+		
+		NSScreen *nextScreen = [[NSScreen screens] objectAtIndex:displayIndex];
+		NSNumber *nextDisplayID = [[nextScreen deviceDescription] objectForKey:@"NSScreenNumber"];
+		CGDirectDisplayID CGNextDisplayID = (CGDirectDisplayID) [nextDisplayID intValue];
+			
+		CGRect nextCGRect = CGDisplayBounds(CGNextDisplayID);		
+		NSSize nextScreenSize = [nextScreen visibleFrame].size;
+		
+		windowRect.size.width = nextScreenSize.width / 2;
+		windowRect.size.height = nextScreenSize.height / 2;		
+		
+		windowRect.origin.x = nextCGRect.origin.x;
+		windowRect.origin.y = nextCGRect.origin.y;				
+	}
+	
+	return windowRect;
 }

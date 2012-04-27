@@ -26,12 +26,14 @@
 @synthesize label = label_;
 @synthesize uiTag = uiTag_;
 @synthesize action = action_;
+@synthesize skip = skip_;
 
-- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFunctionRef)action {
+- (id) initWithIdentifier:(NSString *)identifier label:(NSString *)label uiTag:(NSInteger)uiTag action:(ShiftItFunctionRef)action skip:(NSInteger)skip {
 	FMTAssertNotNil(identifier);
 	FMTAssertNotNil(label);
 	FMTAssert(uiTag > 0, @"uiTag must be greater than 0");
 	FMTAssertNotNil(action);
+	FMTAssert((skip == 0 || skip == 1), @"skip must be equals to 0 or 1");
 
 	if (![super init]) {
 		return nil;
@@ -41,6 +43,7 @@
 	label_ = [label retain];
 	uiTag_ = uiTag;
 	action_ = action;
+	skip_ = skip;
 	
 	return self;
 }
