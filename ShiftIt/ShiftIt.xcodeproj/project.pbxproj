@@ -45,6 +45,8 @@
 		27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5512730F4600A65750 /* FMTUtils.m */; };
 		27F4FD5812730F4600A65750 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5312730F4600A65750 /* FMTLoginItems.m */; };
 		27F4FD5912730F4600A65750 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5512730F4600A65750 /* FMTUtils.m */; };
+		3AD33894153FA084003DC6C3 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3AD33893153FA084003DC6C3 /* IOKit.framework */; };
+		3AD3389D153FA175003DC6C3 /* NSScreen+DisplayName.m in Sources */ = {isa = PBXBuildFile; fileRef = 3AD3389C153FA175003DC6C3 /* NSScreen+DisplayName.m */; };
 		83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */; };
 		83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -115,6 +117,9 @@
 		27F4FD5512730F4600A65750 /* FMTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTUtils.m; path = FMT/FMTUtils.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		3AD33893153FA084003DC6C3 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		3AD3389B153FA175003DC6C3 /* NSScreen+DisplayName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSScreen+DisplayName.h"; sourceTree = "<group>"; };
+		3AD3389C153FA175003DC6C3 /* NSScreen+DisplayName.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSScreen+DisplayName.m"; sourceTree = "<group>"; };
 		83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-menuIcon.png"; sourceTree = "<group>"; };
 		83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShiftIt.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
@@ -148,6 +153,7 @@
 				F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
+				3AD33894153FA084003DC6C3 /* IOKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +163,8 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3AD3389B153FA175003DC6C3 /* NSScreen+DisplayName.h */,
+				3AD3389C153FA175003DC6C3 /* NSScreen+DisplayName.m */,
 				2708C1CC1261388A00192883 /* External */,
 				F2D9C239112F9D0E003E9435 /* Preferences */,
 				F2DC61231127ACDE000E1A5B /* WindowSizer.h */,
@@ -182,6 +190,7 @@
 				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
 				F2708222117FCF9400C0A04C /* Sparkle.framework */,
 				27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */,
+				3AD33893153FA084003DC6C3 /* IOKit.framework */,
 			);
 			name = "Linked Frameworks";
 			sourceTree = "<group>";
@@ -339,6 +348,7 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ShiftIt" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,
@@ -422,6 +432,7 @@
 				27F4FD4D12730F2F00A65750 /* FMTHotKeyManager.m in Sources */,
 				27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */,
 				27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */,
+				3AD3389D153FA175003DC6C3 /* NSScreen+DisplayName.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
