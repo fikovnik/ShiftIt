@@ -2,6 +2,8 @@
 
 *Managing window size and position in OSX*
 
+**Note: The master branch is highly outdated, please have a look at the `shiftit16` branch.**
+
 About
 --------
 
@@ -68,4 +70,4 @@ Change Log:
   [9]: http://nkuyu.net/apps/shiftit/release-notes-1.5.html
   [10]: http://nkuyu.net/apps/shiftit/release-notes-1.4.1.html
   [11]: http://nkuyu.net/apps/shiftit/release-notes-1.4.html
-  [12]: http://nkuyu.net/apps/shiftit/release-notes-1.3.htmlBlockquotehow can I get it back?
+  [12]: http://nkuyu.net/apps/shiftit/release-notes-1.3.html
