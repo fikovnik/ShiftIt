@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="69a32ce7-0dbe-41d6-a5f8-2a04c5a77ef0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/ShiftIt.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/xcode.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AXWindowDriver.m" afterPath="$PROJECT_DIR$/AXWindowDriver.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DefaultShiftItActions.m" afterPath="$PROJECT_DIR$/DefaultShiftItActions.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FMT/FMTHotKey.m" afterPath="$PROJECT_DIR$/FMT/FMTHotKey.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FMT/FMTNSError+Extras.m" afterPath="$PROJECT_DIR$/FMT/FMTNSError+Extras.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SIWindowManager.m" afterPath="$PROJECT_DIR$/SIWindowManager.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ShiftIt-Info.plist" afterPath="$PROJECT_DIR$/ShiftIt-Info.plist" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ShiftIt.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/ShiftIt.xcodeproj/project.pbxproj" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ShiftIt.xcodeproj/xcuserdata/krikava.xcuserdatad/xcschemes/ShiftIt Tests.xcscheme" afterPath="$PROJECT_DIR$/ShiftIt.xcodeproj/xcuserdata/krikava.xcuserdatad/xcschemes/ShiftIt Tests.xcscheme" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ShiftItAppDelegate.m" afterPath="$PROJECT_DIR$/ShiftItAppDelegate.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/WindowGeometryShiftItAction.m" afterPath="$PROJECT_DIR$/WindowGeometryShiftItAction.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/X11WindowDriver.m" afterPath="$PROJECT_DIR$/X11WindowDriver.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../fabfile.py" afterPath="$PROJECT_DIR$/../fabfile.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../releng/release.sh" afterPath="$PROJECT_DIR$/../releng/release.sh" />
     </list>
     <ignored path="ShiftIt.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -161,6 +142,7 @@
     <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="recentsLimit" value="5" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="FullScreen" value="false" />
     <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
   </component>
@@ -246,7 +228,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.32916668" sideWeight="0.49839914" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32916668" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32916668" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
