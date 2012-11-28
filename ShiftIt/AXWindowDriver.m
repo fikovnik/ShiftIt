@@ -623,6 +623,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
     }
     
     geometry = windowRect;
+    FMTLogDebug(@"Window rect: %@", RECT_STR(windowRect));
 
     // try to get drawers positions if needed
     if (shouldUseDrawers_) {
@@ -632,7 +633,7 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
             FMTLogDebug(@"Unable to get window drawers: %@", [cause localizedDescription]);
         } else if (drawersRect.size.width > 0) {
             // there are some drawers
-            FMTLogDebug(@"Found drawers: %@", RECT_STR(drawersRect));
+            FMTLogDebug(@"Found drawers rect: %@", RECT_STR(drawersRect));
             geometry = NSUnionRect(windowRect, drawersRect);
         } else {
             FMTLogDebug(@"Window does not have drawers");

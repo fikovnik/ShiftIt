@@ -197,7 +197,19 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
         return NO;
     }
 
-    FMTLogDebug(@"Window geometry before anchoring %@", RECT_STR(geometry));
+    FMTLogDebug(@"Window geometry before anchoring (1. attempt) %@", RECT_STR(geometry));
+
+    // TODO: this is bad, but the quickest way that seems to fix it [#76]
+    // TODO: the whole AX API seems to be sensitive when called too often
+    // TODO: turn it into a semaphor - block the calls
+    [NSThread sleepForTimeInterval:.3];
+
+    if (![window getGeometry:&geometry screen:&screen error:&cause]) {
+        *error = SICreateErrorWithCause(kShiftItManagerFailureErrorCode, cause, @"Unable to get window geometry");
+        return NO;
+    }
+
+    FMTLogDebug(@"Window geometry before anchoring (2. attempt) %@", RECT_STR(geometry));
 
     NSSize screenSize = [screen size];
 
