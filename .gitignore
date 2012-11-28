@@ -1,5 +1,3 @@
-ShiftIt/build
 release-notes-*
 ShiftIt-*.zip
-ShiftIt/ShiftIt.xcodeproj/*.pbxuser
-ShiftIt/ShiftIt.xcodeproj/*.perspectivev3
+misc
