@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2010 Filip Krikava
+ Copyright (c) 2010-2011 Filip Krikava
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -33,3 +33,8 @@ BOOL FMTOpenSystemPreferencePane(NSString *prefPaneId);
 BOOL FMTIsProcessWithBundleIdRunning(NSString *bundleId);
 
 NSInteger FMTNumberOfRunningProcessesWithBundleId(NSString *bundleId);
+
+NSError* FMTCreateError(NSString *erroDomain, NSInteger errorCode, NSString *fmt, ...);
+NSError* FMTCreateErrorWithCause(NSString *errorDomain, NSInteger errorCode, NSError *cause, NSString *fmt, ...);
+
+NSDictionary *FMTEncodeForSparkle(NSString *key, NSString *value, NSString *displayKey, NSString *displayValue);

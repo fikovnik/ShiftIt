@@ -1,6 +1,6 @@
 /*
- ShiftIt: Resize windows with Hotkeys
- Copyright (C) 2010  Aravind
+ ShiftIt: Window Organizer for OSX
+ Copyright (c) 2010-2011 Filip Krikava
  
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -23,17 +23,38 @@
 
 @interface PreferencesWindowController : NSWindowController {
  @private
+    NSDictionary *hotKeyControls_;
 	NSString *selectedTabIdentifier_;
+    NSString *debugLoggingFile_;
 	
-	IBOutlet NSButton * openAtLogin_;
-    IBOutlet NSTabView * tabView_;
-	IBOutlet NSTextField * versionLabel_;	
+    IBOutlet NSTabView *tabView_;
+	IBOutlet NSTextField *versionLabel_;
+    
+    IBOutlet SRRecorderControl *srLeft_;
+    IBOutlet SRRecorderControl *srRight_;
+    IBOutlet SRRecorderControl *srTop_;
+    IBOutlet SRRecorderControl *srBottom_;    
+    IBOutlet SRRecorderControl *srTL_;
+    IBOutlet SRRecorderControl *srTR_;
+    IBOutlet SRRecorderControl *srBR_;
+    IBOutlet SRRecorderControl *srBL_;
+    IBOutlet SRRecorderControl *srCenter_;
+    IBOutlet SRRecorderControl *srZoom_;
+    IBOutlet SRRecorderControl *srMaximize_;
+    IBOutlet SRRecorderControl *srFullScreen_;
+    IBOutlet SRRecorderControl *srIncrease_;
+    IBOutlet SRRecorderControl *srReduce_;    
+    IBOutlet SRRecorderControl *srNextScreen_;    
 }
 
 @property BOOL shouldStartAtLogin;
+@property BOOL debugLogging;
+@property(copy) NSString *debugLoggingFile;
 
 -(void)updateRecorderCombos;
 -(IBAction)showPreferences:(id)sender;
 -(IBAction)revertDefaults:(id)sender;
+-(IBAction)reportIssue:(id)sender;
+-(IBAction)revealLogFileInFinder:(id)sender;
 
 @end

@@ -1,53 +1,66 @@
 /*
- Copyright (c) 2010 Filip Krikava
- 
+ Copyright (c) 2010-2011 Filip Krikava
+
  Permission is hereby granted, free of charge, to any person obtaining a copy
- of this sofFMTare and associated documentation files (the "SofFMTare"), to deal
- in the SofFMTare without restriction, including without limitation the rights
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the SofFMTare, and to permit persons to whom the SofFMTare is
+ copies of the Software, and to permit persons to whom the Software is
  furnished to do so, subject to the following conditions:
- 
+
  The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the SofFMTare.
- 
- THE SOFFMTARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFFMTARE OR THE USE OR OTHER DEALINGS IN
- THE SOFFMTARE.
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ THE SOFTWARE.
  */
 
 // following assertions were taken from: GMTDefines.h from the google-mac-toolbox:
 // http://code.google.com/p/google-toolbox-for-mac/
 
-#ifndef FMTDevLog
+#import <Foundation/Foundation.h>
+#import "GTMLogger.h"
 
+// collections
+#define FMT_A(...) [NSArray arrayWithObjects:__VA_ARGS__, nil]
+#define FMT_D(...) [NSDictionary dictionaryWithObjectsAndKeys:__VA_ARGS__, nil]
+
+// logging
+#define FMTLogDebug(...)  \
+[[GTMLogger sharedLogger] logFuncDebug:__func__ msg:__VA_ARGS__]
+#define FMTLogInfo(...)   \
+[[GTMLogger sharedLogger] logFuncInfo:__func__ msg:__VA_ARGS__]
+#define FMTLogError(...)  \
+[[GTMLogger sharedLogger] logFuncError:__func__ msg:__VA_ARGS__]
+#define FMTLogAssert(...) \
+[[GTMLogger sharedLogger] logFuncAssert:__func__ msg:__VA_ARGS__]
+
+// strings
+static inline NSString* FMTStr(NSString *fmt, ...) {
+    NSString *s;
+    va_list args;
+
+    va_start(args, fmt);
+	s = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
+    va_end(args);
+
+    return s;
+}
+
+#define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding]
+
+// debug blocks
+typedef void (^FMTDebugBlock)(void);
+static inline void FMTInDebugOnly(FMTDebugBlock block) {
 #ifndef NDEBUG
-#define FMTDevLog(...) NSLog(__VA_ARGS__)
-#else
-#define FMTDevLog(...) do { } while (0)
-#endif // NDEBUG
-
-#endif // FMTDevLog
-
-// TODO: rename to NSStr
-#ifndef FMTStr
-#define FMTStr(fmt,...) [NSString stringWithFormat:fmt,##__VA_ARGS__]
-#endif // FMTStr
-
-#define FMTStrc(cstr) [NSString stringWithCString:(cstr) encoding:NSUTF8StringEncoding] 
-
-#ifndef FMTTraceLog
-
-#ifndef NTRACE
-#define FMTTraceLog(...) NSLog(@"%@: %@",FMTStr(@"[\%s:\%s:\%d]",__PRETTY_FUNCTION__,__FILE__,__LINE__),FMTStr(__VA_ARGS__))
-#define FMTTrace() NSLog(@"[\%s:\%s:\%d]",__PRETTY_FUNCTION__,__FILE__,__LINE__)
-#endif // NTRACE
-
-#endif // FMTTraceLog
+    block();
+#endif
+}
 
 #ifndef FMTAssert
 
@@ -64,7 +77,7 @@ description:__VA_ARGS__];                             \
 }                                                                       \
 } while(0)
 
-#define FMTAssertNotNil(var) FMTAssert(var != nil, FMTStr(@"Variabe %@ must not be nil", @#var));
+#define FMTAssertNotNil(var) FMTAssert(var != nil, FMTStr(@"Variable %@ must not be nil", @#var));
 
 #else // !defined(NS_BLOCK_ASSERTIONS)
 #define FMTAssert(condition, ...) do { } while (0)
@@ -131,8 +144,6 @@ return self;                                     \
 - (NSUInteger)retainCount {                        \
 return NSUIntegerMax;                            \
 }                                                  \
-- (void)release {                                  \
-}                                                  \
 - (id)autorelease {                                \
 return self;                                     \
 }                                                  \
@@ -141,7 +152,3 @@ return self;                                     \
 }                                                  \
 
 #endif // SINGLETON_BOILERPLATE_FULL
-
-#ifndef FMTGetErrorDescription
-#define FMTGetErrorDescription(error)	[[(error) userInfo] objectForKey:NSLocalizedDescriptionKey]
-#endif // FMTGetErrorDescription

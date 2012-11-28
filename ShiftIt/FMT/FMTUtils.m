@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2010 Filip Krikava
+ Copyright (c) 2010-2011 Filip Krikava
  
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -22,6 +22,7 @@
 
 #import "FMTUtils.h"
 #import "FMTDefines.h"
+#import "GTMLogger.h"
 
 NSString *const kSystemPreferencesAppBundeId = @"com.apple.systempreferences";
 
@@ -70,7 +71,7 @@ BOOL FMTOpenSystemPreferencePane(NSString *prefPaneId) {
 	NSAppleEventDescriptor *event = [script executeAndReturnError:&dict];
 
 	if (dict) {
-		FMTDevLog(@"Compilation of AppleScript: %@ failed: %@", source, dict);
+		GTMLoggerError(@"Compilation of AppleScript: %@ failed: %@", source, dict);
 	}
 	
 	[script release];	
@@ -102,4 +103,54 @@ NSInteger FMTNumberOfRunningProcessesWithBundleId(NSString *bundleId) {
 
 BOOL FMTIsProcessWithBundleIdRunning(NSString *bundleId) {
 	return FMTNumberOfRunningProcessesWithBundleId(bundleId) >= 1;
+}
+
+NSError* FMTCreateErrorWithCause_(NSString *errorDomain, NSInteger errorCode, NSError *cause, NSString *fmt, va_list args);
+
+inline NSError* FMTCreateError(NSString *errorDomain, NSInteger errorCode, NSString *fmt, ...) {
+    NSError *error;
+    va_list args;
+    
+    va_start(args, fmt);
+	error = FMTCreateErrorWithCause_(errorDomain, errorCode, nil, fmt, args);
+    va_end(args);
+    
+    return error;
+}
+
+inline NSError* FMTCreateErrorWithCause(NSString *errorDomain, NSInteger errorCode, NSError *cause, NSString *fmt, ...) {
+    NSError *error;
+    va_list args;
+    
+    va_start(args, fmt);
+	error = FMTCreateErrorWithCause_(errorDomain, errorCode, cause, fmt, args);
+    va_end(args);
+    
+    return error;
+}
+
+inline NSError* FMTCreateErrorWithCause_(NSString *errorDomain, NSInteger errorCode, NSError *cause, NSString *fmt, va_list args) {
+	FMTAssertNotNil(fmt);
+    
+    NSString *msg = [[[NSString alloc] initWithFormat:fmt arguments:args] autorelease];
+    
+	NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithCapacity:1];
+	[userInfo setObject:msg forKey:NSLocalizedDescriptionKey];
+    if (cause != nil) {
+        [userInfo setObject:cause forKey:NSUnderlyingErrorKey];
+    }
+	
+	NSError *error = [NSError errorWithDomain:errorDomain code:errorCode userInfo:userInfo];	
+	return error;    
+}
+
+NSDictionary *FMTEncodeForSparkle(NSString *key, NSString *value, NSString *displayKey, NSString *displayValue) {
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+
+    [d setObject:key forKey:@"key"];
+    [d setObject:value forKey:@"value"];
+    [d setObject:displayKey forKey:@"displayKey"];
+    [d setObject:displayValue forKey:@"displayValue"];
+
+    return [NSDictionary dictionaryWithDictionary:d];
 }
