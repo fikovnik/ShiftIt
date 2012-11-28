@@ -124,7 +124,7 @@
     return YES;
 }
 
-- (NSRect) shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
+- (AnchoredRect) shiftWindowRect:(NSRect)windowRect screenSize:(NSSize)screenSize withContext:(id<SIWindowContext>)windowContext {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                    reason:FMTStr(@"You must override %@ in a subclass", NSStringFromSelector(_cmd))
                                  userInfo:nil];
