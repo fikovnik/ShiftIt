@@ -1,0 +1,17 @@
+
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <channel>
+      <title>ShiftIt Changelog</title>
+      <link>https://github.com/fikovnik/ShiftIt/raw/develop/release/appcast.xml</link>
+      <language>en</language>
+         <item>
+            <title>ShiftIt version 1.6</title>
+                <sparkle:releaseNotesLink>
+                    https://github.com/fikovnik/ShiftIt/raw/develop/release/release-notes-1.6.html
+                </sparkle:releaseNotesLink>
+            <pubDate>Thu, 29 Nov 2012 00:11:41 </pubDate>
+            <enclosure url="https://github.com/downloads/fikovnik/ShiftIt/ShiftIt-develop-1.6.zip" sparkle:version="2.0" length="749580" type="application/octet-stream" sparkle:dsaSignature="MC0CFQDEC1sKDcRmN5nhyNRdv2B+Cz6qKQIURPngC6XPZgfvzVBHZkwS9zDSeSs=" />
+         </item>
+   </channel>
+</rss>
