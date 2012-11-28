@@ -377,7 +377,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 
 @implementation X11WindowDriver (WindowDelegate)
 
-- (BOOL)getGeometry_:(__block NSRect *)geometryRef ofWindow:(Window *)windowRef error:(NSError **)error {
+- (BOOL)getGeometry_:(NSRect *)geometryRef ofWindow:(Window *)windowRef error:(NSError **)error {
     return execWithDisplay_(^BOOL(Display *dpy, NSError **nestedError) {
         Window root = DefaultRootWindow(dpy);
         XWindowAttributes wa;
