@@ -2,8 +2,6 @@
 
 *Managing window size and position in OSX*
 
-**Note: The master branch is highly outdated, please have a look at the `shiftit16` branch.**
-
 About
 --------
 
