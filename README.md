@@ -2,6 +2,8 @@
 
 *Managing window size and position in OSX*
 
+**Note: The master branch is highly outdated, please have a look at the `shiftit16` branch.**
+
 About
 --------
 
@@ -23,7 +25,7 @@ is recommended*):
 
   * on OSX 10.6 Snow Leopard
        1. Compile in XCode by clicking build, or use the
-        `scripts/release.sh`
+        `scripts/release.sh` (*With the script option, please ignore any errors related to the signing the release. Just check if you see the `** BUILD SUCCEEDED **` message in the output and grab the app from `ShiftIt/build/Release/ShiftIt.app` directory.*)
        1. That's it
   * on OSX 10.5 Leopard
        1. Go to `Project` menu and click `Edit Project Settings` item
@@ -68,4 +70,4 @@ Change Log:
   [9]: http://nkuyu.net/apps/shiftit/release-notes-1.5.html
   [10]: http://nkuyu.net/apps/shiftit/release-notes-1.4.1.html
   [11]: http://nkuyu.net/apps/shiftit/release-notes-1.4.html
-  [12]: http://nkuyu.net/apps/shiftit/release-notes-1.3.htmlBlockquotehow can I get it back?
+  [12]: http://nkuyu.net/apps/shiftit/release-notes-1.3.html
