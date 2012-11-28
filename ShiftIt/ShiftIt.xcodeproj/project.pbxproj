@@ -536,7 +536,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0450;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ShiftIt" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -730,21 +730,14 @@
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)\"",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ShiftIt Tests/ShiftIt Tests-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "ShiftIt Tests/ShiftIt Tests-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -753,21 +746,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)\"",
 				);
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ShiftIt Tests/ShiftIt Tests-Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				INFOPLIST_FILE = "ShiftIt Tests/ShiftIt Tests-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.6;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -776,6 +762,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -791,7 +778,6 @@
 				INFOPLIST_FILE = "FMT Tests/FMT Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Debug;
@@ -800,8 +786,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(DEVELOPER_LIBRARY_DIR)/Frameworks";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
@@ -811,7 +797,6 @@
 				INFOPLIST_FILE = "FMT Tests/FMT Tests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx;
 				WRAPPER_EXTENSION = octest;
 			};
 			name = Release;
@@ -820,28 +805,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "_DEBUGPRINTS_=1";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = NO;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
-				INSTALL_PATH = /Applications;
-				MACOSX_DEPLOYMENT_TARGET = "";
-				OTHER_LDFLAGS = "-ldl";
 				PRODUCT_NAME = ShiftIt;
-				SDKROOT = macosx10.6;
-				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -849,41 +819,26 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = .;
-				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
-				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
-				GCC_WARN_ABOUT_GLOBAL_CONSTRUCTORS = NO;
-				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
-				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
-				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
-				GCC_WARN_PEDANTIC = NO;
-				GCC_WARN_SHADOW = NO;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
-				INSTALL_PATH = /Applications;
-				MACOSX_DEPLOYMENT_TARGET = "";
-				OTHER_LDFLAGS = "-ldl";
 				PRODUCT_NAME = ShiftIt;
-				SDKROOT = macosx10.6;
-				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
-				COPY_PHASE_STRIP = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = "";
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -897,28 +852,36 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/X11/include,
+				);
 				IBC_OVERRIDING_PLUGINS_AND_FRAMEWORKS_DIR = "";
 				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				IBC_PLUGIN_SEARCH_PATHS = "";
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "";
-				ONLY_ACTIVE_ARCH = YES;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/X11/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = "-ldl";
-				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS = YES;
 				GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS = YES;
-				GCC_VERSION = "";
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -932,12 +895,19 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/X11/include,
+				);
 				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				INSTALL_PATH = /Applications;
-				ONLY_ACTIVE_ARCH = YES;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/X11/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = "-ldl";
-				SDKROOT = macosx10.6;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};

@@ -118,7 +118,7 @@ NSDictionary *allShiftActions = nil;
             FMTLogInfo(@"Loaded usage statistics from: %@", path);
             statistics_ = [[NSMutableDictionary dictionaryWithDictionary:d] retain];
         } else {
-            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %d", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
+            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %ld", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
             statistics_ = [[NSMutableDictionary dictionary] retain];
         }
     }
@@ -345,6 +345,7 @@ NSDictionary *allShiftActions = nil;
     NSError *error = nil;
 
     // initialize AX driver
+    // TODO: keep the reference and register listener for preference changes
     AXWindowDriver *axDriver = [[[AXWindowDriver alloc] initWithError:&error] autorelease];
     // set defaults
     if ([defaults objectForKey:kAXIncludeDrawersPrefKey]) {

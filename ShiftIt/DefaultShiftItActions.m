@@ -182,12 +182,12 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
     }
 
     if (kw <= 0) {
-        FMTLogError(@"Invalid size for width delta: %f (type: %d)", kw, sizeDeltaType);
+        FMTLogError(@"Invalid size for width delta: %f (type: %ld)", kw, sizeDeltaType);
         return MakeAnchoredRect(windowRect, 0);
     }
 
     if (kh <= 0) {
-        FMTLogError(@"Invalid size for height delta: %f (type: %d)", kh, sizeDeltaType);
+        FMTLogError(@"Invalid size for height delta: %f (type: %ld)", kh, sizeDeltaType);
         return MakeAnchoredRect(windowRect, 0);
     }
 
@@ -260,10 +260,10 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 
     // check window rect - constrained by the screen size
     // TODO: this should got to the WindowGeometryShiftItAction
-    r.size.width = (CGFloat) r.size.width < kw ? kw : r.size.width;
+    r.size.width = (CGFloat) (r.size.width < kw ? kw : r.size.width);
     r.size.width = r.size.width > screenSize.width ? screenSize.width : r.size.width;
 
-    r.size.height = (CGFloat) r.size.height < kh ? kh : r.size.height;
+    r.size.height = (CGFloat) (r.size.height < kh ? kh : r.size.height);
     r.size.height = r.size.height > screenSize.height ? screenSize.height : r.size.height;
 
     r.origin.x = r.origin.x < 0 ? 0 : r.origin.x;
@@ -363,7 +363,6 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
     next_ = next;
 
     return self;
-
 }
 
 - (BOOL)execute:(id <SIWindowContext>)windowContext error:(NSError **)error {

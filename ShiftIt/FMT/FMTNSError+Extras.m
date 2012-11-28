@@ -30,7 +30,7 @@
     
     [desc appendString:@"\nNSError stack trace:\n"];
     do {
-        [desc appendFormat:@"%@:%d - %@", [error domain], [error code], [error localizedDescription]];
+        [desc appendFormat:@"%@:%ld - %@", [error domain], [error code], [error localizedDescription]];
         error = [[error userInfo] objectForKey:NSUnderlyingErrorKey];
         if (error != nil) {
             [desc appendString:@"\n  Caused-by: "];

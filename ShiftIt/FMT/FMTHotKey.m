@@ -68,10 +68,10 @@
 // have the dependency on ShortcutRecorder in FMTHotKey
 NSString *FMTStringForCocoaModifiers(NSUInteger modifiers) {
     NSString *modifiersString = [NSString stringWithFormat:@"%@%@%@%@",
-								 (modifiers & NSControlKeyMask ? [NSString stringWithFormat:@"%C", kControlUnicode] : @""),
-								 (modifiers & NSAlternateKeyMask ? [NSString stringWithFormat:@"%C", kOptionUnicode] : @""),
-								 (modifiers & NSShiftKeyMask ? [NSString stringWithFormat:@"%C", kShiftUnicode] : @""),
-								 (modifiers & NSCommandKeyMask ? [NSString stringWithFormat:@"%C", kCommandUnicode] : @"")];
+								 (modifiers & NSControlKeyMask ? [NSString stringWithFormat:@"%d", kControlUnicode] : @""),
+								 (modifiers & NSAlternateKeyMask ? [NSString stringWithFormat:@"%d", kOptionUnicode] : @""),
+								 (modifiers & NSShiftKeyMask ? [NSString stringWithFormat:@"%d", kShiftUnicode] : @""),
+								 (modifiers & NSCommandKeyMask ? [NSString stringWithFormat:@"%d", kCommandUnicode] : @"")];
 	
 	return modifiersString;
 }
