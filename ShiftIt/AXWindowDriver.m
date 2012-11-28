@@ -247,6 +247,8 @@ NSInteger const kAXWindowDriverErrorCode = 20104;
 
 - (void)dealloc {
     CFRelease(systemElementRef_);
+    
+    [super dealloc];
 }
 
 - (BOOL)findFocusedWindow:(id <SIWindow> *)window withInfo:(SIWindowInfo *)windowInfo error:(NSError **)error {
