@@ -252,9 +252,9 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     }
 
     if (!NSEqualRects(newGeometry, geometry)) {
-        FMTLogInfo(@"Anchoring window to: %d : %@", anchor, RECT_STR(geometry));
+        FMTLogInfo(@"Anchoring window to: %d : %@", anchor, RECT_STR(newGeometry));
 
-        if (![window setGeometry:geometry screen:screen error:&cause]) {
+        if (![window setGeometry:newGeometry screen:screen error:&cause]) {
             *error = SICreateErrorWithCause(kShiftItManagerFailureErrorCode, cause, @"Unable to set window geometry");
             return NO;
         }
