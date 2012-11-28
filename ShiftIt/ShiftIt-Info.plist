@@ -35,7 +35,7 @@
 	<key>SUEnableSystemProfiling</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>http://fikovnik.net/projects/shiftitapp.org/appcast/profileInfo.php</string>
+	<string>https://raw.github.com/fikovnik/ShiftIt/develop/release/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>
