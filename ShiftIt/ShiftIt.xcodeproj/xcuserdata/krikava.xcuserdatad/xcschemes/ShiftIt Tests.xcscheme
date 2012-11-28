@@ -4,6 +4,19 @@
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForRunning = "YES"
+            buildForTesting = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2717BDAA1498B7FD0012EF87"
+               BuildableName = "ShiftIt Tests.octest"
+               BlueprintName = "ShiftIt Tests"
+               ReferencedContainer = "container:ShiftIt.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
    </BuildAction>
    <TestAction
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
@@ -15,7 +28,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2714C0B01487F9BC00CC951D"
+               BlueprintIdentifier = "2717BDAA1498B7FD0012EF87"
                BuildableName = "ShiftIt Tests.octest"
                BlueprintName = "ShiftIt Tests"
                ReferencedContainer = "container:ShiftIt.xcodeproj">
