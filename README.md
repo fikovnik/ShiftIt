@@ -69,7 +69,7 @@ The releases are fully automatic which hopefully will help to release more often
 * `release` - Makes the complete release (same as prepare_release, upload_release)
 * `upload_release` - Uploads the release to github
 
-
+Thanks [JetBrains](http://www.jetbrains.com/) for kindly supporting this open source project by providing [AppCode](http://www.jetbrains.com/objc/) IDE.
 
   [1]: http://code.google.com/p/shiftit/
   [2]: http://ca.linkedin.com/in/aravind88
