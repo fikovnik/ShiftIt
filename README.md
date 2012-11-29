@@ -2,6 +2,8 @@
 
 *Managing window size and position in OSX*
 
+**Before the next release is available, please have a look at the `develop` branch.**
+
 About
 --------
 
