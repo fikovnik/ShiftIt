@@ -9,8 +9,8 @@
                 <sparkle:releaseNotesLink>
                     http://htmlpreview.github.com/?https://raw.github.com/fikovnik/ShiftIt/develop/release/release-notes-1.6.html
                 </sparkle:releaseNotesLink>
-            <pubDate>Thu, 29 Nov 2012 00:56:42 </pubDate>
-            <enclosure url="https://github.com/downloads/fikovnik/ShiftIt/ShiftIt-develop-1.6.zip" sparkle:version="1.6" length="749580" type="application/octet-stream" sparkle:dsaSignature="MCwCFB33B7QnVgMq1zKbv8+x3aRGR6frAhQTuL2XMLveLxYyx8f+ppfLMdcOrg==" />
+            <pubDate>Thu, 29 Nov 2012 01:00:38 </pubDate>
+            <enclosure url="https://github.com/downloads/fikovnik/ShiftIt/ShiftIt-develop-1.6.zip" sparkle:version="1.6" length="749580" type="application/octet-stream" sparkle:dsaSignature="MC0CFFMS93BksDQ/IwONv+9gpwgT41OKAhUAmWAUMhoHENw8RSsKes8vgssVwZA=" />
          </item>
    </channel>
 </rss>
