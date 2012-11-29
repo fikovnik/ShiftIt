@@ -13,11 +13,11 @@ Change logs: change logs are versioned in the [repository](https://github.com/fi
 
 ## User guide
 
-ShiftIt installs itself in the menu bar (optionally it can be completely hidden). It provides a set of actions that manipulates windows positions and sizes. Following is the current list of actions available.
+ShiftIt installs itself in the menu bar (optionally it can be completely hidden). It provides a set of actions that manipulates windows positions and sizes. Following is an example of list of actions available:
 
-![Screenshot Menu](https://github.com/fikovnik/ShiftIt/raw/master/docs/screenshot-menu.png)
+![Screenshot Menu](https://raw.github.com/fikovnik/ShiftIt/develop/docs/schreenshot-menu.png)
 
-Normally, all Cocoa windows and X11 windows are supported. Some applications do not work correctly or not at all. There is a [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). If you find any problem not mentioned there, please submit an issue.
+Normally, all Cocoa windows and X11 windows are supported. Some applications might not work correctly or not at all. There is a [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). If you find any problem not mentioned there, please submit an issue.
 
 ## Requirements
 
