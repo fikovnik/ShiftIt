@@ -15,9 +15,9 @@ Change logs: change logs are versioned in the [repository](https://github.com/fi
 
 ShiftIt installs itself in the menu bar (optionally it can be completely hidden). It provides a set of actions that manipulates windows positions and sizes. Following is the current list of actions available.
 
-<img src="https://github.com/fikovnik/ShiftIt/raw/master/docs/screenshot-menu.png" />
+![Screenshot Menu](https://github.com/fikovnik/ShiftIt/raw/master/docs/screenshot-menu.png)
 
-Normally, all Cocoa windows and X11 windows are supported.
+Normally, all Cocoa windows and X11 windows are supported. Some applications do not work correctly or not at all. There is a [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). If you find any problem not mentioned there, please submit an issue.
 
 ## Requirements
 
@@ -33,11 +33,11 @@ The primary development is done on OSX 10.7 Lion, but it should be running under
 
 * **I pressed a shortcut, but nothing has happened, why?**
 
-  While most of application windows should work well with ShiftIt, there are some exceptions (like the GTK+ OSX applications). If you find any problem, please raise an issue.
+  While most of application windows should work well with ShiftIt, there are some exceptions (like the GTK+ OSX applications). There is a [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). If you find any problem not mentioned in the list, please raise an issue.
 
 * **I pressed a shortcut, something happened, but not what I expected, why?**
 
-  ShiftIt is based on a Cocoa Accessibility API and sometimes this API can be a bit [fragile](http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html) and not do exactly what it should. In order to help to improve ShiftIt, please submit an issue every time you find some weird behavior. Thanks!
+  ShiftIt is based on a Cocoa Accessibility API and sometimes this API can be a bit [fragile](http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html) and not do exactly what it should. In order to help to improve ShiftIt, please submit an issue every time you find some weird behavior. Before you do please consult the [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). Thanks!
 
 ## Development
 
