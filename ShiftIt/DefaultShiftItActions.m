@@ -11,7 +11,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -30,6 +30,8 @@ const SimpleWindowGeometryChangeBlock shiftItLeft = ^AnchoredRect(NSRect windowR
     r.size.width = screenSize.width / 2;
     r.size.height = screenSize.height;
 
+    if ( CGRectEqualToRect(windowRect, r) )
+        r.size.width += screenSize.width / 4;
     return MakeAnchoredRect(r, kLeftDirection);
 };
 
@@ -42,6 +44,11 @@ const SimpleWindowGeometryChangeBlock shiftItRight = ^AnchoredRect(NSRect window
     r.size.width = screenSize.width / 2;
     r.size.height = screenSize.height;
 
+    if ( CGRectEqualToRect(windowRect, r) )
+    {
+        r.size.width += screenSize.width / 4;
+        r.origin.x -= screenSize.width / 4;
+    }
     return MakeAnchoredRect(r, kRightDirection);
 };
 
@@ -54,6 +61,8 @@ const SimpleWindowGeometryChangeBlock shiftItTop = ^AnchoredRect(NSRect windowRe
     r.size.width = screenSize.width;
     r.size.height = screenSize.height / 2;
 
+    if ( CGRectEqualToRect(windowRect, r) )
+        r.size.height += screenSize.height / 4;
     return MakeAnchoredRect(r, kTopDirection);
 };
 
@@ -66,6 +75,11 @@ const SimpleWindowGeometryChangeBlock shiftItBottom = ^AnchoredRect(NSRect windo
     r.size.width = screenSize.width;
     r.size.height = screenSize.height / 2;
 
+    if ( CGRectEqualToRect(windowRect, r) )
+    {
+        r.size.height += screenSize.height / 4;
+        r.origin.y -= screenSize.height / 4;
+    }
     return MakeAnchoredRect(r, kBottomDirection);
 };
 
@@ -143,13 +157,13 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 @implementation IncreaseReduceShiftItAction
 
 - (id)initWithMode:(BOOL)increase {
-    
+
     if (![self init]) {
         return nil;
     }
 
     increase_ = increase;
-    
+
     return self;
 }
 
@@ -194,7 +208,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
     Margins margins;
 
     [windowContext getAnchorMargins:&margins];
-    
+
     // target window rect
     NSRect r = windowRect;
     // 1: increase, -1: reduce
@@ -368,7 +382,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 - (BOOL)execute:(id <SIWindowContext>)windowContext error:(NSError **)error {
     FMTAssertNotNil(windowContext);
     FMTAssertNotNil(error);
-    
+
     NSError *cause = nil;
     id<SIWindow> window = nil;
     BOOL flag = NO;
@@ -398,7 +412,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                         cause,
                                         @"Unable to get window geometry");
-        return NO;        
+        return NO;
     }
 
     FMTLogInfo(@"Current window geometry: %@ screen: %@", RECT_STR(currentGeometry), currentScreen);
@@ -415,7 +429,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 
     CGFloat kw = screenSize.width / currentScreenSize.width;
     CGFloat kh = screenSize.height / currentScreenSize.height;
-    
+
     NSRect geometry = {
             { currentGeometry.origin.x * kw , currentGeometry.origin.y * kh },
             { currentGeometry.size.width * kw , currentGeometry.size.height * kh }
@@ -436,9 +450,9 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
                                         @"Unable to anchor window");
         return NO;
     }
-    
+
     // TODO: make sure window is always visible
-    
+
     return YES;
 }
 
