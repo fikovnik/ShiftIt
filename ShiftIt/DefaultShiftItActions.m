@@ -151,6 +151,14 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 
     r.size = windowRect.size;
 
+    if ( CGRectEqualToRect(windowRect, r) )
+    {
+        r.origin.x = screenSize.width / 4;
+        r.origin.y = 0;
+
+        r.size.width = screenSize.width / 2;
+        r.size.height = screenSize.height;
+    }
     return MakeAnchoredRect(r, 0);
 };
 
