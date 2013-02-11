@@ -25,8 +25,12 @@
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
 #import "AXWindowDriver.h"
-#import "X11WindowDriver.h"
 #import "FMT/FMTNSFileManager+DirectoryLocations.h"
+
+#ifdef X11
+#import "X11WindowDriver.h"
+#endif
+
 
 NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
 
@@ -118,7 +122,7 @@ NSDictionary *allShiftActions = nil;
             FMTLogInfo(@"Loaded usage statistics from: %@", path);
             statistics_ = [[NSMutableDictionary dictionaryWithDictionary:d] retain];
         } else {
-            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %ld", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
+            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %d", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
             statistics_ = [[NSMutableDictionary dictionary] retain];
         }
     }
@@ -359,18 +363,19 @@ NSDictionary *allShiftActions = nil;
     }
 
     if (error) {
-        FMTLogDebug(@"Unable to load AX driver: %@%@", [error localizedDescription], [error fullDescription]);
+        FMTLogInfo(@"Unable to load AX driver: %@%@", [error localizedDescription], [error fullDescription]);
     } else {
-        FMTLogDebug(@"Added driver: %@", [axDriver description]);
+        FMTLogInfo(@"Added driver: %@", [axDriver description]);
        [drivers addObject:axDriver];
     }
 
+    #ifdef X11
     // initialize X11 driver
     X11WindowDriver *x11Driver = [[[X11WindowDriver alloc] initWithError:&error] autorelease];
     if (error) {
-        FMTLogDebug(@"Unable to load X11 driver: %@%@", [error localizedDescription], [error fullDescription]);
+        FMTLogInfo(@"Unable to load X11 driver: %@%@", [error localizedDescription], [error fullDescription]);
     } else {
-        FMTLogDebug(@"Added driver: %@", [x11Driver description]);
+        FMTLogInfo(@"Added driver: %@", [x11Driver description]);
        [drivers addObject:x11Driver];
     }
 
@@ -380,6 +385,7 @@ NSDictionary *allShiftActions = nil;
         [NSApp presentError:SICreateError(100, @"No driver could be loaded")];
         [NSApp terminate:self];
     }
+    #endif
 
 	windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
 
