@@ -49,6 +49,10 @@ To build ShiftIt locally just clone the repository or get the latest snapshot an
 
     xcodebuild -target ShiftIt -configuration Release
 
+To make a build without X11 support execute following:
+
+    xcodebuild -target "ShiftIt NoX11" -configuration Release
+
 ### Making a release
 
 Releases are handled using [frabric](http://docs.fabfile.org/en/1.5/). There are some dependencies that can be easily obtained using `pip`:
