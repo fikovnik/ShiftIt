@@ -11,6 +11,10 @@ License: [GNU General Public License v3][5]
 
 Change logs: change logs are versioned in the [repository](https://github.com/fikovnik/ShiftIt/tree/develop/release) as well.
 
+## Download
+
+A binary build for OSX 10.7+ is available in [downloads page](https://github.com/fikovnik/ShiftIt/downloads). It might still work on OSX 10.6, but it has not been tested.
+
 ## User guide
 
 ShiftIt installs itself in the menu bar (optionally it can be completely hidden). It provides a set of actions that manipulates windows positions and sizes. Following is an example of list of actions available:
