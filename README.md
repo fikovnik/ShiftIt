@@ -59,7 +59,7 @@ To make a build without X11 support execute following:
 
 ### Making a release
 
-Releases are handled using [frabric](http://docs.fabfile.org/en/1.5/). There are some dependencies that can be easily obtained using `pip`:
+Releases are handled using [fabric](http://docs.fabfile.org/en/1.5/). There are some dependencies that can be easily obtained using `pip`:
 
 * [fabric](http://docs.fabfile.org/en/1.5/) - the build system itself
 * [github3](https://github.com/sigmavirus24/github3.py) - library for GitHub 3 API
