@@ -15,6 +15,8 @@ Change logs: change logs are versioned in the [repository](https://github.com/fi
 
 A binary build for OSX 10.7+ is available in [downloads page](https://github.com/fikovnik/ShiftIt/downloads). It might still work on OSX 10.6, but it has not been tested.
 
+This build includes support for X11 which might be problematic in 10.8, a fix is discussed in [#105](https://github.com/fikovnik/ShiftIt/issues/105).
+
 ## User guide
 
 ShiftIt installs itself in the menu bar (optionally it can be completely hidden). It provides a set of actions that manipulates windows positions and sizes. Following is an example of list of actions available:
