@@ -1,4 +1,4 @@
-<h1><img src="https://github.com/fikovnik/ShiftIt/raw/master/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt</h1>
+<h1><img src="https://raw.github.com/fikovnik/ShiftIt/develop/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt</h1>
 
 *Managing window size and position in OSX*
 
