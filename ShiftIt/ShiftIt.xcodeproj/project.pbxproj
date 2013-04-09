@@ -958,7 +958,9 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "_DEBUGPRINTS_=1";
+				HEADER_SEARCH_PATHS = /usr/X11/include;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
+				LIBRARY_SEARCH_PATHS = /usr/X11/lib;
 				OTHER_CFLAGS = (
 					"-DDEBUG",
 					"-DX11",
@@ -974,7 +976,9 @@
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
+				HEADER_SEARCH_PATHS = /usr/X11/include;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
+				LIBRARY_SEARCH_PATHS = /usr/X11/lib;
 				OTHER_CFLAGS = (
 					"-DNDEBUG",
 					"-DX11",
@@ -1007,13 +1011,11 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /usr/X11/include;
 				IBC_OVERRIDING_PLUGINS_AND_FRAMEWORKS_DIR = "";
 				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				IBC_PLUGIN_SEARCH_PATHS = "";
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "";
-				LIBRARY_SEARCH_PATHS = /usr/X11/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DDEBUG";
@@ -1045,10 +1047,8 @@
 				GCC_WARN_UNUSED_LABEL = YES;
 				GCC_WARN_UNUSED_PARAMETER = NO;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = /usr/X11/include;
 				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				INSTALL_PATH = /Applications;
-				LIBRARY_SEARCH_PATHS = /usr/X11/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNDEBUG";
