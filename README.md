@@ -45,6 +45,10 @@ The primary development is done on OSX 10.7 Lion, but it should be running under
 
   ShiftIt is based on a Cocoa Accessibility API and sometimes this API can be a bit [fragile](http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html) and not do exactly what it should. In order to help to improve ShiftIt, please submit an issue every time you find some weird behavior. Before you do please consult the [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). Thanks!
 
+* **ShiftIt wants accessibility access on my Mac but my system preferences don't match the instruction, why?**
+
+  For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
+
 ## Development
 
 The repository is based on the git flow model. The development therefore happens in the `develop` branch. Any contribution is welcomed!
