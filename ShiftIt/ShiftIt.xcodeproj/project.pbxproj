@@ -8,7 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
+		250BB2B517CB789500ADDB88 /* libLeap.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 250BD14017CB756500C4EC28 /* libLeap.dylib */; };
+		250BD14117CB756600C4EC28 /* libLeap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 250BD14017CB756500C4EC28 /* libLeap.dylib */; };
+		250BD14217CB756600C4EC28 /* libLeap.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 250BD14017CB756500C4EC28 /* libLeap.dylib */; };
 		256AC3DA0F4B6AC300CF3369 /* ShiftItAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */; };
+		259CBC1E17C805D90089B497 /* SILeapController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 259CBC1D17C805D90089B497 /* SILeapController.mm */; };
+		259CBC1F17C805D90089B497 /* SILeapController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 259CBC1D17C805D90089B497 /* SILeapController.mm */; };
 		2708BF121260E5BB00192883 /* DefaultShiftItActions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2708BF111260E5BB00192883 /* DefaultShiftItActions.m */; };
 		270DACA414094B9E0080DFBD /* AXWindowDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA314094B9E0080DFBD /* AXWindowDriver.m */; };
 		270DACA914098AE30080DFBD /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
@@ -107,6 +112,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		250BB2B417CB788200ADDB88 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				250BB2B517CB789500ADDB88 /* libLeap.dylib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27160C6E16C939FF002DA475 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -135,9 +150,15 @@
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		1DDD58150DA1D0A300B32029 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		250BD14017CB756500C4EC28 /* libLeap.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libLeap.dylib; path = LeapSDK/libLeap.dylib; sourceTree = "<group>"; };
 		256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItAppDelegate.h; sourceTree = "<group>"; };
 		256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShiftItAppDelegate.m; sourceTree = "<group>"; };
 		256AC3F00F4B6AF500CF3369 /* ShiftIt_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftIt_Prefix.pch; sourceTree = "<group>"; };
+		259CBC1717C8055D0089B497 /* Leap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Leap.h; path = LeapSDK/Leap.h; sourceTree = "<group>"; };
+		259CBC1817C8055D0089B497 /* LeapMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LeapMath.h; path = LeapSDK/LeapMath.h; sourceTree = "<group>"; };
+		259CBC1C17C805D90089B497 /* SILeapController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SILeapController.h; path = LeapSDK/SILeapController.h; sourceTree = "<group>"; };
+		259CBC1D17C805D90089B497 /* SILeapController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = SILeapController.mm; path = LeapSDK/SILeapController.mm; sourceTree = "<group>"; };
+		25E74EF217C941D8004B0086 /* SILeapControllerUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SILeapControllerUtils.h; path = LeapSDK/SILeapControllerUtils.h; sourceTree = "<group>"; };
 		2708BF101260E5BB00192883 /* DefaultShiftItActions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DefaultShiftItActions.h; sourceTree = "<group>"; };
 		2708BF111260E5BB00192883 /* DefaultShiftItActions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DefaultShiftItActions.m; sourceTree = "<group>"; };
 		2708C2551261C8E800192883 /* ShiftItApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItApp.h; sourceTree = "<group>"; };
@@ -231,6 +252,7 @@
 				27160C6B16C939FF002DA475 /* Sparkle.framework in Frameworks */,
 				27160C6C16C939FF002DA475 /* Carbon.framework in Frameworks */,
 				27160C6D16C939FF002DA475 /* Cocoa.framework in Frameworks */,
+				250BD14217CB756600C4EC28 /* libLeap.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +283,7 @@
 				F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
 				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				250BD14117CB756600C4EC28 /* libLeap.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,9 +339,23 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		259CBC1617C805500089B497 /* LeapMotion */ = {
+			isa = PBXGroup;
+			children = (
+				250BD14017CB756500C4EC28 /* libLeap.dylib */,
+				259CBC1717C8055D0089B497 /* Leap.h */,
+				259CBC1817C8055D0089B497 /* LeapMath.h */,
+				259CBC1C17C805D90089B497 /* SILeapController.h */,
+				259CBC1D17C805D90089B497 /* SILeapController.mm */,
+				25E74EF217C941D8004B0086 /* SILeapControllerUtils.h */,
+			);
+			name = LeapMotion;
+			sourceTree = "<group>";
+		};
 		2708C1CC1261388A00192883 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				259CBC1617C805500089B497 /* LeapMotion */,
 				270DACA514098ACA0080DFBD /* GTM */,
 				2708C1CE126138A000192883 /* FMT */,
 			);
@@ -597,6 +634,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				F270823F117FCFD600C0A04C /* CopyFiles */,
+				250BB2B417CB788200ADDB88 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -743,6 +781,7 @@
 				27160C6616C939FF002DA475 /* FMTNSError+Extras.m in Sources */,
 				27160C6716C939FF002DA475 /* FMTGeometry.m in Sources */,
 				27160C6816C939FF002DA475 /* FMTNSFileManager+DirectoryLocations.m in Sources */,
+				259CBC1F17C805D90089B497 /* SILeapController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -795,6 +834,7 @@
 				2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */,
 				F2DC61EF1127C862000E1A68 /* FMTGeometry.m in Sources */,
 				F2DC61EF1127C862000E1A6D /* FMTNSFileManager+DirectoryLocations.m in Sources */,
+				259CBC1E17C805D90089B497 /* SILeapController.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -854,6 +894,10 @@
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "_DEBUGPRINTS_=1";
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/LeapSDK\"",
+				);
 				PRODUCT_NAME = ShiftIt;
 			};
 			name = Debug;
@@ -866,6 +910,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/LeapSDK\"",
+				);
 				PRODUCT_NAME = ShiftIt;
 			};
 			name = Release;
@@ -953,6 +1001,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -960,7 +1009,10 @@
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "_DEBUGPRINTS_=1";
 				HEADER_SEARCH_PATHS = /usr/X11/include;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
-				LIBRARY_SEARCH_PATHS = /usr/X11/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/X11/lib,
+					"\"$(SRCROOT)/LeapSDK\"",
+				);
 				OTHER_CFLAGS = (
 					"-DDEBUG",
 					"-DX11",
@@ -973,12 +1025,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				HEADER_SEARCH_PATHS = /usr/X11/include;
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
-				LIBRARY_SEARCH_PATHS = /usr/X11/lib;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/X11/lib,
+					"\"$(SRCROOT)/LeapSDK\"",
+				);
 				OTHER_CFLAGS = (
 					"-DNDEBUG",
 					"-DX11",

@@ -26,6 +26,7 @@
 #import "PreferencesWindowController.h"
 #import "AXWindowDriver.h"
 #import "FMT/FMTNSFileManager+DirectoryLocations.h"
+#import "SILeapController.h"
 
 #ifdef X11
 #import "X11WindowDriver.h"
@@ -254,6 +255,8 @@ NSDictionary *allShiftActions = nil;
 
     // to keep some pause between action invocations
     CFAbsoluteTime beforeNow_;
+    
+    SILeapController* leapController_;
 }
 
 + (void)initialize {
@@ -275,7 +278,11 @@ NSDictionary *allShiftActions = nil;
     usageStatistics_ = [[SIUsageStatistics alloc] initFromFile:usageStatisticsFile];
 
     beforeNow_ = CFAbsoluteTimeGetCurrent();
-
+    leapController_  = [[SILeapController alloc] init];
+    leapController_.gestureHandleBlock = ^(NSString* actionIdentifier){
+        NSLog(@"invoke block");
+        [self invokeShiftItActionByIdentifier_:actionIdentifier];
+    };
     return self;
 }
 
@@ -312,6 +319,7 @@ NSDictionary *allShiftActions = nil;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     FMTLogDebug(@"Starting up ShiftIt...");
+    
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
