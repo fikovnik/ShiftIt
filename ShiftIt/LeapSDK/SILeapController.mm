@@ -55,6 +55,9 @@ SILeapListener::onFrame(const Leap::Controller& controller) {
     const GestureList   gestures = frame.gestures();
     
     CFTimeInterval currentTime = CFAbsoluteTimeGetCurrent();
+    if (currentTime - _lastGestureTime < GESTURE_MINIMUM_DELAY_BETWEEN_ACTIONS) {
+        return ;
+    }
     for (GestureList::const_iterator iterator = gestures.begin(); iterator != gestures.end(); ++iterator) {
         Gesture singleGesture = *iterator;
         if (! singleGesture.isValid()) {
@@ -90,8 +93,8 @@ SILeapListener::onFrame(const Leap::Controller& controller) {
         }
     }
 }
-        
-        
+
+
 @interface SILeapController () <SILeapListenerDelegate> {
     SILeapListener*      leapListener;
     Leap::Controller*    leapController;
