@@ -280,7 +280,6 @@ NSDictionary *allShiftActions = nil;
     beforeNow_ = CFAbsoluteTimeGetCurrent();
     leapController_  = [[SILeapController alloc] init];
     leapController_.gestureHandleBlock = ^(NSString* actionIdentifier){
-        NSLog(@"invoke block");
         [self invokeShiftItActionByIdentifier_:actionIdentifier];
     };
     return self;
