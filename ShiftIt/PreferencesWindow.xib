@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment version="1060" defaultVersion="1090" identifier="macosx"/>
+        <deployment version="1060" defaultVersion="1060" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
@@ -635,6 +635,11 @@
                                                 <rect key="frame" x="1" y="1" width="229" height="129"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
+                                                    <imageView canDrawConcurrently="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="AAWt-f7-rhk">
+                                                        <rect key="frame" x="78" y="38" width="125" height="82"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" imageFrameStyle="groove" image="margin-background-image" id="uMX-uK-KsA"/>
+                                                    </imageView>
                                                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="6O7-tm-OBW">
                                                         <rect key="frame" x="152" y="8" width="19" height="27"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -643,11 +648,6 @@
                                                             <binding destination="191" name="value" keyPath="values.splitHalfVertical" id="dsp-s7-FS6"/>
                                                         </connections>
                                                     </stepper>
-                                                    <imageView canDrawConcurrently="YES" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="ZWt-f7-rhk">
-                                                        <rect key="frame" x="78" y="38" width="125" height="82"/>
-                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                        <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" imageFrameStyle="groove" image="margin-background-image" id="uMX-uK-KsA"/>
-                                                    </imageView>
                                                     <textField verticalHuggingPriority="750" id="F2b-AU-EYa">
                                                         <rect key="frame" x="114" y="11" width="40" height="22"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -673,10 +673,10 @@
                                                             </binding>
                                                         </connections>
                                                     </textField>
-                                                    <imageView id="J5C-vY-80P">
+                                                    <imageView id="EOS-u4-GnO">
                                                         <rect key="frame" x="140" y="38" width="1" height="82"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="mBF-Qe-7wP"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" imageScaling="axesIndependently" image="red" id="mdz-IN-YSs"/>
                                                     </imageView>
                                                 </subviews>
                                             </view>
@@ -734,7 +734,7 @@
                                                     <imageView id="0Ze-GQ-70Z">
                                                         <rect key="frame" x="78" y="78" width="125" height="1"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="uYJ-EE-1Kp"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="uYJ-EE-1Kp"/>
                                                     </imageView>
                                                 </subviews>
                                             </view>
@@ -804,7 +804,7 @@
                                                         </connections>
                                                     </textField>
                                                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="fe2-W8-aqF">
-                                                        <rect key="frame" x="152" y="8" width="19" height="27"/>
+                                                        <rect key="frame" x="57" y="64" width="19" height="27"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <stepperCell key="cell" continuous="YES" alignment="left" increment="0.050000000000000003" minValue="0.050000000000000003" maxValue="0.94999999999999996" doubleValue="0.5" id="BEd-Ho-0Mq"/>
                                                         <connections>
@@ -812,7 +812,7 @@
                                                         </connections>
                                                     </stepper>
                                                     <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="arA-6r-08q">
-                                                        <rect key="frame" x="57" y="64" width="19" height="27"/>
+                                                        <rect key="frame" x="152" y="8" width="19" height="27"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <stepperCell key="cell" continuous="YES" alignment="left" increment="0.050000000000000003" minValue="0.050000000000000003" maxValue="0.94999999999999996" doubleValue="0.5" id="azD-Ul-vH5"/>
                                                         <connections>
@@ -822,12 +822,12 @@
                                                     <imageView id="3T0-yE-gs6">
                                                         <rect key="frame" x="78" y="78" width="125" height="1"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="fWU-Yy-i7p"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="fWU-Yy-i7p"/>
                                                     </imageView>
                                                     <imageView id="iBX-Xf-OFj">
                                                         <rect key="frame" x="140" y="38" width="1" height="82"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="eqZ-ae-MFO"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="eqZ-ae-MFO"/>
                                                     </imageView>
                                                 </subviews>
                                             </view>
@@ -919,12 +919,12 @@
                                                     <imageView id="rvf-Fr-s67">
                                                         <rect key="frame" x="114" y="38" width="1" height="82"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="Kjk-qK-HYW"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="Kjk-qK-HYW"/>
                                                     </imageView>
                                                     <imageView id="Qb9-fb-8tw">
                                                         <rect key="frame" x="167" y="38" width="1" height="82"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="ebb-MQ-RMv"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="ebb-MQ-RMv"/>
                                                     </imageView>
                                                 </subviews>
                                             </view>
@@ -1049,17 +1049,17 @@
                                                     <imageView id="8IK-0j-ESH">
                                                         <rect key="frame" x="78" y="78" width="125" height="1"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="XsT-AL-Y5o"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="XsT-AL-Y5o"/>
                                                     </imageView>
                                                     <imageView id="f2j-6H-ldf">
                                                         <rect key="frame" x="114" y="37" width="1" height="82"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="RtD-L4-DSR"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="RtD-L4-DSR"/>
                                                     </imageView>
                                                     <imageView id="dGd-Co-bNc">
                                                         <rect key="frame" x="167" y="37" width="1" height="82"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="eB8-IV-DAs"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="eB8-IV-DAs"/>
                                                     </imageView>
                                                 </subviews>
                                             </view>
@@ -1221,22 +1221,22 @@
                                                     <imageView id="ZyI-3m-Djg">
                                                         <rect key="frame" x="78" y="96" width="125" height="1"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="i4P-aQ-yJW"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="i4P-aQ-yJW"/>
                                                     </imageView>
                                                     <imageView id="Lue-HY-6Pq">
                                                         <rect key="frame" x="78" y="61" width="125" height="1"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="zoM-lw-Cn1"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="zoM-lw-Cn1"/>
                                                     </imageView>
                                                     <imageView id="Sje-ah-fS5">
                                                         <rect key="frame" x="114" y="38" width="1" height="82"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="56x-e6-7WW"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="56x-e6-7WW"/>
                                                     </imageView>
                                                     <imageView id="rF0-4l-6bZ">
                                                         <rect key="frame" x="167" y="38" width="1" height="82"/>
                                                         <autoresizingMask key="autoresizingMask"/>
-                                                        <imageCell key="cell" controlSize="small" selectable="YES" editable="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="pr5-8J-qNl"/>
+                                                        <imageCell key="cell" controlSize="small" selectable="YES" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="red" id="pr5-8J-qNl"/>
                                                     </imageView>
                                                 </subviews>
                                             </view>
