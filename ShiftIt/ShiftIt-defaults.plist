@@ -10,7 +10,83 @@
 	<true/>
 	<key>blKeyCode</key>
 	<integer>20</integer>
-	<key>blModifiers</key>
+	<key>threeleftKeyCode</key>
+	<integer>89</integer>
+	<key>threeleftModifiers</key>
+	<integer>1835008</integer>
+	<key>threecenterKeyCode</key>
+	<integer>91</integer>
+	<key>threecenterModifiers</key>
+	<integer>1835008</integer>
+	<key>threerightKeyCode</key>
+	<integer>92</integer>
+	<key>threerightModifiers</key>
+	<integer>1835008</integer>
+	<key>sixoneKeyCode</key>
+	<integer>86</integer>
+	<key>sixoneModifiers</key>
+	<integer>1835008</integer>
+	<key>sixtwoKeyCode</key>
+	<integer>87</integer>
+	<key>sixtwoModifiers </key>
+	<integer>1835008</integer>
+	<key>sixthreeKeyCode</key>
+	<integer>88</integer>
+	<key>sixthreeModifiers</key>
+	<integer>1835008</integer>
+	<key>sixfourKeyCode</key>
+	<integer>83</integer>
+	<key>sixfourModifiers</key>
+	<integer>1835008</integer>
+	<key>sixfiveKeyCode</key>
+	<integer>84</integer>
+	<key>sixfiveModifiers</key>
+	<integer>1835008</integer>
+	<key>sixsixKeyCode</key>
+	<integer>85</integer>
+	<key>sixsixModifiers</key>
+	<integer>1835008</integer>
+
+<key>nineoneKeyCode</key>
+<integer>89</integer>
+<key>nineoneModifiers</key>
+<integer>3932160</integer>
+<key>ninetwoKeyCode</key>
+<integer>91</integer>
+<key>ninetwoModifiers</key>
+<integer>3932160</integer>
+<key>ninethreeKeyCode</key>
+<integer>92</integer>
+<key>ninethreeModifiers</key>
+<integer>3932160</integer>
+
+<key>ninefourKeyCode</key>
+<integer>86</integer>
+<key>ninefourModifiers</key>
+<integer>3932160</integer>
+<key>ninefiveKeyCode</key>
+<integer>87</integer>
+<key>ninefiveModifiers</key>
+<integer>3932160</integer>
+<key>ninesixKeyCode</key>
+<integer>88</integer>
+<key>ninesixModifiers</key>
+<integer>3932160</integer>
+
+<key>ninesevenKeyCode</key>
+<integer>83</integer>
+<key>ninesevenModifiers</key>
+<integer>3932160</integer>
+<key>nineeightKeyCode</key>
+<integer>84</integer>
+<key>nineeightModifiers</key>
+<integer>3932160</integer>
+<key>ninenineKeyCode</key>
+<integer>85</integer>
+<key>ninenineModifiers</key>
+<integer>3932160</integer>
+
+    <key>blModifiers</key>
 	<integer>1835008</integer>
 	<key>bottomKeyCode</key>
 	<integer>125</integer>
@@ -85,10 +161,36 @@
 	<key>zoomKeyCode</key>
 	<integer>6</integer>
 	<key>zoomModifiers</key>
-    <integer>1835008</integer>
-   	<key>nextscreenKeyCode</key>
-   	<integer>45</integer>
-   	<key>nextscreenModifiers</key>
 	<integer>1835008</integer>
+	<key>nextscreenKeyCode</key>
+	<integer>45</integer>
+	<key>nextscreenModifiers</key>
+	<integer>1835008</integer>
+	<key>splitHalfHorizontal</key>
+	<real>0.3</real>
+	<key>splitHalfVertical</key>
+	<real>0.4</real>
+	<key>splitQuarterHorizontal</key>
+	<real>0.3</real>
+	<key>splitQuarterVertical</key>
+	<real>0.4</real>
+	<key>splitThreeOne</key>
+	<real>0.3</real>
+	<key>splitThreeTwo</key>
+	<real>0.7</real>
+	<key>splitSixVerOne</key>
+	<real>0.3</real>
+	<key>splitSixVerTwo</key>
+	<real>0.7</real>
+	<key>splitSixHorOne</key>
+	<real>0.3</real>
+	<key>splitNineVerOne</key>
+	<real>0.3</real>
+	<key>splitNineVerTwo</key>
+	<real>0.7</real>
+	<key>splitNineHorOne</key>
+	<real>0.3</real>
+	<key>splitNineHorTwo</key>
+	<real>0.7</real>
 </dict>
 </plist>

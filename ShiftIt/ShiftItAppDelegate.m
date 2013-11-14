@@ -50,6 +50,19 @@ NSString *const kFixedSizeWidthDeltaPrefKey = @"fixedSizeWidthDelta";
 NSString *const kFixedSizeHeightDeltaPrefKey = @"fixedSizeHeightDelta";
 NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
+NSString *const kSplitHalfHorizontal = @"splitHalfHorizontal";
+NSString *const kSplitHalfVertical = @"splitHalfVertical";
+NSString *const kSplitQuarterHorizontal = @"splitQuarterHorizontal";
+NSString *const kSplitQuarterVertical = @"splitQuarterVertical";
+NSString *const kSplitThreeOne = @"splitThreeOne";
+NSString *const kSplitThreeTwo = @"splitThreeTwo";
+NSString *const kSplitSixVerOne = @"splitSixVerOne";
+NSString *const kSplitSixVerTwo = @"splitSixVerTwo";
+NSString *const kSplitSixHorOne = @"splitSixHorOne";
+NSString *const kSplitNineVerOne = @"splitNineVerOne";
+NSString *const kSplitNineVerTwo = @"splitNineVerTwo";
+NSString *const kSplitNineHorOne = @"splitNineHorOne";
+NSString *const kSplitNineHorTwo = @"splitNineHorTwo";
 
 // AX Driver Options
 NSString *const kAXIncludeDrawersPrefKey = @"axdriver_includeDrawers";
@@ -122,7 +135,7 @@ NSDictionary *allShiftActions = nil;
             FMTLogInfo(@"Loaded usage statistics from: %@", path);
             statistics_ = [[NSMutableDictionary dictionaryWithDictionary:d] retain];
         } else {
-            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %d", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
+            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %d", errorDesc, path, (int) NSPropertyListBinaryFormat_v1_0);
             statistics_ = [[NSMutableDictionary dictionary] retain];
         }
     }
@@ -484,23 +497,25 @@ NSDictionary *allShiftActions = nil;
     FMTLogDebug(@"updateStatusMenuShortcutForAction_:%@ keyCode:%ld modifiers:%ld", [action identifier], keyCode, modifiers);
 
     NSMenuItem *menuItem = [statusMenu_ itemWithTag:kSIMenuUITagPrefix + [action uiTag]];
-    FMTAssertNotNil(menuItem);
+    if(menuItem != nil){
+        FMTAssertNotNil(menuItem);
 
-    [menuItem setTitle:[action label]];
-    [menuItem setRepresentedObject:[action identifier]];
-    [menuItem setAction:@selector(shiftItMenuAction_:)];
+        [menuItem setTitle:[action label]];
+        [menuItem setRepresentedObject:[action identifier]];
+        [menuItem setAction:@selector(shiftItMenuAction_:)];
 
-    if (keyCode != -1) {
-        NSString *keyCodeString = SRStringForKeyCode(keyCode);
-        if (!keyCodeString) {
-            FMTLogInfo(@"Unable to get string representation for a key code: %ld", keyCode);
-            keyCodeString = @"";
+        if (keyCode != -1) {
+            NSString *keyCodeString = SRStringForKeyCode(keyCode);
+            if (!keyCodeString) {
+                FMTLogInfo(@"Unable to get string representation for a key code: %ld", keyCode);
+                keyCodeString = @"";
+            }
+            [menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
+            [menuItem setKeyEquivalentModifierMask:modifiers];
+        } else {
+            [menuItem setKeyEquivalent:@""];
+            [menuItem setKeyEquivalentModifierMask:0];
         }
-        [menuItem setKeyEquivalent:[keyCodeString lowercaseString]];
-        [menuItem setKeyEquivalentModifierMask:modifiers];
-    } else {
-        [menuItem setKeyEquivalent:@""];
-        [menuItem setKeyEquivalentModifierMask:0];
     }
 }
 
@@ -531,6 +546,27 @@ NSDictionary *allShiftActions = nil;
     REGISTER_ACTION(dict, @"increase", @"Increase", 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
     REGISTER_ACTION(dict, @"reduce", @"Reduce", 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
     REGISTER_ACTION(dict, @"nextscreen", @"Next Screen", 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
+
+    REGISTER_ACTION(dict, @"threeleft", @"Three Left", 16, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThreeLeft] autorelease]);
+    REGISTER_ACTION(dict, @"threecenter", @"Three Center", 17, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThreeCenter] autorelease]);
+    REGISTER_ACTION(dict, @"threeright", @"Three Right", 18, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThreeRight] autorelease]);
+    
+    REGISTER_ACTION(dict, @"sixone", @"Six Top Left", 16, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItSixOne] autorelease]);
+    REGISTER_ACTION(dict, @"sixtwo", @"Six Top Center", 17, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItSixTwo] autorelease]);
+    REGISTER_ACTION(dict, @"sixthree", @"Six Top Right", 18, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItSixThree] autorelease]);
+    REGISTER_ACTION(dict, @"sixfour", @"Six Bottom Left", 16, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItSixFour] autorelease]);
+    REGISTER_ACTION(dict, @"sixfive", @"Six Bottom Center", 17, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItSixFive] autorelease]);
+    REGISTER_ACTION(dict, @"sixsix", @"Six Bottom Right", 18, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItSixSix] autorelease]);
+
+    REGISTER_ACTION(dict, @"nineone", @"Nine Top Left", 16, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineOne] autorelease]);
+    REGISTER_ACTION(dict, @"ninetwo", @"Nine Top Center", 17, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineTwo] autorelease]);
+    REGISTER_ACTION(dict, @"ninethree", @"Nine Top Right", 18, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineThree] autorelease]);
+    REGISTER_ACTION(dict, @"ninefour", @"Nine Center Left", 16, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineFour] autorelease]);
+    REGISTER_ACTION(dict, @"ninefive", @"Nine Center Center", 17, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineFive] autorelease]);
+    REGISTER_ACTION(dict, @"ninesix", @"Nine Center Right", 18, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineSix] autorelease]);
+    REGISTER_ACTION(dict, @"nineseven", @"Nine Bottom Left", 16, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineSeven] autorelease]);
+    REGISTER_ACTION(dict, @"nineeight", @"Nine Bottom Center", 17, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineEight] autorelease]);
+    REGISTER_ACTION(dict, @"ninenine", @"Nine Bottom Right", 18, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItNineNine] autorelease]);
 
 #undef REGISTER_ACTION
 

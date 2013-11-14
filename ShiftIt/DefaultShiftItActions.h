@@ -20,6 +20,27 @@
 #import <Foundation/Foundation.h>
 #import "WindowGeometryShiftItAction.h"
 #import "ShiftIt.h"
+const extern SimpleWindowGeometryChangeBlock shiftItNineOne;
+const extern SimpleWindowGeometryChangeBlock shiftItNineTwo;
+const extern SimpleWindowGeometryChangeBlock shiftItNineThree;
+const extern SimpleWindowGeometryChangeBlock shiftItNineFour;
+const extern SimpleWindowGeometryChangeBlock shiftItNineFive;
+const extern SimpleWindowGeometryChangeBlock shiftItNineSix;
+const extern SimpleWindowGeometryChangeBlock shiftItNineSeven;
+const extern SimpleWindowGeometryChangeBlock shiftItNineEight;
+const extern SimpleWindowGeometryChangeBlock shiftItNineNine;
+
+
+const extern SimpleWindowGeometryChangeBlock shiftItSixOne;
+const extern SimpleWindowGeometryChangeBlock shiftItSixTwo;
+const extern SimpleWindowGeometryChangeBlock shiftItSixThree;
+const extern SimpleWindowGeometryChangeBlock shiftItSixFour;
+const extern SimpleWindowGeometryChangeBlock shiftItSixFive;
+const extern SimpleWindowGeometryChangeBlock shiftItSixSix;
+
+const extern SimpleWindowGeometryChangeBlock shiftItThreeLeft;
+const extern SimpleWindowGeometryChangeBlock shiftItThreeCenter;
+const extern SimpleWindowGeometryChangeBlock shiftItThreeRight;
 
 const extern SimpleWindowGeometryChangeBlock shiftItLeft;
 const extern SimpleWindowGeometryChangeBlock shiftItRight;
