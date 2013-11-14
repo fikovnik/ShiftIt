@@ -40,6 +40,20 @@ extern NSString *const kWindowSizeDeltaPrefKey;
 extern NSString *const kScreenSizeDeltaPrefKey;
 extern NSString *const kAXIncludeDrawersPrefKey;
 extern NSString *const kAXDriverConvergePrefKey;
+extern NSString *const kAXDriverConvergePrefKey;
+extern NSString *const kSplitHalfHorizontal;
+extern NSString *const kSplitHalfVertical;
+extern NSString *const kSplitQuarterHorizontal;
+extern NSString *const kSplitQuarterVertical;
+extern NSString *const kSplitThreeOne;
+extern NSString *const kSplitThreeTwo;
+extern NSString *const kSplitSixVerOne;
+extern NSString *const kSplitSixVerTwo;
+extern NSString *const kSplitSixHorOne;
+extern NSString *const kSplitNineVerOne;
+extern NSString *const kSplitNineVerTwo;
+extern NSString *const kSplitNineHorOne;
+extern NSString *const kSplitNineHorTwo;
 
 typedef enum {
 	kFixedSizeDeltaType = 3001,
