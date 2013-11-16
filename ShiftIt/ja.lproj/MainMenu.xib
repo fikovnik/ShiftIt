@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1060" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
+            <connections>
+                <outlet property="delegate" destination="494" id="495"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <customObject id="494" customClass="ShiftItAppDelegate">
+            <connections>
+                <outlet property="statusMenu_" destination="535" id="789"/>
+            </connections>
+        </customObject>
+        <menu title="Status Menu" id="535">
+            <items>
+                <menuItem title="左寄せ" tag="2001" keyEquivalent="" id="547">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="右寄せ" tag="2002" keyEquivalent="" id="548">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="上寄せ" tag="2003" keyEquivalent="" id="549">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="下寄せ" tag="2004" keyEquivalent="" id="550">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="781"/>
+                <menuItem title="左上寄せ" tag="2005" keyEquivalent="1" id="767">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="右上寄せ" tag="2006" keyEquivalent="2" id="768">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="左下寄せ" tag="2007" keyEquivalent="3" id="769">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="右下寄せ" tag="2008" keyEquivalent="4" id="770">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="780"/>
+                <menuItem title="中央" tag="2009" keyEquivalent="c" id="537">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="ズーム" tag="2010" keyEquivalent="z" id="791">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="最大化" tag="2011" keyEquivalent="m" id="792">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="フルスクリーン" tag="2012" keyEquivalent="f" id="545">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="538"/>
+                <menuItem title="ウインドウを広げる" tag="2013" keyEquivalent="=" id="786">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="ウインドウを縮める" tag="2014" keyEquivalent="-" id="787">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="788"/>
+                <menuItem title="次のスクリーン" tag="2015" keyEquivalent="n" id="794">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="793"/>
+                <menuItem title="環境設定..." keyEquivalent="," id="558">
+                    <connections>
+                        <action selector="showPreferences:" target="494" id="760"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="アップデートの確認..." id="761">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                    <connections>
+                        <action selector="checkForUpdates:" target="670" id="763"/>
+                    </connections>
+                </menuItem>
+                <menuItem title="ShiftItの終了" keyEquivalent="q" id="546">
+                    <connections>
+                        <action selector="terminate:" target="-3" id="628"/>
+                    </connections>
+                </menuItem>
+            </items>
+        </menu>
+        <customObject id="670" customClass="SUUpdater">
+            <connections>
+                <outlet property="delegate" destination="494" id="795"/>
+            </connections>
+        </customObject>
+    </objects>
+</document>

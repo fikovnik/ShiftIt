@@ -298,7 +298,9 @@ NSDictionary *allShiftActions = nil;
     NSString *appPath = [[NSBundle mainBundle] bundlePath];
 
     if (![loginItems isInLoginItemsApplicationWithPath:appPath]) {
-        NSInteger ret = NSRunAlertPanel(@"Start ShiftIt automatically?", @"Would you like to have ShiftIt automatically started at a login time?", @"Yes", @"No", NULL);
+        NSInteger ret = NSRunAlertPanel(NSLocalizedString(@"Start ShiftIt automatically?", nil),
+                                        NSLocalizedString(@"Would you like to have ShiftIt automatically started at a login time?", nil),
+                                        NSLocalizedString(@"Yes", nil), NSLocalizedString(@"No", nil), NULL);
         switch (ret) {
             case NSAlertDefaultReturn:
                 // do it!
@@ -327,7 +329,7 @@ NSDictionary *allShiftActions = nil;
     }
 
     if (!AXAPIEnabled()) {
-        NSInteger ret = NSRunAlertPanel(@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel", NULL);
+        NSInteger ret = NSRunAlertPanel(NSLocalizedString(@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", nil), @"", NSLocalizedString(@"OK", nil), NSLocalizedString(@"Cancel", nil), NULL);
         switch (ret) {
             case NSAlertDefaultReturn:
                 [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
@@ -516,21 +518,21 @@ NSDictionary *allShiftActions = nil;
     action = [[[ShiftItAction alloc] initWithIdentifier:(anId) label:(aLabel) uiTag:(aTag) delegate:(aDelegate)] autorelease]; \
     [(dict) setObject:action forKey:[action identifier]];
 
-    REGISTER_ACTION(dict, @"left", @"Left", 1, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItLeft] autorelease]);
-    REGISTER_ACTION(dict, @"right", @"Right", 2, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItRight] autorelease]);
-    REGISTER_ACTION(dict, @"top", @"Top", 3, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTop] autorelease]);
-    REGISTER_ACTION(dict, @"bottom", @"Bottom", 4, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottom] autorelease]);
-    REGISTER_ACTION(dict, @"tl", @"Top Left", 5, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopLeft] autorelease]);
-    REGISTER_ACTION(dict, @"tr", @"Top Right", 6, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopRight] autorelease]);
-    REGISTER_ACTION(dict, @"bl", @"Bottom Left", 7, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomLeft] autorelease]);
-    REGISTER_ACTION(dict, @"br", @"Bottom Right", 8, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomRight] autorelease]);
-    REGISTER_ACTION(dict, @"center", @"Center", 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
-    REGISTER_ACTION(dict, @"zoom", @"Toggle Zoom", 10, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
-    REGISTER_ACTION(dict, @"maximize", @"Maximize", 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
-    REGISTER_ACTION(dict, @"fullScreen", @"Toggle Full Screen", 12, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
-    REGISTER_ACTION(dict, @"increase", @"Increase", 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
-    REGISTER_ACTION(dict, @"reduce", @"Reduce", 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
-    REGISTER_ACTION(dict, @"nextscreen", @"Next Screen", 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"left", NSLocalizedString(@"Left", nil), 1, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItLeft] autorelease]);
+    REGISTER_ACTION(dict, @"right", NSLocalizedString(@"Right", nil), 2, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItRight] autorelease]);
+    REGISTER_ACTION(dict, @"top", NSLocalizedString(@"Top", nil), 3, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTop] autorelease]);
+    REGISTER_ACTION(dict, @"bottom", NSLocalizedString(@"Bottom", nil), 4, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottom] autorelease]);
+    REGISTER_ACTION(dict, @"tl", NSLocalizedString(@"Top Left", nil), 5, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopLeft] autorelease]);
+    REGISTER_ACTION(dict, @"tr", NSLocalizedString(@"Top Right", nil), 6, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopRight] autorelease]);
+    REGISTER_ACTION(dict, @"bl", NSLocalizedString(@"Bottom Left", nil), 7, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomLeft] autorelease]);
+    REGISTER_ACTION(dict, @"br", NSLocalizedString(@"Bottom Right", nil), 8, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomRight] autorelease]);
+    REGISTER_ACTION(dict, @"center", NSLocalizedString(@"Center", nil), 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
+    REGISTER_ACTION(dict, @"zoom", NSLocalizedString(@"Toggle Zoom", nil), 10, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"maximize", NSLocalizedString(@"Maximize", nil), 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
+    REGISTER_ACTION(dict, @"fullScreen", NSLocalizedString(@"Toggle Full Screen", nil), 12, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"increase", NSLocalizedString(@"Increase", nil), 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"reduce", NSLocalizedString(@"Reduce", nil), 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
+    REGISTER_ACTION(dict, @"nextscreen", NSLocalizedString(@"Next Screen", nil), 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
 
 #undef REGISTER_ACTION
 

@@ -157,9 +157,9 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 }
 
 -(IBAction)reportIssue:(id)sender {
-    NSInteger ret = NSRunAlertPanel(@"Before you report new issue",
-            @"Please make sure that you look at the other issues before you submit a new one.",
-            @"Take me to github.com", NULL, NULL);
+    NSInteger ret = NSRunAlertPanel(NSLocalizedString(@"Before you report new issue", nil),
+            NSLocalizedString(@"Please make sure that you look at the other issues before you submit a new one.", nil),
+            NSLocalizedString(@"Take me to github.com", nil), NULL, NULL);
     
     if (ret == NSAlertDefaultReturn) {
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kShiftItGithubIssueURL]];

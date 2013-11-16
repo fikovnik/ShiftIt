@@ -1,0 +1,35 @@
+/* 
+  Localizable.strings
+  ShiftIt
+
+  Created by Hiroyuki Kurosawa on 2013/11/16.
+
+*/
+
+"Left" = "左寄せ";
+"Right" = "右寄せ";
+"Top" = "上寄せ";
+"Bottom" = "下寄せ";
+"Top Left" = "左上寄せ";
+"Top Right" = "右上寄せ";
+"Bottom Left" = "左下寄せ";
+"Bottom Right" = "右下寄せ";
+"Center" = "センタリング";
+"Toggle Zoom" = "ズームの切り替え";
+"Maximize" = "最大化";
+"Toggle Full Screen" = "フルスクリーンの切り替え";
+"Increase" = "ウインドウの拡大";
+"Reduce" = "ウインドウの縮小";
+"Next Screen" = "次のスクリーン";
+"Before you report new issue" = "問題を報告する前に";
+"Please make sure that you look at the other issues before you submit a new one." = "問題を報告する前に、報告済みの問題を確認してください。";
+"Take me to github.com" = "github.com を開く";
+
+"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\"." = "UI Element Inspector がアクセシビリティAPI が有効であることを要求しています。\"補助装置にアクセスできるようにする\"オプションを有効にして再度お試しください。";
+"OK" = "OK";
+"Cancel" = "キャンセル";
+
+"Start ShiftIt automatically?" = "ShiftIt を自動的に開きますか?";
+"Would you like to have ShiftIt automatically started at a login time?" = "ログイン時に自動的に ShiftIt を開始しますか?";
+"Yes" = "はい";
+"No" = "いいえ";
