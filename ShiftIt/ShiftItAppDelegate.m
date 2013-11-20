@@ -122,7 +122,7 @@ NSDictionary *allShiftActions = nil;
             FMTLogInfo(@"Loaded usage statistics from: %@", path);
             statistics_ = [[NSMutableDictionary dictionaryWithDictionary:d] retain];
         } else {
-            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %d", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
+            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %lu", errorDesc, path, (unsigned long)NSPropertyListBinaryFormat_v1_0);
             statistics_ = [[NSMutableDictionary dictionary] retain];
         }
     }
@@ -450,17 +450,10 @@ NSDictionary *allShiftActions = nil;
         if (!statusItem_) {
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
-
-            NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
-            NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-
-            if (icon) {
-                [statusItem_ setImage:icon];
-                [icon release];
-            } else {
-                [statusItem_ setTitle:kSIMenuItemTitle];
-            }
-
+          
+            // NSImage imageNamed: takes care of finding the icon in the bundle and selecting the
+            // correct file based on the status of HiDPI mode
+            [statusItem_ setImage: [NSImage imageNamed:kSIIconName]];
             [statusItem_ setHighlightMode:YES];
         }
     } else {
