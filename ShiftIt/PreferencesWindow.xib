@@ -1686,7 +1686,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<object class="NSTextFieldCell" key="NSCell" id="1049341756">
 													<int key="NSCellFlags">67239424</int>
 													<int key="NSCellFlags2">205656064</int>
-													<string key="NSContents">Anchors define margins of a screen. If a window is inside one of these margins it will me automatically anchored to the respective side with next actions that is executed. This is useful especially for application like Terminal.app or other that do not change their sizes continously, but rather in a descrete steps.</string>
+													<string key="NSContents">Anchors define margins of a screen. If a window is inside one of these margins it will be automatically anchored to the respective side with next actions that is executed. This is useful especially for application like Terminal.app or other that do not change their sizes continously, but rather in a descrete steps.</string>
 													<reference key="NSSupport" ref="26"/>
 													<reference key="NSControlView" ref="52635777"/>
 													<reference key="NSBackgroundColor" ref="925788107"/>
