@@ -29,7 +29,28 @@
 	
     IBOutlet NSTabView *tabView_;
 	IBOutlet NSTextField *versionLabel_;
-    
+
+    IBOutlet SRRecorderControl *srNineOne_;
+    IBOutlet SRRecorderControl *srNineTwo_;
+    IBOutlet SRRecorderControl *srNineThree_;
+    IBOutlet SRRecorderControl *srNineFour_;
+    IBOutlet SRRecorderControl *srNineFive_;
+    IBOutlet SRRecorderControl *srNineSix_;
+    IBOutlet SRRecorderControl *srNineSeven_;
+    IBOutlet SRRecorderControl *srNineEight_;
+    IBOutlet SRRecorderControl *srNineNine_;
+
+    IBOutlet SRRecorderControl *srSixOne_;
+    IBOutlet SRRecorderControl *srSixTwo_;
+    IBOutlet SRRecorderControl *srSixThree_;
+    IBOutlet SRRecorderControl *srSixFour_;
+    IBOutlet SRRecorderControl *srSixFive_;
+    IBOutlet SRRecorderControl *srSixSix_;
+
+    IBOutlet SRRecorderControl *srThreeleft_;
+    IBOutlet SRRecorderControl *srThreecenter_;
+    IBOutlet SRRecorderControl *srThreeright_;
+
     IBOutlet SRRecorderControl *srLeft_;
     IBOutlet SRRecorderControl *srRight_;
     IBOutlet SRRecorderControl *srTop_;

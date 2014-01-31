@@ -78,6 +78,10 @@
 		27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5512730F4600A65750 /* FMTUtils.m */; };
 		50F63F151839A73C0019CD64 /* ShiftIt-menuIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 50F63F141839A73C0019CD64 /* ShiftIt-menuIcon@2x.png */; };
 		50F63F161839A73C0019CD64 /* ShiftIt-menuIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 50F63F141839A73C0019CD64 /* ShiftIt-menuIcon@2x.png */; };
+		3850B1E01835080A005A0834 /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = 3850B1DF1835080A005A0834 /* red.png */; };
+		3850B1E11835080A005A0834 /* red.png in Resources */ = {isa = PBXBuildFile; fileRef = 3850B1DF1835080A005A0834 /* red.png */; };
+		3850B1E318351C46005A0834 /* mac.png in Resources */ = {isa = PBXBuildFile; fileRef = 3850B1E218351C46005A0834 /* mac.png */; };
+		3850B1E418351C46005A0834 /* mac.png in Resources */ = {isa = PBXBuildFile; fileRef = 3850B1E218351C46005A0834 /* mac.png */; };
 		83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */; };
 		83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -199,6 +203,8 @@
 		27F4FD5512730F4600A65750 /* FMTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTUtils.m; path = FMT/FMTUtils.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		50F63F141839A73C0019CD64 /* ShiftIt-menuIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-menuIcon@2x.png"; sourceTree = "<group>"; };
+		3850B1DF1835080A005A0834 /* red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red.png; sourceTree = "<group>"; };
+		3850B1E218351C46005A0834 /* mac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mac.png; sourceTree = "<group>"; };
 		83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-menuIcon.png"; sourceTree = "<group>"; };
 		83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShiftIt.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
@@ -503,8 +509,10 @@
 				270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */,
 				271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */,
 				27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */,
+				3850B1E218351C46005A0834 /* mac.png */,
 				83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon.png */,
 				50F63F141839A73C0019CD64 /* ShiftIt-menuIcon@2x.png */,
+				3850B1DF1835080A005A0834 /* red.png */,
 				83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */,
 				8D1107310486CEB800E47090 /* ShiftIt-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
@@ -618,7 +626,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ShiftIt" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -651,10 +659,12 @@
 				27160C4A16C939FF002DA475 /* InfoPlist.strings in Resources */,
 				27160C4B16C939FF002DA475 /* MainMenu.xib in Resources */,
 				27160C4C16C939FF002DA475 /* PreferencesWindow.xib in Resources */,
+				3850B1E11835080A005A0834 /* red.png in Resources */,
 				27160C4D16C939FF002DA475 /* ShiftIt-menuIcon.png in Resources */,
 				50F63F161839A73C0019CD64 /* ShiftIt-menuIcon@2x.png in Resources */,
 				27160C4E16C939FF002DA475 /* ShiftIt.icns in Resources */,
 				27160C4F16C939FF002DA475 /* ShiftIt-defaults.plist in Resources */,
+				3850B1E418351C46005A0834 /* mac.png in Resources */,
 				27160C5016C939FF002DA475 /* margin-background-image.png in Resources */,
 				27160C5116C939FF002DA475 /* ShiftIt-logo.png in Resources */,
 			);
@@ -683,10 +693,12 @@
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				F2DC1A321133829D009BDCA5 /* PreferencesWindow.xib in Resources */,
+				3850B1E01835080A005A0834 /* red.png in Resources */,
 				83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */,
 				50F63F151839A73C0019CD64 /* ShiftIt-menuIcon@2x.png in Resources */,
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
 				27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
+				3850B1E318351C46005A0834 /* mac.png in Resources */,
 				271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */,
 				270EC26C12FF1965002A5F22 /* ShiftIt-logo.png in Resources */,
 			);
@@ -854,6 +866,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -868,6 +881,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
@@ -880,6 +894,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)\"",
@@ -900,6 +915,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)\"",
@@ -959,6 +975,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -985,6 +1002,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
@@ -1008,7 +1026,6 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
@@ -1045,7 +1062,6 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
