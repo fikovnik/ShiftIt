@@ -218,10 +218,11 @@ const FMTDirection kDefaultDirections[] = {kRightDirection, kBottomDirection, kL
     }];
 
     // count the offset
-    idx += offset;
-
-    // so we wrap over
-    idx %= [path count];
+    NSUInteger count = [path count];
+    if (offset >= 0)
+        idx = (idx + offset) % count;
+    else
+        idx = (idx + (count - -offset % count)) % count;
 
     return [path objectAtIndex:idx];
 }
