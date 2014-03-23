@@ -100,6 +100,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
                          srIncrease_,
                          srReduce_,
                          srNextScreen_,
+                         srPreviousScreen_,
                          nil];
     NSArray *keys = [NSArray arrayWithObjects:@"left", 
                      @"bottom",
@@ -115,7 +116,8 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
                      @"fullScreen",
                      @"increase",
                      @"reduce", 
-                     @"nextscreen", 
+                     @"nextscreen",
+                     @"previousscreen",
                      nil];
     
     hotKeyControls_ = [[NSDictionary dictionaryWithObjects:controls forKeys:keys] retain];
