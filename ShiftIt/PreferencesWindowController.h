@@ -29,7 +29,9 @@
 	
     IBOutlet NSTabView *tabView_;
 	IBOutlet NSTextField *versionLabel_;
-    
+
+    IBOutlet NSButtonCell *showMenuIcon;
+
     IBOutlet SRRecorderControl *srLeft_;
     IBOutlet SRRecorderControl *srRight_;
     IBOutlet SRRecorderControl *srTop_;
@@ -56,5 +58,6 @@
 -(IBAction)revertDefaults:(id)sender;
 -(IBAction)reportIssue:(id)sender;
 -(IBAction)revealLogFileInFinder:(id)sender;
+-(IBAction)showMenuBarIconAction:(id)sender;
 
 @end

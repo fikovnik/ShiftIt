@@ -36,5 +36,4 @@
 
 - (void)foreach:(void (^)(id))fun;
 
-
 @end
