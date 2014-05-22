@@ -1,3 +1,4 @@
+
 /*
  ShiftIt: Window Organizer for OSX
  Copyright (c) 2010-2011 Filip Krikava

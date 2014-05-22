@@ -17,10 +17,11 @@
  
  */
 
-#import <sys/stat.h>
 #import <Sparkle/Sparkle.h>
+#import <ServiceManagement/ServiceManagement.h>
 #import "ShiftItAppDelegate.h"
 #import "ShiftItApp.h"
+#import "ShiftItConstants.h"
 #import "WindowGeometryShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
@@ -28,11 +29,11 @@
 #import "FMT/FMTNSFileManager+DirectoryLocations.h"
 
 #ifdef X11
+
 #import "X11WindowDriver.h"
+
 #endif
 
-
-NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
 
 // the name of the plist file containing the preference defaults
 NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
@@ -52,6 +53,7 @@ NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
 
 // AX Driver Options
+// TODO: should be moved to AX driver
 NSString *const kAXIncludeDrawersPrefKey = @"axdriver_includeDrawers";
 NSString *const kAXDriverConvergePrefKey = @"axdriver_converge";
 NSString *const kAXDriverDelayBetweenOperationsPrefKey = @"axdriver_delayBetweenOperations";
@@ -82,14 +84,17 @@ const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.25; // in seconds
 NSDictionary *allShiftActions = nil;
 
 @interface SIUsageStatistics : NSObject {
- @private
+@private
     NSMutableDictionary *statistics_;
-    
+
 }
 
 - (id)initFromFile:(NSString *)path;
+
 - (void)increment:(NSString *)key;
+
 - (void)saveToFile:(NSString *)path;
+
 - (NSArray *)toSparkle;
 
 @end
@@ -112,17 +117,17 @@ NSDictionary *allShiftActions = nil;
         NSPropertyListFormat format = NSPropertyListBinaryFormat_v1_0;
 
         data = [fm contentsAtPath:path];
-        NSDictionary *d = (NSDictionary *)[NSPropertyListSerialization
+        NSDictionary *d = (NSDictionary *) [NSPropertyListSerialization
                 propertyListFromData:data
                     mutabilityOption:NSPropertyListMutableContainersAndLeaves
                               format:&format
                     errorDescription:&errorDesc];
 
-        if(d) {
+        if (d) {
             FMTLogInfo(@"Loaded usage statistics from: %@", path);
             statistics_ = [[NSMutableDictionary dictionaryWithDictionary:d] retain];
         } else {
-            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %d", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
+            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %ld", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
             statistics_ = [[NSMutableDictionary dictionary] retain];
         }
     }
@@ -132,18 +137,18 @@ NSDictionary *allShiftActions = nil;
 
 - (void)dealloc {
     [statistics_ release];
-    
+
     [super dealloc];
 }
 
 - (void)increment:(NSString *)key {
     NSInteger value = 0;
-    
+
     id stat = [statistics_ objectForKey:key];
     if (stat) {
-        value = [(NSNumber *)stat integerValue];
+        value = [(NSNumber *) stat integerValue];
     }
-    
+
     stat = [NSNumber numberWithInteger:(value + 1)];
     [statistics_ setObject:stat forKey:key];
 }
@@ -151,12 +156,12 @@ NSDictionary *allShiftActions = nil;
 - (void)saveToFile:(NSString *)path {
     NSData *data = nil;
     NSString *errorDesc = nil;
-    
+
     data = [NSPropertyListSerialization dataFromPropertyList:statistics_
                                                       format:NSPropertyListBinaryFormat_v1_0
                                             errorDescription:&errorDesc];
-    
-    if(data) {
+
+    if (data) {
         [data writeToFile:path atomically:YES];
         FMTLogInfo(@"Save usage statitics to: %@", path);
     } else {
@@ -218,7 +223,13 @@ NSDictionary *allShiftActions = nil;
 @end
 
 
-@interface ShiftItAppDelegate (Private)
+@interface ShiftItAppDelegate ()
+
++ (BOOL)makeTrustedWithError:(NSError **)error;
+
++ (void)relaunch;
+
++ (BOOL)isShiftItAuthorized;
 
 - (void)initializeActions_;
 
@@ -254,6 +265,89 @@ NSDictionary *allShiftActions = nil;
 
     // to keep some pause between action invocations
     CFAbsoluteTime beforeNow_;
+}
+
++ (BOOL)makeTrustedWithError:(NSError **)error {
+    NSString *label = FMTStr(@"%@.%@", kShiftItAppBundleId, @"mktrusted");
+    NSString *command = [[NSBundle mainBundle] pathForAuxiliaryExecutable:@"mktrusted"];
+
+    AuthorizationItem authItem = {kSMRightModifySystemDaemons, 0, NULL, 0};
+    AuthorizationRights authRights = {1, &authItem};
+    AuthorizationFlags flags = kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
+    AuthorizationRef auth;
+
+    if (AuthorizationCreate(&authRights, kAuthorizationEmptyEnvironment, flags, &auth) == errAuthorizationSuccess) {
+        // this is actually important - if from any reason the job was not removed, it won't relaunch
+        // to check for the running jobs use: sudo launchctl list
+        // the sudo is important since this job runs under root
+        SMJobRemove(kSMDomainSystemLaunchd, (CFStringRef) label, auth, false, NULL);
+
+        // this is actually the launchd plist for a new process
+        // https://developer.apple.com/library/mac/documentation/Darwin/Reference/Manpages/man5/launchd.plist.5.html#//apple_ref/doc/man/5/launchd.plist
+        NSDictionary *plist = @{
+                @"Label" : label,
+                @"RunAtLoad" : @YES,
+                @"ProgramArguments" : @[command],
+                @"Debug" : @YES
+        };
+
+        BOOL ret;
+        if (SMJobSubmit(kSMDomainSystemLaunchd, (CFDictionaryRef) plist, auth, (CFErrorRef *) error)) {
+            FMTLogDebug(@"Executed %@", command);
+            ret = YES;
+        } else {
+            FMTLogError(@"Failed to execute %@ as priviledged process: %@", command, *error);
+            ret = NO;
+        }
+
+        // From whatever reason this did not work very well
+        // seems like it removed the job before it was executed
+        // SMJobRemove(kSMDomainSystemLaunchd, (CFStringRef) label, auth, false, NULL);
+        AuthorizationFree(auth, 0);
+        return ret;
+    } else {
+        FMTLogError(@"Unable to create authorization object");
+        return NO;
+    }
+
+}
+
++ (void)relaunch {
+    NSString *relaunch = [[NSBundle bundleForClass:[SUUpdater class]] pathForResource:@"relaunch" ofType:@""];
+    NSString *path = [[NSBundle mainBundle] bundlePath];
+    NSString *pid = FMTStr(@"%d", [[NSProcessInfo processInfo] processIdentifier]);
+//    [NSTask launchedTaskWithLaunchPath:relaunch arguments:@[path, pid]];
+    [NSApp terminate:self];
+}
+
++ (BOOL)isShiftItAuthorized {
+    // TODO: this should be in the in AX driver
+
+    if (AXAPIEnabled()) {
+        // all apps are authorized
+        return YES;
+    }
+
+    if (AXIsProcessTrusted()) {
+        // we are a trusted process
+        return YES;
+    }
+
+//#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_9
+//    NSDictionary *options = @{(id)kAXTrustedCheckOptionPrompt: @YES};
+//    BOOL accessibilityEnabled = AXIsProcessTrustedWithOptions((CFDictionaryRef)options);
+//#endif
+
+    return NO;
+//    NSError *error = nil;
+//    if ([ShiftItAppDelegate makeTrustedWithError:&error]) {
+//        // need to restart
+//        [ShiftItAppDelegate relaunch];
+//        return NO;
+//    } else {
+//        FMTLogInfo(@"Unable to get AX authorization. Executing the mkpstrust process failed: %@", error);
+//        return NO;
+//    }
 }
 
 + (void)initialize {
@@ -313,6 +407,13 @@ NSDictionary *allShiftActions = nil;
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     FMTLogDebug(@"Starting up ShiftIt...");
 
+    // check authorization
+    if ([ShiftItAppDelegate isShiftItAuthorized]) {
+        NSLog(@"Authorized");
+    } else {
+        NSLog(@"Not authorized");
+    }
+
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
     // check preferences
@@ -326,6 +427,7 @@ NSDictionary *allShiftActions = nil;
         [self firstLaunch_];
     }
 
+    // TODO: move to driver
     if (!AXAPIEnabled()) {
         NSInteger ret = NSRunAlertPanel(@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel", NULL);
         switch (ret) {
@@ -366,17 +468,17 @@ NSDictionary *allShiftActions = nil;
         FMTLogInfo(@"Unable to load AX driver: %@%@", [error localizedDescription], [error fullDescription]);
     } else {
         FMTLogInfo(@"Added driver: %@", [axDriver description]);
-       [drivers addObject:axDriver];
+        [drivers addObject:axDriver];
     }
 
-    #ifdef X11
+#ifdef X11
     // initialize X11 driver
     X11WindowDriver *x11Driver = [[[X11WindowDriver alloc] initWithError:&error] autorelease];
     if (error) {
         FMTLogInfo(@"Unable to load X11 driver: %@%@", [error localizedDescription], [error fullDescription]);
     } else {
         FMTLogInfo(@"Added driver: %@", [x11Driver description]);
-       [drivers addObject:x11Driver];
+        [drivers addObject:x11Driver];
     }
 
     if ([drivers count] == 0) {
@@ -385,9 +487,9 @@ NSDictionary *allShiftActions = nil;
         [NSApp presentError:SICreateError(100, @"No driver could be loaded")];
         [NSApp terminate:self];
     }
-    #endif
+#endif
 
-	windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
+    windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
 
     [self initializeActions_];
     [self updateMenuBarIcon_];
@@ -420,7 +522,7 @@ NSDictionary *allShiftActions = nil;
     FMTLogInfo(@"Shutting down ShiftIt...");
 
     // save usage statistics
-    NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];    
+    NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];
     [usageStatistics_ saveToFile:usageStatisticsFile];
 
     // unregister hotkeys
@@ -622,8 +724,8 @@ NSDictionary *allShiftActions = nil;
             // we need to give the AXUI and others some time to recover :)
             // otherwise some weird results are experienced
             FMTLogDebug(@"Action executed too soon after the last one: %f (minimum: %f)",
-            now - beforeNow_,
-            kMinimumTimeBetweenActionInvocations);
+                            now - beforeNow_,
+                            kMinimumTimeBetweenActionInvocations);
             return;
         } else {
             beforeNow_ = now;
@@ -635,9 +737,9 @@ NSDictionary *allShiftActions = nil;
         FMTLogInfo(@"Invoking action: %@", identifier);
         NSError *error = nil;
         if (![windowManager_ executeAction:[action delegate] error:&error]) {
-            FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], 
-                [error localizedDescription], 
-                [error fullDescription]);
+            FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier],
+                            [error localizedDescription],
+                            [error fullDescription]);
         }
         [usageStatistics_ increment:FMTStr(@"action_%@", identifier)];
     }
@@ -661,15 +763,15 @@ NSDictionary *allShiftActions = nil;
 // with keys: "key", "value", "displayKey", "displayValue", the latter two
 // being human-readable variants of the former two.
 - (NSArray *)feedParametersForUpdater:(SUUpdater *)updater
-             sendingSystemProfile:(BOOL)sendingProfile {
+                 sendingSystemProfile:(BOOL)sendingProfile {
     NSMutableArray *a = [NSMutableArray arrayWithArray:[usageStatistics_ toSparkle]];
 
     // get display information
     NSArray *screens = [NSScreen screens];
     NSInteger nScreen = [screens count];
     [a addObject:FMTEncodeForSparkle(@"n_screens", FMTStr(@"%d", nScreen), @"Number of screens", FMTStr(@"%d", nScreen))];
-    
-    for (NSUInteger i=0; i<nScreen; i++) {
+
+    for (NSUInteger i = 0; i < nScreen; i++) {
         NSString *resolution = RECT_STR([[screens objectAtIndex:i] frame]);
         [a addObject:FMTEncodeForSparkle(FMTStr(@"screen_%d", i), resolution, FMTStr(@"Screen #%d resolution", i), resolution)];
     }
