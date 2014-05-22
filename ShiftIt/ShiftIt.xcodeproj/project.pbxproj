@@ -38,7 +38,7 @@
 		27160C6216C939FF002DA475 /* WindowGeometryShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */; };
 		27160C6316C939FF002DA475 /* SIScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5C /* SIScreen.m */; };
 		27160C6416C939FF002DA475 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
-		27160C6516C939FF002DA475 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
+		27160C6516C939FF002DA475 /* FMTNSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */; };
 		27160C6616C939FF002DA475 /* FMTNSError+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */; };
 		27160C6716C939FF002DA475 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
 		27160C6816C939FF002DA475 /* FMTNSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */; };
@@ -53,8 +53,8 @@
 		2717BE1F149933840012EF87 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
 		2717BE29149933E70012EF87 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BE28149933E70012EF87 /* Carbon.framework */; };
 		2717BE2B149933EE0012EF87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BE2A149933EE0012EF87 /* Cocoa.framework */; };
-		2717BE39149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
-		2717BE3A149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
+		2717BE39149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */; };
+		2717BE3A149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */; };
 		2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */; };
 		2717BEAC14994C120012EF87 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714C0B21487F9BC00CC951D /* SenTestingKit.framework */; };
 		2717BEAE14994C120012EF87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BEAD14994C120012EF87 /* Cocoa.framework */; };
@@ -67,12 +67,7 @@
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
-		27B4F462192CDD7800D35063 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B4F461192CDD7800D35063 /* Security.framework */; };
-		27B4F464192CDD7E00D35063 /* ServiceManagement.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B4F463192CDD7E00D35063 /* ServiceManagement.framework */; };
-		27B4F48A192CFB9600D35063 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B4F479192CFB4600D35063 /* Foundation.framework */; };
-		27B4F48D192CFB9700D35063 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B4F48C192CFB9700D35063 /* main.m */; };
-		27B4F495192CFEA100D35063 /* mktrusted in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27B4F489192CFB9600D35063 /* mktrusted */; };
-		27B4F498192D011300D35063 /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
+		27B4F49B192E273900D35063 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B4F49A192E273900D35063 /* ScriptingBridge.framework */; };
 		27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */; };
 		27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */; };
 		27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
@@ -87,7 +82,6 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		E4BCF1FFDFE5D8200B19C785 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCF238FB8ED2BD310B85A5 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
-		E4BCF620E36D2A6D7B05275B /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCFA06115A778886211551 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4BCF358EA87DDA5B032380D /* InfoPlist.strings */; };
 		E4BCFA70F241D179E2BE518D /* SIAdjacentRectanglesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */; };
 		E4BCFDB6E75A7E6EB81A454A /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
@@ -135,7 +129,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 6;
 			files = (
-				27B4F495192CFEA100D35063 /* mktrusted in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,8 +168,8 @@
 		2717BE28149933E70012EF87 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		2717BE2A149933EE0012EF87 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		2717BE34149935EB0012EF87 /* FMT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMT.h; path = FMT/FMT.h; sourceTree = "<group>"; };
-		2717BE35149935EB0012EF87 /* FMTNSArray+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSArray+Extras.h"; path = "FMT/FMTNSArray+Extras.h"; sourceTree = "<group>"; };
-		2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSArray+Extras.m"; path = "FMT/FMTNSArray+Extras.m"; sourceTree = "<group>"; };
+		2717BE35149935EB0012EF87 /* FMTNSArray+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSArray+Functional.h"; path = "FMT/FMTNSArray+Functional.h"; sourceTree = "<group>"; };
+		2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSArray+Functional.m"; path = "FMT/FMTNSArray+Functional.m"; sourceTree = "<group>"; };
 		2717BE37149935EC0012EF87 /* FMTNSError+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSError+Extras.h"; path = "FMT/FMTNSError+Extras.h"; sourceTree = "<group>"; };
 		2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSError+Extras.m"; path = "FMT/FMTNSError+Extras.m"; sourceTree = "<group>"; };
 		2717BEAB14994C120012EF87 /* FMT Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FMT Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -198,9 +191,8 @@
 		27B4F463192CDD7E00D35063 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		27B4F46A192CFB2B00D35063 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		27B4F479192CFB4600D35063 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		27B4F489192CFB9600D35063 /* mktrusted */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mktrusted; sourceTree = BUILT_PRODUCTS_DIR; };
-		27B4F48C192CFB9700D35063 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		27B4F48F192CFB9700D35063 /* mktrusted-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "mktrusted-Prefix.pch"; sourceTree = "<group>"; };
+		27B4F499192E25B000D35063 /* SBSystemPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSystemPreferences.h; sourceTree = "<group>"; };
+		27B4F49A192E273900D35063 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		27C072DF140D6B9E00C4E199 /* FMTNSDictionary+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDictionary+Extras.h"; path = "FMT/FMTNSDictionary+Extras.h"; sourceTree = "<group>"; };
 		27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSDictionary+Extras.m"; path = "FMT/FMTNSDictionary+Extras.m"; sourceTree = "<group>"; };
 		27C072E2140D981E00C4E199 /* FMTNSDate+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDate+Extras.h"; path = "FMT/FMTNSDate+Extras.h"; sourceTree = "<group>"; };
@@ -284,20 +276,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		27B4F486192CFB9600D35063 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27B4F48A192CFB9600D35063 /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8D11072E0486CEB800E47090 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27B4F464192CDD7E00D35063 /* ServiceManagement.framework in Frameworks */,
-				27B4F462192CDD7800D35063 /* Security.framework in Frameworks */,
+				27B4F49B192E273900D35063 /* ScriptingBridge.framework in Frameworks */,
 				27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */,
 				F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
@@ -353,7 +336,6 @@
 				2717BDAB1498B7FD0012EF87 /* ShiftIt Tests.octest */,
 				2717BEAB14994C120012EF87 /* FMT Tests.octest */,
 				27160C7416C939FF002DA475 /* ShiftIt.app */,
-				27B4F489192CFB9600D35063 /* mktrusted */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -361,6 +343,7 @@
 		2708C1CC1261388A00192883 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				27B4F499192E25B000D35063 /* SBSystemPreferences.h */,
 				270DACA514098ACA0080DFBD /* GTM */,
 				2708C1CE126138A000192883 /* FMT */,
 			);
@@ -390,8 +373,8 @@
 				F2DC61EF1127C862000E1A67 /* FMTGeometry.m */,
 				2708C1CD1261389000192883 /* HotKey */,
 				2717BE34149935EB0012EF87 /* FMT.h */,
-				2717BE35149935EB0012EF87 /* FMTNSArray+Extras.h */,
-				2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */,
+				2717BE35149935EB0012EF87 /* FMTNSArray+Functional.h */,
+				2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */,
 				2717BE37149935EC0012EF87 /* FMTNSError+Extras.h */,
 				2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */,
 				27F4FD5112730F4600A65750 /* FMTDefines.h */,
@@ -480,23 +463,6 @@
 			name = Actions;
 			sourceTree = "<group>";
 		};
-		27B4F48B192CFB9600D35063 /* mktrusted */ = {
-			isa = PBXGroup;
-			children = (
-				27B4F48C192CFB9700D35063 /* main.m */,
-				27B4F48E192CFB9700D35063 /* Supporting Files */,
-			);
-			path = mktrusted;
-			sourceTree = "<group>";
-		};
-		27B4F48E192CFB9700D35063 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				27B4F48F192CFB9700D35063 /* mktrusted-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		27F46880141CC9E0001209F6 /* AXDriver */ = {
 			isa = PBXGroup;
 			children = (
@@ -521,7 +487,6 @@
 				080E96DDFE201D6D7F000001 /* Classes */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
-				27B4F48B192CFB9600D35063 /* mktrusted */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
 			);
@@ -556,6 +521,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27B4F49A192E273900D35063 /* ScriptingBridge.framework */,
 				27B4F463192CDD7E00D35063 /* ServiceManagement.framework */,
 				27B4F461192CDD7800D35063 /* Security.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
@@ -656,22 +622,6 @@
 			productReference = 2717BEAB14994C120012EF87 /* FMT Tests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
-		27B4F488192CFB9600D35063 /* mktrusted */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 27B4F492192CFB9700D35063 /* Build configuration list for PBXNativeTarget "mktrusted" */;
-			buildPhases = (
-				27B4F485192CFB9600D35063 /* Sources */,
-				27B4F486192CFB9600D35063 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = mktrusted;
-			productName = mktrusted;
-			productReference = 27B4F489192CFB9600D35063 /* mktrusted */;
-			productType = "com.apple.product-type.tool";
-		};
 		8D1107260486CEB800E47090 /* ShiftIt */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "ShiftIt" */;
@@ -719,7 +669,6 @@
 				27160C4816C939FF002DA475 /* ShiftIt NoX11 */,
 				2717BDAA1498B7FD0012EF87 /* ShiftIt Tests */,
 				2717BEAA14994C120012EF87 /* FMT Tests */,
-				27B4F488192CFB9600D35063 /* mktrusted */,
 			);
 		};
 /* End PBXProject section */
@@ -824,7 +773,7 @@
 				27160C6216C939FF002DA475 /* WindowGeometryShiftItAction.m in Sources */,
 				27160C6316C939FF002DA475 /* SIScreen.m in Sources */,
 				27160C6416C939FF002DA475 /* SIAdjacentRectangles.m in Sources */,
-				27160C6516C939FF002DA475 /* FMTNSArray+Extras.m in Sources */,
+				27160C6516C939FF002DA475 /* FMTNSArray+Functional.m in Sources */,
 				27160C6616C939FF002DA475 /* FMTNSError+Extras.m in Sources */,
 				27160C6716C939FF002DA475 /* FMTGeometry.m in Sources */,
 				27160C6816C939FF002DA475 /* FMTNSFileManager+DirectoryLocations.m in Sources */,
@@ -838,7 +787,7 @@
 			files = (
 				2717BE18149933530012EF87 /* GTMLogger.m in Sources */,
 				2717BE1F149933840012EF87 /* SIAdjacentRectangles.m in Sources */,
-				2717BE3A149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
+				2717BE3A149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */,
 				F2DC61EF1127C862000E1A69 /* FMTGeometry.m in Sources */,
 				F2DC61EF1127C862000E1A6E /* FMTNSFileManager+DirectoryLocations.m in Sources */,
 				E4BCFA70F241D179E2BE518D /* SIAdjacentRectanglesTest.m in Sources */,
@@ -854,16 +803,6 @@
 				2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */,
 				F2DC61EF1127C862000E1A6F /* FMTNSFileManager+DirectoryLocations.m in Sources */,
 				E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		27B4F485192CFB9600D35063 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				27B4F498192D011300D35063 /* GTMLogger.m in Sources */,
-				27B4F48D192CFB9700D35063 /* main.m in Sources */,
-				E4BCF620E36D2A6D7B05275B /* FMTError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -889,7 +828,7 @@
 				2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */,
 				F2DC61EF1127C862000E1A5D /* SIScreen.m in Sources */,
 				F2DC61EF1127C862000E1A60 /* SIAdjacentRectangles.m in Sources */,
-				2717BE39149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
+				2717BE39149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */,
 				2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */,
 				F2DC61EF1127C862000E1A68 /* FMTGeometry.m in Sources */,
 				F2DC61EF1127C862000E1A6D /* FMTNSFileManager+DirectoryLocations.m in Sources */,
@@ -1052,73 +991,6 @@
 			};
 			name = Release;
 		};
-		27B4F493192CFB9700D35063 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = NO;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "mktrusted/mktrusted-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.8;
-			};
-			name = Debug;
-		};
-		27B4F494192CFB9700D35063 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = NO;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				COPY_PHASE_STRIP = YES;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				ENABLE_NS_ASSERTIONS = NO;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "mktrusted/mktrusted-Prefix.pch";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = macosx10.8;
-			};
-			name = Release;
-		};
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1267,15 +1139,6 @@
 			buildConfigurations = (
 				2717BEBC14994C120012EF87 /* Debug */,
 				2717BEBD14994C120012EF87 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		27B4F492192CFB9700D35063 /* Build configuration list for PBXNativeTarget "mktrusted" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				27B4F493192CFB9700D35063 /* Debug */,
-				27B4F494192CFB9700D35063 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

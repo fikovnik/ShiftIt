@@ -18,10 +18,9 @@
  */
 
 #import <Sparkle/Sparkle.h>
-#import <ServiceManagement/ServiceManagement.h>
+#import "SBSystemPreferences.h"
 #import "ShiftItAppDelegate.h"
 #import "ShiftItApp.h"
-#import "ShiftItConstants.h"
 #import "WindowGeometryShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
@@ -225,10 +224,6 @@ NSDictionary *allShiftActions = nil;
 
 @interface ShiftItAppDelegate ()
 
-+ (BOOL)makeTrustedWithError:(NSError **)error;
-
-+ (void)relaunch;
-
 + (BOOL)isShiftItAuthorized;
 
 - (void)initializeActions_;
@@ -267,87 +262,9 @@ NSDictionary *allShiftActions = nil;
     CFAbsoluteTime beforeNow_;
 }
 
-+ (BOOL)makeTrustedWithError:(NSError **)error {
-    NSString *label = FMTStr(@"%@.%@", kShiftItAppBundleId, @"mktrusted");
-    NSString *command = [[NSBundle mainBundle] pathForAuxiliaryExecutable:@"mktrusted"];
-
-    AuthorizationItem authItem = {kSMRightModifySystemDaemons, 0, NULL, 0};
-    AuthorizationRights authRights = {1, &authItem};
-    AuthorizationFlags flags = kAuthorizationFlagInteractionAllowed | kAuthorizationFlagPreAuthorize | kAuthorizationFlagExtendRights;
-    AuthorizationRef auth;
-
-    if (AuthorizationCreate(&authRights, kAuthorizationEmptyEnvironment, flags, &auth) == errAuthorizationSuccess) {
-        // this is actually important - if from any reason the job was not removed, it won't relaunch
-        // to check for the running jobs use: sudo launchctl list
-        // the sudo is important since this job runs under root
-        SMJobRemove(kSMDomainSystemLaunchd, (CFStringRef) label, auth, false, NULL);
-
-        // this is actually the launchd plist for a new process
-        // https://developer.apple.com/library/mac/documentation/Darwin/Reference/Manpages/man5/launchd.plist.5.html#//apple_ref/doc/man/5/launchd.plist
-        NSDictionary *plist = @{
-                @"Label" : label,
-                @"RunAtLoad" : @YES,
-                @"ProgramArguments" : @[command],
-                @"Debug" : @YES
-        };
-
-        BOOL ret;
-        if (SMJobSubmit(kSMDomainSystemLaunchd, (CFDictionaryRef) plist, auth, (CFErrorRef *) error)) {
-            FMTLogDebug(@"Executed %@", command);
-            ret = YES;
-        } else {
-            FMTLogError(@"Failed to execute %@ as priviledged process: %@", command, *error);
-            ret = NO;
-        }
-
-        // From whatever reason this did not work very well
-        // seems like it removed the job before it was executed
-        // SMJobRemove(kSMDomainSystemLaunchd, (CFStringRef) label, auth, false, NULL);
-        AuthorizationFree(auth, 0);
-        return ret;
-    } else {
-        FMTLogError(@"Unable to create authorization object");
-        return NO;
-    }
-
-}
-
-+ (void)relaunch {
-    NSString *relaunch = [[NSBundle bundleForClass:[SUUpdater class]] pathForResource:@"relaunch" ofType:@""];
-    NSString *path = [[NSBundle mainBundle] bundlePath];
-    NSString *pid = FMTStr(@"%d", [[NSProcessInfo processInfo] processIdentifier]);
-//    [NSTask launchedTaskWithLaunchPath:relaunch arguments:@[path, pid]];
-    [NSApp terminate:self];
-}
-
+// TODO: this should be in the in AX driver
 + (BOOL)isShiftItAuthorized {
-    // TODO: this should be in the in AX driver
-
-    if (AXAPIEnabled()) {
-        // all apps are authorized
-        return YES;
-    }
-
-    if (AXIsProcessTrusted()) {
-        // we are a trusted process
-        return YES;
-    }
-
-//#if MAC_OS_X_VERSION_MIN_REQUIRED >= MAC_OS_X_VERSION_10_9
-//    NSDictionary *options = @{(id)kAXTrustedCheckOptionPrompt: @YES};
-//    BOOL accessibilityEnabled = AXIsProcessTrustedWithOptions((CFDictionaryRef)options);
-//#endif
-
-    return NO;
-//    NSError *error = nil;
-//    if ([ShiftItAppDelegate makeTrustedWithError:&error]) {
-//        // need to restart
-//        [ShiftItAppDelegate relaunch];
-//        return NO;
-//    } else {
-//        FMTLogInfo(@"Unable to get AX authorization. Executing the mkpstrust process failed: %@", error);
-//        return NO;
-//    }
+    return AXIsProcessTrusted();
 }
 
 + (void)initialize {
@@ -408,10 +325,44 @@ NSDictionary *allShiftActions = nil;
     FMTLogDebug(@"Starting up ShiftIt...");
 
     // check authorization
-    if ([ShiftItAppDelegate isShiftItAuthorized]) {
-        NSLog(@"Authorized");
-    } else {
-        NSLog(@"Not authorized");
+    if (![ShiftItAppDelegate isShiftItAuthorized]) {
+        FMTLogInfo(@"ShiftIt not is authorized");
+
+        // TODO: move to driver
+        // TODO: other button with help
+        NSAlert *mbox = [NSAlert
+                alertWithMessageText:@"Authorization Required"
+                       defaultButton:@"Open System Preferences"
+                     alternateButton:@"Deny"
+                         otherButton:nil
+           informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Service in order to be able to move and resize application windows.\n"
+                   "\n"
+                   "You can authorize it from within System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on.\n"
+                   "\n"
+                   "If you wish, ShiftIt can open System Preferences for you. Once you authorize it, start ShiftIt again."];
+
+        switch ([mbox runModal]) {
+            case NSAlertDefaultReturn: {
+                SBSystemPreferencesApplication *prefs = [SBApplication applicationWithBundleIdentifier:@"com.apple.systempreferences"];
+                [prefs activate];
+
+                SBSystemPreferencesPane *pane = [[prefs panes] find:^BOOL(SBSystemPreferencesPane *elem) {
+                    return [[elem id] isEqualToString:@"com.apple.preference.security"];
+                }];
+                SBSystemPreferencesAnchor *anchor = [[pane anchors] find:^BOOL(SBSystemPreferencesAnchor *elem) {
+                    return [[elem name] isEqualToString:@"Privacy_Accessibility"];
+                }];
+
+                [anchor reveal];
+            }
+
+                break;
+
+            default:
+                break;
+        }
+
+        [NSApp terminate:self];
     }
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -425,24 +376,6 @@ NSDictionary *allShiftActions = nil;
         [defaults synchronize];
 
         [self firstLaunch_];
-    }
-
-    // TODO: move to driver
-    if (!AXAPIEnabled()) {
-        NSInteger ret = NSRunAlertPanel(@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel", NULL);
-        switch (ret) {
-            case NSAlertDefaultReturn:
-                [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
-                [NSApp terminate:self];
-
-                return;
-            case NSAlertAlternateReturn:
-                [NSApp terminate:self];
-
-                return;
-            default:
-                break;
-        }
     }
 
     hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
