@@ -59,8 +59,8 @@ NSString *const kAXDriverDelayBetweenOperationsPrefKey = @"axdriver_delayBetween
 NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";
 
 // icon
-NSString *const kSIIconName = @"ShiftIt-menuIcon";
-NSString *const kSIMenuItemTitle = @"Shift";
+NSString *const kSIIconName = @"ShiftItMenuIcon";
+NSString *const kSIReversedIconName = @"ShiftItMenuIconReversed";
 
 NSString *const kUsageStatisticsFileName = @"usage-statistics.plist";
 
@@ -519,17 +519,8 @@ NSDictionary *allShiftActions = nil;
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
 
-            // TODO: imageNamed
-            NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
-            NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-
-            if (icon) {
-                [statusItem_ setImage:icon];
-                [icon release];
-            } else {
-                [statusItem_ setTitle:kSIMenuItemTitle];
-            }
-
+            [statusItem_ setImage:[NSImage imageNamed:kSIIconName]];
+            [statusItem_ setAlternateImage:[NSImage imageNamed:kSIReversedIconName]];
             [statusItem_ setHighlightMode:YES];
         }
     } else {

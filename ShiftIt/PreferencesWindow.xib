@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1060" defaultVersion="1070" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
@@ -92,7 +92,7 @@
                                         <imageView id="817">
                                             <rect key="frame" x="35" y="353" width="80" height="80"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ShiftIt-logo" id="818"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ShiftIt" id="818"/>
                                         </imageView>
                                         <matrix verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" id="823">
                                             <rect key="frame" x="26" y="243" width="233" height="102"/>
@@ -681,12 +681,12 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1118"/>
                                                 <binding destination="191" name="value" keyPath="values.leftMargin" id="1111">
                                                     <dictionary key="options">
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                     </dictionary>
                                                 </binding>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1118"/>
                                                 <outlet property="nextKeyView" destination="1019" id="1079"/>
                                             </connections>
                                         </textField>
@@ -703,12 +703,12 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                             <connections>
-                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1108"/>
                                                 <binding destination="191" name="value" keyPath="values.bottomMargin" id="1101">
                                                     <dictionary key="options">
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
                                                     </dictionary>
                                                 </binding>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1108"/>
                                                 <outlet property="nextKeyView" destination="1020" id="1080"/>
                                             </connections>
                                         </textField>
@@ -764,8 +764,8 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="1" id="1067"/>
                                             <connections>
-                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1094"/>
                                                 <binding destination="191" name="value" keyPath="values.bottomMargin" id="1099"/>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1094"/>
                                             </connections>
                                         </stepper>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1019">
@@ -773,8 +773,8 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="1068"/>
                                             <connections>
-                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1096"/>
                                                 <binding destination="191" name="value" keyPath="values.leftMargin" id="1110"/>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1096"/>
                                                 <outlet property="nextKeyView" destination="1023" id="1084"/>
                                             </connections>
                                         </stepper>
@@ -831,8 +831,8 @@
                                                         <string key="NSValueTransformerName">NSNegateBoolean</string>
                                                     </dictionary>
                                                 </binding>
-                                                <binding destination="-2" name="toolTip" keyPath="debugLoggingFile" id="939"/>
                                                 <binding destination="-2" name="value" keyPath="debugLoggingFile" id="936"/>
+                                                <binding destination="-2" name="toolTip" keyPath="debugLoggingFile" id="939"/>
                                             </connections>
                                         </textField>
                                         <button verticalHuggingPriority="750" id="1836">
@@ -870,7 +870,7 @@
         <userDefaultsController representsSharedInstance="YES" id="191"/>
     </objects>
     <resources>
-        <image name="ShiftIt-logo" width="512" height="512"/>
+        <image name="ShiftIt" width="512" height="512"/>
         <image name="margin-background-image" width="150" height="96"/>
     </resources>
 </document>
