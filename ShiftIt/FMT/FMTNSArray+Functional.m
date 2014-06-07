@@ -20,60 +20,57 @@
  THE SOFTWARE.
  */
 
-#import "FMTNSArray+Extras.h"
-
 @implementation NSArray (FMTNSArrayExtras)
 
-- (id) find:(BOOL (^)(id))predicate {
+- (id)find:(BOOL (^)(id))fun {
     for (id item in self) {
-        if (predicate(item)) {
+        if (fun(item)) {
             return item;
         }
     }
-    
+
     return nil;
 }
 
-- (NSUInteger)findIndex:(BOOL (^)(id))predicate {
-    NSUInteger __block itemIndex = NSUIntegerMax;
-    [self enumerateObjectsUsingBlock:^(id item, NSUInteger idx, BOOL *stop) {
-        if (predicate(item)) {
-            itemIndex = idx;
-            *stop = YES;
-        }
-    }];
+- (NSUInteger)indexWhere:(BOOL (^)(id))fun {
+    for (int i = 0; i < [self count]; i++) {
+        if (fun([self objectAtIndex:i])) return i;
+    }
 
-    return itemIndex;
+    return -1;
 }
 
-
-- (NSArray *) filter:(BOOL (^)(id))predicate {
-    NSMutableArray *res = [NSMutableArray array];
+- (NSArray *)filter:(BOOL (^)(id))fun {
+    NSMutableArray *tmp = [NSMutableArray array];
 
     for (id item in self) {
-        if (predicate(item)) {
-            [res addObject:item];
+        if (fun(item)) {
+            [tmp addObject:item];
         }
     }
-    
-    return [NSArray arrayWithArray:res];
+
+    return [tmp copy];
 }
 
-- (NSArray *) transform:(id(^)(id item))transformer {
-    NSMutableArray *res = [NSMutableArray arrayWithCapacity:[self count]];
- 
+- (NSArray *)map:(id(^)(id item))fun {
+    NSMutableArray *tmp = [NSMutableArray arrayWithCapacity:[self count]];
+
     for (id item in self) {
-        [res addObject:transformer(item)];
+        [tmp addObject:fun(item)];
     }
-    
-    return [NSArray arrayWithArray:res];
+
+    return [tmp copy];
 }
 
-- (void) each:(FMTEachCallback)callback {
+- (void)foreachWithStop:(bool (^)(id))fun {
     for (id item in self) {
-        if (!callback(item)) {
-            break;
-        }
+        if (!fun(item)) break;
+    }
+}
+
+- (void)foreach:(void (^)(id))fun {
+    for (id item in self) {
+        fun(item);
     }
 }
 

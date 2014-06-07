@@ -17,8 +17,8 @@
  
  */
 
-#import <sys/stat.h>
 #import <Sparkle/Sparkle.h>
+#import "SBSystemPreferences.h"
 #import "ShiftItAppDelegate.h"
 #import "ShiftItApp.h"
 #import "WindowGeometryShiftItAction.h"
@@ -31,8 +31,6 @@
 #import "X11WindowDriver.h"
 #endif
 
-
-NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
 
 // the name of the plist file containing the preference defaults
 NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
@@ -52,6 +50,7 @@ NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
 
 // AX Driver Options
+// TODO: should be moved to AX driver
 NSString *const kAXIncludeDrawersPrefKey = @"axdriver_includeDrawers";
 NSString *const kAXDriverConvergePrefKey = @"axdriver_converge";
 NSString *const kAXDriverDelayBetweenOperationsPrefKey = @"axdriver_delayBetweenOperations";
@@ -82,14 +81,17 @@ const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.25; // in seconds
 NSDictionary *allShiftActions = nil;
 
 @interface SIUsageStatistics : NSObject {
- @private
+@private
     NSMutableDictionary *statistics_;
-    
+
 }
 
 - (id)initFromFile:(NSString *)path;
+
 - (void)increment:(NSString *)key;
+
 - (void)saveToFile:(NSString *)path;
+
 - (NSArray *)toSparkle;
 
 @end
@@ -112,17 +114,17 @@ NSDictionary *allShiftActions = nil;
         NSPropertyListFormat format = NSPropertyListBinaryFormat_v1_0;
 
         data = [fm contentsAtPath:path];
-        NSDictionary *d = (NSDictionary *)[NSPropertyListSerialization
+        NSDictionary *d = (NSDictionary *) [NSPropertyListSerialization
                 propertyListFromData:data
                     mutabilityOption:NSPropertyListMutableContainersAndLeaves
                               format:&format
                     errorDescription:&errorDesc];
 
-        if(d) {
+        if (d) {
             FMTLogInfo(@"Loaded usage statistics from: %@", path);
             statistics_ = [[NSMutableDictionary dictionaryWithDictionary:d] retain];
         } else {
-            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %d", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
+            FMTLogError(@"Error reading usage statistics: %@ from: %@ format: %ld", errorDesc, path, NSPropertyListBinaryFormat_v1_0);
             statistics_ = [[NSMutableDictionary dictionary] retain];
         }
     }
@@ -132,18 +134,18 @@ NSDictionary *allShiftActions = nil;
 
 - (void)dealloc {
     [statistics_ release];
-    
+
     [super dealloc];
 }
 
 - (void)increment:(NSString *)key {
     NSInteger value = 0;
-    
+
     id stat = [statistics_ objectForKey:key];
     if (stat) {
-        value = [(NSNumber *)stat integerValue];
+        value = [(NSNumber *) stat integerValue];
     }
-    
+
     stat = [NSNumber numberWithInteger:(value + 1)];
     [statistics_ setObject:stat forKey:key];
 }
@@ -151,12 +153,12 @@ NSDictionary *allShiftActions = nil;
 - (void)saveToFile:(NSString *)path {
     NSData *data = nil;
     NSString *errorDesc = nil;
-    
+
     data = [NSPropertyListSerialization dataFromPropertyList:statistics_
                                                       format:NSPropertyListBinaryFormat_v1_0
                                             errorDescription:&errorDesc];
-    
-    if(data) {
+
+    if (data) {
         [data writeToFile:path atomically:YES];
         FMTLogInfo(@"Save usage statitics to: %@", path);
     } else {
@@ -217,8 +219,9 @@ NSDictionary *allShiftActions = nil;
 
 @end
 
+@interface ShiftItAppDelegate ()
 
-@interface ShiftItAppDelegate (Private)
+- (void)checkAuthorization;
 
 - (void)initializeActions_;
 
@@ -310,8 +313,90 @@ NSDictionary *allShiftActions = nil;
     }
 }
 
+- (void)checkAuthorization {
+    // TODO: move to driver
+    if (!AXIsProcessTrusted()) {
+        FMTLogInfo(@"ShiftIt not is authorized");
+
+        if (AXIsProcessTrustedWithOptions != NULL) {
+            // OSX >= 10.9
+
+            NSAlert *alert = [NSAlert alertWithMessageText:@"Authorization Required"
+                                             defaultButton:@"Recheck"
+                                           alternateButton:@"Open System Preferences"
+                                               otherButton:@"Quit"
+                                 informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Servicea in order to be able to move and resize application windows."
+                                         "\n\n"
+                                         "You can do this in System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on."
+            ];
+
+            NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettings-Maverick"]];
+            [accessory setImageFrameStyle:NSImageFrameGrayBezel];
+            [alert setAccessoryView:accessory];
+
+            BOOL recheck = true;
+            while (recheck) {
+                switch ([alert runModal]) {
+                    case NSAlertDefaultReturn:
+                        recheck = !AXIsProcessTrusted();
+                        break;
+                    case NSAlertOtherReturn:
+                        [NSApp terminate:self];
+                        break;
+                    case NSAlertAlternateReturn: {
+
+                        // this should hopefully add it to the list so user can only click on the checkbox
+                        NSDictionary *options = @{(id) kAXTrustedCheckOptionPrompt : @NO};
+                        AXIsProcessTrustedWithOptions((CFDictionaryRef) options);
+
+                        SBSystemPreferencesApplication *prefs = [SBApplication applicationWithBundleIdentifier:@"com.apple.systempreferences"];
+                        [prefs activate];
+
+                        SBSystemPreferencesPane *pane = [[prefs panes] find:^BOOL(SBSystemPreferencesPane *elem) {
+                            return [[elem id] isEqualToString:@"com.apple.preference.security"];
+                        }];
+                        SBSystemPreferencesAnchor *anchor = [[pane anchors] find:^BOOL(SBSystemPreferencesAnchor *elem) {
+                            return [[elem name] isEqualToString:@"Privacy_Accessibility"];
+                        }];
+
+                        [anchor reveal];
+                    }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        } else {
+            // OSX <= 10.8
+            NSAlert *alert = [NSAlert alertWithMessageText:@"Authorization Required"
+                                             defaultButton:@"Quit"
+                                           alternateButton:nil
+                                               otherButton:@"Open System Preferences"
+                                 informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Servicea in order to be able to move and resize application windows."
+                                         "\n\n"
+                                         "Please \"Enable access for assistive devices\" in the System Preferences > Universal Access and then restart ShiftIt."
+            ];
+
+            NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettings-Lion"]];
+            [accessory setImageFrameStyle:NSImageFrameGrayBezel];
+            [alert setAccessoryView:accessory];
+
+            if ([alert runModal] == NSAlertOtherReturn) {
+                [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
+            }
+
+            [NSApp terminate:self];
+        }
+    }
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     FMTLogDebug(@"Starting up ShiftIt...");
+
+    [self checkAuthorization];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -324,23 +409,6 @@ NSDictionary *allShiftActions = nil;
         [defaults synchronize];
 
         [self firstLaunch_];
-    }
-
-    if (!AXAPIEnabled()) {
-        NSInteger ret = NSRunAlertPanel(@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel", NULL);
-        switch (ret) {
-            case NSAlertDefaultReturn:
-                [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
-                [NSApp terminate:self];
-
-                return;
-            case NSAlertAlternateReturn:
-                [NSApp terminate:self];
-
-                return;
-            default:
-                break;
-        }
     }
 
     hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
@@ -366,17 +434,17 @@ NSDictionary *allShiftActions = nil;
         FMTLogInfo(@"Unable to load AX driver: %@%@", [error localizedDescription], [error fullDescription]);
     } else {
         FMTLogInfo(@"Added driver: %@", [axDriver description]);
-       [drivers addObject:axDriver];
+        [drivers addObject:axDriver];
     }
 
-    #ifdef X11
+#ifdef X11
     // initialize X11 driver
     X11WindowDriver *x11Driver = [[[X11WindowDriver alloc] initWithError:&error] autorelease];
     if (error) {
         FMTLogInfo(@"Unable to load X11 driver: %@%@", [error localizedDescription], [error fullDescription]);
     } else {
         FMTLogInfo(@"Added driver: %@", [x11Driver description]);
-       [drivers addObject:x11Driver];
+        [drivers addObject:x11Driver];
     }
 
     if ([drivers count] == 0) {
@@ -385,9 +453,9 @@ NSDictionary *allShiftActions = nil;
         [NSApp presentError:SICreateError(100, @"No driver could be loaded")];
         [NSApp terminate:self];
     }
-    #endif
+#endif
 
-	windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
+    windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
 
     [self initializeActions_];
     [self updateMenuBarIcon_];
@@ -420,7 +488,7 @@ NSDictionary *allShiftActions = nil;
     FMTLogInfo(@"Shutting down ShiftIt...");
 
     // save usage statistics
-    NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];    
+    NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];
     [usageStatistics_ saveToFile:usageStatisticsFile];
 
     // unregister hotkeys
@@ -451,6 +519,7 @@ NSDictionary *allShiftActions = nil;
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
 
+            // TODO: imageNamed
             NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
             NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
 
@@ -622,8 +691,8 @@ NSDictionary *allShiftActions = nil;
             // we need to give the AXUI and others some time to recover :)
             // otherwise some weird results are experienced
             FMTLogDebug(@"Action executed too soon after the last one: %f (minimum: %f)",
-            now - beforeNow_,
-            kMinimumTimeBetweenActionInvocations);
+                            now - beforeNow_,
+                            kMinimumTimeBetweenActionInvocations);
             return;
         } else {
             beforeNow_ = now;
@@ -635,9 +704,9 @@ NSDictionary *allShiftActions = nil;
         FMTLogInfo(@"Invoking action: %@", identifier);
         NSError *error = nil;
         if (![windowManager_ executeAction:[action delegate] error:&error]) {
-            FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], 
-                [error localizedDescription], 
-                [error fullDescription]);
+            FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier],
+                            [error localizedDescription],
+                            [error fullDescription]);
         }
         [usageStatistics_ increment:FMTStr(@"action_%@", identifier)];
     }
@@ -661,15 +730,15 @@ NSDictionary *allShiftActions = nil;
 // with keys: "key", "value", "displayKey", "displayValue", the latter two
 // being human-readable variants of the former two.
 - (NSArray *)feedParametersForUpdater:(SUUpdater *)updater
-             sendingSystemProfile:(BOOL)sendingProfile {
+                 sendingSystemProfile:(BOOL)sendingProfile {
     NSMutableArray *a = [NSMutableArray arrayWithArray:[usageStatistics_ toSparkle]];
 
     // get display information
     NSArray *screens = [NSScreen screens];
     NSInteger nScreen = [screens count];
     [a addObject:FMTEncodeForSparkle(@"n_screens", FMTStr(@"%d", nScreen), @"Number of screens", FMTStr(@"%d", nScreen))];
-    
-    for (NSUInteger i=0; i<nScreen; i++) {
+
+    for (NSUInteger i = 0; i < nScreen; i++) {
         NSString *resolution = RECT_STR([[screens objectAtIndex:i] frame]);
         [a addObject:FMTEncodeForSparkle(FMTStr(@"screen_%d", i), resolution, FMTStr(@"Screen #%d resolution", i), resolution)];
     }

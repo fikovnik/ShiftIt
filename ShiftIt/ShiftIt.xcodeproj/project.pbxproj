@@ -38,7 +38,7 @@
 		27160C6216C939FF002DA475 /* WindowGeometryShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */; };
 		27160C6316C939FF002DA475 /* SIScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5C /* SIScreen.m */; };
 		27160C6416C939FF002DA475 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
-		27160C6516C939FF002DA475 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
+		27160C6516C939FF002DA475 /* FMTNSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */; };
 		27160C6616C939FF002DA475 /* FMTNSError+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */; };
 		27160C6716C939FF002DA475 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
 		27160C6816C939FF002DA475 /* FMTNSFileManager+DirectoryLocations.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A6C /* FMTNSFileManager+DirectoryLocations.m */; };
@@ -49,14 +49,12 @@
 		27160C6F16C939FF002DA475 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27160C7016C939FF002DA475 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		2717BDAC1498B7FD0012EF87 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714C0B21487F9BC00CC951D /* SenTestingKit.framework */; };
-		2717BDB31498B7FD0012EF87 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2717BDB11498B7FD0012EF87 /* InfoPlist.strings */; };
-		2717BDBB1498B8270012EF87 /* SIAdjacentRectanglesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 2714C0BF1487F9BC00CC951D /* SIAdjacentRectanglesTest.m */; };
 		2717BE18149933530012EF87 /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
 		2717BE1F149933840012EF87 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
 		2717BE29149933E70012EF87 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BE28149933E70012EF87 /* Carbon.framework */; };
 		2717BE2B149933EE0012EF87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BE2A149933EE0012EF87 /* Cocoa.framework */; };
-		2717BE39149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
-		2717BE3A149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */; };
+		2717BE39149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */; };
+		2717BE3A149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */; };
 		2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */; };
 		2717BEAC14994C120012EF87 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714C0B21487F9BC00CC951D /* SenTestingKit.framework */; };
 		2717BEAE14994C120012EF87 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2717BEAD14994C120012EF87 /* Cocoa.framework */; };
@@ -65,7 +63,13 @@
 		2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
 		271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
 		2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */; };
+		274B4CD719364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */ = {isa = PBXBuildFile; fileRef = 274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */; };
+		274B4CD819364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */ = {isa = PBXBuildFile; fileRef = 274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */; };
 		27904A531460C6C300E5AEAD /* X11WindowDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4687D141C2238001209F6 /* X11WindowDriver.m */; };
+		279AF80F19432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */ = {isa = PBXBuildFile; fileRef = 279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */; };
+		279AF81019432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */ = {isa = PBXBuildFile; fileRef = 279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */; };
+		279AF8191943675F0048FE5F /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279AF8181943675F0048FE5F /* ScriptingBridge.framework */; };
+		279AF81A194367670048FE5F /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279AF8181943675F0048FE5F /* ScriptingBridge.framework */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
@@ -81,6 +85,12 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		E4BCF1FFDFE5D8200B19C785 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
+		E4BCF238FB8ED2BD310B85A5 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
+		E4BCFA06115A778886211551 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4BCF358EA87DDA5B032380D /* InfoPlist.strings */; };
+		E4BCFA70F241D179E2BE518D /* SIAdjacentRectanglesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */; };
+		E4BCFDB6E75A7E6EB81A454A /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
+		E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PreferencesWindowController.m */; };
 		F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		F2708277117FE51100C0A04C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
@@ -118,6 +128,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		271CB7E7192C093800D633E6 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F270823F117FCFD600C0A04C /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -149,17 +168,13 @@
 		270DACAA14098B250080DFBD /* GTMDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GTMDefines.h; path = GTM/GTMDefines.h; sourceTree = "<group>"; };
 		270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-logo.png"; sourceTree = "<group>"; };
 		2714C0B21487F9BC00CC951D /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		2714C0BF1487F9BC00CC951D /* SIAdjacentRectanglesTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = SIAdjacentRectanglesTest.m; path = "ShiftIt Tests/SIAdjacentRectanglesTest.m"; sourceTree = SOURCE_ROOT; };
 		27160C7416C939FF002DA475 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2717BDAB1498B7FD0012EF87 /* ShiftIt Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ShiftIt Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2717BDB01498B7FD0012EF87 /* ShiftIt Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShiftIt Tests-Info.plist"; sourceTree = "<group>"; };
-		2717BDB21498B7FD0012EF87 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		2717BDB71498B7FD0012EF87 /* ShiftIt Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShiftIt Tests-Prefix.pch"; sourceTree = "<group>"; };
 		2717BE28149933E70012EF87 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
 		2717BE2A149933EE0012EF87 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		2717BE34149935EB0012EF87 /* FMT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMT.h; path = FMT/FMT.h; sourceTree = "<group>"; };
-		2717BE35149935EB0012EF87 /* FMTNSArray+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSArray+Extras.h"; path = "FMT/FMTNSArray+Extras.h"; sourceTree = "<group>"; };
-		2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSArray+Extras.m"; path = "FMT/FMTNSArray+Extras.m"; sourceTree = "<group>"; };
+		2717BE35149935EB0012EF87 /* FMTNSArray+Functional.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSArray+Functional.h"; path = "FMT/FMTNSArray+Functional.h"; sourceTree = "<group>"; };
+		2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSArray+Functional.m"; path = "FMT/FMTNSArray+Functional.m"; sourceTree = "<group>"; };
 		2717BE37149935EC0012EF87 /* FMTNSError+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSError+Extras.h"; path = "FMT/FMTNSError+Extras.h"; sourceTree = "<group>"; };
 		2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSError+Extras.m"; path = "FMT/FMTNSError+Extras.m"; sourceTree = "<group>"; };
 		2717BEAB14994C120012EF87 /* FMT Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FMT Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,8 +190,14 @@
 		2743F1A2140EFC8E00C23A67 /* SIWindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIWindowDriver.h; sourceTree = "<group>"; };
 		2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowGeometryShiftItAction.h; sourceTree = "<group>"; };
 		2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowGeometryShiftItAction.m; sourceTree = "<group>"; };
+		274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AccessibilitySettings-Maverick.png"; sourceTree = "<group>"; };
+		279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AccessibilitySettings-Lion.png"; sourceTree = "<group>"; };
+		279AF8181943675F0048FE5F /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		279AF81B194367D10048FE5F /* SBSystemPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSystemPreferences.h; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
+		27B4F46A192CFB2B00D35063 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		27B4F479192CFB4600D35063 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		27C072DF140D6B9E00C4E199 /* FMTNSDictionary+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDictionary+Extras.h"; path = "FMT/FMTNSDictionary+Extras.h"; sourceTree = "<group>"; };
 		27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSDictionary+Extras.m"; path = "FMT/FMTNSDictionary+Extras.m"; sourceTree = "<group>"; };
 		27C072E2140D981E00C4E199 /* FMTNSDate+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDate+Extras.h"; path = "FMT/FMTNSDate+Extras.h"; sourceTree = "<group>"; };
@@ -200,6 +221,13 @@
 		83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShiftIt.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAdjacentRectanglesTest.m; sourceTree = "<group>"; };
+		E4BCF1236CA369B89F718229 /* ShiftIt Tests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ShiftIt Tests-Prefix.pch"; sourceTree = "<group>"; };
+		E4BCF352F697F5F143E8C96C /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E4BCF6EB42F45803C08BAC36 /* FMTError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTError.m; sourceTree = "<group>"; };
+		E4BCFB1C9BBC395A7C77D3BB /* ShiftIt Tests-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.info; path = "ShiftIt Tests-Info.plist"; sourceTree = "<group>"; };
+		E4BCFC0DE2CE260FCDB4481E /* FMTError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMTError.h; sourceTree = "<group>"; };
+		E4BCFDA13E39F7928BBEC389 /* ShiftItConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShiftItConstants.h; sourceTree = "<group>"; };
 		F2520B621133874D00DB826F /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
 		F2520B631133874D00DB826F /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
 		F2708222117FCF9400C0A04C /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
@@ -227,6 +255,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				279AF81A194367670048FE5F /* ScriptingBridge.framework in Frameworks */,
 				27160C6A16C939FF002DA475 /* ShortcutRecorder.framework in Frameworks */,
 				27160C6B16C939FF002DA475 /* Sparkle.framework in Frameworks */,
 				27160C6C16C939FF002DA475 /* Carbon.framework in Frameworks */,
@@ -257,6 +286,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				279AF8191943675F0048FE5F /* ScriptingBridge.framework in Frameworks */,
 				27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */,
 				F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
@@ -270,7 +300,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2717BDAE1498B7FD0012EF87 /* ShiftIt Tests */,
 				2708C1CC1261388A00192883 /* External */,
 				2743F1A3140EFCB300C23A67 /* ShiftIt Framework */,
 				2743F1A5140F02D500C23A67 /* Actions */,
@@ -278,6 +307,7 @@
 				256AC3D80F4B6AC300CF3369 /* ShiftItAppDelegate.h */,
 				256AC3D90F4B6AC300CF3369 /* ShiftItAppDelegate.m */,
 				2708C2551261C8E800192883 /* ShiftItApp.h */,
+				E4BCFDA13E39F7928BBEC389 /* ShiftItConstants.h */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -319,6 +349,7 @@
 		2708C1CC1261388A00192883 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				279AF81B194367D10048FE5F /* SBSystemPreferences.h */,
 				270DACA514098ACA0080DFBD /* GTM */,
 				2708C1CE126138A000192883 /* FMT */,
 			);
@@ -348,8 +379,8 @@
 				F2DC61EF1127C862000E1A67 /* FMTGeometry.m */,
 				2708C1CD1261389000192883 /* HotKey */,
 				2717BE34149935EB0012EF87 /* FMT.h */,
-				2717BE35149935EB0012EF87 /* FMTNSArray+Extras.h */,
-				2717BE36149935EB0012EF87 /* FMTNSArray+Extras.m */,
+				2717BE35149935EB0012EF87 /* FMTNSArray+Functional.h */,
+				2717BE36149935EB0012EF87 /* FMTNSArray+Functional.m */,
 				2717BE37149935EC0012EF87 /* FMTNSError+Extras.h */,
 				2717BE38149935EC0012EF87 /* FMTNSError+Extras.m */,
 				27F4FD5112730F4600A65750 /* FMTDefines.h */,
@@ -361,6 +392,8 @@
 				27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */,
 				27C072E2140D981E00C4E199 /* FMTNSDate+Extras.h */,
 				27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */,
+				E4BCF6EB42F45803C08BAC36 /* FMTError.m */,
+				E4BCFC0DE2CE260FCDB4481E /* FMTError.h */,
 			);
 			name = FMT;
 			sourceTree = "<group>";
@@ -374,25 +407,6 @@
 				270DACA814098AE30080DFBD /* GTMLogger.m */,
 			);
 			name = GTM;
-			sourceTree = "<group>";
-		};
-		2717BDAE1498B7FD0012EF87 /* ShiftIt Tests */ = {
-			isa = PBXGroup;
-			children = (
-				2714C0BF1487F9BC00CC951D /* SIAdjacentRectanglesTest.m */,
-				2717BDAF1498B7FD0012EF87 /* Supporting Files */,
-			);
-			path = "ShiftIt Tests";
-			sourceTree = "<group>";
-		};
-		2717BDAF1498B7FD0012EF87 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				2717BDB01498B7FD0012EF87 /* ShiftIt Tests-Info.plist */,
-				2717BDB11498B7FD0012EF87 /* InfoPlist.strings */,
-				2717BDB71498B7FD0012EF87 /* ShiftIt Tests-Prefix.pch */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		2717BEB214994C120012EF87 /* FMT Tests */ = {
@@ -497,6 +511,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */,
+				274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */,
 				270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */,
 				271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */,
 				27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */,
@@ -513,12 +529,35 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				279AF8181943675F0048FE5F /* ScriptingBridge.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				2714C0B21487F9BC00CC951D /* SenTestingKit.framework */,
 				2717BEAD14994C120012EF87 /* Cocoa.framework */,
+				27B4F46A192CFB2B00D35063 /* CoreFoundation.framework */,
+				27B4F479192CFB4600D35063 /* Foundation.framework */,
 				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+				E4BCF4F74271515B995C0CF6 /* ShiftIt Tests */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4BCF1E192B8E766772AAD42 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				E4BCFB1C9BBC395A7C77D3BB /* ShiftIt Tests-Info.plist */,
+				E4BCF358EA87DDA5B032380D /* InfoPlist.strings */,
+				E4BCF1236CA369B89F718229 /* ShiftIt Tests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		E4BCF4F74271515B995C0CF6 /* ShiftIt Tests */ = {
+			isa = PBXGroup;
+			children = (
+				E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */,
+				E4BCF1E192B8E766772AAD42 /* Supporting Files */,
+			);
+			path = "ShiftIt Tests";
 			sourceTree = "<group>";
 		};
 		F2D9C239112F9D0E003E9435 /* Preferences */ = {
@@ -597,6 +636,7 @@
 				8D11072C0486CEB800E47090 /* Sources */,
 				8D11072E0486CEB800E47090 /* Frameworks */,
 				F270823F117FCFD600C0A04C /* CopyFiles */,
+				271CB7E7192C093800D633E6 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -614,7 +654,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0510;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ShiftIt" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -645,6 +685,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				27160C4A16C939FF002DA475 /* InfoPlist.strings in Resources */,
+				274B4CD819364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */,
+				279AF81019432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */,
 				27160C4B16C939FF002DA475 /* MainMenu.xib in Resources */,
 				27160C4C16C939FF002DA475 /* PreferencesWindow.xib in Resources */,
 				27160C4D16C939FF002DA475 /* ShiftIt-menuIcon.png in Resources */,
@@ -659,7 +701,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2717BDB31498B7FD0012EF87 /* InfoPlist.strings in Resources */,
+				E4BCFA06115A778886211551 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,6 +718,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				274B4CD719364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */,
+				279AF80F19432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				F2DC1A321133829D009BDCA5 /* PreferencesWindow.xib in Resources */,
 				83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */,
@@ -739,10 +783,11 @@
 				27160C6216C939FF002DA475 /* WindowGeometryShiftItAction.m in Sources */,
 				27160C6316C939FF002DA475 /* SIScreen.m in Sources */,
 				27160C6416C939FF002DA475 /* SIAdjacentRectangles.m in Sources */,
-				27160C6516C939FF002DA475 /* FMTNSArray+Extras.m in Sources */,
+				27160C6516C939FF002DA475 /* FMTNSArray+Functional.m in Sources */,
 				27160C6616C939FF002DA475 /* FMTNSError+Extras.m in Sources */,
 				27160C6716C939FF002DA475 /* FMTGeometry.m in Sources */,
 				27160C6816C939FF002DA475 /* FMTNSFileManager+DirectoryLocations.m in Sources */,
+				E4BCF238FB8ED2BD310B85A5 /* FMTError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,10 +797,11 @@
 			files = (
 				2717BE18149933530012EF87 /* GTMLogger.m in Sources */,
 				2717BE1F149933840012EF87 /* SIAdjacentRectangles.m in Sources */,
-				2717BE3A149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
-				2717BDBB1498B8270012EF87 /* SIAdjacentRectanglesTest.m in Sources */,
+				2717BE3A149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */,
 				F2DC61EF1127C862000E1A69 /* FMTGeometry.m in Sources */,
 				F2DC61EF1127C862000E1A6E /* FMTNSFileManager+DirectoryLocations.m in Sources */,
+				E4BCFA70F241D179E2BE518D /* SIAdjacentRectanglesTest.m in Sources */,
+				E4BCFDB6E75A7E6EB81A454A /* FMTError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -766,6 +812,7 @@
 				2717BEBA14994C120012EF87 /* FMTGeometryTests.m in Sources */,
 				2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */,
 				F2DC61EF1127C862000E1A6F /* FMTNSFileManager+DirectoryLocations.m in Sources */,
+				E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -791,10 +838,11 @@
 				2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */,
 				F2DC61EF1127C862000E1A5D /* SIScreen.m in Sources */,
 				F2DC61EF1127C862000E1A60 /* SIAdjacentRectangles.m in Sources */,
-				2717BE39149935EC0012EF87 /* FMTNSArray+Extras.m in Sources */,
+				2717BE39149935EC0012EF87 /* FMTNSArray+Functional.m in Sources */,
 				2717BE3B149935EC0012EF87 /* FMTNSError+Extras.m in Sources */,
 				F2DC61EF1127C862000E1A68 /* FMTGeometry.m in Sources */,
 				F2DC61EF1127C862000E1A6D /* FMTNSFileManager+DirectoryLocations.m in Sources */,
+				E4BCF1FFDFE5D8200B19C785 /* FMTError.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -825,18 +873,18 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
-		2717BDB11498B7FD0012EF87 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2717BDB21498B7FD0012EF87 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
 		2717BEB514994C120012EF87 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				2717BEB614994C120012EF87 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		E4BCF358EA87DDA5B032380D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E4BCF352F697F5F143E8C96C /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -848,6 +896,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -862,6 +911,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
@@ -874,6 +924,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)\"",
@@ -894,6 +945,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
 					"\"$(SRCROOT)\"",
@@ -953,6 +1005,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -979,6 +1032,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = .;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
@@ -1028,8 +1082,8 @@
 				IBC_PLUGIN_SEARCH_PATHS = "";
 				INSTALL_PATH = /Applications;
 				LD_RUNPATH_SEARCH_PATHS = "";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
-				ONLY_ACTIVE_ARCH = NO;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "-DDEBUG";
 				OTHER_LDFLAGS = "-ldl";
 				WARNING_CFLAGS = "-Wall";
@@ -1061,7 +1115,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IBC_PLUGINS = ShortcutRecorder.framework/Versions/A/Resources/ShortcutRecorder.ibplugin;
 				INSTALL_PATH = /Applications;
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNDEBUG";
 				OTHER_LDFLAGS = "-ldl";
