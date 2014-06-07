@@ -63,11 +63,16 @@
 		2717BEBF14994CAE0012EF87 /* FMTGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A67 /* FMTGeometry.m */; };
 		271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
 		2743F1AB140F048B00C23A67 /* WindowGeometryShiftItAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */; };
+		274B4CD719364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */ = {isa = PBXBuildFile; fileRef = 274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */; };
+		274B4CD819364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */ = {isa = PBXBuildFile; fileRef = 274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */; };
 		27904A531460C6C300E5AEAD /* X11WindowDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4687D141C2238001209F6 /* X11WindowDriver.m */; };
+		279AF80F19432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */ = {isa = PBXBuildFile; fileRef = 279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */; };
+		279AF81019432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */ = {isa = PBXBuildFile; fileRef = 279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */; };
+		279AF8191943675F0048FE5F /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279AF8181943675F0048FE5F /* ScriptingBridge.framework */; };
+		279AF81A194367670048FE5F /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279AF8181943675F0048FE5F /* ScriptingBridge.framework */; };
 		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
-		27B4F49B192E273900D35063 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B4F49A192E273900D35063 /* ScriptingBridge.framework */; };
 		27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */; };
 		27C072E4140D981E00C4E199 /* FMTNSDate+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E3140D981E00C4E199 /* FMTNSDate+Extras.m */; };
 		27F4FD4B12730F2F00A65750 /* FMTHotKey.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD4612730F2F00A65750 /* FMTHotKey.m */; };
@@ -185,14 +190,14 @@
 		2743F1A2140EFC8E00C23A67 /* SIWindowDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SIWindowDriver.h; sourceTree = "<group>"; };
 		2743F1A9140F048B00C23A67 /* WindowGeometryShiftItAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowGeometryShiftItAction.h; sourceTree = "<group>"; };
 		2743F1AA140F048B00C23A67 /* WindowGeometryShiftItAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowGeometryShiftItAction.m; sourceTree = "<group>"; };
+		274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AccessibilitySettings-Maverick.png"; sourceTree = "<group>"; };
+		279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "AccessibilitySettings-Lion.png"; sourceTree = "<group>"; };
+		279AF8181943675F0048FE5F /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
+		279AF81B194367D10048FE5F /* SBSystemPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSystemPreferences.h; sourceTree = "<group>"; };
 		27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShortcutRecorder.framework; sourceTree = "<group>"; };
 		27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = "ShiftIt-defaults.plist"; sourceTree = "<group>"; };
-		27B4F461192CDD7800D35063 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		27B4F463192CDD7E00D35063 /* ServiceManagement.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ServiceManagement.framework; path = System/Library/Frameworks/ServiceManagement.framework; sourceTree = SDKROOT; };
 		27B4F46A192CFB2B00D35063 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		27B4F479192CFB4600D35063 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		27B4F499192E25B000D35063 /* SBSystemPreferences.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBSystemPreferences.h; sourceTree = "<group>"; };
-		27B4F49A192E273900D35063 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = System/Library/Frameworks/ScriptingBridge.framework; sourceTree = SDKROOT; };
 		27C072DF140D6B9E00C4E199 /* FMTNSDictionary+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDictionary+Extras.h"; path = "FMT/FMTNSDictionary+Extras.h"; sourceTree = "<group>"; };
 		27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "FMTNSDictionary+Extras.m"; path = "FMT/FMTNSDictionary+Extras.m"; sourceTree = "<group>"; };
 		27C072E2140D981E00C4E199 /* FMTNSDate+Extras.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "FMTNSDate+Extras.h"; path = "FMT/FMTNSDate+Extras.h"; sourceTree = "<group>"; };
@@ -250,6 +255,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				279AF81A194367670048FE5F /* ScriptingBridge.framework in Frameworks */,
 				27160C6A16C939FF002DA475 /* ShortcutRecorder.framework in Frameworks */,
 				27160C6B16C939FF002DA475 /* Sparkle.framework in Frameworks */,
 				27160C6C16C939FF002DA475 /* Carbon.framework in Frameworks */,
@@ -280,7 +286,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27B4F49B192E273900D35063 /* ScriptingBridge.framework in Frameworks */,
+				279AF8191943675F0048FE5F /* ScriptingBridge.framework in Frameworks */,
 				27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */,
 				F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */,
 				F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */,
@@ -343,7 +349,7 @@
 		2708C1CC1261388A00192883 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				27B4F499192E25B000D35063 /* SBSystemPreferences.h */,
+				279AF81B194367D10048FE5F /* SBSystemPreferences.h */,
 				270DACA514098ACA0080DFBD /* GTM */,
 				2708C1CE126138A000192883 /* FMT */,
 			);
@@ -505,6 +511,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */,
+				274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */,
 				270EC26A12FF1965002A5F22 /* ShiftIt-logo.png */,
 				271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */,
 				27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */,
@@ -521,9 +529,7 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				27B4F49A192E273900D35063 /* ScriptingBridge.framework */,
-				27B4F463192CDD7E00D35063 /* ServiceManagement.framework */,
-				27B4F461192CDD7800D35063 /* Security.framework */,
+				279AF8181943675F0048FE5F /* ScriptingBridge.framework */,
 				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
 				2714C0B21487F9BC00CC951D /* SenTestingKit.framework */,
 				2717BEAD14994C120012EF87 /* Cocoa.framework */,
@@ -679,6 +685,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				27160C4A16C939FF002DA475 /* InfoPlist.strings in Resources */,
+				274B4CD819364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */,
+				279AF81019432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */,
 				27160C4B16C939FF002DA475 /* MainMenu.xib in Resources */,
 				27160C4C16C939FF002DA475 /* PreferencesWindow.xib in Resources */,
 				27160C4D16C939FF002DA475 /* ShiftIt-menuIcon.png in Resources */,
@@ -710,6 +718,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				274B4CD719364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */,
+				279AF80F19432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				F2DC1A321133829D009BDCA5 /* PreferencesWindow.xib in Resources */,
 				83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon.png in Resources */,

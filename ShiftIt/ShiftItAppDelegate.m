@@ -28,9 +28,7 @@
 #import "FMT/FMTNSFileManager+DirectoryLocations.h"
 
 #ifdef X11
-
 #import "X11WindowDriver.h"
-
 #endif
 
 
@@ -221,10 +219,9 @@ NSDictionary *allShiftActions = nil;
 
 @end
 
-
 @interface ShiftItAppDelegate ()
 
-+ (BOOL)isShiftItAuthorized;
+- (void)checkAuthorization;
 
 - (void)initializeActions_;
 
@@ -260,11 +257,6 @@ NSDictionary *allShiftActions = nil;
 
     // to keep some pause between action invocations
     CFAbsoluteTime beforeNow_;
-}
-
-// TODO: this should be in the in AX driver
-+ (BOOL)isShiftItAuthorized {
-    return AXIsProcessTrusted();
 }
 
 + (void)initialize {
@@ -321,49 +313,90 @@ NSDictionary *allShiftActions = nil;
     }
 }
 
+- (void)checkAuthorization {
+    // TODO: move to driver
+    if (!AXIsProcessTrusted()) {
+        FMTLogInfo(@"ShiftIt not is authorized");
+
+        if (AXIsProcessTrustedWithOptions != NULL) {
+            // OSX >= 10.9
+
+            NSAlert *alert = [NSAlert alertWithMessageText:@"Authorization Required"
+                                             defaultButton:@"Recheck"
+                                           alternateButton:@"Open System Preferences"
+                                               otherButton:@"Quit"
+                                 informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Servicea in order to be able to move and resize application windows."
+                                         "\n\n"
+                                         "You can do this in System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on."
+            ];
+
+            NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettings-Maverick"]];
+            [accessory setImageFrameStyle:NSImageFrameGrayBezel];
+            [alert setAccessoryView:accessory];
+
+            BOOL recheck = true;
+            while (recheck) {
+                switch ([alert runModal]) {
+                    case NSAlertDefaultReturn:
+                        recheck = !AXIsProcessTrusted();
+                        break;
+                    case NSAlertOtherReturn:
+                        [NSApp terminate:self];
+                        break;
+                    case NSAlertAlternateReturn: {
+
+                        // this should hopefully add it to the list so user can only click on the checkbox
+                        NSDictionary *options = @{(id) kAXTrustedCheckOptionPrompt : @NO};
+                        AXIsProcessTrustedWithOptions((CFDictionaryRef) options);
+
+                        SBSystemPreferencesApplication *prefs = [SBApplication applicationWithBundleIdentifier:@"com.apple.systempreferences"];
+                        [prefs activate];
+
+                        SBSystemPreferencesPane *pane = [[prefs panes] find:^BOOL(SBSystemPreferencesPane *elem) {
+                            return [[elem id] isEqualToString:@"com.apple.preference.security"];
+                        }];
+                        SBSystemPreferencesAnchor *anchor = [[pane anchors] find:^BOOL(SBSystemPreferencesAnchor *elem) {
+                            return [[elem name] isEqualToString:@"Privacy_Accessibility"];
+                        }];
+
+                        [anchor reveal];
+                    }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        } else {
+            // OSX <= 10.8
+            NSAlert *alert = [NSAlert alertWithMessageText:@"Authorization Required"
+                                             defaultButton:@"Quit"
+                                           alternateButton:nil
+                                               otherButton:@"Open System Preferences"
+                                 informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Servicea in order to be able to move and resize application windows."
+                                         "\n\n"
+                                         "Please \"Enable access for assistive devices\" in the System Preferences > Universal Access and then restart ShiftIt."
+            ];
+
+            NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettings-Lion"]];
+            [accessory setImageFrameStyle:NSImageFrameGrayBezel];
+            [alert setAccessoryView:accessory];
+
+            if ([alert runModal] == NSAlertOtherReturn) {
+                [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
+            }
+
+            [NSApp terminate:self];
+        }
+    }
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     FMTLogDebug(@"Starting up ShiftIt...");
 
-    // check authorization
-    if (![ShiftItAppDelegate isShiftItAuthorized]) {
-        FMTLogInfo(@"ShiftIt not is authorized");
-
-        // TODO: move to driver
-        // TODO: other button with help
-        NSAlert *mbox = [NSAlert
-                alertWithMessageText:@"Authorization Required"
-                       defaultButton:@"Open System Preferences"
-                     alternateButton:@"Deny"
-                         otherButton:nil
-           informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Service in order to be able to move and resize application windows.\n"
-                   "\n"
-                   "You can authorize it from within System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on.\n"
-                   "\n"
-                   "If you wish, ShiftIt can open System Preferences for you. Once you authorize it, start ShiftIt again."];
-
-        switch ([mbox runModal]) {
-            case NSAlertDefaultReturn: {
-                SBSystemPreferencesApplication *prefs = [SBApplication applicationWithBundleIdentifier:@"com.apple.systempreferences"];
-                [prefs activate];
-
-                SBSystemPreferencesPane *pane = [[prefs panes] find:^BOOL(SBSystemPreferencesPane *elem) {
-                    return [[elem id] isEqualToString:@"com.apple.preference.security"];
-                }];
-                SBSystemPreferencesAnchor *anchor = [[pane anchors] find:^BOOL(SBSystemPreferencesAnchor *elem) {
-                    return [[elem name] isEqualToString:@"Privacy_Accessibility"];
-                }];
-
-                [anchor reveal];
-            }
-
-                break;
-
-            default:
-                break;
-        }
-
-        [NSApp terminate:self];
-    }
+    [self checkAuthorization];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -486,6 +519,7 @@ NSDictionary *allShiftActions = nil;
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
 
+            // TODO: imageNamed
             NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
             NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
 
