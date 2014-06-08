@@ -1,2 +1,4 @@
 language: objective-c
 xcode_project: ShiftIt/ShiftIt.xcodeproj
+xcode_scheme: ShiftIt
+xcode_sdk: macosx10.9
