@@ -22,14 +22,18 @@
 
 #import <Foundation/Foundation.h>
 
-typedef BOOL(^FMTEachCallback)(id item);
+@interface NSArray (FMTNSArrayFunctional)
 
-@interface NSArray (FMTNSArrayExtras)
+- (id)find:(BOOL (^)(id))fun;
 
-- (id) find:(BOOL (^)(id))predicate;
-- (NSUInteger) findIndex:(BOOL (^)(id))predicate;
-- (NSArray *) filter:(BOOL (^)(id))predicate;
-- (NSArray *) transform:(id(^)(id item))transformer;
-- (void) each:(FMTEachCallback)callback;
+- (NSUInteger)indexWhere:(BOOL (^)(id))fun;
+
+- (NSArray *)filter:(BOOL (^)(id))fun;
+
+- (NSArray *)map:(id(^)(id item))fun;
+
+- (void)foreachWithStop:(BOOL (^)(id))fun;
+
+- (void)foreach:(void (^)(id))fun;
 
 @end
