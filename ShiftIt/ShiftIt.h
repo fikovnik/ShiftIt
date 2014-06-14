@@ -19,7 +19,7 @@
 
 #import "FMTUtils.h"
 #import "FMTDefines.h"
-#import "FMTNSArray+Extras.h"
+#import "FMTNSArray+Functional.h"
 #import "FMTNSError+Extras.h"
 
 #import "SIActionDelegate.h"
