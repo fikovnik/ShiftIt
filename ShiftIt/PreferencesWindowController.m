@@ -116,7 +116,7 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
                      @"fullScreen",
                      @"increase",
                      @"reduce", 
-                     @"nextscreen",
+                     @"nextscreen", 
                      @"previousscreen",
                      nil];
     
