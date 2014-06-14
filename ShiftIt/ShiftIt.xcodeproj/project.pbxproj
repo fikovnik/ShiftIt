@@ -14,7 +14,7 @@
 		270DACA914098AE30080DFBD /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
 		27160C4A16C939FF002DA475 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		27160C4B16C939FF002DA475 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DDD58140DA1D0A300B32029 /* MainMenu.xib */; };
-		27160C4C16C939FF002DA475 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = F2DC1A311133829D009BDCA5 /* PreferencesWindow.xib */; };
+		27160C4C16C939FF002DA475 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		27160C4E16C939FF002DA475 /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		27160C4F16C939FF002DA475 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
 		27160C5016C939FF002DA475 /* margin-background-image.png in Resources */ = {isa = PBXBuildFile; fileRef = 271D2EB912FC6B3A00A4D0BF /* margin-background-image.png */; };
@@ -85,6 +85,8 @@
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+		CA0A5412194C02ED00AC7F45 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA0A5410194C02ED00AC7F45 /* PreferencesWindow.xib */; };
+		CA0A5415194C030700AC7F45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CA0A5413194C030700AC7F45 /* Localizable.strings */; };
 		E4BCF1FFDFE5D8200B19C785 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCF238FB8ED2BD310B85A5 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCFA06115A778886211551 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E4BCF358EA87DDA5B032380D /* InfoPlist.strings */; };
@@ -220,6 +222,12 @@
 		83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShiftIt.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA0A5411194C02ED00AC7F45 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/PreferencesWindow.xib; sourceTree = "<group>"; };
+		CA0A5414194C030700AC7F45 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CA18ED00194C03FD00F4418C /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CA18ED01194C040300F4418C /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/PreferencesWindow.xib; sourceTree = "<group>"; };
+		CA7D32FB194BEC450087ECFF /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CA7D32FC194BEC450087ECFF /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAdjacentRectanglesTest.m; sourceTree = "<group>"; };
 		E4BCF1236CA369B89F718229 /* ShiftIt Tests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ShiftIt Tests-Prefix.pch"; sourceTree = "<group>"; };
 		E4BCF352F697F5F143E8C96C /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -509,6 +517,8 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CA0A5413194C030700AC7F45 /* Localizable.strings */,
+				CA0A5410194C02ED00AC7F45 /* PreferencesWindow.xib */,
 				27CD1A2E19437FB20063D5AB /* ShiftItMenuIcon.png */,
 				27CD1A2F19437FB20063D5AB /* ShiftItMenuIconReversed.png */,
 				279AF80E19432F6F0048FE5F /* AccessibilitySettingsLion.png */,
@@ -519,8 +529,6 @@
 				8D1107310486CEB800E47090 /* ShiftIt-Info.plist */,
 				089C165CFE840E0CC02AAC07 /* InfoPlist.strings */,
 				1DDD58140DA1D0A300B32029 /* MainMenu.xib */,
-				CA8664991836FFD600627FAC /* PreferencesWindow.xib */,
-				CA8BC2DA183704C200C8EFED /* Localizable.strings */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -690,7 +698,7 @@
 				279AF81019432F6F0048FE5F /* AccessibilitySettingsLion.png in Resources */,
 				27160C4B16C939FF002DA475 /* MainMenu.xib in Resources */,
 				27CD1A3319437FB20063D5AB /* ShiftItMenuIconReversed.png in Resources */,
-				27160C4C16C939FF002DA475 /* PreferencesWindow.xib in Resources */,
+				27160C4C16C939FF002DA475 /* (null) in Resources */,
 				27160C4E16C939FF002DA475 /* ShiftIt.icns in Resources */,
 				27160C4F16C939FF002DA475 /* ShiftIt-defaults.plist in Resources */,
 				27160C5016C939FF002DA475 /* margin-background-image.png in Resources */,
@@ -719,11 +727,12 @@
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
 				274B4CD719364F1E00C0A8C1 /* AccessibilitySettingsMaverick.png in Resources */,
+				CA0A5415194C030700AC7F45 /* Localizable.strings in Resources */,
 				27CD1A3019437FB20063D5AB /* ShiftItMenuIcon.png in Resources */,
 				279AF80F19432F6F0048FE5F /* AccessibilitySettingsLion.png in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				27CD1A3219437FB20063D5AB /* ShiftItMenuIconReversed.png in Resources */,
-				F2DC1A321133829D009BDCA5 /* PreferencesWindow.xib in Resources */,
+				CA0A5412194C02ED00AC7F45 /* PreferencesWindow.xib in Resources */,
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
 				27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
 				271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */,
@@ -861,6 +870,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				089C165DFE840E0CC02AAC07 /* English */,
+				CA7D32FB194BEC450087ECFF /* ja */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -869,7 +879,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				1DDD58150DA1D0A300B32029 /* English */,
-				CA8664951836FF8A00627FAC /* ja */,
+				CA7D32FC194BEC450087ECFF /* ja */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -882,30 +892,30 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
+		CA0A5410194C02ED00AC7F45 /* PreferencesWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA0A5411194C02ED00AC7F45 /* en */,
+				CA18ED01194C040300F4418C /* ja */,
+			);
+			name = PreferencesWindow.xib;
+			sourceTree = "<group>";
+		};
+		CA0A5413194C030700AC7F45 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CA0A5414194C030700AC7F45 /* en */,
+				CA18ED00194C03FD00F4418C /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		E4BCF358EA87DDA5B032380D /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				E4BCF352F697F5F143E8C96C /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		CA8664991836FFD600627FAC /* PreferencesWindow.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CA8664981836FFD600627FAC /* en */,
-				CA86649A1836FFEB00627FAC /* ja */,
-			);
-			name = PreferencesWindow.xib;
-			sourceTree = "<group>";
-		};
-		CA8BC2DA183704C200C8EFED /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CA8BC2D9183704C200C8EFED /* ja */,
-				CA8BC2DB183704CA00C8EFED /* en */,
-			);
-			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -1,0 +1,23 @@
+/* 
+  Localizable.strings
+  ShiftIt
+
+  Created by Hiroyuki Kurosawa on 2013/11/16.
+
+*/
+
+"Left" = "Left";
+"Right" = "Right";
+"Top" = "Top";
+"Bottom" = "Bottom";
+"Top Left" = "Top Left";
+"Top Right" = "Top Right";
+"Bottom Left" = "Bottom Left";
+"Bottom Right" = "Bottom Right";
+"Center" = "Center";
+"Toggle Zoom" = "Toggle Zoom";
+"Maximize" = "Maximize";
+"Toggle Full Screen" = "Toggle Full Screen";
+"Increase" = "Increase";
+"Reduce" = "Reduce";
+"Next Screen" = "Next Screen";
