@@ -17,6 +17,7 @@
                 <outlet property="srLeft_" destination="867" id="900"/>
                 <outlet property="srMaximize_" destination="945" id="951"/>
                 <outlet property="srNextScreen_" destination="1819" id="1826"/>
+                <outlet property="srPreviousScreen_" destination="hjv-0b-Sjz" id="7EC-ys-fyy"/>
                 <outlet property="srReduce_" destination="878" id="922"/>
                 <outlet property="srRight_" destination="868" id="901"/>
                 <outlet property="srTL_" destination="871" id="923"/>
@@ -416,6 +417,22 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <connections>
                                                 <outlet property="delegate" destination="-2" id="1825"/>
+                                            </connections>
+                                        </customView>
+                                        <textField verticalHuggingPriority="750" id="KmB-fT-675">
+                                            <rect key="frame" x="1" y="34" width="118" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="Previous screen" id="iI1-tP-TYH">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <customView id="hjv-0b-Sjz" userLabel="sr_nextscreen" customClass="SRRecorderControl">
+                                            <rect key="frame" x="126" y="31" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="wIo-CD-a7D"/>
                                             </connections>
                                         </customView>
                                     </subviews>
