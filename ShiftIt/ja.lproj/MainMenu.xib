@@ -69,18 +69,18 @@
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="793"/>
-                <menuItem title="Preferences" keyEquivalent="," id="558">
+                <menuItem title="環境設定..." keyEquivalent="," id="558">
                     <connections>
                         <action selector="showPreferences:" target="494" id="760"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Check for Updates" id="761">
+                <menuItem title="アップデートの確認..." id="761">
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <connections>
                         <action selector="checkForUpdates:" target="670" id="763"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Quit ShiftIt" keyEquivalent="q" id="546">
+                <menuItem title="ShiftItの終了" keyEquivalent="q" id="546">
                     <connections>
                         <action selector="terminate:" target="-3" id="628"/>
                     </connections>

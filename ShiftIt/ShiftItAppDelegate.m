@@ -323,13 +323,11 @@ NSDictionary *allShiftActions = nil;
         if (AXIsProcessTrustedWithOptions != NULL) {
             // OSX >= 10.9
 
-            NSAlert *alert = [NSAlert alertWithMessageText:@"Authorization Required"
-                                             defaultButton:@"Recheck"
-                                           alternateButton:@"Open System Preferences"
-                                               otherButton:@"Quit"
-                                 informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Servicea in order to be able to move and resize application windows."
-                                         "\n\n"
-                                         "You can do this in System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on."
+            NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Authorization Required", nil)
+                                             defaultButton:NSLocalizedString(@"Recheck", nil)
+                                           alternateButton:NSLocalizedString(@"Open System Preferences", nil)
+                                               otherButton:NSLocalizedString(@"Quit", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION INFORMATIVE TEXT", nil)
             ];
 
             NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
