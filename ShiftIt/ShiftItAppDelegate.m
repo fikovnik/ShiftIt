@@ -327,11 +327,11 @@ NSDictionary *allShiftActions = nil;
                                              defaultButton:NSLocalizedString(@"Recheck", nil)
                                            alternateButton:NSLocalizedString(@"Open System Preferences", nil)
                                                otherButton:NSLocalizedString(@"Quit", nil)
-                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION INFORMATIVE TEXT", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_9", nil)
             ];
 
             NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
-            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettings-Maverick"]];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettingsMaverick"]];
             [accessory setImageFrameStyle:NSImageFrameGrayBezel];
             [alert setAccessoryView:accessory];
 
@@ -370,17 +370,15 @@ NSDictionary *allShiftActions = nil;
             }
         } else {
             // OSX <= 10.8
-            NSAlert *alert = [NSAlert alertWithMessageText:@"Authorization Required"
-                                             defaultButton:@"Quit"
+            NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Authorization Required", nil)
+                                             defaultButton:NSLocalizedString(@"Quit", nil)
                                            alternateButton:nil
-                                               otherButton:@"Open System Preferences"
-                                 informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Servicea in order to be able to move and resize application windows."
-                                         "\n\n"
-                                         "Please \"Enable access for assistive devices\" in the System Preferences > Universal Access and then restart ShiftIt."
+                                               otherButton:NSLocalizedString(@"Open System Preferences", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_8", nil)
             ];
 
             NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
-            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettings-Lion"]];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettingsLion"]];
             [accessory setImageFrameStyle:NSImageFrameGrayBezel];
             [alert setAccessoryView:accessory];
 
