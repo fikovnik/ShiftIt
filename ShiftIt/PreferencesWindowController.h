@@ -23,7 +23,6 @@
 
 @interface PreferencesWindowController : NSWindowController {
  @private
-    NSDictionary *hotKeyControls_;
 	NSString *selectedTabIdentifier_;
     NSString *debugLoggingFile_;
 	
@@ -32,22 +31,9 @@
 
     IBOutlet NSButtonCell *showMenuIcon;
 
-    IBOutlet SRRecorderControl *srLeft_;
-    IBOutlet SRRecorderControl *srRight_;
-    IBOutlet SRRecorderControl *srTop_;
-    IBOutlet SRRecorderControl *srBottom_;    
-    IBOutlet SRRecorderControl *srTL_;
-    IBOutlet SRRecorderControl *srTR_;
-    IBOutlet SRRecorderControl *srBR_;
-    IBOutlet SRRecorderControl *srBL_;
-    IBOutlet SRRecorderControl *srCenter_;
-    IBOutlet SRRecorderControl *srZoom_;
-    IBOutlet SRRecorderControl *srMaximize_;
-    IBOutlet SRRecorderControl *srFullScreen_;
-    IBOutlet SRRecorderControl *srIncrease_;
-    IBOutlet SRRecorderControl *srReduce_;    
-    IBOutlet SRRecorderControl *srNextScreen_;    
-    IBOutlet SRRecorderControl *srPreviousScreen_;
+    IBOutlet NSTableView *hotkeysView_;
+    IBOutlet NSTableColumn *hotkeyLabelColumn_;
+    IBOutlet NSTableColumn *hotkeyColumn_;
 }
 
 @property BOOL shouldStartAtLogin;
