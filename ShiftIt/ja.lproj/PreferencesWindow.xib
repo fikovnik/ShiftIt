@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+    <dependencies>
+        <deployment version="1060" defaultVersion="1060" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
+            <connections>
+                <outlet property="srBL_" destination="873" id="917"/>
+                <outlet property="srBR_" destination="874" id="918"/>
+                <outlet property="srBottom_" destination="870" id="903"/>
+                <outlet property="srCenter_" destination="875" id="948"/>
+                <outlet property="srFullScreen_" destination="876" id="949"/>
+                <outlet property="srIncrease_" destination="877" id="920"/>
+                <outlet property="srLeft_" destination="867" id="900"/>
+                <outlet property="srMaximize_" destination="945" id="951"/>
+                <outlet property="srNextScreen_" destination="1819" id="1826"/>
+                <outlet property="srReduce_" destination="878" id="922"/>
+                <outlet property="srRight_" destination="868" id="901"/>
+                <outlet property="srTL_" destination="871" id="923"/>
+                <outlet property="srTR_" destination="872" id="924"/>
+                <outlet property="srTop_" destination="869" id="902"/>
+                <outlet property="srZoom_" destination="941" id="950"/>
+                <outlet property="tabView_" destination="3" id="588"/>
+                <outlet property="versionLabel_" destination="584" id="589"/>
+                <outlet property="window" destination="1" id="242"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application"/>
+        <window title="環境設定" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" wantsToBeColor="NO" animationBehavior="default" id="1">
+            <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="488" y="105" width="405" height="501"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <view key="contentView" id="2">
+                <rect key="frame" x="0.0" y="0.0" width="405" height="501"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <tabView type="leftTabsBezelBorder" initialItem="5" id="3">
+                        <rect key="frame" x="13" y="10" width="379" height="480"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <tabViewItems>
+                            <tabViewItem label="一般" identifier="general" id="5">
+                                <view key="view" id="6">
+                                    <rect key="frame" x="32" y="7" width="337" height="460"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button verticalHuggingPriority="750" id="66">
+                                            <rect key="frame" x="76" y="85" width="170" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="push" title="アップデートを確認..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="67">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" size="13" name="AquaKana"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="checkForUpdates:" target="69" id="255"/>
+                                            </connections>
+                                        </button>
+                                        <textField verticalHuggingPriority="750" id="582">
+                                            <rect key="frame" x="144" y="384" width="127" height="29"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ShiftIt App" id="583">
+                                                <font key="font" size="24" name="LucidaGrande"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="584">
+                                            <rect key="frame" x="171" y="371" width="73" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="version" id="585">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <button verticalHuggingPriority="750" id="813">
+                                            <rect key="frame" x="93" y="53" width="136" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="push" title="ShiftIt を終了" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="814">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="terminate:" target="-3" id="816"/>
+                                            </connections>
+                                        </button>
+                                        <imageView id="817">
+                                            <rect key="frame" x="54" y="353" width="80" height="80"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ShiftIt-logo" id="818"/>
+                                        </imageView>
+                                        <matrix verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" id="823">
+                                            <rect key="frame" x="26" y="243" width="233" height="102"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="cellSize" width="233" height="21"/>
+                                            <size key="intercellSpacing" width="0.0" height="6"/>
+                                            <buttonCell key="prototype" type="check" title="Show Icon In Menu Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="828">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <cells>
+                                                <column>
+                                                    <buttonCell type="check" title="メニューバーにアイコンを表示" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="257">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <connections>
+                                                            <binding destination="191" name="value" keyPath="values.shiftItshowMenu" id="833"/>
+                                                        </connections>
+                                                    </buttonCell>
+                                                    <buttonCell type="check" title="ログイン時に開く" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="63">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <connections>
+                                                            <binding destination="-2" name="value" keyPath="shouldStartAtLogin" id="834"/>
+                                                        </connections>
+                                                    </buttonCell>
+                                                    <buttonCell type="check" title="アップデートを自動的に確認" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="65">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <connections>
+                                                            <binding destination="69" name="value" keyPath="automaticallyChecksForUpdates" id="73"/>
+                                                        </connections>
+                                                    </buttonCell>
+                                                    <buttonCell type="check" title="ドロワーを含める" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="820">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <connections>
+                                                            <binding destination="191" name="value" keyPath="values.includeDrawers" id="832"/>
+                                                        </connections>
+                                                    </buttonCell>
+                                                </column>
+                                            </cells>
+                                        </matrix>
+                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="1827">
+                                            <rect key="frame" x="44" y="165" width="272" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" alignment="left" title="ドロワーはほとんど問題なく動作しますが、まれにおかしな挙動をするかもしれません。既に報告されたものでないか、問題を報告する前にリストを確認してください。" id="1828">
+                                                <font key="font" size="11" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <button verticalHuggingPriority="750" id="1832">
+                                            <rect key="frame" x="102" y="117" width="118" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="push" title="問題を報告..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1833">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" size="13" name="AquaKana"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="reportIssue:" target="-2" id="1834"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                            <tabViewItem label="ショートカット" identifier="hotKeys" id="394">
+                                <view key="view" id="395">
+                                    <rect key="frame" x="32" y="7" width="337" height="460"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField verticalHuggingPriority="750" tag="100" id="517">
+                                            <rect key="frame" x="95" y="426" width="65" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="左寄せ" id="518">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="519">
+                                            <rect key="frame" x="96" y="402" width="65" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="右寄せ" id="520">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="521">
+                                            <rect key="frame" x="96" y="378" width="65" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="上寄せ" id="524">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="522">
+                                            <rect key="frame" x="96" y="354" width="65" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="下寄せ" id="523">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="538">
+                                            <rect key="frame" x="95" y="324" width="65" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="左上寄せ" id="545">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="539">
+                                            <rect key="frame" x="105" y="300" width="56" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="右上寄せ" id="544">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="540">
+                                            <rect key="frame" x="105" y="276" width="56" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="左下寄せ" id="543">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="541">
+                                            <rect key="frame" x="105" y="252" width="56" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="右下寄せ" id="542">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="554">
+                                            <rect key="frame" x="78" y="220" width="82" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="センタリング" id="561">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="555">
+                                            <rect key="frame" x="0.0" y="146" width="160" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="フルスクリーンの切り替え" id="560">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="619">
+                                            <rect key="frame" x="52" y="113" width="108" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="ウインドウの拡大" id="622">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="620">
+                                            <rect key="frame" x="53" y="89" width="108" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="ウインドウの縮小" id="621">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <button verticalHuggingPriority="750" id="606">
+                                            <rect key="frame" x="77" y="5" width="169" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                            <buttonCell key="cell" type="push" title="初期設定に戻す" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="607">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" size="13" name="AquaKana"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="revertDefaults:" target="-2" id="610"/>
+                                            </connections>
+                                        </button>
+                                        <customView id="867" userLabel="sr_left" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="421" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="904"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="868" userLabel="sr_right" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="396" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="905"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="869" userLabel="sr_top" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="371" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="906"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="870" userLabel="sr_bottom" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="346" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="907"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="871" userLabel="sr_tl" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="318" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="909"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="872" userLabel="sr_tr" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="294" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="910"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="873" userLabel="sr_bl" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="270" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="911"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="874" userLabel="sr_br" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="246" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="912"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="875" userLabel="sr_center" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="214" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="913"/>
+                                            </connections>
+                                        </customView>
+                                        <textField verticalHuggingPriority="750" id="940">
+                                            <rect key="frame" x="52" y="195" width="108" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="ズームの切り替え" id="942">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <customView id="941" userLabel="sr_zoom" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="189" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="943"/>
+                                            </connections>
+                                        </customView>
+                                        <textField verticalHuggingPriority="750" id="944">
+                                            <rect key="frame" x="116" y="170" width="43" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="最大化" id="946">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <customView id="945" userLabel="sr_maximize" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="164" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="947"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="876" userLabel="sr_fullScreen" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="140" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="914"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="877" userLabel="sr_increment" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="107" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="915"/>
+                                            </connections>
+                                        </customView>
+                                        <customView id="878" userLabel="sr_decrement" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="83" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="916"/>
+                                            </connections>
+                                        </customView>
+                                        <textField verticalHuggingPriority="750" id="1817">
+                                            <rect key="frame" x="64" y="59" width="95" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="次のスクリーン" id="1822">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <customView id="1819" userLabel="sr_nextscreen" customClass="SRRecorderControl">
+                                            <rect key="frame" x="166" y="53" width="160" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-2" id="1825"/>
+                                            </connections>
+                                        </customView>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                            <tabViewItem label="拡大と縮小" identifier="incred" id="632">
+                                <view key="view" id="633">
+                                    <rect key="frame" x="32" y="7" width="337" height="460"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <textField verticalHuggingPriority="750" id="729">
+                                            <rect key="frame" x="7" y="426" width="56" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="サイズ：" id="730">
+                                                <font key="font" size="13" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <matrix verticalHuggingPriority="750" allowsEmptySelection="NO" id="731">
+                                            <rect key="frame" x="22" y="327" width="104" height="91"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            <size key="cellSize" width="104" height="29"/>
+                                            <size key="intercellSpacing" width="4" height="2"/>
+                                            <buttonCell key="prototype" type="radio" title="Radio" imagePosition="left" alignment="left" inset="2" id="734">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <cells>
+                                                <column>
+                                                    <buttonCell type="radio" title="固定" imagePosition="left" alignment="left" state="on" tag="3001" inset="2" id="732">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <buttonCell type="radio" title="ウインドウの" imagePosition="left" alignment="left" tag="3002" inset="2" id="733">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                    <buttonCell type="radio" title="スクリーンの" imagePosition="left" alignment="left" tag="3003" inset="2" id="735">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                    </buttonCell>
+                                                </column>
+                                            </cells>
+                                            <connections>
+                                                <binding destination="191" name="selectedTag" keyPath="values.sizeDeltaType" id="789"/>
+                                                <outlet property="nextKeyView" destination="736" id="757"/>
+                                            </connections>
+                                        </matrix>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="753">
+                                            <rect key="frame" x="178" y="360" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" alignment="left" increment="0.25" minValue="0.25" maxValue="100" doubleValue="1" id="754"/>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.windowSizeDelta" id="786"/>
+                                                <outlet property="nextKeyView" destination="742" id="762"/>
+                                            </connections>
+                                        </stepper>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="755">
+                                            <rect key="frame" x="178" y="329" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" alignment="left" increment="0.25" minValue="0.20000000000000001" maxValue="100" doubleValue="0.20000000000000001" id="756"/>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.screenSizeDelta" id="788"/>
+                                            </connections>
+                                        </stepper>
+                                        <textField verticalHuggingPriority="750" id="736">
+                                            <rect key="frame" x="129" y="393" width="45" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="100" drawsBackground="YES" id="737">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="738">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <real key="minimum" value="1"/>
+                                                    <real key="maximum" value="999"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.fixedSizeWidthDelta" id="809"/>
+                                                <outlet property="nextKeyView" destination="751" id="758"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="739">
+                                            <rect key="frame" x="129" y="363" width="45" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="99.25" drawsBackground="YES" id="740">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.###" negativeFormat="#,##0.###" localizesFormat="NO" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="0" maximumFractionDigits="3" id="741">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <real key="minimum" value="1"/>
+                                                    <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                        <real key="inspectorSampleValue" value="12.449999999999999"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.windowSizeDelta" id="783"/>
+                                                <outlet property="nextKeyView" destination="753" id="759"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="742">
+                                            <rect key="frame" x="129" y="332" width="44" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="743">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.###" negativeFormat="#,##0.###" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="0" maximumFractionDigits="3" id="744">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <real key="minimum" value="1"/>
+                                                    <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="YES"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.screenSizeDelta" id="784"/>
+                                                <outlet property="nextKeyView" destination="755" id="760"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="747">
+                                            <rect key="frame" x="199" y="365" width="13" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="%" id="748">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="749">
+                                            <rect key="frame" x="199" y="334" width="13" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="%" id="750">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="751">
+                                            <rect key="frame" x="178" y="390" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" state="on" alignment="left" maxValue="999" id="752"/>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.fixedSizeDelta" id="785"/>
+                                                <outlet property="nextKeyView" destination="790" id="811"/>
+                                            </connections>
+                                        </stepper>
+                                        <textField verticalHuggingPriority="750" id="790">
+                                            <rect key="frame" x="228" y="393" width="41" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="795">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="796">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <real key="minimum" value="1"/>
+                                                    <real key="maximum" value="999"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.fixedSizeHeightDelta" id="810"/>
+                                                <outlet property="nextKeyView" destination="792" id="812"/>
+                                            </connections>
+                                        </textField>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="792">
+                                            <rect key="frame" x="274" y="390" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" alignment="left" maxValue="999" id="793"/>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.fixedSizeDelta" id="800"/>
+                                                <outlet property="nextKeyView" destination="739" id="798"/>
+                                            </connections>
+                                        </stepper>
+                                        <textField verticalHuggingPriority="750" id="801">
+                                            <rect key="frame" x="199" y="396" width="21" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="px" id="802">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="803">
+                                            <rect key="frame" x="295" y="396" width="21" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="px" id="804">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="805">
+                                            <rect key="frame" x="126" y="418" width="13" height="11"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="幅" id="806">
+                                                <font key="font" size="9" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="807">
+                                            <rect key="frame" x="225" y="418" width="22" height="11"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" controlSize="mini" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="高さ" id="808">
+                                                <font key="font" size="9" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                            <tabViewItem label="アンカー" identifier="anchors" id="1010">
+                                <view key="view" id="1011">
+                                    <rect key="frame" x="32" y="7" width="337" height="460"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button id="1038">
+                                            <rect key="frame" x="9" y="427" width="152" height="18"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="check" title="アンカーを有効にする" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1039">
+                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                <font key="font" size="13" name="AquaKana"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.marginsEnabled" id="1112"/>
+                                                <outlet property="nextKeyView" destination="1026" id="1077"/>
+                                            </connections>
+                                        </button>
+                                        <textField verticalHuggingPriority="750" id="1026">
+                                            <rect key="frame" x="145" y="378" width="37" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1057">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="1058">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <real key="minimum" value="0.0"/>
+                                                    <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1095"/>
+                                                <binding destination="191" name="value" keyPath="values.topMargin" id="1103">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                                <outlet property="nextKeyView" destination="1021" id="1078"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="1025">
+                                            <rect key="frame" x="43" y="324" width="37" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1059">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="1060">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <real key="minimum" value="0.0"/>
+                                                    <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.leftMargin" id="1111">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1118"/>
+                                                <outlet property="nextKeyView" destination="1019" id="1079"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="1024">
+                                            <rect key="frame" x="146" y="270" width="37" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1061">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="1062">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <real key="minimum" value="0.0"/>
+                                                    <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.bottomMargin" id="1101">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1108"/>
+                                                <outlet property="nextKeyView" destination="1020" id="1080"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="1023">
+                                            <rect key="frame" x="232" y="324" width="37" height="22"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1063">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="1064">
+                                                    <real key="roundingIncrement" value="0.0"/>
+                                                    <real key="minimum" value="0.0"/>
+                                                    <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
+                                                </numberFormatter>
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1115"/>
+                                                <binding destination="191" name="value" keyPath="values.rightMargin" id="1105">
+                                                    <dictionary key="options">
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                    </dictionary>
+                                                </binding>
+                                                <outlet property="nextKeyView" destination="1018" id="1081"/>
+                                            </connections>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="1037">
+                                            <rect key="frame" x="8" y="69" width="315" height="168"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" controlSize="small" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="left" id="1040">
+                                                <font key="font" size="11" name="AquaKana"/>
+                                                <string key="title">アンカーはスクリーンの余白を設定します。ウインドウが余白にかかっている場合、次の操作時に自動的にその縁に沿うようになります。これは特に Terminal.app のように連続的でなく段階的にサイズを変化させたいようなアプリケーションで便利です。
+</string>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <imageView id="1022">
+                                            <rect key="frame" x="109" y="271" width="110" height="129"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="margin-background-image" id="1065"/>
+                                        </imageView>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1021">
+                                            <rect key="frame" x="187" y="375" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" doubleValue="2" id="1066"/>
+                                            <connections>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1117"/>
+                                                <binding destination="191" name="value" keyPath="values.topMargin" id="1114"/>
+                                                <outlet property="nextKeyView" destination="1025" id="1082"/>
+                                            </connections>
+                                        </stepper>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1020">
+                                            <rect key="frame" x="187" y="267" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="1" id="1067"/>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.bottomMargin" id="1099"/>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1094"/>
+                                            </connections>
+                                        </stepper>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1019">
+                                            <rect key="frame" x="85" y="321" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="1068"/>
+                                            <connections>
+                                                <binding destination="191" name="value" keyPath="values.leftMargin" id="1110"/>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1096"/>
+                                                <outlet property="nextKeyView" destination="1023" id="1084"/>
+                                            </connections>
+                                        </stepper>
+                                        <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1018">
+                                            <rect key="frame" x="263" y="321" width="19" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <stepperCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="1" id="1069"/>
+                                            <connections>
+                                                <binding destination="191" name="enabled" keyPath="values.marginsEnabled" id="1102"/>
+                                                <binding destination="191" name="value" keyPath="values.rightMargin" id="1109"/>
+                                                <outlet property="nextKeyView" destination="1024" id="1083"/>
+                                            </connections>
+                                        </stepper>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                            <tabViewItem label="詳細設定" identifier="advanced" id="837">
+                                <view key="view" id="838">
+                                    <rect key="frame" x="32" y="7" width="337" height="460"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <button verticalHuggingPriority="750" id="861">
+                                            <rect key="frame" x="23" y="325" width="277" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="push" title="デバッグログを有効化" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="862">
+                                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                                                <font key="font" size="13" name="AquaKana"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <binding destination="-2" name="value" keyPath="debugLogging" id="927"/>
+                                            </connections>
+                                        </button>
+                                        <textField verticalHuggingPriority="750" id="863">
+                                            <rect key="frame" x="14" y="373" width="309" height="70"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" alignment="justified" title="問題が起きた場合、このデバッグログを有効にすることで問題の特定を行いやすくなることがあります。有効にすると、ログは下に表示されるファイルに記録されます。github.com にレポートする際はログファイルを添付するようにしてください。" id="864">
+                                                <font key="font" size="11" name="AquaKana"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" id="865">
+                                            <rect key="frame" x="26" y="250" width="271" height="62"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" controlSize="small" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="center" title="Label" id="866">
+                                                <font key="font" metaFont="smallSystem"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                            <connections>
+                                                <binding destination="-2" name="hidden" keyPath="debugLogging" id="937">
+                                                    <dictionary key="options">
+                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                                    </dictionary>
+                                                </binding>
+                                                <binding destination="-2" name="value" keyPath="debugLoggingFile" id="936"/>
+                                                <binding destination="-2" name="toolTip" keyPath="debugLoggingFile" id="939"/>
+                                            </connections>
+                                        </textField>
+                                        <button verticalHuggingPriority="750" id="1836">
+                                            <rect key="frame" x="100" y="202" width="123" height="32"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <buttonCell key="cell" type="push" title="Finder に表示" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1837">
+                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                <font key="font" metaFont="system"/>
+                                            </buttonCell>
+                                            <connections>
+                                                <action selector="revealLogFileInFinder:" target="-2" id="1841"/>
+                                                <binding destination="-2" name="hidden" keyPath="debugLogging" id="1840">
+                                                    <dictionary key="options">
+                                                        <string key="NSValueTransformerName">NSNegateBoolean</string>
+                                                    </dictionary>
+                                                </binding>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </view>
+                            </tabViewItem>
+                        </tabViewItems>
+                        <connections>
+                            <binding destination="-2" name="selectedIdentifier" keyPath="selectedTabIdentifier_" id="614"/>
+                            <outlet property="delegate" destination="-2" id="908"/>
+                        </connections>
+                    </tabView>
+                </subviews>
+            </view>
+            <connections>
+                <outlet property="initialFirstResponder" destination="2" id="327"/>
+            </connections>
+        </window>
+        <customObject id="69" customClass="SUUpdater"/>
+        <userDefaultsController representsSharedInstance="YES" id="191"/>
+    </objects>
+    <resources>
+        <image name="ShiftIt-logo" width="512" height="512"/>
+        <image name="margin-background-image" width="150" height="96"/>
+    </resources>
+</document>

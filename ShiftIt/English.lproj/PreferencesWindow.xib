@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="12F45" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment version="1060" defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <deployment version="1060" defaultVersion="1060" identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
             <connections>
-                <outlet property="showMenuIcon" destination="257" id="zQM-A2-jhe"/>
                 <outlet property="srBL_" destination="873" id="917"/>
                 <outlet property="srBR_" destination="874" id="918"/>
                 <outlet property="srBottom_" destination="870" id="903"/>
@@ -30,7 +29,7 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application"/>
-        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" animationBehavior="default" id="1">
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" wantsToBeColor="NO" animationBehavior="default" id="1">
             <windowStyleMask key="styleMask" titled="YES" closable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="488" y="105" width="367" height="496"/>
@@ -64,7 +63,7 @@
                                             <rect key="frame" x="125" y="384" width="127" height="29"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ShiftIt App" id="583">
-                                                <font key="font" metaFont="system" size="24"/>
+                                                <font key="font" size="24" name="LucidaGrande"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -92,7 +91,7 @@
                                         <imageView id="817">
                                             <rect key="frame" x="35" y="353" width="80" height="80"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ShiftIt" id="818"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ShiftIt-logo" id="818"/>
                                         </imageView>
                                         <matrix verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" id="823">
                                             <rect key="frame" x="26" y="243" width="233" height="102"/>
@@ -110,7 +109,6 @@
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
                                                         <connections>
-                                                            <action selector="showMenuBarIconAction:" target="-2" id="4SQ-wy-NMh"/>
                                                             <binding destination="191" name="value" keyPath="values.shiftItshowMenu" id="833"/>
                                                         </connections>
                                                     </buttonCell>
@@ -424,7 +422,7 @@
                             <tabViewItem label="Increase/Reduce" identifier="incred" id="632">
                                 <view key="view" id="633">
                                     <rect key="frame" x="32" y="7" width="299" height="460"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <textField verticalHuggingPriority="750" id="729">
                                             <rect key="frame" x="7" y="426" width="38" height="17"/>
@@ -487,9 +485,13 @@
                                             <rect key="frame" x="98" y="394" width="45" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="100" drawsBackground="YES" id="737">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="738">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="738">
+                                                    <real key="roundingIncrement" value="0.0"/>
                                                     <real key="minimum" value="1"/>
                                                     <real key="maximum" value="999"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
                                                 </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -504,10 +506,12 @@
                                             <rect key="frame" x="98" y="363" width="45" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" title="99.25" drawsBackground="YES" id="740">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="3" id="741">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.###" negativeFormat="#,##0.###" localizesFormat="NO" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="0" maximumFractionDigits="3" id="741">
+                                                    <real key="roundingIncrement" value="0.0"/>
                                                     <real key="minimum" value="1"/>
                                                     <real key="maximum" value="100"/>
                                                     <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
                                                         <real key="inspectorSampleValue" value="12.449999999999999"/>
                                                     </metadata>
                                                 </numberFormatter>
@@ -524,9 +528,13 @@
                                             <rect key="frame" x="98" y="329" width="44" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="743">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="309" maximumFractionDigits="3" id="744">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#,##0.###" negativeFormat="#,##0.###" numberStyle="decimal" minimumIntegerDigits="1" maximumIntegerDigits="309" minimumFractionDigits="0" maximumFractionDigits="3" id="744">
+                                                    <real key="roundingIncrement" value="0.0"/>
                                                     <real key="minimum" value="1"/>
                                                     <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="YES"/>
+                                                    </metadata>
                                                 </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -568,9 +576,13 @@
                                             <rect key="frame" x="197" y="394" width="41" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="795">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="796">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="796">
+                                                    <real key="roundingIncrement" value="0.0"/>
                                                     <real key="minimum" value="1"/>
                                                     <real key="maximum" value="999"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
                                                 </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -632,7 +644,7 @@
                             <tabViewItem label="Anchors" identifier="anchors" id="1010">
                                 <view key="view" id="1011">
                                     <rect key="frame" x="32" y="7" width="299" height="460"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button id="1038">
                                             <rect key="frame" x="9" y="427" width="120" height="18"/>
@@ -650,9 +662,13 @@
                                             <rect key="frame" x="130" y="372" width="37" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1057">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="1058">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="1058">
+                                                    <real key="roundingIncrement" value="0.0"/>
                                                     <real key="minimum" value="0.0"/>
                                                     <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
                                                 </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -672,9 +688,13 @@
                                             <rect key="frame" x="28" y="318" width="37" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1059">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="1060">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="1060">
+                                                    <real key="roundingIncrement" value="0.0"/>
                                                     <real key="minimum" value="0.0"/>
                                                     <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
                                                 </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -694,9 +714,13 @@
                                             <rect key="frame" x="131" y="264" width="37" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1061">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="1062">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="1062">
+                                                    <real key="roundingIncrement" value="0.0"/>
                                                     <real key="minimum" value="0.0"/>
                                                     <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
                                                 </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -716,9 +740,13 @@
                                             <rect key="frame" x="217" y="318" width="37" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1063">
-                                                <numberFormatter key="formatter" formatterBehavior="default10_4" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" id="1064">
+                                                <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" minimumFractionDigits="0" maximumFractionDigits="0" id="1064">
+                                                    <real key="roundingIncrement" value="0.0"/>
                                                     <real key="minimum" value="0.0"/>
                                                     <real key="maximum" value="100"/>
+                                                    <metadata>
+                                                        <bool key="localizesFormat" value="NO"/>
+                                                    </metadata>
                                                 </numberFormatter>
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -739,7 +767,7 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" controlSize="small" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="justified" id="1040">
                                                 <font key="font" metaFont="smallSystem"/>
-                                                <string key="title">Anchors define margins of a screen. If a window is inside one of these margins it will be automatically anchored to the respective side with next actions that is executed. This is useful especially for application like Terminal.app or other that do not change their sizes continously, but rather in a descrete steps.</string>
+                                                <string key="title">Anchors define margins of a screen. If a window is inside one of these margins it will me automatically anchored to the respective side with next actions that is executed. This is useful especially for application like Terminal.app or other that do not change their sizes continously, but rather in a descrete steps.</string>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -870,7 +898,7 @@
         <userDefaultsController representsSharedInstance="YES" id="191"/>
     </objects>
     <resources>
-        <image name="ShiftIt" width="512" height="512"/>
+        <image name="ShiftIt-logo" width="512" height="512"/>
         <image name="margin-background-image" width="150" height="96"/>
     </resources>
 </document>
