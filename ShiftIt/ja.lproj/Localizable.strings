@@ -21,22 +21,15 @@
 "Increase" = "ウインドウの拡大";
 "Reduce" = "ウインドウの縮小";
 "Next Screen" = "次のスクリーン";
-"Before you report new issue" = "問題を報告する前に";
-"Please make sure that you look at the other issues before you submit a new one." = "問題を報告する前に、報告済みの問題を確認してください。";
-"Take me to github.com" = "github.com を開く";
-
-"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\"." = "UI Element Inspector がアクセシビリティAPI が有効であることを要求しています。\"補助装置にアクセスできるようにする\"オプションを有効にして再度お試しください。";
-"OK" = "OK";
-"Cancel" = "キャンセル";
-
-"Start ShiftIt automatically?" = "ShiftIt を自動的に開きますか?";
-"Would you like to have ShiftIt automatically started at a login time?" = "ログイン時に自動的に ShiftIt を開始しますか?";
-"Yes" = "はい";
-"No" = "いいえ";
 
 "Authorization Required" = "許可が必要です";
 "Recheck" = "再確認";
 "Open System Preferences" = "システム環境設定を開く";
 "Quit" = "終了";
-"ShiftIt needs to be authorized to use an Accessibility Services in order to be able to move and resize application windows.\n\nYou can do this in System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on." = "ShiftIt はアプリケーションウインドウの移動やリサイズをするためにアクセシビリティサービスの許可が必要です。\n\nこれはシステム環境設定 > セキュリティとプライバシー > プライバシー > アクセシビリティで設定が行えます。ShiftIt を許可アプリケーションのリストにドラッグ＆ドロップして追加し、チェックボックスにチェックマークを付ける必要があるかもしれません。";
-"ShiftIt needs to be authorized to use an Accessibility Services in order to be able to move and resize application windows.\n\nPlease \"Enable access for assistive devices\" in the System Preferences > Universal Access and then restart ShiftIt." = "ShiftIt はアプリケーションウインドウの移動やリサイズをするためにアクセシビリティサービスの許可が必要です。\n\nPlease \"Enable access for assistive devices\" in the システム環境設定 > ユニバーサルアクセスから\"補助装置にアクセスできるようにする\"を有効にした後、ShiftIt を再起動してください。";
+"AUTHORIZATION_INFORMATIVE_TEXT_10_9" = "ShiftIt はアプリケーションウインドウの移動やリサイズをするためにアクセシビリティサービスの許可が必要です。\n\nこれはシステム環境設定 > セキュリティとプライバシー > プライバシー > アクセシビリティで設定が行えます。ShiftIt を許可アプリケーションのリストにドラッグ＆ドロップして追加し、チェックボックスにチェックマークを付ける必要があるかもしれません。";
+"AUTHORIZATION_INFORMATIVE_TEXT_10_8" = "ShiftIt はアプリケーションウインドウの移動やリサイズをするためにアクセシビリティサービスの許可が必要です。\n\nPlease \"Enable access for assistive devices\" in the システム環境設定 > ユニバーサルアクセスから\"補助装置にアクセスできるようにする\"を有効にした後、ShiftIt を再起動してください。";
+
+"Start ShiftIt automatically?" = "ShiftIt を自動的に開きますか?";
+"Would you like to have ShiftIt automatically started at a login time?" = "ログイン時に自動的に ShiftIt を開始しますか?";
+"Yes" = "はい";
+"No" = "いいえ";
