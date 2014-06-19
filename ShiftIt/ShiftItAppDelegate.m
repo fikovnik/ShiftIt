@@ -327,7 +327,7 @@ NSDictionary *allShiftActions = nil;
                                              defaultButton:NSLocalizedString(@"Recheck", nil)
                                            alternateButton:NSLocalizedString(@"Open System Preferences", nil)
                                                otherButton:NSLocalizedString(@"Quit", nil)
-                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_9", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"ShiftIt needs to be authorized to use an Accessibility Services in order to be able to move and resize application windows.\n\nYou can do this in System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on.", nil)
             ];
 
             NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
@@ -374,7 +374,7 @@ NSDictionary *allShiftActions = nil;
                                              defaultButton:NSLocalizedString(@"Quit", nil)
                                            alternateButton:nil
                                                otherButton:NSLocalizedString(@"Open System Preferences", nil)
-                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_8", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"ShiftIt needs to be authorized to use an Accessibility Services in order to be able to move and resize application windows.\n\nPlease \"Enable access for assistive devices\" in the System Preferences > Universal Access and then restart ShiftIt.", nil)
             ];
 
             NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
