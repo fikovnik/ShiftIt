@@ -632,7 +632,7 @@
                             <tabViewItem label="Anchors" identifier="anchors" id="1010">
                                 <view key="view" id="1011">
                                     <rect key="frame" x="32" y="7" width="299" height="460"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button id="1038">
                                             <rect key="frame" x="9" y="427" width="120" height="18"/>
