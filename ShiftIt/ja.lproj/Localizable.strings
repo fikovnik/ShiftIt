@@ -21,6 +21,7 @@
 "Increase" = "ウインドウの拡大";
 "Reduce" = "ウインドウの縮小";
 "Next Screen" = "次のスクリーン";
+"Previous Screen" = "前のスクリーン";
 
 "Authorization Required" = "許可が必要です";
 "Recheck" = "再確認";
