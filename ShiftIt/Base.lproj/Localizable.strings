@@ -1,0 +1,36 @@
+/* 
+  Localizable.strings
+  ShiftIt
+
+  Created by Hiroyuki Kurosawa on 2013/11/16.
+
+*/
+
+"Left" = "Left";
+"Right" = "Right";
+"Top" = "Top";
+"Bottom" = "Bottom";
+"Top Left" = "Top Left";
+"Top Right" = "Top Right";
+"Bottom Left" = "Bottom Left";
+"Bottom Right" = "Bottom Right";
+"Center" = "Center";
+"Toggle Zoom" = "Toggle Zoom";
+"Maximize" = "Maximize";
+"Toggle Full Screen" = "Toggle Full Screen";
+"Increase" = "Increase";
+"Reduce" = "Reduce";
+"Next Screen" = "Next Screen";
+"Previous Screen" = "Previous Screen";
+
+"Authorization Required" = "Authorization Required";
+"Recheck" = "Recheck";
+"Open System Preferences" = "Open System Preferences";
+"Quit" = "Quit";
+"AUTHORIZATION_INFORMATIVE_TEXT_10_9" = "ShiftIt needs to be authorized to use an Accessibility Services in order to be able to move and resize application windows.\n\nYou can do this in System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on.";
+"AUTHORIZATION_INFORMATIVE_TEXT_10_8" = "ShiftIt needs to be authorized to use an Accessibility Services in order to be able to move and resize application windows.\n\nPlease \"Enable access for assistive devices\" in the System Preferences > Universal Access and then restart ShiftIt.";
+
+"Start ShiftIt automatically?" = "Start ShiftIt automatically?";
+"Would you like to have ShiftIt automatically started at a login time?" = "Would you like to have ShiftIt automatically started at a login time?";
+"Yes" = "Yes";
+"No" = "No";

@@ -1,0 +1,129 @@
+
+/* Class = "NSWindow"; title = "Preferences"; ObjectID = "1"; */
+"1.title" = "環境設定";
+
+/* Class = "NSTabViewItem"; label = "General"; ObjectID = "5"; */
+"5.label" = "一般";
+
+/* Class = "NSButtonCell"; title = "Open At Login"; ObjectID = "63"; */
+"63.title" = "ログイン時に開く";
+
+/* Class = "NSButtonCell"; title = "Automatically Check For Updates"; ObjectID = "65"; */
+"65.title" = "アップデートを自動的に確認";
+
+/* Class = "NSButtonCell"; title = "Check For Updates Now"; ObjectID = "67"; */
+"67.title" = "アップデートを確認...";
+
+/* Class = "NSButtonCell"; title = "Show Icon In Menu Bar"; ObjectID = "257"; */
+"257.title" = "メニューバーにアイコンを表示";
+
+/* Class = "NSTabViewItem"; label = "Hotkeys"; ObjectID = "394"; */
+"394.label" = "ショートカット";
+
+/* Class = "NSTextFieldCell"; title = "Left"; ObjectID = "518"; */
+"518.title" = "左寄せ";
+
+/* Class = "NSTextFieldCell"; title = "Right"; ObjectID = "520"; */
+"520.title" = "右寄せ";
+
+/* Class = "NSTextFieldCell"; title = "Bottom"; ObjectID = "523"; */
+"523.title" = "下寄せ";
+
+/* Class = "NSTextFieldCell"; title = "Top"; ObjectID = "524"; */
+"524.title" = "上寄せ";
+
+/* Class = "NSTextFieldCell"; title = "Bottom Right"; ObjectID = "542"; */
+"542.title" = "右下寄せ";
+
+/* Class = "NSTextFieldCell"; title = "Bottom Left"; ObjectID = "543"; */
+"543.title" = "左下寄せ";
+
+/* Class = "NSTextFieldCell"; title = "Top Right"; ObjectID = "544"; */
+"544.title" = "右上寄せ";
+
+/* Class = "NSTextFieldCell"; title = "Top Left"; ObjectID = "545"; */
+"545.title" = "左上寄せ";
+
+/* Class = "NSTextFieldCell"; title = "Toggle Full Screen"; ObjectID = "560"; */
+"560.title" = "フルスクリーンの切り替え";
+
+/* Class = "NSTextFieldCell"; title = "Center"; ObjectID = "561"; */
+"561.title" = "センタリング";
+
+/* Class = "NSTextFieldCell"; title = "ShiftIt App"; ObjectID = "583"; */
+"583.title" = "ShiftIt App";
+
+/* Class = "NSTextFieldCell"; title = "version"; ObjectID = "585"; */
+"585.title" = "version";
+
+/* Class = "NSButtonCell"; title = "Restore defaults"; ObjectID = "607"; */
+"607.title" = "初期設定に戻す";
+
+/* Class = "NSTextFieldCell"; title = "Reduce"; ObjectID = "621"; */
+"621.title" = "ウインドウの縮小";
+
+/* Class = "NSTextFieldCell"; title = "Increase"; ObjectID = "622"; */
+"622.title" = "ウインドウの拡大";
+
+/* Class = "NSTabViewItem"; label = "Increase/Reduce"; ObjectID = "632"; */
+"632.label" = "拡大と縮小";
+
+/* Class = "NSTextFieldCell"; title = "Size:"; ObjectID = "730"; */
+"730.title" = "サイズ：";
+
+/* Class = "NSButtonCell"; title = "Fixed"; ObjectID = "732"; */
+"732.title" = "固定";
+
+/* Class = "NSButtonCell"; title = "Window"; ObjectID = "733"; */
+"733.title" = "ウインドウの";
+
+/* Class = "NSButtonCell"; title = "Screen"; ObjectID = "735"; */
+"735.title" = "スクリーンの";
+
+/* Class = "NSTextFieldCell"; title = "width"; ObjectID = "806"; */
+"806.title" = "幅";
+
+/* Class = "NSTextFieldCell"; title = "height"; ObjectID = "808"; */
+"808.title" = "高さ";
+
+/* Class = "NSButtonCell"; title = "Quit ShiftIt"; ObjectID = "814"; */
+"814.title" = "ShiftItの終了";
+
+/* Class = "NSButtonCell"; title = "Include Window Drawers"; ObjectID = "820"; */
+"820.title" = "ドロワーを含める";
+
+/* Class = "NSTabViewItem"; label = "Advanced"; ObjectID = "837"; */
+"837.label" = "詳細設定";
+
+/* Class = "NSButtonCell"; title = "Enable debug logging"; ObjectID = "862"; */
+"862.title" = "デバッグログを有効化";
+
+/* Class = "NSTextFieldCell"; title = "If you experience any problems, allowing this extra logging output might help trace it down more easily. Once on, all logging will be redirected to a file that appears below. Please attach the logging file to any issue you are reporting on github.com."; ObjectID = "864"; */
+"864.title" = "問題が起きた場合、このデバッグログを有効にすることで問題の特定を行いやすくなることがあります。有効にすると、ログは下に表示されるファイルに記録されます。github.com にレポートする際はログファイルを添付するようにしてください。";
+
+/* Class = "NSTextFieldCell"; title = "Toggle Zoom"; ObjectID = "942"; */
+"942.title" = "ズームの切り替え";
+
+/* Class = "NSTextFieldCell"; title = "Maximize"; ObjectID = "946"; */
+"946.title" = "最大化";
+
+/* Class = "NSTabViewItem"; label = "Anchors"; ObjectID = "1010"; */
+"1010.label" = "アンカー";
+
+/* Class = "NSButtonCell"; title = "Enable Anchors"; ObjectID = "1039"; */
+"1039.title" = "アンカーを有効にする";
+
+/* Class = "NSTextFieldCell"; title = "Anchors define margins of a screen. If a window is inside one of these margins it will me automatically anchored to the respective side with next actions that is executed. This is useful especially for application like Terminal.app or other that do not change their sizes continously, but rather in a descrete steps."; ObjectID = "1040"; */
+"1040.title" = "アンカーはスクリーンの余白を設定します。ウインドウが余白にかかっている場合、次の操作時に自動的にその縁に沿うようになります。これは特に Terminal.app のように連続的でなく段階的にサイズを変化させたいようなアプリケーションで便利です。";
+
+/* Class = "NSTextFieldCell"; title = "Next screen"; ObjectID = "1822"; */
+"1822.title" = "次のスクリーン";
+
+/* Class = "NSTextFieldCell"; title = "It should work fine in most cases, but eventually you might experience some weird behavior with drawers. Please, before reporting a new issue, check the list if there is not already one."; ObjectID = "1828"; */
+"1828.title" = "ドロワーはほとんど問題なく動作しますが、まれにおかしな挙動をするかもしれません。既に報告されたものでないか、問題を報告する前にリストを確認してください。";
+
+/* Class = "NSButtonCell"; title = "Report New Issue"; ObjectID = "1833"; */
+"1833.title" = "問題を報告...";
+
+/* Class = "NSButtonCell"; title = "Reveal In Finder"; ObjectID = "1837"; */
+"1837.title" = "Finder に表示";
