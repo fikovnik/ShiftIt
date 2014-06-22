@@ -7,9 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
             <connections>
-                <outlet property="hotkeyColumn" destination="xUe-4S-V3z" id="3cm-hX-8Vr"/>
                 <outlet property="hotkeyColumn_" destination="xUe-4S-V3z" id="Tz3-bY-dRV"/>
-                <outlet property="hotkeyLabelColumn" destination="jfi-Ey-cpD" id="kJv-3i-9vm"/>
                 <outlet property="hotkeyLabelColumn_" destination="jfi-Ey-cpD" id="fx8-DW-vDG"/>
                 <outlet property="hotkeysView_" destination="A5L-ln-QBX" id="HnE-Ja-tSt"/>
                 <outlet property="showMenuIcon" destination="257" id="zQM-A2-jhe"/>
