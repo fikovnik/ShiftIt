@@ -10,7 +10,6 @@
                 <outlet property="hotkeyColumn_" destination="xUe-4S-V3z" id="Tz3-bY-dRV"/>
                 <outlet property="hotkeyLabelColumn_" destination="jfi-Ey-cpD" id="fx8-DW-vDG"/>
                 <outlet property="hotkeysView_" destination="A5L-ln-QBX" id="HnE-Ja-tSt"/>
-                <outlet property="showMenuIcon" destination="257" id="zQM-A2-jhe"/>
                 <outlet property="tabView_" destination="3" id="588"/>
                 <outlet property="versionLabel_" destination="584" id="589"/>
                 <outlet property="window" destination="1" id="242"/>
