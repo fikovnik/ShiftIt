@@ -467,11 +467,11 @@
                             </tabViewItem>
                             <tabViewItem label="Anchors" identifier="anchors" id="1010">
                                 <view key="view" id="1011">
-                                    <rect key="frame" x="32" y="7" width="299" height="460"/>
+                                    <rect key="frame" x="32" y="7" width="299" height="476"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <button id="1038">
-                                            <rect key="frame" x="9" y="427" width="120" height="18"/>
+                                            <rect key="frame" x="9" y="443" width="120" height="18"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <buttonCell key="cell" type="check" title="Enable Anchors" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="1039">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -483,7 +483,7 @@
                                             </connections>
                                         </button>
                                         <textField verticalHuggingPriority="750" id="1026">
-                                            <rect key="frame" x="130" y="372" width="37" height="22"/>
+                                            <rect key="frame" x="130" y="388" width="37" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1057">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" paddingCharacter="*" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" decimalSeparator="." groupingSeparator="," currencyDecimalSeparator="." plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="1058">
@@ -505,7 +505,7 @@
                                             </connections>
                                         </textField>
                                         <textField verticalHuggingPriority="750" id="1025">
-                                            <rect key="frame" x="28" y="318" width="37" height="22"/>
+                                            <rect key="frame" x="28" y="334" width="37" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1059">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" paddingCharacter="*" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" decimalSeparator="." groupingSeparator="," currencyDecimalSeparator="." plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="1060">
@@ -527,7 +527,7 @@
                                             </connections>
                                         </textField>
                                         <textField verticalHuggingPriority="750" id="1024">
-                                            <rect key="frame" x="131" y="264" width="37" height="22"/>
+                                            <rect key="frame" x="131" y="280" width="37" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1061">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" paddingCharacter="*" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" decimalSeparator="." groupingSeparator="," currencyDecimalSeparator="." plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="1062">
@@ -549,7 +549,7 @@
                                             </connections>
                                         </textField>
                                         <textField verticalHuggingPriority="750" id="1023">
-                                            <rect key="frame" x="217" y="318" width="37" height="22"/>
+                                            <rect key="frame" x="217" y="334" width="37" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1063">
                                                 <numberFormatter key="formatter" formatterBehavior="default10_4" positiveFormat="#" negativeFormat="#" localizesFormat="NO" usesGroupingSeparator="NO" paddingCharacter="*" groupingSize="0" minimumIntegerDigits="0" maximumIntegerDigits="42" decimalSeparator="." groupingSeparator="," currencyDecimalSeparator="." plusSign="+" minusSign="-" notANumberSymbol="NaN" perMillSymbol="‰" percentSymbol="%" exponentSymbol="E" positivePrefix="" positiveSuffix="" negativePrefix="-" negativeSuffix="" id="1064">
@@ -571,7 +571,7 @@
                                             </connections>
                                         </textField>
                                         <textField verticalHuggingPriority="750" id="1037">
-                                            <rect key="frame" x="8" y="139" width="282" height="98"/>
+                                            <rect key="frame" x="8" y="155" width="282" height="98"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" controlSize="small" allowsUndo="NO" sendsActionOnEndEditing="YES" alignment="justified" id="1040">
                                                 <font key="font" metaFont="smallSystem"/>
@@ -581,12 +581,12 @@
                                             </textFieldCell>
                                         </textField>
                                         <imageView id="1022">
-                                            <rect key="frame" x="94" y="265" width="110" height="129"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <rect key="frame" x="94" y="280" width="110" height="130"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="margin-background-image" id="1065"/>
                                         </imageView>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1021">
-                                            <rect key="frame" x="172" y="369" width="19" height="27"/>
+                                            <rect key="frame" x="172" y="385" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" doubleValue="2" id="1066"/>
                                             <connections>
@@ -596,7 +596,7 @@
                                             </connections>
                                         </stepper>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1020">
-                                            <rect key="frame" x="172" y="261" width="19" height="27"/>
+                                            <rect key="frame" x="172" y="277" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="1" id="1067"/>
                                             <connections>
@@ -605,7 +605,7 @@
                                             </connections>
                                         </stepper>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1019">
-                                            <rect key="frame" x="70" y="315" width="19" height="27"/>
+                                            <rect key="frame" x="70" y="331" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="1068"/>
                                             <connections>
@@ -615,7 +615,7 @@
                                             </connections>
                                         </stepper>
                                         <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" id="1018">
-                                            <rect key="frame" x="248" y="315" width="19" height="27"/>
+                                            <rect key="frame" x="259" y="331" width="19" height="27"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <stepperCell key="cell" continuous="YES" state="on" alignment="left" maxValue="100" doubleValue="1" id="1069"/>
                                             <connections>
