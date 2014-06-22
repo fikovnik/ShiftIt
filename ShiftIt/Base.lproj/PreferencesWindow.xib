@@ -82,7 +82,7 @@
                                         <imageView id="817">
                                             <rect key="frame" x="35" y="369" width="80" height="80"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="ShiftIt-logo" id="818"/>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="ShiftIt" id="818"/>
                                         </imageView>
                                         <matrix verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" id="823">
                                             <rect key="frame" x="26" y="259" width="233" height="102"/>
@@ -718,7 +718,7 @@
         <userDefaultsController representsSharedInstance="YES" id="191"/>
     </objects>
     <resources>
-        <image name="ShiftIt-logo" width="512" height="512"/>
+        <image name="ShiftIt" width="512" height="512"/>
         <image name="margin-background-image" width="150" height="96"/>
     </resources>
 </document>
