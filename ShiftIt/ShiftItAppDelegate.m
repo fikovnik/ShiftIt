@@ -589,6 +589,7 @@ NSDictionary *allShiftActions = nil;
     REGISTER_ACTION(dict, @"increase", NSLocalizedString(@"Increase", nil), 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
     REGISTER_ACTION(dict, @"reduce", NSLocalizedString(@"Reduce", nil), 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
     REGISTER_ACTION(dict, @"nextscreen", NSLocalizedString(@"Next Screen", nil), 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"previousscreen", NSLocalizedString(@"Previous Screen", nil), 16, [[[ScreenChangeShiftItAction alloc] initWithMode:NO] autorelease]);
 
 #undef REGISTER_ACTION
 

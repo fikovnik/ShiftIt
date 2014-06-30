@@ -68,6 +68,9 @@
                 <menuItem title="Next Screen" tag="2015" keyEquivalent="n" id="794">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
+                <menuItem title="Previous Screen" tag="2016" id="URi-Kh-uDb">
+                    <modifierMask key="keyEquivalentModifierMask"/>
+                </menuItem>
                 <menuItem isSeparatorItem="YES" id="793"/>
                 <menuItem title="Preferences" keyEquivalent="," id="558">
                     <connections>
