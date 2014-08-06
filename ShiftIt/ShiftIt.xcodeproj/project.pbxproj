@@ -85,6 +85,7 @@
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 		CA0A5412194C02ED00AC7F45 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA0A5410194C02ED00AC7F45 /* PreferencesWindow.xib */; };
 		CA0A5415194C030700AC7F45 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CA0A5413194C030700AC7F45 /* Localizable.strings */; };
+		CEDBD24B19576F1900CB5F35 /* PreferencesWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = CA0A5410194C02ED00AC7F45 /* PreferencesWindow.xib */; };
 		E4BCF1FFDFE5D8200B19C785 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCF238FB8ED2BD310B85A5 /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		E4BCFA70F241D179E2BE518D /* SIAdjacentRectanglesTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */; };
@@ -691,6 +692,7 @@
 				279AF81019432F6F0048FE5F /* AccessibilitySettingsLion.png in Resources */,
 				27160C4B16C939FF002DA475 /* MainMenu.xib in Resources */,
 				27CD1A3319437FB20063D5AB /* ShiftItMenuIconReversed.png in Resources */,
+				CEDBD24B19576F1900CB5F35 /* PreferencesWindow.xib in Resources */,
 				27160C4E16C939FF002DA475 /* ShiftIt.icns in Resources */,
 				27160C4F16C939FF002DA475 /* ShiftIt-defaults.plist in Resources */,
 				27160C5016C939FF002DA475 /* margin-background-image.png in Resources */,
