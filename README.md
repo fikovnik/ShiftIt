@@ -47,7 +47,8 @@ The primary development is done on OSX 10.7 Lion, but it should be running under
 
 * **ShiftIt wants accessibility access on my Mac but my system preferences don't match the instruction, why?**
 
-  For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
+  For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932). If you've upgraded to 10.10, just
+  uncheck and recheck the box to make things work again.
 
 ## Development
 
