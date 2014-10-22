@@ -59,7 +59,7 @@ NSString *const kAXDriverDelayBetweenOperationsPrefKey = @"axdriver_delayBetween
 NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";
 
 // icon
-NSString *const kSIIconName = @"ShiftIt-menuIcon";
+NSString *const kSIIconName = @"ShiftIt-menuIcon@2x";
 NSString *const kSIMenuItemTitle = @"Shift";
 
 NSString *const kUsageStatisticsFileName = @"usage-statistics.plist";
