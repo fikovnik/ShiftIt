@@ -98,6 +98,12 @@ NSDictionary *allShiftActions = nil;
 
 @implementation SIUsageStatistics
 
+-(void)darkModeChanged:(NSNotification *)notif
+{
+    NSLog(@"Dark mode changed");
+}
+
+
 - (id)initFromFile:(NSString *)path {
     if (![super init]) {
         return nil;
