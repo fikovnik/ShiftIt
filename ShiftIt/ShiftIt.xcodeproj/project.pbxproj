@@ -81,6 +81,7 @@
 		27F4FD5612730F4600A65750 /* FMTLoginItems.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5312730F4600A65750 /* FMTLoginItems.m */; };
 		27F4FD5712730F4600A65750 /* FMTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F4FD5512730F4600A65750 /* FMTUtils.m */; };
 		383C83B61A40308400C1BA33 /* ShiftIt-menuIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 383C83B51A40308400C1BA33 /* ShiftIt-menuIcon.png */; };
+		383C83BA1A4042B200C1BA33 /* ShiftIt-menuIcon-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 383C83B91A4042B200C1BA33 /* ShiftIt-menuIcon-dark.png */; };
 		83E55ED5125A5FCF00FC49BF /* ShiftIt-menuIcon_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon_old.png */; };
 		83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */ = {isa = PBXBuildFile; fileRef = 83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -219,6 +220,7 @@
 		27F4FD5512730F4600A65750 /* FMTUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMTUtils.m; path = FMT/FMTUtils.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		383C83B51A40308400C1BA33 /* ShiftIt-menuIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-menuIcon.png"; sourceTree = "<group>"; };
+		383C83B91A4042B200C1BA33 /* ShiftIt-menuIcon-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-menuIcon-dark.png"; sourceTree = "<group>"; };
 		83E55ED3125A5FCF00FC49BF /* ShiftIt-menuIcon_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ShiftIt-menuIcon_old.png"; sourceTree = "<group>"; };
 		83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShiftIt.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
@@ -513,6 +515,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				383C83B91A4042B200C1BA33 /* ShiftIt-menuIcon-dark.png */,
 				383C83B51A40308400C1BA33 /* ShiftIt-menuIcon.png */,
 				279AF80E19432F6F0048FE5F /* AccessibilitySettings-Lion.png */,
 				274B4CD619364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png */,
@@ -721,6 +724,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */,
+				383C83BA1A4042B200C1BA33 /* ShiftIt-menuIcon-dark.png in Resources */,
 				274B4CD719364F1E00C0A8C1 /* AccessibilitySettings-Maverick.png in Resources */,
 				279AF80F19432F6F0048FE5F /* AccessibilitySettings-Lion.png in Resources */,
 				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,

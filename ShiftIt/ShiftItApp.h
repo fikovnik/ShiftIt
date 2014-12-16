@@ -64,6 +64,7 @@ extern NSInteger const kSIMenuUITagPrefix;
 extern NSInteger const kSISRUITagPrefix;
 
 extern NSString *const kSIIconName;
+extern NSString *const kSIDarkIconName;
 extern NSString *const kSIIconType;
 extern NSString *const kSIMenuItemTitle;
 

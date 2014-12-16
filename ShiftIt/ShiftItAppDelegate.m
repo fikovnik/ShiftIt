@@ -60,6 +60,7 @@ NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.n
 
 // icon
 NSString *const kSIIconName = @"ShiftIt-menuIcon";
+NSString *const kSIDarkIconName = @"ShiftIt-menuIcon-dark";
 NSString *const kSIMenuItemTitle = @"Shift";
 
 NSString *const kUsageStatisticsFileName = @"usage-statistics.plist";
@@ -97,11 +98,6 @@ NSDictionary *allShiftActions = nil;
 @end
 
 @implementation SIUsageStatistics
-
--(void)darkModeChanged:(NSNotification *)notif
-{
-    NSLog(@"Dark mode changed");
-}
 
 
 - (id)initFromFile:(NSString *)path {
@@ -519,15 +515,27 @@ NSDictionary *allShiftActions = nil;
 - (void)updateMenuBarIcon_ {
     BOOL showIconInMenuBar = [[NSUserDefaults standardUserDefaults] boolForKey:kShowMenuPrefKey];
     NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
-
+    NSImage *icon;
+    NSString *iconPath;
+    //Adding more
+    NSDictionary *dict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:NSGlobalDomain];
+    id style = [dict objectForKey:@"AppleInterfaceStyle"];
+    BOOL darkModeOn = ( style && [style isKindOfClass:[NSString class]] && NSOrderedSame == [style caseInsensitiveCompare:@"dark"] );
+    
+    
     if (showIconInMenuBar) {
         if (!statusItem_) {
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
 
             // TODO: imageNamed
-            NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
-            NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+            if(darkModeOn){
+                 iconPath = FMTGetMainBundleResourcePath(kSIDarkIconName, @"png");
+                 icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+            }else{
+                 iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
+                 icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+            }
 
             if (icon) {
                 [statusItem_ setImage:icon];
@@ -554,12 +562,16 @@ NSDictionary *allShiftActions = nil;
     [NSApp activateIgnoringOtherApps:YES];
 }
 
+
 - (void)updateStatusMenuShortcutForAction_:(ShiftItAction *)action keyCode:(NSInteger)keyCode modifiers:(NSUInteger)modifiers {
     FMTAssertNotNil(action);
     FMTLogDebug(@"updateStatusMenuShortcutForAction_:%@ keyCode:%ld modifiers:%ld", [action identifier], keyCode, modifiers);
 
     NSMenuItem *menuItem = [statusMenu_ itemWithTag:kSIMenuUITagPrefix + [action uiTag]];
     FMTAssertNotNil(menuItem);
+    
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(darkModeChanged:) name:@"AppleInterfaceThemeChangedNotification" object:nil];
+
 
     [menuItem setTitle:[action label]];
     [menuItem setRepresentedObject:[action identifier]];
@@ -578,6 +590,28 @@ NSDictionary *allShiftActions = nil;
         [menuItem setKeyEquivalentModifierMask:0];
     }
 }
+
+-(void)darkModeChanged:(NSNotification *)notif {
+    [ self updateMenuIcon ];
+}
+
+-(void)updateMenuIcon{
+    NSDictionary *dict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:NSGlobalDomain];
+    id style = [dict objectForKey:@"AppleInterfaceStyle"];
+    BOOL darkModeOn = ( style && [style isKindOfClass:[NSString class]] && NSOrderedSame == [style caseInsensitiveCompare:@"dark"] );
+    NSImage *icon;
+    NSString *iconPath;
+    
+    if(darkModeOn){
+        iconPath = FMTGetMainBundleResourcePath(kSIDarkIconName, @"png");
+        icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+    }else{
+        iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
+        icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+    }
+}
+
+
 
 - (void)initializeActions_ {
     FMTAssert(allShiftActions == nil, @"Actions have been already initialized");
