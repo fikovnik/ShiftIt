@@ -81,6 +81,10 @@ const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.25; // in seconds
 // TODO: move to the class
 NSDictionary *allShiftActions = nil;
 
+NSImage *icon;
+NSString *iconPath;
+
+
 @interface SIUsageStatistics : NSObject {
 @private
     NSMutableDictionary *statistics_;
@@ -515,8 +519,6 @@ NSDictionary *allShiftActions = nil;
 - (void)updateMenuBarIcon_ {
     BOOL showIconInMenuBar = [[NSUserDefaults standardUserDefaults] boolForKey:kShowMenuPrefKey];
     NSStatusBar *statusBar = [NSStatusBar systemStatusBar];
-    NSImage *icon;
-    NSString *iconPath;
     //Adding more
     NSDictionary *dict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:NSGlobalDomain];
     id style = [dict objectForKey:@"AppleInterfaceStyle"];
@@ -527,7 +529,6 @@ NSDictionary *allShiftActions = nil;
         if (!statusItem_) {
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
-
             // TODO: imageNamed
             if(darkModeOn){
                  iconPath = FMTGetMainBundleResourcePath(kSIDarkIconName, @"png");
@@ -592,23 +593,27 @@ NSDictionary *allShiftActions = nil;
 }
 
 -(void)darkModeChanged:(NSNotification *)notif {
-    [ self updateMenuIcon ];
+    [ self updateMenuIcon_ ];
 }
 
--(void)updateMenuIcon{
+-(void)updateMenuIcon_ {
     NSDictionary *dict = [[NSUserDefaults standardUserDefaults] persistentDomainForName:NSGlobalDomain];
     id style = [dict objectForKey:@"AppleInterfaceStyle"];
     BOOL darkModeOn = ( style && [style isKindOfClass:[NSString class]] && NSOrderedSame == [style caseInsensitiveCompare:@"dark"] );
-    NSImage *icon;
-    NSString *iconPath;
-    
-    if(darkModeOn){
-        iconPath = FMTGetMainBundleResourcePath(kSIDarkIconName, @"png");
-        icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-    }else{
-        iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
-        icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-    }
+//    
+//    if(darkModeOn){
+//        [super dealloc];
+//        iconPath = FMTGetMainBundleResourcePath(nil, @"");
+////        iconPath = FMTGetMainBundleResourcePath(kSIDarkIconName, @"png");
+//        icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+//    }else{
+//         [super dealloc];
+//        iconPath = FMTGetMainBundleResourcePath(nil, @"");
+////        iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
+//        icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
+//    }
+//    
+//    NSLog(@"ICON NAME %@", iconPath);//WTF?!
 }
 
 
