@@ -514,11 +514,12 @@ NSDictionary *allShiftActions = nil;
 
     if (showIconInMenuBar) {
         if (!statusItem_) {
+            NSImage *icon = [NSImage imageNamed:kSIIconName];
+            [icon setTemplate:YES];
+            
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
-
-            [statusItem_ setImage:[NSImage imageNamed:kSIIconName]];
-            [statusItem_ setAlternateImage:[NSImage imageNamed:kSIReversedIconName]];
+            [statusItem_ setImage:icon];
             [statusItem_ setHighlightMode:YES];
         }
     } else {
