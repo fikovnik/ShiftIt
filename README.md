@@ -1,4 +1,4 @@
-<h1><img src="https://raw.github.com/fikovnik/ShiftIt/develop/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt <a href="https://travis-ci.org/fikovnik/ShiftIt"><img src="https://travis-ci.org/fikovnik/ShiftIt.png?branch=develop" valign="middle" alt="Build Status (develop branch)"/></a></h1>
+<h1><img src="https://raw.github.com/fikovnik/ShiftIt/develop/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt <a href="https://travis-ci.org/fikovnik/ShiftIt"><img src="https://travis-ci.org/fikovnik/ShiftIt.png" valign="middle" alt="Build Status (develop branch)"/></a></h1>
 
 *Managing window size and position in OSX*
 
