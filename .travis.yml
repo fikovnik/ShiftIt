@@ -3,7 +3,7 @@ xcode_project: ShiftIt/ShiftIt.xcodeproj
 xcode_scheme: ShiftIt
 xcode_sdk: macosx10.9
 before_install:
- - brew install wget
- - wget http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.6.dmg 
- - hdiutil attach XQuartz-2.7.6.dmg
- - sudo installer -pkg /Volumes/XQuartz-2.7.6/XQuartz.pkg -target /
+  - brew install wget
+  - wget http://xquartz.macosforge.org/downloads/SL/XQuartz-2.7.6.dmg
+  - hdiutil attach XQuartz-2.7.6.dmg
+  - sudo installer -pkg /Volumes/XQuartz-2.7.6/XQuartz.pkg -target /
