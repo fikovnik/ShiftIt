@@ -49,6 +49,18 @@ The primary development is done on OSX 10.7 Lion, but it should be running under
 
   For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
 
+* **How to repairing Accessibility API permissions?**
+
+  This can be done either using GUI in _System Preferences_ -> _Security & Privacy_ -> _Privacy_ -> _Accessibility_ where it is necessary to check and uncheck the checkbox which is next to ShiftIt in the _Allow the apps below to control your computer_.
+
+  ![ShiftIt permissions](https://raw.githubusercontent.com/fikovnik/ShiftIt/develop/ShiftIt/AccessibilitySettings-Maverick.png)
+
+  Alternatively, this can be also done in a command line, however, this is rather a hack with all potential issues hacks come with.
+
+  ```sh
+  $ sudo sqlite3 '/Library/Application Support/com.apple.TCC/TCC.db' 'update access set allowed=1 where client like "%org.shiftitapp.ShiftIt%"'
+  ``` 
+
 ## Development
 
 The repository is based on the git flow model. The development therefore happens in the `develop` branch. Any contribution is welcomed!
