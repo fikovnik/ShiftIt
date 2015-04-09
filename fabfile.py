@@ -5,8 +5,8 @@
 proj_name = 'ShiftIt'
 proj_info_plist = 'ShiftIt-Info.plist'
 proj_src_dir = 'ShiftIt'
-proj_private_key = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'
-proj_github_token = 'f3297b3e0ad8845dad4e5fd5689cced746f06f3e'
+proj_private_key_file = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'
+proj_github_token_file = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token'
 
 release_notes_template_html = '''
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
@@ -119,6 +119,10 @@ def _gen_release_notes(template):
 
     return pystache.render(template, release_notes)
 
+def _load_github_token():
+    with open(proj_github_token_file,'rt') as f:
+        return f.read().strip()
+
 ################################################################################
 ## Project settings
 ################################################################################
@@ -137,6 +141,7 @@ proj_download_url = 'https://github.com/downloads/fikovnik/ShiftIt/'+proj_archiv
 proj_release_notes_url = 'http://htmlpreview.github.com/?https://raw.github.com/fikovnik/ShiftIt/master/release/release-notes-'+proj_version+'.html'
 proj_release_notes_html_file = os.path.join(os.getcwd(),'release','release-notes-'+proj_version+'.html')
 proj_appcast_file = os.path.join(os.getcwd(),'release','appcast.xml')
+proj_github_token = _load_github_token()
 
 ################################################################################
 ## Globals
@@ -203,7 +208,7 @@ def appcast():
 
     sign_file = tempfile.mktemp()
     local('openssl dgst -sha1 -binary < %s | openssl dgst -dss1 -sign %s > %s'
-        % (proj_archive_path, proj_private_key, sign_file))
+        % (proj_archive_path, proj_private_key_file, sign_file))
     local('openssl dgst -sha1 -binary < %s | openssl dgst -dss1 -verify %s -signature %s'
         % (proj_archive_path, proj_public_key, sign_file))
 
@@ -234,10 +239,6 @@ def release():
     Prepares the release to github
     '''
 
-    with settings(warn_only=True):
-        if not local('git diff-index --quiet HEAD --').return_code:
-            puts('Warning: there are pending changes in the repository. Run git status')
-
     milestone = _get_milestone()
     open_issues = list(shiftit.iter_issues(milestone=milestone.number, state='open'))
     if len(open_issues) > 0:
@@ -251,7 +252,7 @@ def release():
     puts('\n')
     puts('='*100)
     puts(green('Commit appcast and release notes'))
-    puts('message: "Added appcast and release notes for the %s release"' % proj_archive_name)
+    puts('message: "Added appcast and release notes for the ShiftIt %s release"' % proj_version)
     puts(green('Finnish the flow'))
     puts(green('Go to: https://github.com/fikovnik/ShiftIt/releases and drafts a new release with:'))
     puts('-'*100)
