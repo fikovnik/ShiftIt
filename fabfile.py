@@ -37,12 +37,7 @@ release_notes_template = '''
 </ul>
 {{/has_issues}}
 
-More information about this release can be found on the <a href="{{milestone_url}}">here</a>.
-<br/><br/>
-If you find any bugs please report them on <a href="http://github.com/fikovnik/ShiftIt/issues">github</a>.
-
-</body>
-</html>
+More information about this release can be found on [github]({{milestone_url}}).
 '''.strip()
 
 appcast_template = '''
@@ -319,4 +314,15 @@ def print_release_notes():
     Prints release notes
     '''
 
-    puts(_gen_release_notes())
+    puts('\n')
+    puts('='*100)
+    puts(green('Commit appcast and release notes'))
+    puts('message: "Added appcast and release notes for the ShiftIt %s release"' % proj_version)
+    puts(green('Finnish the flow'))
+    puts(green('Go to: https://github.com/fikovnik/ShiftIt/releases and drafts a new release with:'))
+    puts('-'*100)
+    puts('tag: version-'+proj_version)
+    puts('title: '+proj_version)
+    puts('description:')
+    puts(_gen_release_notes(release_notes_template_md))
+    puts('-'*100)
