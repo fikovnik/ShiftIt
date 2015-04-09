@@ -1,4 +1,4 @@
-<h1><img src="https://raw.github.com/fikovnik/ShiftIt/develop/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt <a href="https://travis-ci.org/fikovnik/ShiftIt"><img src="https://travis-ci.org/fikovnik/ShiftIt.png?branch=develop" valign="middle" alt="Build Status (develop branch)"/></a></h1>
+<h1><img src="https://raw.github.com/fikovnik/ShiftIt/develop/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt <a href="https://travis-ci.org/fikovnik/ShiftIt"><img src="https://travis-ci.org/fikovnik/ShiftIt.png" valign="middle" alt="Build Status"/></a></h1>
 
 *Managing window size and position in OSX*
 
@@ -52,11 +52,13 @@ ShiftIt is based on a Cocoa Accessibility API and sometimes this API can be a bi
 
 ##### ShiftIt wants accessibility access on my Mac but my system preferences don't match the instruction, why?
 
+  For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
 For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
 
 ##### How to repairing Accessibility API permissions?
 
 This can be done either using GUI in _System Preferences_ -> _Security & Privacy_ -> _Privacy_ -> _Accessibility_ where it is necessary to check and uncheck the checkbox which is next to ShiftIt in the _Allow the apps below to control your computer_.
+If ShiftIt is not in the list, just drag and drop it there from the `Applications` folder.
 
 ![ShiftIt permissions](https://raw.githubusercontent.com/fikovnik/ShiftIt/develop/ShiftIt/AccessibilitySettings-Maverick.png)
 
@@ -65,6 +67,9 @@ Alternatively, this can be also done in a command line, however, this is rather 
 ```sh
 $ sudo sqlite3 '/Library/Application Support/com.apple.TCC/TCC.db' 'update access set allowed=1 where client like "%org.shiftitapp.ShiftIt%"'
 ``` 
+
+For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
+If you've upgraded to 10.10, just uncheck and recheck the box to make things work again.
 
 ## Development
 
