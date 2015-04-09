@@ -608,7 +608,7 @@
 			name = "ShiftIt Tests";
 			productName = "ShiftIt Tests";
 			productReference = 2717BDAB1498B7FD0012EF87 /* ShiftIt Tests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		2717BEAA14994C120012EF87 /* FMT Tests */ = {
 			isa = PBXNativeTarget;
@@ -626,7 +626,7 @@
 			name = "FMT Tests";
 			productName = "FMT Tests";
 			productReference = 2717BEAB14994C120012EF87 /* FMT Tests.octest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.ocunit-test";
 		};
 		8D1107260486CEB800E47090 /* ShiftIt */ = {
 			isa = PBXNativeTarget;
