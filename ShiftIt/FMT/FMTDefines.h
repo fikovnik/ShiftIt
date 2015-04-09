@@ -58,39 +58,34 @@ static inline NSString* FMTStr(NSString *fmt, ...) {
 typedef void (^FMTDebugBlock)(void);
 static inline void FMTInDebugOnly(FMTDebugBlock block) {
 #ifndef NDEBUG
-    block();
+  block();
 #endif
 }
 
 #ifndef FMTAssert
-
-#if !defined(NS_BLOCK_ASSERTIONS)
-
-#define FMTAssert(condition, ...)                                       \
-do {                                                                      \
-if (!(condition)) {                                                     \
-[[NSAssertionHandler currentHandler]                                  \
-handleFailureInFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__] \
-file:[NSString stringWithUTF8String:__FILE__]  \
-lineNumber:__LINE__                                  \
-description:__VA_ARGS__];                             \
-}                                                                       \
-} while(0)
-
-#define FMTAssertNotNil(var) FMTAssert(var != nil, FMTStr(@"Variable %@ must not be nil", @#var));
-
-#else // !defined(NS_BLOCK_ASSERTIONS)
-#define FMTAssert(condition, ...) do { } while (0)
-#endif // !defined(NS_BLOCK_ASSERTIONS)
-
+  #if !defined(NS_BLOCK_ASSERTIONS)
+    #define FMTAssert(condition, ...)                                       \
+      do {                                                                      \
+        if (!(condition)) {                                                     \
+          [[NSAssertionHandler currentHandler]                                  \
+              handleFailureInFunction:[NSString stringWithUTF8String:__PRETTY_FUNCTION__] \
+                                 file:[NSString stringWithUTF8String:__FILE__]  \
+                           lineNumber:__LINE__                                  \
+                          description:__VA_ARGS__];                             \
+        }                                                                       \
+      } while(0)
+  #else // !defined(NS_BLOCK_ASSERTIONS)
+    #define FMTAssert(condition, ...) do { } while (0)
+  #endif // !defined(NS_BLOCK_ASSERTIONS)
 #endif // FMTAssert
 
 #ifndef FMTFail
-
-#define FMTFail(...) FMTAssert(NO,##__VA_ARGS__)
-
+  #define FMTFail(...) FMTAssert(NO,##__VA_ARGS__)
 #endif // FMTFail
 
+#ifndef FMTAssertNotNil
+  #define FMTAssertNotNil(var) FMTAssert(var != nil, @"Variable %@ must not be nil", @#var);
+#endif // FMTAssertNotNil
 
 /// This macro implements the various methods needed to make a safe singleton.
 ///

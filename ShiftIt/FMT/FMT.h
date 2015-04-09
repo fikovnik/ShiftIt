@@ -25,7 +25,7 @@
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
 #import "FMTLoginItems.h"
-#import "FMTNSArray+Extras.h"
+#import "FMTNSArray+Functional.h"
 #import "FMTNSDate+Extras.h"
 #import "FMTNSDictionary+Extras.h"
 #import "FMTNSError+Extras.h"

@@ -147,8 +147,8 @@ const FMTDirection kDefaultDirections[] = {kRightDirection, kBottomDirection, kL
 }
 
 + (NSArray *) screens {
-    return [[NSScreen screens] transform:^id(id item) {
-        return [SIScreen screenFromNSScreen:item]; 
+    return [[NSScreen screens] map:^id(id item) {
+        return [SIScreen screenFromNSScreen:item];
     }];
 }
 
@@ -203,8 +203,8 @@ const FMTDirection kDefaultDirections[] = {kRightDirection, kBottomDirection, kL
         return screen;
     }
 
-    NSArray *rects = [screens transform:^id(id item) {
-       return [SIValueRect rect:[item rect] withValue:item];
+    NSArray *rects = [screens map:^id(id item) {
+        return [SIValueRect rect:[item rect] withValue:item];
     }];
 
     // build the adjacent rectangles
@@ -213,15 +213,20 @@ const FMTDirection kDefaultDirections[] = {kRightDirection, kBottomDirection, kL
     // find the path, it will be always the same unless screens change hence we compute it again (it's cheap)
     // seems maybe a bit of an overkill considering that ppl might not usually have more than 2 screens :)
     NSArray *path = [adjr buildDirectionalPath:kDefaultDirections fromValue:[SIScreen primaryScreen]];
-    NSUInteger idx = [path findIndex:^BOOL(id item) {
-       return [screen isEqualToScreen:item];
+    NSUInteger idx = [path indexWhere:^BOOL(id item) {
+        return [screen isEqualToScreen:item];
     }];
 
     // count the offset
+    NSUInteger count = [path count];
+    if (offset < 0) {
+        offset = count - -offset % count;
+    }
+
     idx += offset;
 
     // so we wrap over
-    idx %= [path count];
+    idx %= count;
 
     return [path objectAtIndex:idx];
 }

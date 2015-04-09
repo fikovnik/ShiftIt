@@ -1,73 +1,107 @@
-<h1><img src="https://github.com/fikovnik/ShiftIt/raw/master/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt </h1>
+<h1><img src="https://raw.github.com/fikovnik/ShiftIt/develop/artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt <a href="https://travis-ci.org/fikovnik/ShiftIt"><img src="https://travis-ci.org/fikovnik/ShiftIt.png?branch=develop" valign="middle" alt="Build Status (develop branch)"/></a></h1>
 
 *Managing window size and position in OSX*
 
-**Before the next release is available, please have a look at the `develop` branch.**
+# About
 
-About
---------
+ShiftIt is an application for OSX that allows you to quickly manipulate window position and size using keyboard shortcuts.
+It intends to become a full featured window organizer for OSX.
+It is a complete rewrite of the original [ShiftIt](http://code.google.com/p/shiftit/) by Aravindkumar Rajendiran which is not longer under development.
+For discussing any sort of stuff about this app, please create a [new issue](https://github.com/fikovnik/ShiftIt/issues).
 
-ShiftIt is an application for OSX that allows you to quickly manipulate window position and size using keyboard shortcuts. It intends to become a full featured window organizer for OSX.
-It is a fork from the original [ShiftIt][1] by [Aravindkumar Rajendiran][2] which is not longer under development. For discussing any sort of stuff about this app, please create a new issue [right here][3] in github. There is also quite a quiet [google group][4], but it's better to post stuff directly here.
+License: [GNU General Public License v3](http://www.gnu.org/licenses/gpl.html)
 
-License: [GNU General Public License v3][5]
+Change logs: change logs are versioned in the [repository](https://github.com/fikovnik/ShiftIt/tree/develop/release) as well.
 
-Requirements
-------------
+## Download
 
-The primary development is done on OSX 10.6 Snow Leopard, but it should be running under OSX 10.5 Leopard as well.
+A binary build for OSX 10.7+ is available in [releases](https://github.com/fikovnik/ShiftIt/releases).
 
-Compiling
----------
+## User guide
 
-After cloning or download a snapshot of the repository (*master branch
-is recommended*):
+ShiftIt installs itself in the menu bar (optionally it can be completely hidden).
+It provides a set of actions that manipulates windows positions and sizes.
+Following is an example of list of actions available:
 
-  * on OSX 10.6 Snow Leopard
-       1. Compile in XCode by clicking build, or use the
-        `scripts/release.sh` (*With the script option, please ignore any errors related to the signing the release. Just check if you see the `** BUILD SUCCEEDED **` message in the output and grab the app from `ShiftIt/build/Release/ShiftIt.app` directory.*)
-       1. That's it
-  * on OSX 10.5 Leopard
-       1. Go to `Project` menu and click `Edit Project Settings` item
-       1. Select `Build` tab
-       1. Set `Architectures` to be `32-bit Universal`
-       1. Select `C/C++ Compiler Version` to be `GCC 4.2`
-       1. Check `Build Active Architecture Only`
-	
-The reason for this is that the Interface Builder frameworks on OS X Leopard 10.5 do not have 64-Bit capabilities. 
+![Screenshot Menu](https://raw.github.com/fikovnik/ShiftIt/develop/docs/schreenshot-menu.png)
 
-Note: If you have a problem with the build - xcode complaining about the ShortcutRecorder IB plugin then download (from [here][7]) and build it yourself. Once done load it into the Interface Builder (double click on the just built ShortcutRecorder.ibplugin).
+Normally, all Cocoa windows and X11 windows are supported.
+Some applications might not work correctly or not at all.
+There is a [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues).
+If you find any problem not mentioned there, please submit an issue.
 
-FAQ
----
+## Requirements
 
-**I disabled the `Show Icon in Menu Bar` in the preferences, how can I get it back?how can I get it back?**
+* OSX 10.7+, 64-bit
+
+The primary development is done on OSX 10.10, but it should be running under OSX 10.7 as well.
+
+## FAQ
+
+##### I disabled the _Show Icon in Menu Bar_ in the preferences, how can I get it back?
 
 Launch the application again. It will open the preference dialog.
 
-3rd Party Frameworks
---------------------
+##### I pressed a shortcut, but nothing has happened, why?
 
- * [ShortcutRecorder][7] framework (*New BSD license*) for capturing key bindings during hotkey reconfiguration. (*from version 1.4*)
- * [FMT][8] framework (*MIT license*) for some utility functions like handling login items, hot keys, etc. (*from version 1.5*)
+While most of application windows should work well with ShiftIt, there are some exceptions (like the GTK+ OSX applications). There is a [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). If you find any problem not mentioned in the list, please raise an issue.
 
-Change Log:
----------------------------
+##### I pressed a shortcut, something happened, but not what I expected, why?
 
-  - [1.5][9]
-  - [1.4.1][10]
-  - [1.4][11]
-  - [1.3][12]
+ShiftIt is based on a Cocoa Accessibility API and sometimes this API can be a bit [fragile](http://lists.apple.com/archives/accessibility-dev/2011/Aug/msg00031.html) and not do exactly what it should. In order to help to improve ShiftIt, please submit an issue every time you find some weird behavior. Before you do please consult the [list of known problems](https://github.com/fikovnik/ShiftIt/wiki/Application-Compatibility-Issues). Thanks!
 
+##### ShiftIt wants accessibility access on my Mac but my system preferences don't match the instruction, why?
 
-  [1]: http://code.google.com/p/shiftit/
-  [2]: http://ca.linkedin.com/in/aravind88
-  [3]: https://github.com/fikovnik/ShiftIt/issues
-  [4]: http://groups.google.com/group/shiftitapp
-  [5]: http://www.gnu.org/licenses/gpl.html
-  [7]: http://code.google.com/p/shortcutrecorder/
-  [8]: https://github.com/fikovnik/FMT
-  [9]: http://nkuyu.net/apps/shiftit/release-notes-1.5.html
-  [10]: http://nkuyu.net/apps/shiftit/release-notes-1.4.1.html
-  [11]: http://nkuyu.net/apps/shiftit/release-notes-1.4.html
-  [12]: http://nkuyu.net/apps/shiftit/release-notes-1.3.html
+For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
+
+##### How to repairing Accessibility API permissions?
+
+This can be done either using GUI in _System Preferences_ -> _Security & Privacy_ -> _Privacy_ -> _Accessibility_ where it is necessary to check and uncheck the checkbox which is next to ShiftIt in the _Allow the apps below to control your computer_.
+
+![ShiftIt permissions](https://raw.githubusercontent.com/fikovnik/ShiftIt/develop/ShiftIt/AccessibilitySettings-Maverick.png)
+
+Alternatively, this can be also done in a command line, however, this is rather a hack with all potential issues hacks come with.
+
+```sh
+$ sudo sqlite3 '/Library/Application Support/com.apple.TCC/TCC.db' 'update access set allowed=1 where client like "%org.shiftitapp.ShiftIt%"'
+``` 
+
+## Development
+
+The repository is based on the git flow model. The development therefore happens in the `develop` branch. Any contribution is welcomed!
+
+### Local build
+
+To build ShiftIt locally just clone the repository or get the latest snapshot and execute following command in the `ShiftIt` directory:
+
+```sh
+$ xcodebuild -target ShiftIt -configuration Release
+```
+
+To make a build without X11 support execute following:
+
+```sh
+$ xcodebuild -target "ShiftIt NoX11" -configuration Release
+```
+
+### Making a release
+
+Releases are handled using [fabric](http://docs.fabfile.org/en/1.5/). There are some dependencies that can be easily obtained using `pip`:
+
+* [fabric](http://docs.fabfile.org/en/1.5/) - the build system itself
+* [github3](https://github.com/sigmavirus24/github3.py) - library for GitHub 3 API
+* [pystache](https://github.com/defunkt/pystache) - templates 
+
+The releases are fully automatic which hopefully will help to release more often.
+
+**Available commands**
+
+* `archive` - Archives build
+* `build` - Makes a build by executing xcodebuild
+* `info` - Output all the build properties
+* `release` - Prepare the release: sign the build, generate appcast, generate release notes
+* `release_notes` - Generate release notes
+
+After `fab release` instructions about how to create the actual release at github are printed.
+
+Thanks [JetBrains](http://www.jetbrains.com/) for kindly supporting this open source project by providing [AppCode](http://www.jetbrains.com/objc/) IDE.

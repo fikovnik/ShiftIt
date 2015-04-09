@@ -1,154 +1,216 @@
-from fabric.api import *
-from fabric.contrib.console import confirm
+################################################################################
+## Configuration
+################################################################################
 
-import os
-import base64
-import tempfile
-import pystache
-import ftplib
-import urllib
-from StringIO import StringIO
-from xml.etree import ElementTree as et
-from urlparse import urlparse
-from github2.client import Github
-from datetime import datetime
+proj_name = 'ShiftIt'
+proj_info_plist = 'ShiftIt-Info.plist'
+proj_src_dir = 'ShiftIt'
+proj_private_key_file = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'
+proj_github_token_file = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token'
 
-##
-# Configuration
-##
-project_name = 'ShiftIt'
-src_dir = 'ShiftIt'
-private_key = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'
-archive_name_template = project_name + '-{version}.zip'
-appcast_url = 'http://fikovnik.net/projects/shiftit/appcast/profileInfo.php'
-appcast_ftpurl = 'ftp://fikovnik.net/www/projects/shiftit/appcast/appcast.xml'
-release_notes_ftpurl_template = 'ftp://fikovnik.net/www/projects/shiftit/release-notes-{version}.html'
-release_notes_url_template = 'http://fikovnik.net/projects/shiftit/release-notes-{version}.html'
-download_url_template = 'http://fikovnik.net/projects/shiftit/downloads/' + archive_name_template
-download_ftpurl_template = 'ftp://fikovnik.net/www/projects/shiftit/downloads/' + archive_name_template
-gitub_keychain_item = 'github'
-fikovnik_ftp_keychain_item = 'fikovnik.net'
-release_notes_template = '''
+release_notes_template_html = '''
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
-<body>
-<h1>Version {{version}}</h1>
+    <body>
+        <h1>{{proj_name}} version {{proj_version}}</h1>
 
-<h2>Changes</h2>
-{{#issues}}
-<ul>
-    <li><b>#{{number}}</b> - <a href="{{html_url}}">{{title}}</a><li>
-</ul>
-{{/issues}}
+        {{#has_issues}}
+        <h2>Issues closed</h2>
+        <ul>
+        {{#issues}}
+            <li><a href="{{html_url}}"><b>#{{number}}</b></a> - {{title}}</li>
+        {{/issues}}
+        </ul>
+        {{/has_issues}}
 
-If you find any bug please report them in <a href="http://github.com/fikovnik/ShiftIt/issues">github</a>
-
-</body>
+        More information about this release can be found on <a href="{{milestone_url}}">github</a>.
+        <br/><br/>
+        If you find any bugs please report them on <a href="http://github.com/fikovnik/ShiftIt/issues">github</a>.
+    </body>
 </html>
-'''
+'''.strip()
 
-src_dir = os.path.join(os.getcwd(), src_dir)
-app_dir = os.path.join(src_dir,'build','Release',project_name+'.app')
-info_plist_path = os.path.join(app_dir,'Contents','Info.plist')
-public_key = os.path.join(src_dir,'dsa_pub.pem')
+release_notes_template_md = '''
+{{#has_issues}}
+## Issues closed
+{{#issues}}
+- [#{{number}}]({{html_url}}) - {{title}}
+{{/issues}}
+{{/has_issues}}
+
+More information about this release can be found on [github]({{milestone_url}}).
+
+If you find any bugs please report them on [github](http://github.com/fikovnik/ShiftIt/issues).
+'''.strip()
+
+appcast_template = '''
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+   <channel>
+      <title>{{proj_name}} Changelog</title>
+      <link>{{proj_appcast_url}}</link>
+      <language>en</language>
+         <item>
+            <title>{{proj_name}} version {{proj_version}}</title>
+                <sparkle:releaseNotesLink>
+                    {{proj_release_notes_url}}
+                </sparkle:releaseNotesLink>
+            <pubDate>{{date}}</pubDate>
+            <enclosure url="{{download_url}}" sparkle:version="{{proj_version}}" length="{{download_size}}" type="application/octet-stream" sparkle:dsaSignature="{{download_signature}}" />
+         </item>
+   </channel>
+</rss>
+'''.strip()
+
+from fabric.api import local, execute, abort, task, lcd, puts, settings
+from fabric.contrib.console import confirm
+from fabric.colors import green
+from xml.etree import ElementTree
+
+import os
+import pystache
+import github3
+import tempfile
+import base64
+import datetime
+
+################################################################################
+## Code
+################################################################################
+
+def _find(f, seq):
+  """Return first item in sequence where f(item) == True."""
+  
+  for item in seq:
+    if f(item): 
+      return item
+
+def _get_bundle_version(info_plist):
+    version = local('defaults read %s CFBundleVersion' % info_plist, capture=True)
+    return version.strip()
+
+def _get_milestone():
+    milestone = _find(lambda m: proj_version.startswith(m.title), shiftit.iter_milestones())
+    if not milestone:
+        raise Exception('Unable to find milestone: %s' % proj_version)
+
+    return milestone
+
+def _gen_release_notes(template):
+    def _convert(i):
+        return {
+            'number': i.number,
+            'html_url': i.html_url,
+            'title': i.title,
+        }
+
+    milestone = _get_milestone()
+
+    closed_issues = list(shiftit.iter_issues(milestone=milestone.number, state='closed'))
+    closed_issues.sort(key=lambda i: i.closed_at)
+
+    release_notes = dict( 
+        has_issues = len(closed_issues) > 0,
+        issues = closed_issues,
+        proj_name=proj_name,
+        proj_version=proj_version,
+        milestone_url='https://github.com/fikovnik/ShiftIt/issues?milestone=%d' % milestone.number,
+        )
+
+    return pystache.render(template, release_notes)
+
+def _load_github_token():
+    with open(proj_github_token_file,'rt') as f:
+        return f.read().strip()
+
+################################################################################
+## Project settings
+################################################################################
+
+proj_src_dir = os.path.join(os.getcwd(), proj_src_dir)
+proj_build_dir = os.path.join(os.getcwd(), 'build')
+proj_app_dir = os.path.join(proj_src_dir,'build','Release',proj_name+'.app')
+proj_public_key = os.path.join(proj_src_dir,'dsa_pub.pem')
+proj_info_plist = os.path.join(proj_src_dir, proj_info_plist)
+
+proj_version = _get_bundle_version(proj_info_plist)
+proj_archive_name = proj_name + '-' + proj_version + '.zip'
+proj_archive_path = os.path.join(proj_build_dir, proj_archive_name)
+
+proj_download_url = 'https://github.com/downloads/fikovnik/ShiftIt/'+proj_archive_name
+proj_release_notes_url = 'http://htmlpreview.github.com/?https://raw.github.com/fikovnik/ShiftIt/master/release/release-notes-'+proj_version+'.html'
+proj_release_notes_html_file = os.path.join(os.getcwd(),'release','release-notes-'+proj_version+'.html')
+proj_appcast_file = os.path.join(os.getcwd(),'release','appcast.xml')
+proj_github_token = _load_github_token()
+
+################################################################################
+## Globals
+################################################################################
+
+github = github3.login(token=proj_github_token)
+shiftit = github.repository('fikovnik','ShiftIt')
+
+################################################################################
+## Tasks
+################################################################################
+
+@task
+def info():
+    '''
+    Output all the build properties
+    '''
+
+    print 'Build info:'
+    for (k,v) in [(k,v) for (k,v) in globals().items() if k.startswith('proj_')]:
+        print "\t%s: %s" % (k[len('proj_'):],v)
 
 @task
 def build():
-   _xcodebuild(src_dir, project_name)
+    '''
+    Makes a build by executing xcodebuild
+    '''
+
+    with lcd(proj_src_dir):
+        local('xcodebuild -target %s -configuration Release' % proj_name)
 
 @task
 def archive():
-    # dependencies
+    '''
+    Archives build
+    '''
+
     execute(build)
-
-    version = _get_bundle_version()
-    archive_path = archive_name_template.format(version=version)
-
-    _pack(app_dir, archive_path)
+    local('ditto -ck --keepParent %s %s' % (proj_app_dir, proj_archive_path))
 
 @task
-def release():
+def release_notes():
+    with open(proj_release_notes_html_file,"w") as f:
+        f.write(_gen_release_notes(release_notes_template_html))
+        puts('Written '+proj_release_notes_html_file)
+
+@task
+def appcast():
+    '''
+    Prepare the release: sign the build, generate appcast, generate release notes, commit and push.
+    '''
+
+    milestone = _get_milestone()
+
+    # verify that appcast URL matches
+    tree = ElementTree.parse(proj_info_plist)
+    root = tree.getroot().find('dict')
+    elem = list(root.findall('*'))
+    appcast_url = _find(lambda (k,v): k.text == 'SUFeedURL', zip(*[iter(elem)]*2))[1].text.strip()
+
     # dependencies
-    #execute(archive)
+    execute(archive)
+    execute(release_notes)
 
-    version = _get_bundle_version()
-    archive_path = archive_name_template.format(version=version)
-
-    appcast = AppCast(appcast_url)
-    appcast.add_version(version, \
-            release_notes_url_template.format(version=version), \
-            download_url_template.format(version=version), \
-            datetime.now().strftime('%a, %d %b %G %T %z'), \
-            _sign(archive_path, private_key, public_key), \
-            os.path.getsize(archive_path))
-
-    appcast_str = appcast.to_string()
-    release_notes_str = _gen_release_notes(version)
-
-    release_notes_ftpurl =  release_notes_ftpurl_template.format(version=version)
-    download_ftpurl = download_ftpurl_template.format(version=version)
-
-    puts('Version: '+version)
-    puts('Archive: '+archive_path)
-    puts('Appcast:')
-    puts(appcast_str)
-    puts('Release Notes:')
-    puts(release_notes_str)
-    puts('Upload file:')
-    puts('\n'.join([appcast_ftpurl, release_notes_ftpurl, download_ftpurl]))
-
-    if confirm('Proceed with upload?'):
-        ftp_username = _keychain_get_username(fikovnik_ftp_keychain_item)
-        ftp_password = _keychain_get_password(fikovnik_ftp_keychain_item)
-
-        _ftp_put(StringIO(appcast_str), appcast_ftpurl,
-                ftp_username, ftp_password)
-
-        _ftp_put(StringIO(release_notes_str), release_notes_ftpurl,
-                ftp_username, ftp_password)
-
-        _ftp_put(open(archive_path,'rb'), download_ftpurl,
-                ftp_username, ftp_password)
-
-    print _gen_release_notes(version)
-
-def _gen_release_notes(version):
-    def _convert(i):
-        return { \
-                'number': i.number, \
-                'html_url': i.html_url, \
-                'title': i.title, \
-            }
-
-    github = Github(_keychain_get_username(gitub_keychain_item),
-                    _keychain_get_password(gitub_keychain_item))
-
-    issues = github.issues.list('fikovnik/ShiftIt',state='closed')
-    issues = [e for e in issues if 'v'+version in e.labels]
-    issues.sort(key=lambda i: i.closed_at)
-
-    return pystache.render(release_notes_template, \
-                           version=version, \
-                           issues=[_convert(e) for e in issues])
-
-def _get_bundle_version():
-    version = local('defaults read %s CFBundleVersion' % info_plist_path, capture=True)
-    return version.strip()
-
-def _pack(src, dest):
-    local('ditto -ck --keepParent %s %s' % (src, dest))
-
-def _xcodebuild(src_dir, target):
-     with lcd(src_dir):
-        local('xcodebuild -target %s -configuration Release' % target)
-
-def _sign(path, private_key, public_key):
     sign_file = tempfile.mktemp()
-
     local('openssl dgst -sha1 -binary < %s | openssl dgst -dss1 -sign %s > %s'
-            % (path, private_key, sign_file))
+        % (proj_archive_path, proj_private_key_file, sign_file))
     local('openssl dgst -sha1 -binary < %s | openssl dgst -dss1 -verify %s -signature %s'
-            % (path, public_key, sign_file))
+        % (proj_archive_path, proj_public_key, sign_file))
 
     signature = None
     with open(sign_file) as f:
@@ -156,70 +218,46 @@ def _sign(path, private_key, public_key):
 
     os.remove(sign_file)
 
-    return signature
+    # appcast properties
+    appcast = dict(
+        proj_name=proj_name,
+        proj_appcast_url=appcast_url,
+        proj_version=proj_version,
+        proj_release_notes_url=proj_release_notes_url,
+        date=datetime.datetime.now().strftime('%a, %d %b %G %T %z'),
+        download_url=proj_download_url,
+        download_size=os.path.getsize(proj_archive_path),
+        download_signature=signature,
+    )
 
-def _keychain_get_username(account):
-    username = local("security find-generic-password -l %s | grep 'acct' | " \
-                     "cut -d '\"' -f 4" % account, capture=True)
-    return username
+    with open(proj_appcast_file,"w") as f:
+        f.write(pystache.render(appcast_template, appcast))
 
-def _keychain_get_password(account):
-    password = local("security 2>&1 > /dev/null find-generic-password -g -l" \
-                     " %s | cut -d '\"' -f 2" % account, capture=True)
-    return password
+@task
+def release():
+    '''
+    Prepares the release to github
+    '''
 
-def _ftp_put(f, url, username, password):
-    r = urlparse(url)
-    host = r.netloc
-    dirname = os.path.dirname(r.path)
-    basename = os.path.basename(r.path)
-
-    puts('Uploading to %s@%s:%s/%s' % (username, host, dirname, basename))
-
-    ftp = ftplib.FTP()
-    try:
-        ftp.connect(host)
-        ftp.login(username, password)
-        ftp.cwd(dirname)
-        ftp.storlines('STOR %s' % basename, f)
-    finally:
-        ftp.quit()
+    milestone = _get_milestone()
+    open_issues = list(shiftit.iter_issues(milestone=milestone.number, state='open'))
+    if len(open_issues) > 0:
+        puts('Warning: there are still open issues')
+        for i in open_issues:
+            print '\t * #%s: %s' % (i.number, i.title)
 
 
-class AppCast:
+    execute(appcast)
 
-    _appcast_template = '''<?xml version="1.0" encoding="utf-8"?>
-<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
-    <item>
-        <title>Version {version}</title>
-        <sparkle:releaseNotesLink>{release_notes_url}</sparkle:releaseNotesLink>
-        <pubDate>{pub_date}</pubDate>
-        <enclosure
-            url="{download_url}"
-            sparkle:version="{version}"
-            length="{size}"
-            type="application/octet-stream"
-            sparkle:dsaSignature="{signature}" />
-    </item>
-</rss>'''
-
-    def __init__(self,url):
-        et.register_namespace('sparkle','http://www.andymatuschak.org/xml-namespaces/sparkle')
-        self.url = url
-        self.appcast = et.parse(urllib.urlopen(url))
-
-    def add_version(self, version, release_notes_url, download_url, pub_date,
-            signature, size):
-
-        fragment = et.XML(self._appcast_template.format( \
-            version = version,\
-            release_notes_url = release_notes_url,\
-            download_url = download_url,\
-            pub_date = pub_date,\
-            signature = signature,\
-            size = size))
-
-        self.appcast.find('channel').append(fragment.find('item'))
-
-    def to_string(self):
-        return et.tostring(self.appcast.getroot())
+    puts('\n')
+    puts('='*100)
+    puts(green('Commit appcast and release notes'))
+    puts('message: "Added appcast and release notes for the ShiftIt %s release"' % proj_version)
+    puts(green('Finnish the flow'))
+    puts(green('Go to: https://github.com/fikovnik/ShiftIt/releases and drafts a new release with:'))
+    puts('-'*100)
+    puts('tag: version-'+proj_version)
+    puts('title: ShiftIt '+proj_version)
+    puts('description:')
+    puts(_gen_release_notes(release_notes_template_md))
+    puts('-'*100)

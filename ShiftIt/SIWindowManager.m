@@ -148,7 +148,7 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     FMTLogDebug(@"Found front window: %@", [frontWindowInfo description]);
     
     __block id<SIWindow> w = nil;
-    [drivers_ each:^BOOL(id<SIWindowDriver> driver) {
+    [drivers_ foreachWithStop:^BOOL(id <SIWindowDriver> driver) {
         NSError *problem = nil;
         if (![driver findFocusedWindow:&w withInfo:frontWindowInfo error:&problem]) {
             FMTLogDebug(@"Driver %@ did not locate window: %@", [driver description], [problem fullDescription]);

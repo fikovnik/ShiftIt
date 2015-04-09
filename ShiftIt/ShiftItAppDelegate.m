@@ -17,18 +17,20 @@
  
  */
 
-#import <sys/stat.h>
 #import <Sparkle/Sparkle.h>
+#import "SBSystemPreferences.h"
 #import "ShiftItAppDelegate.h"
 #import "ShiftItApp.h"
 #import "WindowGeometryShiftItAction.h"
 #import "DefaultShiftItActions.h"
 #import "PreferencesWindowController.h"
 #import "AXWindowDriver.h"
-#import "X11WindowDriver.h"
 #import "FMT/FMTNSFileManager+DirectoryLocations.h"
 
-NSString *const kShiftItAppBundleId = @"org.shiftitapp.ShiftIt";
+#ifdef X11
+#import "X11WindowDriver.h"
+#endif
+
 
 // the name of the plist file containing the preference defaults
 NSString *const kShiftItUserDefaults = @"ShiftIt-defaults";
@@ -48,6 +50,7 @@ NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
 
 // AX Driver Options
+// TODO: should be moved to AX driver
 NSString *const kAXIncludeDrawersPrefKey = @"axdriver_includeDrawers";
 NSString *const kAXDriverConvergePrefKey = @"axdriver_converge";
 NSString *const kAXDriverDelayBetweenOperationsPrefKey = @"axdriver_delayBetweenOperations";
@@ -56,8 +59,8 @@ NSString *const kAXDriverDelayBetweenOperationsPrefKey = @"axdriver_delayBetween
 NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";
 
 // icon
-NSString *const kSIIconName = @"ShiftIt-menuIcon";
-NSString *const kSIMenuItemTitle = @"Shift";
+NSString *const kSIIconName = @"ShiftItMenuIcon";
+NSString *const kSIReversedIconName = @"ShiftItMenuIconReversed";
 
 NSString *const kUsageStatisticsFileName = @"usage-statistics.plist";
 
@@ -78,14 +81,17 @@ const CFAbsoluteTime kMinimumTimeBetweenActionInvocations = 0.25; // in seconds
 NSDictionary *allShiftActions = nil;
 
 @interface SIUsageStatistics : NSObject {
- @private
+@private
     NSMutableDictionary *statistics_;
-    
+
 }
 
 - (id)initFromFile:(NSString *)path;
+
 - (void)increment:(NSString *)key;
+
 - (void)saveToFile:(NSString *)path;
+
 - (NSArray *)toSparkle;
 
 @end
@@ -108,13 +114,13 @@ NSDictionary *allShiftActions = nil;
         NSPropertyListFormat format = NSPropertyListBinaryFormat_v1_0;
 
         data = [fm contentsAtPath:path];
-        NSDictionary *d = (NSDictionary *)[NSPropertyListSerialization
+        NSDictionary *d = (NSDictionary *) [NSPropertyListSerialization
                 propertyListFromData:data
                     mutabilityOption:NSPropertyListMutableContainersAndLeaves
                               format:&format
                     errorDescription:&errorDesc];
 
-        if(d) {
+        if (d) {
             FMTLogInfo(@"Loaded usage statistics from: %@", path);
             statistics_ = [[NSMutableDictionary dictionaryWithDictionary:d] retain];
         } else {
@@ -128,18 +134,18 @@ NSDictionary *allShiftActions = nil;
 
 - (void)dealloc {
     [statistics_ release];
-    
+
     [super dealloc];
 }
 
 - (void)increment:(NSString *)key {
     NSInteger value = 0;
-    
+
     id stat = [statistics_ objectForKey:key];
     if (stat) {
-        value = [(NSNumber *)stat integerValue];
+        value = [(NSNumber *) stat integerValue];
     }
-    
+
     stat = [NSNumber numberWithInteger:(value + 1)];
     [statistics_ setObject:stat forKey:key];
 }
@@ -147,12 +153,12 @@ NSDictionary *allShiftActions = nil;
 - (void)saveToFile:(NSString *)path {
     NSData *data = nil;
     NSString *errorDesc = nil;
-    
+
     data = [NSPropertyListSerialization dataFromPropertyList:statistics_
                                                       format:NSPropertyListBinaryFormat_v1_0
                                             errorDescription:&errorDesc];
-    
-    if(data) {
+
+    if (data) {
         [data writeToFile:path atomically:YES];
         FMTLogInfo(@"Save usage statitics to: %@", path);
     } else {
@@ -213,8 +219,9 @@ NSDictionary *allShiftActions = nil;
 
 @end
 
+@interface ShiftItAppDelegate ()
 
-@interface ShiftItAppDelegate (Private)
+- (void)checkAuthorization;
 
 - (void)initializeActions_;
 
@@ -294,7 +301,9 @@ NSDictionary *allShiftActions = nil;
     NSString *appPath = [[NSBundle mainBundle] bundlePath];
 
     if (![loginItems isInLoginItemsApplicationWithPath:appPath]) {
-        NSInteger ret = NSRunAlertPanel(@"Start ShiftIt automatically?", @"Would you like to have ShiftIt automatically started at a login time?", @"Yes", @"No", NULL);
+        NSInteger ret = NSRunAlertPanel(NSLocalizedString(@"Start ShiftIt automatically?", nil),
+                                        NSLocalizedString(@"Would you like to have ShiftIt automatically started at a login time?", nil),
+                                        NSLocalizedString(@"Yes", nil), NSLocalizedString(@"No", nil), NULL);
         switch (ret) {
             case NSAlertDefaultReturn:
                 // do it!
@@ -306,8 +315,86 @@ NSDictionary *allShiftActions = nil;
     }
 }
 
+- (void)checkAuthorization {
+    // TODO: move to driver
+    if (!AXIsProcessTrusted()) {
+        FMTLogInfo(@"ShiftIt not is authorized");
+
+        if (AXIsProcessTrustedWithOptions != NULL) {
+            // OSX >= 10.9
+
+            NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Authorization Required", nil)
+                                             defaultButton:NSLocalizedString(@"Recheck", nil)
+                                           alternateButton:NSLocalizedString(@"Open System Preferences", nil)
+                                               otherButton:NSLocalizedString(@"Quit", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_9", nil)
+            ];
+
+            NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettingsMaverick"]];
+            [accessory setImageFrameStyle:NSImageFrameGrayBezel];
+            [alert setAccessoryView:accessory];
+
+            BOOL recheck = true;
+            while (recheck) {
+                switch ([alert runModal]) {
+                    case NSAlertDefaultReturn:
+                        recheck = !AXIsProcessTrusted();
+                        break;
+                    case NSAlertOtherReturn:
+                        [NSApp terminate:self];
+                        break;
+                    case NSAlertAlternateReturn: {
+
+                        // this should hopefully add it to the list so user can only click on the checkbox
+                        NSDictionary *options = @{(id) kAXTrustedCheckOptionPrompt : @NO};
+                        AXIsProcessTrustedWithOptions((CFDictionaryRef) options);
+
+                        SBSystemPreferencesApplication *prefs = [SBApplication applicationWithBundleIdentifier:@"com.apple.systempreferences"];
+                        [prefs activate];
+
+                        SBSystemPreferencesPane *pane = [[prefs panes] find:^BOOL(SBSystemPreferencesPane *elem) {
+                            return [[elem id] isEqualToString:@"com.apple.preference.security"];
+                        }];
+                        SBSystemPreferencesAnchor *anchor = [[pane anchors] find:^BOOL(SBSystemPreferencesAnchor *elem) {
+                            return [[elem name] isEqualToString:@"Privacy_Accessibility"];
+                        }];
+
+                        [anchor reveal];
+                    }
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        } else {
+            // OSX <= 10.8
+            NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Authorization Required", nil)
+                                             defaultButton:NSLocalizedString(@"Quit", nil)
+                                           alternateButton:nil
+                                               otherButton:NSLocalizedString(@"Open System Preferences", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_8", nil)
+            ];
+
+            NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettingsLion"]];
+            [accessory setImageFrameStyle:NSImageFrameGrayBezel];
+            [alert setAccessoryView:accessory];
+
+            if ([alert runModal] == NSAlertOtherReturn) {
+                [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
+            }
+
+            [NSApp terminate:self];
+        }
+    }
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     FMTLogDebug(@"Starting up ShiftIt...");
+
+    [self checkAuthorization];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 
@@ -320,23 +407,6 @@ NSDictionary *allShiftActions = nil;
         [defaults synchronize];
 
         [self firstLaunch_];
-    }
-
-    if (!AXAPIEnabled()) {
-        NSInteger ret = NSRunAlertPanel(@"UI Element Inspector requires that the Accessibility API be enabled.  Please \"Enable access for assistive devices and try again\".", @"", @"OK", @"Cancel", NULL);
-        switch (ret) {
-            case NSAlertDefaultReturn:
-                [[NSWorkspace sharedWorkspace] openFile:@"/System/Library/PreferencePanes/UniversalAccessPref.prefPane"];
-                [NSApp terminate:self];
-
-                return;
-            case NSAlertAlternateReturn:
-                [NSApp terminate:self];
-
-                return;
-            default:
-                break;
-        }
     }
 
     hotKeyManager_ = [FMTHotKeyManager sharedHotKeyManager];
@@ -359,19 +429,20 @@ NSDictionary *allShiftActions = nil;
     }
 
     if (error) {
-        FMTLogDebug(@"Unable to load AX driver: %@%@", [error localizedDescription], [error fullDescription]);
+        FMTLogInfo(@"Unable to load AX driver: %@%@", [error localizedDescription], [error fullDescription]);
     } else {
-        FMTLogDebug(@"Added driver: %@", [axDriver description]);
-       [drivers addObject:axDriver];
+        FMTLogInfo(@"Added driver: %@", [axDriver description]);
+        [drivers addObject:axDriver];
     }
 
+#ifdef X11
     // initialize X11 driver
     X11WindowDriver *x11Driver = [[[X11WindowDriver alloc] initWithError:&error] autorelease];
     if (error) {
-        FMTLogDebug(@"Unable to load X11 driver: %@%@", [error localizedDescription], [error fullDescription]);
+        FMTLogInfo(@"Unable to load X11 driver: %@%@", [error localizedDescription], [error fullDescription]);
     } else {
-        FMTLogDebug(@"Added driver: %@", [x11Driver description]);
-       [drivers addObject:x11Driver];
+        FMTLogInfo(@"Added driver: %@", [x11Driver description]);
+        [drivers addObject:x11Driver];
     }
 
     if ([drivers count] == 0) {
@@ -380,8 +451,9 @@ NSDictionary *allShiftActions = nil;
         [NSApp presentError:SICreateError(100, @"No driver could be loaded")];
         [NSApp terminate:self];
     }
+#endif
 
-	windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
+    windowManager_ = [[SIWindowManager alloc] initWithDrivers:[NSArray arrayWithArray:drivers]];
 
     [self initializeActions_];
     [self updateMenuBarIcon_];
@@ -414,7 +486,7 @@ NSDictionary *allShiftActions = nil;
     FMTLogInfo(@"Shutting down ShiftIt...");
 
     // save usage statistics
-    NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];    
+    NSString *usageStatisticsFile = [[[NSFileManager defaultManager] applicationSupportDirectory] stringByAppendingPathComponent:kUsageStatisticsFileName];
     [usageStatistics_ saveToFile:usageStatisticsFile];
 
     // unregister hotkeys
@@ -427,7 +499,7 @@ NSDictionary *allShiftActions = nil;
     if (flag == NO) {
         [self showPreferences:nil];
     }
-    return YES;
+    return NO;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -442,19 +514,12 @@ NSDictionary *allShiftActions = nil;
 
     if (showIconInMenuBar) {
         if (!statusItem_) {
+            NSImage *icon = [NSImage imageNamed:kSIIconName];
+            [icon setTemplate:YES];
+            
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
-
-            NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
-            NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-
-            if (icon) {
-                [statusItem_ setImage:icon];
-                [icon release];
-            } else {
-                [statusItem_ setTitle:kSIMenuItemTitle];
-            }
-
+            [statusItem_ setImage:icon];
             [statusItem_ setHighlightMode:YES];
         }
     } else {
@@ -510,21 +575,22 @@ NSDictionary *allShiftActions = nil;
     action = [[[ShiftItAction alloc] initWithIdentifier:(anId) label:(aLabel) uiTag:(aTag) delegate:(aDelegate)] autorelease]; \
     [(dict) setObject:action forKey:[action identifier]];
 
-    REGISTER_ACTION(dict, @"left", @"Left", 1, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItLeft] autorelease]);
-    REGISTER_ACTION(dict, @"right", @"Right", 2, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItRight] autorelease]);
-    REGISTER_ACTION(dict, @"top", @"Top", 3, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTop] autorelease]);
-    REGISTER_ACTION(dict, @"bottom", @"Bottom", 4, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottom] autorelease]);
-    REGISTER_ACTION(dict, @"tl", @"Top Left", 5, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopLeft] autorelease]);
-    REGISTER_ACTION(dict, @"tr", @"Top Right", 6, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopRight] autorelease]);
-    REGISTER_ACTION(dict, @"bl", @"Bottom Left", 7, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomLeft] autorelease]);
-    REGISTER_ACTION(dict, @"br", @"Bottom Right", 8, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomRight] autorelease]);
-    REGISTER_ACTION(dict, @"center", @"Center", 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
-    REGISTER_ACTION(dict, @"zoom", @"Toggle Zoom", 10, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
-    REGISTER_ACTION(dict, @"maximize", @"Maximize", 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
-    REGISTER_ACTION(dict, @"fullScreen", @"Toggle Full Screen", 12, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
-    REGISTER_ACTION(dict, @"increase", @"Increase", 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
-    REGISTER_ACTION(dict, @"reduce", @"Reduce", 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
-    REGISTER_ACTION(dict, @"nextscreen", @"Next Screen", 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"left", NSLocalizedString(@"Left", nil), 1, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItLeft] autorelease]);
+    REGISTER_ACTION(dict, @"right", NSLocalizedString(@"Right", nil), 2, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItRight] autorelease]);
+    REGISTER_ACTION(dict, @"top", NSLocalizedString(@"Top", nil), 3, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTop] autorelease]);
+    REGISTER_ACTION(dict, @"bottom", NSLocalizedString(@"Bottom", nil), 4, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottom] autorelease]);
+    REGISTER_ACTION(dict, @"tl", NSLocalizedString(@"Top Left", nil), 5, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopLeft] autorelease]);
+    REGISTER_ACTION(dict, @"tr", NSLocalizedString(@"Top Right", nil), 6, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopRight] autorelease]);
+    REGISTER_ACTION(dict, @"bl", NSLocalizedString(@"Bottom Left", nil), 7, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomLeft] autorelease]);
+    REGISTER_ACTION(dict, @"br", NSLocalizedString(@"Bottom Right", nil), 8, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomRight] autorelease]);
+    REGISTER_ACTION(dict, @"center", NSLocalizedString(@"Center", nil), 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
+    REGISTER_ACTION(dict, @"zoom", NSLocalizedString(@"Toggle Zoom", nil), 10, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"maximize", NSLocalizedString(@"Maximize", nil), 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
+    REGISTER_ACTION(dict, @"fullScreen", NSLocalizedString(@"Toggle Full Screen", nil), 12, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"increase", NSLocalizedString(@"Increase", nil), 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"reduce", NSLocalizedString(@"Reduce", nil), 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
+    REGISTER_ACTION(dict, @"nextscreen", NSLocalizedString(@"Next Screen", nil), 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"previousscreen", NSLocalizedString(@"Previous Screen", nil), 16, [[[ScreenChangeShiftItAction alloc] initWithMode:NO] autorelease]);
 
 #undef REGISTER_ACTION
 
@@ -616,8 +682,8 @@ NSDictionary *allShiftActions = nil;
             // we need to give the AXUI and others some time to recover :)
             // otherwise some weird results are experienced
             FMTLogDebug(@"Action executed too soon after the last one: %f (minimum: %f)",
-            now - beforeNow_,
-            kMinimumTimeBetweenActionInvocations);
+                            now - beforeNow_,
+                            kMinimumTimeBetweenActionInvocations);
             return;
         } else {
             beforeNow_ = now;
@@ -629,9 +695,9 @@ NSDictionary *allShiftActions = nil;
         FMTLogInfo(@"Invoking action: %@", identifier);
         NSError *error = nil;
         if (![windowManager_ executeAction:[action delegate] error:&error]) {
-            FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier], 
-                [error localizedDescription], 
-                [error fullDescription]);
+            FMTLogError(@"Execution of ShiftIt action: %@ failed: %@%@", [action identifier],
+                            [error localizedDescription],
+                            [error fullDescription]);
         }
         [usageStatistics_ increment:FMTStr(@"action_%@", identifier)];
     }
@@ -655,15 +721,15 @@ NSDictionary *allShiftActions = nil;
 // with keys: "key", "value", "displayKey", "displayValue", the latter two
 // being human-readable variants of the former two.
 - (NSArray *)feedParametersForUpdater:(SUUpdater *)updater
-             sendingSystemProfile:(BOOL)sendingProfile {
+                 sendingSystemProfile:(BOOL)sendingProfile {
     NSMutableArray *a = [NSMutableArray arrayWithArray:[usageStatistics_ toSparkle]];
 
     // get display information
     NSArray *screens = [NSScreen screens];
     NSInteger nScreen = [screens count];
     [a addObject:FMTEncodeForSparkle(@"n_screens", FMTStr(@"%d", nScreen), @"Number of screens", FMTStr(@"%d", nScreen))];
-    
-    for (NSUInteger i=0; i<nScreen; i++) {
+
+    for (NSUInteger i = 0; i < nScreen; i++) {
         NSString *resolution = RECT_STR([[screens objectAtIndex:i] frame]);
         [a addObject:FMTEncodeForSparkle(FMTStr(@"screen_%d", i), resolution, FMTStr(@"Screen #%d resolution", i), resolution)];
     }
