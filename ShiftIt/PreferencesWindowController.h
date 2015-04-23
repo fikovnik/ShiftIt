@@ -53,6 +53,7 @@
 @property BOOL debugLogging;
 @property(copy) NSString *debugLoggingFile;
 
+-(void)darkModeChanged:(NSNotification *)notif;
 -(void)updateRecorderCombos;
 -(IBAction)showPreferences:(id)sender;
 -(IBAction)revertDefaults:(id)sender;

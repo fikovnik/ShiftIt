@@ -70,7 +70,10 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
     NSString *versionString = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"];
     [versionLabel_ setStringValue:versionString];
+    
+    [[NSDistributedNotificationCenter defaultCenter] addObserver:self selector:@selector(darkModeChanged:) name:@"AppleInterfaceThemeChangedNotification" object:nil];
 
+    
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidResignMainNotification object:[self window]];
     [notificationCenter addObserver:self selector:@selector(windowMainStatusChanged_:) name:NSWindowDidBecomeMainNotification object:[self window]];
@@ -188,6 +191,12 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 - (BOOL)debugLogging {
     return !([[GTMLogger sharedLogger] writer] == [NSFileHandle fileHandleWithStandardOutput]);
 }
+
+-(void)darkModeChanged:(NSNotification *)notif
+{
+    NSLog(@"Dark mode changed");
+}
+
 
 - (void)setDebugLogging:(BOOL)flag {
     id <GTMLogWriter> writer = nil;
