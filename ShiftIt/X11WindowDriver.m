@@ -37,7 +37,7 @@ static char *X11Paths_[] = {
 	"libX11.6.dylib",
     "/usr/local/X11/libX11.6.dylib", // anyone?
     "/opt/X11/lib/libX11.6.dylib", // XQuartz
-	"/opt/local/X11/lib/libX11.6.dylib", // MacPorts?
+	"/opt/local/lib/libX11.6.dylib", // MacPorts
 	"/sw/X11/lib/libX11.6.dylib", // Fink?
 };
 
