@@ -210,7 +210,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
             *screenRef = screen;
         }
     }
-    
+
     return ret;
 }
 
@@ -425,7 +425,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     FMTAssertNotNil(windowRef);
 
     return execWithDisplay_(^BOOL(Display *dpy, NSError **nestedError) {
-        // TODO: combine the operations        
+        // TODO: combine the operations
         XWindowAttributes wa;
         if(!XGetWindowAttributesRef(dpy, *windowRef, &wa)) {
             if (nestedError) {
