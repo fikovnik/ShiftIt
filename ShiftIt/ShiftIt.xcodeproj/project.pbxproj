@@ -1010,13 +1010,15 @@
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "_DEBUGPRINTS_=1";
 				HEADER_SEARCH_PATHS = (
-					/usr/X11/include,
+					/opt/local/include,
 					/opt/X11/include,
+					/usr/X11/include,
 				);
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					/usr/X11/lib,
+					/opt/local/lib,
 					/opt/X11/lib,
+					/usr/X11/lib,
 				);
 				OTHER_CFLAGS = (
 					"-DDEBUG",
@@ -1035,13 +1037,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					/usr/X11/include,
+					/opt/local/include,
 					/opt/X11/include,
+					/usr/X11/include,
 				);
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					/usr/X11/lib,
+					/opt/local/lib,
 					/opt/X11/lib,
+					/usr/X11/lib,
 				);
 				OTHER_CFLAGS = (
 					"-DNDEBUG",

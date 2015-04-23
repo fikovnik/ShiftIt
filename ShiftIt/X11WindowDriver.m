@@ -35,10 +35,10 @@ NSInteger const kX11WindowDriverErrorCode = 20105;
 // TODO: extract
 static char *X11Paths_[] = {
 	"libX11.6.dylib",
-    "/usr/local/X11/libX11.6.dylib", // anyone?
-    "/opt/X11/lib/libX11.6.dylib", // XQuartz, needs be tried before regular
-	"/usr/X11/lib/libX11.6.dylib", // regular
+	"/usr/local/X11/libX11.6.dylib", // anyone?
 	"/opt/local/lib/libX11.6.dylib", // MacPorts
+	"/opt/X11/lib/libX11.6.dylib", // XQuartz, needs be tried before regular
+	"/usr/X11/lib/libX11.6.dylib", // regular
 	"/sw/X11/lib/libX11.6.dylib", // Fink?
 };
 
