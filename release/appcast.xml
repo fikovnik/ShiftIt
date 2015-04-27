@@ -5,12 +5,12 @@
       <link>https://raw.github.com/fikovnik/ShiftIt/master/release/appcast.xml</link>
       <language>en</language>
          <item>
-            <title>ShiftIt version 1.6.2</title>
+            <title>ShiftIt version 1.6.3</title>
                 <sparkle:releaseNotesLink>
-                    http://htmlpreview.github.com/?https://raw.github.com/fikovnik/ShiftIt/master/release/release-notes-1.6.2.html
+                    http://htmlpreview.github.com/?https://raw.github.com/fikovnik/ShiftIt/master/release/release-notes-1.6.3.html
                 </sparkle:releaseNotesLink>
-            <pubDate>Mon, 27 Apr 2015 19:33:06 </pubDate>
-            <enclosure url="https://github.com/fikovnik/ShiftIt/releases/download/version-1.6.2/ShiftIt-1.6.2.zip" sparkle:version="1.6.2" length="999276" type="application/octet-stream" sparkle:dsaSignature="MCwCFEf7NtfdtnLV4fxg6ZRj96TgX7wOAhQI9KhUkty9h0bJIIE5ogCIYsgA2w==" />
+            <pubDate>Mon, 27 Apr 2015 23:58:28 </pubDate>
+            <enclosure url="https://github.com/fikovnik/ShiftIt/releases/download/version-1.6.3/ShiftIt-1.6.3.zip" sparkle:version="1.6.3" length="814886" type="application/octet-stream" sparkle:dsaSignature="MC0CFQDJWnZVEbueK4PU3Nd8ReaDWAIEegIUOgsXqGsCrYsVX/LZXYMIw0NdyxM=" />
          </item>
    </channel>
 </rss>
