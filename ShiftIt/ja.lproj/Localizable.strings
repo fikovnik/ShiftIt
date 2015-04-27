@@ -1,0 +1,36 @@
+/* 
+  Localizable.strings
+  ShiftIt
+
+  Created by Hiroyuki Kurosawa on 2013/11/16.
+
+*/
+
+"Left" = "左寄せ";
+"Right" = "右寄せ";
+"Top" = "上寄せ";
+"Bottom" = "下寄せ";
+"Top Left" = "左上寄せ";
+"Top Right" = "右上寄せ";
+"Bottom Left" = "左下寄せ";
+"Bottom Right" = "右下寄せ";
+"Center" = "センタリング";
+"Toggle Zoom" = "ズームの切り替え";
+"Maximize" = "最大化";
+"Toggle Full Screen" = "フルスクリーンの切り替え";
+"Increase" = "ウインドウの拡大";
+"Reduce" = "ウインドウの縮小";
+"Next Screen" = "次のスクリーン";
+"Previous Screen" = "前のスクリーン";
+
+"Authorization Required" = "許可が必要です";
+"Recheck" = "再確認";
+"Open System Preferences" = "システム環境設定を開く";
+"Quit" = "終了";
+"AUTHORIZATION_INFORMATIVE_TEXT_10_9" = "ShiftIt はアプリケーションウインドウの移動やリサイズをするためにアクセシビリティサービスの許可が必要です。\n\nこれはシステム環境設定 > セキュリティとプライバシー > プライバシー > アクセシビリティで設定が行えます。ShiftIt を許可アプリケーションのリストにドラッグ＆ドロップして追加し、チェックボックスにチェックマークを付ける必要があるかもしれません。";
+"AUTHORIZATION_INFORMATIVE_TEXT_10_8" = "ShiftIt はアプリケーションウインドウの移動やリサイズをするためにアクセシビリティサービスの許可が必要です。\n\nPlease \"Enable access for assistive devices\" in the システム環境設定 > ユニバーサルアクセスから\"補助装置にアクセスできるようにする\"を有効にした後、ShiftIt を再起動してください。";
+
+"Start ShiftIt automatically?" = "ShiftIt を自動的に開きますか?";
+"Would you like to have ShiftIt automatically started at a login time?" = "ログイン時に自動的に ShiftIt を開始しますか?";
+"Yes" = "はい";
+"No" = "いいえ";

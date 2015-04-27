@@ -55,12 +55,6 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
     return self;
 }
 
-- (void)dealloc {
-    [hotKeyControls_ release];
-
-    [super dealloc];
-}
-
 - (BOOL)acceptsFirstResponder {
     return YES;
 }
@@ -77,42 +71,6 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
     // no debug logging by default
     [self setDebugLoggingFile:@""];
-
-    // This is just temporary here - till new version
-    NSArray *controls = [NSArray arrayWithObjects:srLeft_,
-                                                  srBottom_,
-                                                  srTop_,
-                                                  srRight_,
-                                                  srTL_,
-                                                  srTR_,
-                                                  srBR_,
-                                                  srBL_,
-                                                  srCenter_,
-                                                  srZoom_,
-                                                  srMaximize_,
-                                                  srFullScreen_,
-                                                  srIncrease_,
-                                                  srReduce_,
-                                                  srNextScreen_,
-                                                  nil];
-    NSArray *keys = [NSArray arrayWithObjects:@"left",
-                                              @"bottom",
-                                              @"top",
-                                              @"right",
-                                              @"tl",
-                                              @"tr",
-                                              @"br",
-                                              @"bl",
-                                              @"center",
-                                              @"zoom",
-                                              @"maximize",
-                                              @"fullScreen",
-                                              @"increase",
-                                              @"reduce",
-                                              @"nextscreen",
-                                              nil];
-
-    hotKeyControls_ = [[NSDictionary dictionaryWithObjects:controls forKeys:keys] retain];
 
     [self updateRecorderCombos];
 }
@@ -150,11 +108,11 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
     [self updateRecorderCombos];
 }
 
-- (IBAction)reportIssue:(id)sender {
-    NSInteger ret = NSRunAlertPanel(@"Before you report new issue",
-            @"Please make sure that you look at the other issues before you submit a new one.",
-            @"Take me to github.com", NULL, NULL);
-
+-(IBAction)reportIssue:(id)sender {
+    NSInteger ret = NSRunAlertPanel(NSLocalizedString(@"Before you report new issue", nil),
+            NSLocalizedString(@"Please make sure that you look at the other issues before you submit a new one.", nil),
+            NSLocalizedString(@"Take me to github.com", nil), NULL, NULL);
+    
     if (ret == NSAlertDefaultReturn) {
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:kShiftItGithubIssueURL]];
     }
@@ -225,8 +183,76 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 
 #pragma mark Shortcut Recorder methods
 
+static NSString *hotkeyIdentifiers[] = {
+    @"left",
+    @"right",
+    @"top",
+    @"bottom",
+    NULL,
+    @"tl",
+    @"tr",
+    @"bl",
+    @"br",
+    NULL,
+    @"center",
+    @"zoom",
+    @"maximize",
+    @"fullScreen",
+    NULL,
+    @"increase",
+    @"reduce",
+    NULL,
+    @"nextscreen",
+    @"previousscreen",
+};
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {
+    return sizeof(hotkeyIdentifiers) / sizeof(hotkeyIdentifiers[0]);
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(NSInteger)rowIndex {
+    return NO;
+}
+
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
+    FMTAssert(row >= 0 && row < sizeof(hotkeyIdentifiers) / sizeof(hotkeyIdentifiers[0]), @"Row out of range");
+    NSString* identifier = hotkeyIdentifiers[row];
+    if (identifier == NULL)
+        return 1;
+    return 23;
+}
+
+- (NSView *)tableView:(NSTableView *)tableView
+   viewForTableColumn:(NSTableColumn *)tableColumn
+                  row:(NSInteger)row {
+    FMTAssert(row >= 0 && row < sizeof(hotkeyIdentifiers) / sizeof(hotkeyIdentifiers[0]), @"Row out of range");
+    NSString* identifier = hotkeyIdentifiers[row];
+    if (identifier == NULL)
+        return NULL;
+    ShiftItAction *action = [allShiftActions objectForKey:identifier];
+    FMTAssertNotNil(action);
+    if (tableColumn == hotkeyLabelColumn_) {
+        NSTextField* text = [[NSTextField alloc] initWithFrame:tableView.frame];
+        text.alignment = NSRightTextAlignment;
+        text.drawsBackground = NO;
+        text.stringValue = action.label;
+        [text setBordered:NO];
+        [text setEditable:NO];
+        return text;
+    }
+    if (tableColumn == hotkeyColumn_) {
+        SRRecorderControl* recorder = [[SRRecorderControl alloc] initWithFrame:tableView.frame];
+        recorder.delegate = self;
+        recorder.identifier = identifier;
+        [self updateRecorderCombo:recorder forIdentifier:identifier];
+        return recorder;
+    }
+    FMTFail(@"Unknown tableView or tableColumn");
+    return NULL;
+}
+
 - (void)shortcutRecorder:(SRRecorderControl *)recorder keyComboDidChange:(KeyCombo)newKeyCombo {
-    NSString *identifier = [hotKeyControls_ keyForObject:recorder];
+    NSString *identifier = recorder.identifier;
     FMTAssertNotNil(identifier);
 
     ShiftItAction *action = [allShiftActions objectForKey:identifier];
@@ -243,23 +269,23 @@ NSString *const kHotKeysTabViewItemIdentifier = @"hotKeys";
 }
 
 - (void)updateRecorderCombos {
-    NSInteger idx = [tabView_ indexOfTabViewItemWithIdentifier:@"hotKeys"];
-    NSView *hotKeysView = [[tabView_ tabViewItemAtIndex:idx] view];
-    FMTAssertNotNil(hotKeysView);
-
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-
-    for (ShiftItAction *action in [allShiftActions allValues]) {
-        NSString *identifier = [action identifier];
-        SRRecorderControl *recorder = [hotKeyControls_ objectForKey:identifier];
-        FMTAssertNotNil(recorder);
-
-
-        KeyCombo combo;
-        combo.code = [defaults integerForKey:KeyCodePrefKey(identifier)];
-        combo.flags = [defaults integerForKey:ModifiersPrefKey(identifier)];
-        [recorder setKeyCombo:combo];
+    for (int row = 0; row < sizeof(hotkeyIdentifiers) / sizeof(hotkeyIdentifiers[0]); ++row) {
+        NSString* identifier = hotkeyIdentifiers[row];
+        if (identifier == NULL)
+            continue;
+        SRRecorderControl *recorder = [hotkeysView_ viewAtColumn:1 row:row makeIfNecessary:NO];
+        if (recorder == NULL)
+            continue;
+        [self updateRecorderCombo:recorder forIdentifier:identifier];
     }
+}
+
+- (void)updateRecorderCombo:(SRRecorderControl *)recorder forIdentifier:(NSString *)identifier {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    KeyCombo combo;
+    combo.code = [defaults integerForKey:KeyCodePrefKey(identifier)];
+    combo.flags = [defaults integerForKey:ModifiersPrefKey(identifier)];
+    [recorder setKeyCombo:combo];
 }
 
 #pragma mark TabView delegate methods

@@ -35,7 +35,7 @@
 	<key>SUEnableSystemProfiling</key>
 	<true/>
 	<key>SUFeedURL</key>
-	<string>https://raw.github.com/fikovnik/ShiftIt/develop/release/appcast.xml</string>
+	<string>https://raw.github.com/fikovnik/ShiftIt/master/release/appcast.xml</string>
 	<key>SUPublicDSAKeyFile</key>
 	<string>dsa_pub.pem</string>
 </dict>

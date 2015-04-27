@@ -1,0 +1,8 @@
+/* Class = "NSMenuItem"; title = "Quit ShiftIt"; ObjectID = "546"; */
+"546.title" = "ShiftItの終了";
+
+/* Class = "NSMenuItem"; title = "Preferences"; ObjectID = "558"; */
+"558.title" = "環境設定...";
+
+/* Class = "NSMenuItem"; title = "Check for Updates"; ObjectID = "761"; */
+"761.title" = "アップデートの確認...";

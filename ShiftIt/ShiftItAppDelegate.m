@@ -59,8 +59,8 @@ NSString *const kAXDriverDelayBetweenOperationsPrefKey = @"axdriver_delayBetween
 NSString *const kShowPreferencesRequestNotification = @"org.shiftitapp.shiftit.notifiactions.showPreferences";
 
 // icon
-NSString *const kSIIconName = @"ShiftIt-menuIcon";
-NSString *const kSIMenuItemTitle = @"Shift";
+NSString *const kSIIconName = @"ShiftItMenuIcon";
+NSString *const kSIReversedIconName = @"ShiftItMenuIconReversed";
 
 NSString *const kUsageStatisticsFileName = @"usage-statistics.plist";
 
@@ -301,7 +301,9 @@ NSDictionary *allShiftActions = nil;
     NSString *appPath = [[NSBundle mainBundle] bundlePath];
 
     if (![loginItems isInLoginItemsApplicationWithPath:appPath]) {
-        NSInteger ret = NSRunAlertPanel(@"Start ShiftIt automatically?", @"Would you like to have ShiftIt automatically started at a login time?", @"Yes", @"No", NULL);
+        NSInteger ret = NSRunAlertPanel(NSLocalizedString(@"Start ShiftIt automatically?", nil),
+                                        NSLocalizedString(@"Would you like to have ShiftIt automatically started at a login time?", nil),
+                                        NSLocalizedString(@"Yes", nil), NSLocalizedString(@"No", nil), NULL);
         switch (ret) {
             case NSAlertDefaultReturn:
                 // do it!
@@ -321,17 +323,15 @@ NSDictionary *allShiftActions = nil;
         if (AXIsProcessTrustedWithOptions != NULL) {
             // OSX >= 10.9
 
-            NSAlert *alert = [NSAlert alertWithMessageText:@"Authorization Required"
-                                             defaultButton:@"Recheck"
-                                           alternateButton:@"Open System Preferences"
-                                               otherButton:@"Quit"
-                                 informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Servicea in order to be able to move and resize application windows."
-                                         "\n\n"
-                                         "You can do this in System Preferences > Security & Privacy > Privacy > Accessibility. You might need to drag-and-drop ShiftIt into the list of allowed apps and make sure the checkbox is on."
+            NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Authorization Required", nil)
+                                             defaultButton:NSLocalizedString(@"Recheck", nil)
+                                           alternateButton:NSLocalizedString(@"Open System Preferences", nil)
+                                               otherButton:NSLocalizedString(@"Quit", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_9", nil)
             ];
 
             NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
-            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettings-Maverick"]];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettingsMaverick"]];
             [accessory setImageFrameStyle:NSImageFrameGrayBezel];
             [alert setAccessoryView:accessory];
 
@@ -370,17 +370,15 @@ NSDictionary *allShiftActions = nil;
             }
         } else {
             // OSX <= 10.8
-            NSAlert *alert = [NSAlert alertWithMessageText:@"Authorization Required"
-                                             defaultButton:@"Quit"
+            NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Authorization Required", nil)
+                                             defaultButton:NSLocalizedString(@"Quit", nil)
                                            alternateButton:nil
-                                               otherButton:@"Open System Preferences"
-                                 informativeTextWithFormat:@"ShiftIt needs to be authorized to use an Accessibility Servicea in order to be able to move and resize application windows."
-                                         "\n\n"
-                                         "Please \"Enable access for assistive devices\" in the System Preferences > Universal Access and then restart ShiftIt."
+                                               otherButton:NSLocalizedString(@"Open System Preferences", nil)
+                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_8", nil)
             ];
 
             NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
-            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettings-Lion"]];
+            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettingsLion"]];
             [accessory setImageFrameStyle:NSImageFrameGrayBezel];
             [alert setAccessoryView:accessory];
 
@@ -501,7 +499,7 @@ NSDictionary *allShiftActions = nil;
     if (flag == NO) {
         [self showPreferences:nil];
     }
-    return YES;
+    return NO;
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
@@ -516,20 +514,12 @@ NSDictionary *allShiftActions = nil;
 
     if (showIconInMenuBar) {
         if (!statusItem_) {
+            NSImage *icon = [NSImage imageNamed:kSIIconName];
+            [icon setTemplate:YES];
+            
             statusItem_ = [[statusBar statusItemWithLength:kSIMenuItemSize] retain];
             [statusItem_ setMenu:statusMenu_];
-
-            // TODO: imageNamed
-            NSString *iconPath = FMTGetMainBundleResourcePath(kSIIconName, @"png");
-            NSImage *icon = [[NSImage alloc] initWithContentsOfFile:iconPath];
-
-            if (icon) {
-                [statusItem_ setImage:icon];
-                [icon release];
-            } else {
-                [statusItem_ setTitle:kSIMenuItemTitle];
-            }
-
+            [statusItem_ setImage:icon];
             [statusItem_ setHighlightMode:YES];
         }
     } else {
@@ -585,21 +575,22 @@ NSDictionary *allShiftActions = nil;
     action = [[[ShiftItAction alloc] initWithIdentifier:(anId) label:(aLabel) uiTag:(aTag) delegate:(aDelegate)] autorelease]; \
     [(dict) setObject:action forKey:[action identifier]];
 
-    REGISTER_ACTION(dict, @"left", @"Left", 1, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItLeft] autorelease]);
-    REGISTER_ACTION(dict, @"right", @"Right", 2, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItRight] autorelease]);
-    REGISTER_ACTION(dict, @"top", @"Top", 3, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTop] autorelease]);
-    REGISTER_ACTION(dict, @"bottom", @"Bottom", 4, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottom] autorelease]);
-    REGISTER_ACTION(dict, @"tl", @"Top Left", 5, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopLeft] autorelease]);
-    REGISTER_ACTION(dict, @"tr", @"Top Right", 6, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopRight] autorelease]);
-    REGISTER_ACTION(dict, @"bl", @"Bottom Left", 7, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomLeft] autorelease]);
-    REGISTER_ACTION(dict, @"br", @"Bottom Right", 8, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomRight] autorelease]);
-    REGISTER_ACTION(dict, @"center", @"Center", 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
-    REGISTER_ACTION(dict, @"zoom", @"Toggle Zoom", 10, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
-    REGISTER_ACTION(dict, @"maximize", @"Maximize", 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
-    REGISTER_ACTION(dict, @"fullScreen", @"Toggle Full Screen", 12, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
-    REGISTER_ACTION(dict, @"increase", @"Increase", 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
-    REGISTER_ACTION(dict, @"reduce", @"Reduce", 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
-    REGISTER_ACTION(dict, @"nextscreen", @"Next Screen", 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"left", NSLocalizedString(@"Left", nil), 1, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItLeft] autorelease]);
+    REGISTER_ACTION(dict, @"right", NSLocalizedString(@"Right", nil), 2, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItRight] autorelease]);
+    REGISTER_ACTION(dict, @"top", NSLocalizedString(@"Top", nil), 3, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTop] autorelease]);
+    REGISTER_ACTION(dict, @"bottom", NSLocalizedString(@"Bottom", nil), 4, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottom] autorelease]);
+    REGISTER_ACTION(dict, @"tl", NSLocalizedString(@"Top Left", nil), 5, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopLeft] autorelease]);
+    REGISTER_ACTION(dict, @"tr", NSLocalizedString(@"Top Right", nil), 6, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopRight] autorelease]);
+    REGISTER_ACTION(dict, @"bl", NSLocalizedString(@"Bottom Left", nil), 7, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomLeft] autorelease]);
+    REGISTER_ACTION(dict, @"br", NSLocalizedString(@"Bottom Right", nil), 8, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomRight] autorelease]);
+    REGISTER_ACTION(dict, @"center", NSLocalizedString(@"Center", nil), 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
+    REGISTER_ACTION(dict, @"zoom", NSLocalizedString(@"Toggle Zoom", nil), 10, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"maximize", NSLocalizedString(@"Maximize", nil), 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
+    REGISTER_ACTION(dict, @"fullScreen", NSLocalizedString(@"Toggle Full Screen", nil), 12, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"increase", NSLocalizedString(@"Increase", nil), 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"reduce", NSLocalizedString(@"Reduce", nil), 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
+    REGISTER_ACTION(dict, @"nextscreen", NSLocalizedString(@"Next Screen", nil), 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"previousscreen", NSLocalizedString(@"Previous Screen", nil), 16, [[[ScreenChangeShiftItAction alloc] initWithMode:NO] autorelease]);
 
 #undef REGISTER_ACTION
 
