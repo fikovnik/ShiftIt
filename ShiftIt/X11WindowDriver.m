@@ -182,9 +182,10 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     // TODO: assert
     // TODO: change the names -Ref
     BOOL ret = [driver_ getGeometry_:geometry ofWindow:ref_ error:error];
-    FMTLogDebug(@"AXWindowDriver: window geometry (x11coord): %@", RECT_STR(*geometry));
 
     if (ret) {
+        FMTLogDebug(@"window geometry (x11coord): %@", RECT_STR(*geometry));
+
         // TODO: extract
         // following will make the X11 reference coordinate system
 		// X11 coordinates starts at the very top left corner of the most top left window
@@ -198,12 +199,12 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         // convert from X11 coordinates to Quartz CG coordinates
         geometry->origin.x += ref.origin.x;
         geometry->origin.y += ref.origin.y;
-        FMTLogDebug(@"AXWindowDriver: window geometry (gccoord): %@", RECT_STR(*geometry));
+        FMTLogDebug(@"window geometry (gccoord): %@", RECT_STR(*geometry));
 
         // convert the geometry to screen origin
         SIScreen *screen = [SIScreen screenForWindowGeometry:*geometry];
         *geometry = SIGCToScreenOrigin(*geometry, screen);
-        FMTLogDebug(@"AXWindowDriver: window geometry (sccoord): %@", RECT_STR(*geometry));
+        FMTLogDebug(@"window geometry (sccoord): %@", RECT_STR(*geometry));
 
         if (screenRef) {
             *screenRef = screen;
@@ -216,10 +217,10 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 - (BOOL)setGeometry:(NSRect)geometry screen:(SIScreen *)screen error:(NSError **)error {
     // TODO: assert
 
-    FMTLogDebug(@"AXWindowDriver: window geometry (sccoord): %@", RECT_STR(geometry));
+    FMTLogDebug(@"window geometry (sccoord): %@", RECT_STR(geometry));
 
     NSRect gcGeometry = SIScreenToGCOrigin(geometry, screen);
-    FMTLogDebug(@"AXWindowDriver: window geometry (gccoord): %@", RECT_STR(gcGeometry));
+    FMTLogDebug(@"window geometry (gccoord): %@", RECT_STR(gcGeometry));
 
     // TODO: extract
     NSRect ref = [[SIScreen primaryScreen] visibleRect];
@@ -230,7 +231,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     // convert from X11 coordinates to Quartz CG coordinates
     gcGeometry.origin.x -= ref.origin.x;
     gcGeometry.origin.y -= ref.origin.y;
-    FMTLogDebug(@"AXWindowDriver: window geometry (x11coord): %@", RECT_STR(gcGeometry));
+    FMTLogDebug(@"window geometry (x11coord): %@", RECT_STR(gcGeometry));
 
     return [driver_ setGeometry_:gcGeometry ofWindow:ref_ error:error];
 }
@@ -286,12 +287,17 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 	// try to load the library
 	int found=0;
 	for (int i=0; i<sizeof(X11Paths_)/sizeof(X11Paths_[0]); i++) {
+
+        if (access(X11Paths_[i], X_OK) != 0) {
+            continue;
+        }
+
 		X11Lib_ = dlopen(X11Paths_[i], RTLD_LOCAL | RTLD_NOW);
 		if (!X11Lib_) {
-			FMTLogDebug(@"X11Info: Unable to load X11 library from: %s: %s\n", X11Paths_[i], dlerror());
+			FMTLogDebug(@"Unable to load X11 library from: %s: %s\n", X11Paths_[i], dlerror());
 		} else {
 			found = 1;
-            FMTLogDebug(@"X11Info: loaded X11 library from: %s\n", X11Paths_[i]);
+            FMTLogDebug(@"Loaded X11 library from: %s\n", X11Paths_[i]);
 			break;
 		}
 	}
@@ -299,7 +305,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
 	if (!found) {
         if (error) {
 		    *error = SICreateError(kX11WindowDriverErrorCode,
-                                   @"X11Info: No libX11 found - X11 support will be disabled\n");
+                                   @"No libX11 found - X11 support will be disabled\n");
         }
         return NO;
 	}
@@ -388,7 +394,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         }
 
         int x, y;
-        unsigned int width, height;
+        int width, height;
         Window not_used_window;
         if(!XTranslateCoordinatesRef(dpy, *windowRef, root, -wa.border_width, -wa.border_width, &x, &y, &not_used_window)) {
             *nestedError = SICreateError(kX11WindowDriverErrorCode, @"Unable to translate coordinated (XTranslateCoordinates)");
@@ -398,8 +404,8 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
         // the height returned is without the window manager decoration - the OSX top bar with buttons, window label and stuff
         // so we need to add it to the height as well because the WindowSize expects the full window
         // the same might be potentially apply to the width
-        width = (unsigned int) (wa.width + wa.x);
-        height = (unsigned int) (wa.height + wa.y);
+        width = wa.width + wa.x;
+        height = wa.height + wa.y;
 
         x -= wa.x;
         y -= wa.y;
