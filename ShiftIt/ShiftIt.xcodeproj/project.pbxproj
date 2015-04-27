@@ -42,8 +42,8 @@
 		27160C6B16C939FF002DA475 /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
 		27160C6C16C939FF002DA475 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DC61EE1127C862000E1A5B /* Carbon.framework */; };
 		27160C6D16C939FF002DA475 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
-		27160C6F16C939FF002DA475 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
-		27160C7016C939FF002DA475 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
+		27160C6F16C939FF002DA475 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		27160C7016C939FF002DA475 /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2717BDAC1498B7FD0012EF87 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714C0B21487F9BC00CC951D /* SenTestingKit.framework */; };
 		2717BE18149933530012EF87 /* GTMLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 270DACA814098AE30080DFBD /* GTMLogger.m */; };
 		2717BE1F149933840012EF87 /* SIAdjacentRectangles.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5F /* SIAdjacentRectangles.m */; };
@@ -65,7 +65,7 @@
 		279AF81019432F6F0048FE5F /* AccessibilitySettingsLion.png in Resources */ = {isa = PBXBuildFile; fileRef = 279AF80E19432F6F0048FE5F /* AccessibilitySettingsLion.png */; };
 		279AF8191943675F0048FE5F /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279AF8181943675F0048FE5F /* ScriptingBridge.framework */; };
 		279AF81A194367670048FE5F /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 279AF8181943675F0048FE5F /* ScriptingBridge.framework */; };
-		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
+		27A14DB41269CD4200E68263 /* ShortcutRecorder.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27A14DD31269CE5600E68263 /* ShortcutRecorder.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27A14D7F1269CCA200E68263 /* ShortcutRecorder.framework */; };
 		27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 27A14EBF1269EC1500E68263 /* ShiftIt-defaults.plist */; };
 		27C072E1140D6B9E00C4E199 /* FMTNSDictionary+Extras.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C072E0140D6B9E00C4E199 /* FMTNSDictionary+Extras.m */; };
@@ -91,7 +91,7 @@
 		E4BCFDF71237154D17E7FFBC /* FMTError.m in Sources */ = {isa = PBXBuildFile; fileRef = E4BCF6EB42F45803C08BAC36 /* FMTError.m */; };
 		F2520B641133874D00DB826F /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2520B631133874D00DB826F /* PreferencesWindowController.m */; };
 		F2708252117FCFEA00C0A04C /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
-		F2708277117FE51100C0A04C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; };
+		F2708277117FE51100C0A04C /* Sparkle.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2708222117FCF9400C0A04C /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		F2DC61251127ACDE000E1A5B /* SIWindowManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61241127ACDE000E1A5B /* SIWindowManager.m */; };
 		F2DC61EF1127C862000E1A5B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2DC61EE1127C862000E1A5B /* Carbon.framework */; };
 		F2DC61EF1127C862000E1A5D /* SIScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = F2DC61EF1127C862000E1A5C /* SIScreen.m */; };
@@ -650,7 +650,8 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0510;
+				LastTestingUpgradeCheck = 0630;
+				LastUpgradeCheck = 0630;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "ShiftIt" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -717,8 +718,8 @@
 				CA0A5415194C030700AC7F45 /* Localizable.strings in Resources */,
 				27CD1A3019437FB20063D5AB /* ShiftItMenuIcon.png in Resources */,
 				279AF80F19432F6F0048FE5F /* AccessibilitySettingsLion.png in Resources */,
-				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				CA0A5412194C02ED00AC7F45 /* PreferencesWindow.xib in Resources */,
+				1DDD58160DA1D0A300B32029 /* MainMenu.xib in Resources */,
 				83E55ED6125A5FCF00FC49BF /* ShiftIt.icns in Resources */,
 				27A14EC01269EC1500E68263 /* ShiftIt-defaults.plist in Resources */,
 				271D2EBB12FC6B3A00A4D0BF /* margin-background-image.png in Resources */,
@@ -1010,13 +1011,15 @@
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS = "_DEBUGPRINTS_=1";
 				HEADER_SEARCH_PATHS = (
-					/usr/X11/include,
+					/opt/local/include,
 					/opt/X11/include,
+					/usr/X11/include,
 				);
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					/usr/X11/lib,
+					/opt/local/lib,
 					/opt/X11/lib,
+					/usr/X11/lib,
 				);
 				OTHER_CFLAGS = (
 					"-DDEBUG",
@@ -1035,13 +1038,15 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = ShiftIt_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
-					/usr/X11/include,
+					/opt/local/include,
 					/opt/X11/include,
+					/usr/X11/include,
 				);
 				INFOPLIST_FILE = "ShiftIt-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
-					/usr/X11/lib,
+					/opt/local/lib,
 					/opt/X11/lib,
+					/usr/X11/lib,
 				);
 				OTHER_CFLAGS = (
 					"-DNDEBUG",

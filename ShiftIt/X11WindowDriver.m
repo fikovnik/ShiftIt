@@ -37,7 +37,7 @@ static char *X11Paths_[] = {
 	"libX11.6.dylib",
     "/usr/local/X11/libX11.6.dylib", // anyone?
     "/opt/X11/lib/libX11.6.dylib", // XQuartz
-	"/opt/local/X11/lib/libX11.6.dylib", // MacPorts?
+	"/opt/local/lib/libX11.6.dylib", // MacPorts
 	"/sw/X11/lib/libX11.6.dylib", // Fink?
 };
 
@@ -210,7 +210,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
             *screenRef = screen;
         }
     }
-    
+
     return ret;
 }
 
@@ -425,7 +425,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     FMTAssertNotNil(windowRef);
 
     return execWithDisplay_(^BOOL(Display *dpy, NSError **nestedError) {
-        // TODO: combine the operations        
+        // TODO: combine the operations
         XWindowAttributes wa;
         if(!XGetWindowAttributesRef(dpy, *windowRef, &wa)) {
             if (nestedError) {
