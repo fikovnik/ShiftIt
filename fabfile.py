@@ -137,7 +137,7 @@ proj_version = _get_bundle_version(proj_info_plist)
 proj_archive_name = proj_name + '-' + proj_version + '.zip'
 proj_archive_path = os.path.join(proj_build_dir, proj_archive_name)
 
-proj_download_url = 'https://github.com/downloads/fikovnik/ShiftIt/'+proj_archive_name
+proj_download_url = 'https://github.com/fikovnik/ShiftIt/releases/download/version-%s/%s' % (proj_version, proj_archive_name)
 proj_release_notes_url = 'http://htmlpreview.github.com/?https://raw.github.com/fikovnik/ShiftIt/master/release/release-notes-'+proj_version+'.html'
 proj_release_notes_html_file = os.path.join(os.getcwd(),'release','release-notes-'+proj_version+'.html')
 proj_appcast_file = os.path.join(os.getcwd(),'release','appcast.xml')
