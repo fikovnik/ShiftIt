@@ -39,7 +39,7 @@ const SimpleWindowGeometryChangeBlock shiftItRight = ^AnchoredRect(NSRect window
     r.origin.x = screenSize.width / 2;
     r.origin.y = 0;
 
-    r.size.width = screenSize.width / 2;
+    r.size.width = screenSize.width / 2 + 1;
     r.size.height = screenSize.height;
 
     return MakeAnchoredRect(r, kRightDirection);
