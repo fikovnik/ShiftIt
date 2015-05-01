@@ -368,7 +368,7 @@ NSDictionary *allShiftActions = nil;
                 }
 
             }
-        } else {
+        } else if (!AXAPIEnabled()){
             // OSX <= 10.8
             NSAlert *alert = [NSAlert alertWithMessageText:NSLocalizedString(@"Authorization Required", nil)
                                              defaultButton:NSLocalizedString(@"Quit", nil)
