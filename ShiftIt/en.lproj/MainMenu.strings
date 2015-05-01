@@ -1,0 +1,60 @@
+
+/* Class = "NSMenu"; title = "Status Menu"; ObjectID = "535"; */
+"535.title" = "Status Menu";
+
+/* Class = "NSMenuItem"; title = "Center"; ObjectID = "537"; */
+"537.title" = "Center";
+
+/* Class = "NSMenuItem"; title = "Toggle Full Screen"; ObjectID = "545"; */
+"545.title" = "Toggle Full Screen";
+
+/* Class = "NSMenuItem"; title = "Quit ShiftIt"; ObjectID = "546"; */
+"546.title" = "Quit ShiftIt";
+
+/* Class = "NSMenuItem"; title = "Left"; ObjectID = "547"; */
+"547.title" = "Left";
+
+/* Class = "NSMenuItem"; title = "Right"; ObjectID = "548"; */
+"548.title" = "Right";
+
+/* Class = "NSMenuItem"; title = "Top"; ObjectID = "549"; */
+"549.title" = "Top";
+
+/* Class = "NSMenuItem"; title = "Bottom"; ObjectID = "550"; */
+"550.title" = "Bottom";
+
+/* Class = "NSMenuItem"; title = "Preferences"; ObjectID = "558"; */
+"558.title" = "Preferences";
+
+/* Class = "NSMenuItem"; title = "Check for Updates"; ObjectID = "761"; */
+"761.title" = "Check for Updates";
+
+/* Class = "NSMenuItem"; title = "Top Left"; ObjectID = "767"; */
+"767.title" = "Top Left";
+
+/* Class = "NSMenuItem"; title = "Top Right"; ObjectID = "768"; */
+"768.title" = "Top Right";
+
+/* Class = "NSMenuItem"; title = "Bottom Left"; ObjectID = "769"; */
+"769.title" = "Bottom Left";
+
+/* Class = "NSMenuItem"; title = "Bottom Right"; ObjectID = "770"; */
+"770.title" = "Bottom Right";
+
+/* Class = "NSMenuItem"; title = "Increase"; ObjectID = "786"; */
+"786.title" = "Increase";
+
+/* Class = "NSMenuItem"; title = "Reduce"; ObjectID = "787"; */
+"787.title" = "Reduce";
+
+/* Class = "NSMenuItem"; title = "Toggle Zoom"; ObjectID = "791"; */
+"791.title" = "Toggle Zoom";
+
+/* Class = "NSMenuItem"; title = "Maximize"; ObjectID = "792"; */
+"792.title" = "Maximize";
+
+/* Class = "NSMenuItem"; title = "Next Screen"; ObjectID = "794"; */
+"794.title" = "Next Screen";
+
+/* Class = "NSMenuItem"; title = "Previous Screen"; ObjectID = "URi-Kh-uDb"; */
+"URi-Kh-uDb.title" = "Previous Screen";
