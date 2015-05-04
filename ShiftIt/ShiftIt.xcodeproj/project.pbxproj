@@ -221,6 +221,10 @@
 		83E55ED4125A5FCF00FC49BF /* ShiftIt.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = ShiftIt.icns; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* ShiftIt-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ShiftIt-Info.plist"; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* ShiftIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShiftIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C3166F1A1AF36971003F7A48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PreferencesWindow.strings; sourceTree = "<group>"; };
+		C3166F1B1AF36971003F7A48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/MainMenu.strings; sourceTree = "<group>"; };
+		C3166F1C1AF36971003F7A48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C3166F1D1AF36971003F7A48 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E4BCF097E2A6742AD696580E /* SIAdjacentRectanglesTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SIAdjacentRectanglesTest.m; sourceTree = "<group>"; };
 		E4BCF1236CA369B89F718229 /* ShiftIt Tests-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ShiftIt Tests-Prefix.pch"; sourceTree = "<group>"; };
 		E4BCF6EB42F45803C08BAC36 /* FMTError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMTError.m; sourceTree = "<group>"; };
@@ -857,6 +861,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				27632BCC19535FD0000445C5 /* Base */,
+				C3166F1D1AF36971003F7A48 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -866,6 +871,7 @@
 			children = (
 				27632BCA19535F04000445C5 /* Base */,
 				27632BD2195364EB000445C5 /* ja */,
+				C3166F1D1AF36971003F7A48 /* en */,
 			);
 			name = MainMenu.xib;
 			sourceTree = "<group>";
@@ -875,6 +881,7 @@
 			children = (
 				27632BC919535F04000445C5 /* Base */,
 				27632BD1195364EB000445C5 /* ja */,
+				C3166F1D1AF36971003F7A48 /* en */,
 			);
 			name = PreferencesWindow.xib;
 			sourceTree = "<group>";
@@ -884,6 +891,7 @@
 			children = (
 				27632BCB19535F87000445C5 /* Base */,
 				27632BD3195364EB000445C5 /* ja */,
+				C3166F1D1AF36971003F7A48 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

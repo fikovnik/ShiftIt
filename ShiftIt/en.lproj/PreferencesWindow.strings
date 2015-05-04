@@ -1,0 +1,123 @@
+
+/* Class = "NSWindow"; title = "Preferences"; ObjectID = "1"; */
+"1.title" = "Preferences";
+
+/* Class = "NSTabViewItem"; label = "General"; ObjectID = "5"; */
+"5.label" = "General";
+
+/* Class = "NSButtonCell"; title = "Open At Login"; ObjectID = "63"; */
+"63.title" = "Open At Login";
+
+/* Class = "NSButtonCell"; title = "Automatically Check For Updates"; ObjectID = "65"; */
+"65.title" = "Automatically Check For Updates";
+
+/* Class = "NSButtonCell"; title = "Check For Updates Now"; ObjectID = "67"; */
+"67.title" = "Check For Updates Now";
+
+/* Class = "NSButtonCell"; title = "Show Icon In Menu Bar"; ObjectID = "257"; */
+"257.title" = "Show Icon In Menu Bar";
+
+/* Class = "NSTabViewItem"; label = "Hotkeys"; ObjectID = "394"; */
+"394.label" = "Hotkeys";
+
+/* Class = "NSTextFieldCell"; title = "ShiftIt App"; ObjectID = "583"; */
+"583.title" = "ShiftIt App";
+
+/* Class = "NSTextFieldCell"; title = "version"; ObjectID = "585"; */
+"585.title" = "version";
+
+/* Class = "NSButtonCell"; title = "Restore defaults"; ObjectID = "607"; */
+"607.title" = "Restore defaults";
+
+/* Class = "NSTabViewItem"; label = "Increase/Reduce"; ObjectID = "632"; */
+"632.label" = "Increase/Reduce";
+
+/* Class = "NSTextFieldCell"; title = "Size:"; ObjectID = "730"; */
+"730.title" = "Size:";
+
+/* Class = "NSButtonCell"; title = "Fixed"; ObjectID = "732"; */
+"732.title" = "Fixed";
+
+/* Class = "NSButtonCell"; title = "Window"; ObjectID = "733"; */
+"733.title" = "Window";
+
+/* Class = "NSButtonCell"; title = "Radio"; ObjectID = "734"; */
+"734.title" = "Radio";
+
+/* Class = "NSButtonCell"; title = "Screen"; ObjectID = "735"; */
+"735.title" = "Screen";
+
+/* Class = "NSTextFieldCell"; title = "100"; ObjectID = "737"; */
+"737.title" = "100";
+
+/* Class = "NSTextFieldCell"; title = "99.25"; ObjectID = "740"; */
+"740.title" = "99.25";
+
+/* Class = "NSTextFieldCell"; title = "%"; ObjectID = "748"; */
+"748.title" = "%";
+
+/* Class = "NSTextFieldCell"; title = "%"; ObjectID = "750"; */
+"750.title" = "%";
+
+/* Class = "NSTextFieldCell"; title = "px"; ObjectID = "802"; */
+"802.title" = "px";
+
+/* Class = "NSTextFieldCell"; title = "px"; ObjectID = "804"; */
+"804.title" = "px";
+
+/* Class = "NSTextFieldCell"; title = "width"; ObjectID = "806"; */
+"806.title" = "width";
+
+/* Class = "NSTextFieldCell"; title = "height"; ObjectID = "808"; */
+"808.title" = "height";
+
+/* Class = "NSButtonCell"; title = "Quit ShiftIt"; ObjectID = "814"; */
+"814.title" = "Quit ShiftIt";
+
+/* Class = "NSButtonCell"; title = "Include Window Drawers"; ObjectID = "820"; */
+"820.title" = "Include Window Drawers";
+
+/* Class = "NSButtonCell"; title = "Show Icon In Menu Bar"; ObjectID = "828"; */
+"828.title" = "Show Icon In Menu Bar";
+
+/* Class = "NSTabViewItem"; label = "Advanced"; ObjectID = "837"; */
+"837.label" = "Advanced";
+
+/* Class = "NSButtonCell"; title = "Enable debug logging"; ObjectID = "862"; */
+"862.title" = "Enable debug logging";
+
+/* Class = "NSTextFieldCell"; title = "If you experience any problems, allowing this extra logging output might help trace it down more easily. Once on, all logging will be redirected to a file that appears below. Please attach the logging file to any issue you are reporting on github.com."; ObjectID = "864"; */
+"864.title" = "If you experience any problems, allowing this extra logging output might help trace it down more easily. Once on, all logging will be redirected to a file that appears below. Please attach the logging file to any issue you are reporting on github.com.";
+
+/* Class = "NSTextFieldCell"; title = "Label"; ObjectID = "866"; */
+"866.title" = "Label";
+
+/* Class = "NSTabViewItem"; label = "Anchors"; ObjectID = "1010"; */
+"1010.label" = "Anchors";
+
+/* Class = "NSButtonCell"; title = "Enable Anchors"; ObjectID = "1039"; */
+"1039.title" = "Enable Anchors";
+
+/* Class = "NSTextFieldCell"; title = "Anchors define margins of a screen. If a window is inside one of these margins it will be automatically anchored to the respective side with next actions that is executed. This is useful especially for application like Terminal.app or other that do not change their sizes continously, but rather in a descrete steps."; ObjectID = "1040"; */
+"1040.title" = "Anchors define margins of a screen. If a window is inside one of these margins it will be automatically anchored to the respective side with next actions that is executed. This is useful especially for application like Terminal.app or other that do not change their sizes continously, but rather in a descrete steps.";
+
+/* Class = "NSTextFieldCell"; title = "It should work fine in most cases, but eventually you might experience some weird behavior with drawers. Please, before reporting a new issue, check the list if there is not already one."; ObjectID = "1828"; */
+"1828.title" = "It should work fine in most cases, but eventually you might experience some weird behavior with drawers. Please, before reporting a new issue, check the list if there is not already one.";
+
+/* Class = "NSButtonCell"; title = "Report New Issue"; ObjectID = "1833"; */
+"1833.title" = "Report New Issue";
+
+/* Class = "NSButtonCell"; title = "Reveal In Finder"; ObjectID = "1837"; */
+"1837.title" = "Reveal In Finder";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "3ss-15-jqT"; */
+"3ss-15-jqT.title" = "Table View Cell";
+
+/* Class = "NSTextFieldCell"; title = "Table View Cell"; ObjectID = "9br-JZ-gxa"; */
+"9br-JZ-gxa.title" = "Table View Cell";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "NP6-3N-EpU"; */
+"NP6-3N-EpU.title" = "Text Cell";
+
+/* Class = "NSTextFieldCell"; title = "Text Cell"; ObjectID = "jiH-Xs-9qQ"; */
+"jiH-Xs-9qQ.title" = "Text Cell";
