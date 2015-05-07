@@ -52,7 +52,6 @@ ShiftIt is based on a Cocoa Accessibility API and sometimes this API can be a bi
 
 ##### ShiftIt wants accessibility access on my Mac but my system preferences don't match the instruction, why?
 
-  For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
 For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
 
 ##### How to repairing Accessibility API permissions?
