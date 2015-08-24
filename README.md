@@ -88,6 +88,13 @@ To make a build without X11 support execute following:
 $ xcodebuild -target "ShiftIt NoX11" -configuration Release
 ```
 
+### Brew Cask
+To install  ShiftIt using brew you can use the cask.
+
+```
+$ brew cask install shiftit
+```
+
 ### Making a release
 
 Releases are handled using [fabric](http://docs.fabfile.org/en/1.5/). There are some dependencies that can be easily obtained using `pip`:
