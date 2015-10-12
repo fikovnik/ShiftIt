@@ -30,6 +30,10 @@
 	<integer>28</integer>
 	<key>fixedSizeWidthDelta</key>
 	<integer>50</integer>
+	<key>fullHeightKeyCode</key>
+	<integer>4</integer>
+	<key>fullHeightModifiers</key>
+	<integer>1</integer>
 	<key>fullScreenKeyCode</key>
 	<integer>3</integer>
 	<key>fullScreenModifiers</key>
@@ -85,10 +89,10 @@
 	<key>zoomKeyCode</key>
 	<integer>6</integer>
 	<key>zoomModifiers</key>
-    <integer>1835008</integer>
-   	<key>nextscreenKeyCode</key>
-   	<integer>45</integer>
-   	<key>nextscreenModifiers</key>
+	<integer>1835008</integer>
+	<key>nextscreenKeyCode</key>
+	<integer>45</integer>
+	<key>nextscreenModifiers</key>
 	<integer>1835008</integer>
 	<key>previousscreenKeyCode</key>
 	<integer>35</integer>

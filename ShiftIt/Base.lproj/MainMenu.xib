@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -11,7 +11,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="494" customClass="ShiftItAppDelegate">
             <connections>
                 <outlet property="statusMenu_" destination="535" id="789"/>
@@ -57,18 +57,21 @@
                 <menuItem title="Toggle Full Screen" tag="2012" keyEquivalent="f" id="545">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
-                <menuItem isSeparatorItem="YES" id="538"/>
-                <menuItem title="Increase" tag="2013" keyEquivalent="=" id="786">
+                <menuItem title="Full Height" tag="2013" keyEquivalent="h" id="oA1-D9-Jq2">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
-                <menuItem title="Reduce" tag="2014" keyEquivalent="-" id="787">
+                <menuItem isSeparatorItem="YES" id="538"/>
+                <menuItem title="Increase" tag="2014" keyEquivalent="=" id="786">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="Reduce" tag="2015" keyEquivalent="-" id="787">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="788"/>
-                <menuItem title="Next Screen" tag="2015" keyEquivalent="n" id="794">
+                <menuItem title="Next Screen" tag="2016" keyEquivalent="n" id="794">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
-                <menuItem title="Previous Screen" tag="2016" id="URi-Kh-uDb">
+                <menuItem title="Previous Screen" tag="2017" id="URi-Kh-uDb">
                     <modifierMask key="keyEquivalentModifierMask"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="793"/>
