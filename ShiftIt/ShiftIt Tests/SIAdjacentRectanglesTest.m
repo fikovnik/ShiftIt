@@ -17,10 +17,10 @@
 
  */
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 #import "SIAdjacentRectangles.h"
 
-@interface SIAdjacentRectanglesTest : SenTestCase
+@interface SIAdjacentRectanglesTest : XCTestCase
 @end
 
 @implementation SIAdjacentRectanglesTest
@@ -65,7 +65,7 @@
     FMTDirection directions[] = {kRightDirection, kBottomDirection, kLeftDirection, kTopDirection};
     NSArray *path = [adjr buildDirectionalPath:directions fromValue:@"A"];
 
-    STAssertEquals((NSUInteger)11, [path count], @"There is only one rectangle in right direction from A");
+    XCTAssertEqual((NSUInteger)11, [path count], @"There is only one rectangle in right direction from A");
     NSLog(@"%@",path);
 }
 
