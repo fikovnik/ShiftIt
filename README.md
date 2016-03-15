@@ -59,7 +59,7 @@ For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https:/
 This can be done either using GUI in _System Preferences_ -> _Security & Privacy_ -> _Privacy_ -> _Accessibility_ where it is necessary to check and uncheck the checkbox which is next to ShiftIt in the _Allow the apps below to control your computer_.
 If ShiftIt is not in the list, just drag and drop it there from the `Applications` folder.
 
-![ShiftIt permissions](https://raw.githubusercontent.com/fikovnik/ShiftIt/blob/master/ShiftIt/AccessibilitySettingsMaverick.png)
+![ShiftIt permissions](https://github.com/fikovnik/ShiftIt/blob/master/ShiftIt/AccessibilitySettingsMaverick.png)
 
 Alternatively, this can be also done in a command line, however, this is rather a hack with all potential issues hacks come with.
 
