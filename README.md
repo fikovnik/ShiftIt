@@ -54,9 +54,9 @@ ShiftIt is based on a Cocoa Accessibility API and sometimes this API can be a bi
 
 For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
 
-##### How to repairing Accessibility API permissions?
+##### How to repair Accessibility API permissions?
 
-This can be done either using GUI in _System Preferences_ -> _Security & Privacy_ -> _Privacy_ -> _Accessibility_ where it is necessary to check and uncheck the checkbox which is next to ShiftIt in the _Allow the apps below to control your computer_.
+This can be done either using  the GUI in _System Preferences_ -> _Security & Privacy_ -> _Privacy_ -> _Accessibility_ where it is necessary to check and uncheck the checkbox which is next to ShiftIt in the _Allow the apps below to control your computer_.
 If ShiftIt is not in the list, just drag and drop it there from the `Applications` folder.
 
 ![ShiftIt permissions](https://raw.githubusercontent.com/fikovnik/ShiftIt/develop/ShiftIt/AccessibilitySettings-Maverick.png)
