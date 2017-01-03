@@ -1,6 +1,7 @@
 language: objective-c
 xcode_project: ShiftIt/ShiftIt.xcodeproj
 xcode_scheme: ShiftIt
+osx_image: xcode6.4
 xcode_sdk: macosx10.9
 before_install:
   - brew install wget
