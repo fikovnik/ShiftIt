@@ -21,14 +21,27 @@
 // TODO: extract this to be out of here
 #import "ShiftItApp.h"
 
+BOOL CloseTo(double a, double b) {
+  return fabs(a - b) < 20;
+}
+
 const SimpleWindowGeometryChangeBlock shiftItLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
     NSRect r = NSMakeRect(0, 0, 0, 0);
 
     r.origin.x = 0;
     r.origin.y = 0;
 
-    r.size.width = screenSize.width / 2;
+    double w = windowRect.size.width;
+    double sw = screenSize.width;
+
+    r.size.width = screenSize.width / 2.0;
     r.size.height = screenSize.height;
+
+    if (CloseTo(w, sw / 2.0)) {
+      r.size.width = floor(sw * 1.0 / 3.0);
+    } else if (CloseTo(w, sw / 3.0)) {
+      r.size.width = floor(sw * 2.0 / 3.0);
+    }
 
     return MakeAnchoredRect(r, kLeftDirection);
 };
@@ -39,8 +52,19 @@ const SimpleWindowGeometryChangeBlock shiftItRight = ^AnchoredRect(NSRect window
     r.origin.x = screenSize.width / 2;
     r.origin.y = 0;
 
-    r.size.width = screenSize.width / 2;
+    r.size.width = screenSize.width / 2.0;
     r.size.height = screenSize.height;
+
+    double w = windowRect.size.width;
+    double sw = screenSize.width;
+
+    if (CloseTo(w, sw / 2.0)) {
+      r.size.width = floor(sw * 1.0 / 3.0);
+      r.origin.x = sw - (sw * 1.0 / 3.0);
+    } else if (CloseTo(w, sw / 3.0)) {
+      r.size.width = floor(sw * 2.0 / 3.0);
+      r.origin.x = sw - (sw * 2.0 / 3.0);
+    }
 
     return MakeAnchoredRect(r, kRightDirection);
 };
@@ -54,6 +78,17 @@ const SimpleWindowGeometryChangeBlock shiftItTop = ^AnchoredRect(NSRect windowRe
     r.size.width = screenSize.width;
     r.size.height = screenSize.height / 2;
 
+    double windowHeight = windowRect.size.height;
+    double screenHeight = screenSize.height;
+
+    if (CloseTo(windowHeight, screenHeight / 2.0)) {
+      r.size.height = floor(screenHeight * 1.0 / 3.0);
+      r.origin.y = screenHeight * 1.0 / 3.0;
+    } else if (CloseTo(windowHeight, screenHeight / 3.0)) {
+      r.size.height = floor(screenHeight * 2.0 / 3.0);
+      r.origin.y = screenHeight * 2.0 / 3.0;
+    }
+
     return MakeAnchoredRect(r, kTopDirection);
 };
 
@@ -65,6 +100,17 @@ const SimpleWindowGeometryChangeBlock shiftItBottom = ^AnchoredRect(NSRect windo
 
     r.size.width = screenSize.width;
     r.size.height = screenSize.height / 2;
+
+    double windowHeight = windowRect.size.height;
+    double screenHeight = screenSize.height;
+
+    if (CloseTo(windowHeight, screenHeight / 2.0)) {
+      r.size.height = floor(screenHeight * 1.0 / 3.0);
+      r.origin.y = screenHeight - (screenHeight * 1.0 / 3.0);
+    } else if (CloseTo(windowHeight, screenHeight / 3.0)) {
+      r.size.height = floor(screenHeight * 2.0 / 3.0);
+      r.origin.y = screenHeight - (screenHeight * 2.0 / 3.0);
+    }
 
     return MakeAnchoredRect(r, kBottomDirection);
 };
