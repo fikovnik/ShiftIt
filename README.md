@@ -59,13 +59,13 @@ For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https:/
 This can be done either using  the GUI in _System Preferences_ -> _Security & Privacy_ -> _Privacy_ -> _Accessibility_ where it is necessary to check and uncheck the checkbox which is next to ShiftIt in the _Allow the apps below to control your computer_.
 If ShiftIt is not in the list, just drag and drop it there from the `Applications` folder.
 
-![ShiftIt permissions](https://raw.githubusercontent.com/fikovnik/ShiftIt/develop/ShiftIt/AccessibilitySettings-Maverick.png)
+![ShiftIt permissions](https://raw.githubusercontent.com/fikovnik/ShiftIt/develop/ShiftIt/AccessibilitySettingsMaverick.png)
 
 Alternatively, this can be also done in a command line, however, this is rather a hack with all potential issues hacks come with.
 
 ```sh
 $ sudo sqlite3 '/Library/Application Support/com.apple.TCC/TCC.db' 'update access set allowed=1 where client like "%org.shiftitapp.ShiftIt%"'
-``` 
+```
 
 For instructions on accessibility in Mac OS X 10.9.x, see [this comment](https://github.com/fikovnik/ShiftIt/issues/110#issuecomment-20834932).
 If you've upgraded to 10.10, just uncheck and recheck the box to make things work again.
@@ -101,7 +101,7 @@ Releases are handled using [fabric](http://docs.fabfile.org/en/1.5/). There are 
 
 * [fabric](http://docs.fabfile.org/en/1.5/) - the build system itself
 * [github3](https://github.com/sigmavirus24/github3.py) - library for GitHub 3 API
-* [pystache](https://github.com/defunkt/pystache) - templates 
+* [pystache](https://github.com/defunkt/pystache) - templates
 
 The releases are fully automatic which hopefully will help to release more often.
 
