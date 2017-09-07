@@ -103,6 +103,15 @@ Releases are handled using [fabric](http://docs.fabfile.org/en/1.5/). There are 
 * [github3](https://github.com/sigmavirus24/github3.py) - library for GitHub 3 API
 * [pystache](https://github.com/defunkt/pystache) - templates
 
+NOTE: this is Python2 compatible; it will error out under Python3.
+
+Using [pipenv](https://docs.pipenv.org/), a release environment
+can be created with the following command:
+```
+$ pipenv install --two
+$ pipenv shell
+```
+
 The releases are fully automatic which hopefully will help to release more often.
 
 **Available commands**
