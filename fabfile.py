@@ -1,12 +1,13 @@
 ################################################################################
 ## Configuration
 ################################################################################
+import os
 
 proj_name = 'ShiftIt'
 proj_info_plist = 'ShiftIt-Info.plist'
 proj_src_dir = 'ShiftIt'
-proj_private_key = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'
-proj_github_token_file = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token'
+proj_private_key = os.environ.get('SHIFTIT_PRIVATE_KEY', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem')
+proj_github_token_file = os.environ.get('SHIFTIT_GITHUB_TOKEN', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token')
 
 release_notes_template_html = '''
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
@@ -67,7 +68,6 @@ from fabric.contrib.console import confirm
 from fabric.colors import green
 from xml.etree import ElementTree
 
-import os
 import pystache
 import github3
 import tempfile
