@@ -12,35 +12,42 @@ except ImportError as exc:
     def gpg(*args, **kwargs):
         raise NotImplementedError('the sh module is not installed; unable to use gpg-encrypted keys')
 
-def get_decrypted_key_path(path):
-    """
-    Returns the path to a decrypted key
 
-    When the given path ends with `.gpg`, the file will be decrypted into a temporary file.
+class DecryptedFiles(object):
+    tempfiles = []
 
-    Args:
-        path (str): path to the decrypted key
+    @classmethod
+    def get_decrypted_key_path(cls, path):
+        """
+        Returns the path to a decrypted key
 
-    Returns:
-        str: the path to a decrypted key
-    """
-    if not path.endswith('.gpg'):
-        return path
+        When the given path ends with `.gpg`, the file will be decrypted into a temporary file.
 
-    fh = tempfile.NamedTemporaryFile()
+        Args:
+            path (str): path to the decrypted key
 
-    result = gpg('-d', path)
+        Returns:
+            str: the path to a decrypted key
+        """
+        if not path.endswith('.gpg'):
+            return path
 
-    fh.write(result.stdout)
+        fh = tempfile.NamedTemporaryFile()
+        cls.tempfiles.append(fh)
 
-    return fh.name
+        result = gpg('-d', path)
+
+        fh.write(result.stdout)
+        fh.flush()
+
+        return fh.name
 
 proj_name = 'ShiftIt'
 proj_info_plist = 'ShiftIt-Info.plist'
 proj_src_dir = 'ShiftIt'
 
-proj_private_key = get_decrypted_key_path(os.environ.get('SHIFTIT_PRIVATE_KEY', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'))
-proj_github_token_file = get_decrypted_key_path(os.environ.get('SHIFTIT_GITHUB_TOKEN', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token'))
+proj_private_key = DecryptedFiles.get_decrypted_key_path(os.environ.get('SHIFTIT_PRIVATE_KEY', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'))
+proj_github_token_file = DecryptedFiles.get_decrypted_key_path(os.environ.get('SHIFTIT_GITHUB_TOKEN', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token'))
 
 release_notes_template_html = '''
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
