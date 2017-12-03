@@ -97,11 +97,35 @@ $ brew cask install shiftit
 
 ### Making a release
 
+First, update the release version in [ShiftIt/ShiftIt-Info.plist](ShiftIt/ShiftIt-Info.plist).
+
 Releases are handled using [fabric](http://docs.fabfile.org/en/1.5/). There are some dependencies that can be easily obtained using `pip`:
 
 * [fabric](http://docs.fabfile.org/en/1.5/) - the build system itself
 * [github3](https://github.com/sigmavirus24/github3.py) - library for GitHub 3 API
 * [pystache](https://github.com/defunkt/pystache) - templates
+
+NOTE: this is Python2 compatible; it will error out under Python3.
+
+Using [pipenv](https://docs.pipenv.org/), a release environment
+can be created with the following command:
+```
+$ pipenv install --two
+$ pipenv shell
+```
+
+Prior to running the commands below, ensure the following environment variables are set:
+
+```
+export SHIFTIT_PRIVATE_KEY=~/.shiftit/dsa_priv.pem.gpg  # get this from the project contributors
+export SHIFTIT_GITHUB_TOKEN=~/.shiftit/github.token.gpg  # this is your personal access token
+export SHIFTIT_GITHUB_USER=fikovnik
+export SHIFTIT_GITHUB_REPO=ShiftIt
+```
+
+Get your personal access token from [Github's developer settings page](https://github.com/settings/tokens).
+
+As you see above, the private key and github token can be gpg-encrypted at rest.  This is optional and they can simply be plain text; just don't suffix the files with `.gpg`.
 
 The releases are fully automatic which hopefully will help to release more often.
 

@@ -1,12 +1,56 @@
 ################################################################################
 ## Configuration
 ################################################################################
+import os
+import tempfile
+
+try:
+    import sh
+
+    gpg = sh.Command('gpg')
+except ImportError as exc:
+    def gpg(*args, **kwargs):
+        raise NotImplementedError('the sh module is not installed; unable to use gpg-encrypted keys')
+
+
+class DecryptedFiles(object):
+    tempfiles = []
+
+    @classmethod
+    def get_decrypted_key_path(cls, path):
+        """
+        Returns the path to a decrypted key
+
+        When the given path ends with `.gpg`, the file will be decrypted into a temporary file.
+
+        Args:
+            path (str): path to the decrypted key
+
+        Returns:
+            str: the path to a decrypted key
+        """
+        if not path.endswith('.gpg'):
+            return path
+
+        fh = tempfile.NamedTemporaryFile()
+        cls.tempfiles.append(fh)
+
+        result = gpg('-d', path)
+
+        fh.write(result.stdout)
+        fh.flush()
+
+        return fh.name
+
+SHIFTIT_GITHUB_USER = os.environ['SHIFTIT_GITHUB_USER']
+SHIFTIT_GITHUB_REPO = os.environ['SHIFTIT_GITHUB_REPO']
 
 proj_name = 'ShiftIt'
 proj_info_plist = 'ShiftIt-Info.plist'
 proj_src_dir = 'ShiftIt'
-proj_private_key = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'
-proj_github_token_file = '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token'
+
+proj_private_key = DecryptedFiles.get_decrypted_key_path(os.environ.get('SHIFTIT_PRIVATE_KEY', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/dsa_priv.pem'))
+proj_github_token_file = DecryptedFiles.get_decrypted_key_path(os.environ.get('SHIFTIT_GITHUB_TOKEN', '/Users/krikava/Dropbox/Personal/Keys/ShiftIt/github.token'))
 
 release_notes_template_html = '''
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
@@ -67,7 +111,6 @@ from fabric.contrib.console import confirm
 from fabric.colors import green
 from xml.etree import ElementTree
 
-import os
 import pystache
 import github3
 import tempfile
@@ -80,9 +123,9 @@ import datetime
 
 def _find(f, seq):
   """Return first item in sequence where f(item) == True."""
-  
+
   for item in seq:
-    if f(item): 
+    if f(item):
       return item
 
 def _get_bundle_version(info_plist):
@@ -109,7 +152,7 @@ def _gen_release_notes(template):
     closed_issues = list(shiftit.iter_issues(milestone=milestone.number, state='closed'))
     closed_issues.sort(key=lambda i: i.closed_at)
 
-    release_notes = dict( 
+    release_notes = dict(
         has_issues = len(closed_issues) > 0,
         issues = closed_issues,
         proj_name=proj_name,
@@ -148,7 +191,7 @@ proj_github_token = _load_github_token()
 ################################################################################
 
 github = github3.login(token=proj_github_token)
-shiftit = github.repository('fikovnik','ShiftIt')
+shiftit = github.repository(SHIFTIT_GITHUB_USER, SHIFTIT_GITHUB_REPO)
 
 ################################################################################
 ## Tasks
