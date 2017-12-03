@@ -42,6 +42,9 @@ class DecryptedFiles(object):
 
         return fh.name
 
+SHIFTIT_GITHUB_USER = os.environ['SHIFTIT_GITHUB_USER']
+SHIFTIT_GITHUB_REPO = os.environ['SHIFTIT_GITHUB_REPO']
+
 proj_name = 'ShiftIt'
 proj_info_plist = 'ShiftIt-Info.plist'
 proj_src_dir = 'ShiftIt'
@@ -188,7 +191,7 @@ proj_github_token = _load_github_token()
 ################################################################################
 
 github = github3.login(token=proj_github_token)
-shiftit = github.repository('fikovnik','ShiftIt')
+shiftit = github.repository(SHIFTIT_GITHUB_USER, SHIFTIT_GITHUB_REPO)
 
 ################################################################################
 ## Tasks
