@@ -25,6 +25,7 @@ requests = "==2.18.4"
 uritemplate = "==3.0.0"
 "uritemplate.py" = "==3.0.2"
 "urllib3" = "==1.22"
+sh = "*"
 
 
 [dev-packages]
