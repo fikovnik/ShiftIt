@@ -40,6 +40,7 @@ extern NSString *const kWindowSizeDeltaPrefKey;
 extern NSString *const kScreenSizeDeltaPrefKey;
 extern NSString *const kAXIncludeDrawersPrefKey;
 extern NSString *const kAXDriverConvergePrefKey;
+extern NSString *const kMutipleActionsCycleWindowSizes;
 
 typedef enum {
 	kFixedSizeDeltaType = 3001,

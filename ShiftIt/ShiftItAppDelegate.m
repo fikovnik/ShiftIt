@@ -48,6 +48,7 @@ NSString *const kFixedSizeWidthDeltaPrefKey = @"fixedSizeWidthDelta";
 NSString *const kFixedSizeHeightDeltaPrefKey = @"fixedSizeHeightDelta";
 NSString *const kWindowSizeDeltaPrefKey = @"windowSizeDelta";
 NSString *const kScreenSizeDeltaPrefKey = @"screenSizeDelta";
+NSString *const kMutipleActionsCycleWindowSizes = @"multipleActionsCycleWindowSizes";
 
 // AX Driver Options
 // TODO: should be moved to AX driver

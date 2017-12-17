@@ -41,6 +41,12 @@ const SimpleWindowGeometryChangeBlock shiftItLeft = ^AnchoredRect(NSRect windowR
     leftHalf.size.width = screenSize.width / 2.0;
     leftHalf.size.height = screenSize.height;
 
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL cycle = [defaults boolForKey: kMutipleActionsCycleWindowSizes];
+    if(!cycle) {
+        return MakeAnchoredRect(leftHalf, kLeftDirection);
+    }
+
     NSRect leftThird = NSMakeRect(0, 0, 0, 0);
     leftThird.origin.x = 0;
     leftThird.origin.y = 0;
@@ -65,6 +71,12 @@ const SimpleWindowGeometryChangeBlock shiftItRight = ^AnchoredRect(NSRect window
     rightHalf.origin.y = 0;
     rightHalf.size.width = screenSize.width / 2.0;
     rightHalf.size.height = screenSize.height;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL cycle = [defaults boolForKey: kMutipleActionsCycleWindowSizes];
+    if(!cycle) {
+        return MakeAnchoredRect(rightHalf, kRightDirection);
+    }
 
     NSRect rightThird = NSMakeRect(0, 0, 0, 0);
     rightThird.origin.x = screenWidth - (screenWidth * 1.0 / 3.0);
@@ -93,6 +105,12 @@ const SimpleWindowGeometryChangeBlock shiftItTop = ^AnchoredRect(NSRect windowRe
     topHalf.size.width = screenSize.width;
     topHalf.size.height = screenSize.height / 2;
 
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL cycle = [defaults boolForKey: kMutipleActionsCycleWindowSizes];
+    if(!cycle) {
+        return MakeAnchoredRect(topHalf, kTopDirection);
+    }
+
     NSRect topThird = NSMakeRect(0, 0, 0, 0);
     topThird.origin.x = 0;
     topThird.origin.y = 0;
@@ -116,6 +134,12 @@ const SimpleWindowGeometryChangeBlock shiftItBottom = ^AnchoredRect(NSRect windo
     bottomHalf.origin.y = screenSize.height / 2;
     bottomHalf.size.width = screenSize.width;
     bottomHalf.size.height = screenSize.height / 2;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL cycle = [defaults boolForKey: kMutipleActionsCycleWindowSizes];
+    if(!cycle) {
+        return MakeAnchoredRect(bottomHalf, kBottomDirection);
+    }
 
     NSRect bottomThird = NSMakeRect(0, 0, 0, 0);
     bottomThird.origin.x = 0;
