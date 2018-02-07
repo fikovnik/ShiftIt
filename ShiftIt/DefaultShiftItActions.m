@@ -11,7 +11,7 @@
  but WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  GNU General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -22,97 +22,139 @@
 #import "ShiftItApp.h"
 
 BOOL CloseTo(double a, double b) {
-  return fabs(a - b) < 20;
+    return fabs(a - b) < 20;
+}
+
+BOOL rectCloseTo(NSRect a, NSRect b) {
+    return CloseTo(a.origin.x, b.origin.x) &&
+    CloseTo(a.origin.y, b.origin.y) &&
+    CloseTo(a.size.height, b.size.height) &&
+    CloseTo(a.size.width, b.size.width);
 }
 
 const SimpleWindowGeometryChangeBlock shiftItLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r = NSMakeRect(0, 0, 0, 0);
+    double screenWidth = screenSize.width;
 
-    r.origin.x = 0;
-    r.origin.y = 0;
+    NSRect leftHalf = NSMakeRect(0, 0, 0, 0);
+    leftHalf.origin.x = 0;
+    leftHalf.origin.y = 0;
+    leftHalf.size.width = screenSize.width / 2.0;
+    leftHalf.size.height = screenSize.height;
 
-    double w = windowRect.size.width;
-    double sw = screenSize.width;
-
-    r.size.width = screenSize.width / 2.0;
-    r.size.height = screenSize.height;
-
-    if (CloseTo(w, sw / 2.0)) {
-      r.size.width = floor(sw * 1.0 / 3.0);
-    } else if (CloseTo(w, sw / 3.0)) {
-      r.size.width = floor(sw * 2.0 / 3.0);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL cycle = [defaults boolForKey: kMutipleActionsCycleWindowSizes];
+    if(!cycle) {
+        return MakeAnchoredRect(leftHalf, kLeftDirection);
     }
 
-    return MakeAnchoredRect(r, kLeftDirection);
+    NSRect leftThird = NSMakeRect(0, 0, 0, 0);
+    leftThird.origin.x = 0;
+    leftThird.origin.y = 0;
+    leftThird.size.width = floor(screenWidth * 1.0 / 3.0);
+    leftThird.size.height = screenSize.height;
+
+    if(rectCloseTo(windowRect, leftHalf)) {
+        return MakeAnchoredRect(leftThird, kLeftDirection);
+    } else if (rectCloseTo(windowRect, leftThird)) {
+        leftHalf.size.width = floor(screenWidth * 2.0 / 3.0);
+    }
+
+
+    return MakeAnchoredRect(leftHalf, kLeftDirection);
 };
 
 const SimpleWindowGeometryChangeBlock shiftItRight = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r = NSMakeRect(0, 0, 0, 0);
+    double screenWidth = screenSize.width;
 
-    r.origin.x = screenSize.width / 2;
-    r.origin.y = 0;
+    NSRect rightHalf = NSMakeRect(0, 0, 0, 0);
+    rightHalf.origin.x = screenSize.width / 2;
+    rightHalf.origin.y = 0;
+    rightHalf.size.width = screenSize.width / 2.0;
+    rightHalf.size.height = screenSize.height;
 
-    r.size.width = screenSize.width / 2.0;
-    r.size.height = screenSize.height;
-
-    double w = windowRect.size.width;
-    double sw = screenSize.width;
-
-    if (CloseTo(w, sw / 2.0)) {
-      r.size.width = floor(sw * 1.0 / 3.0);
-      r.origin.x = sw - (sw * 1.0 / 3.0);
-    } else if (CloseTo(w, sw / 3.0)) {
-      r.size.width = floor(sw * 2.0 / 3.0);
-      r.origin.x = sw - (sw * 2.0 / 3.0);
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL cycle = [defaults boolForKey: kMutipleActionsCycleWindowSizes];
+    if(!cycle) {
+        return MakeAnchoredRect(rightHalf, kRightDirection);
     }
 
-    return MakeAnchoredRect(r, kRightDirection);
+    NSRect rightThird = NSMakeRect(0, 0, 0, 0);
+    rightThird.origin.x = screenWidth - (screenWidth * 1.0 / 3.0);
+    rightThird.origin.y = 0;
+    rightThird.size.width = floor(screenWidth * 1.0 / 3.0);
+    rightThird.size.height = screenSize.height;
+
+    if(rectCloseTo(windowRect, rightHalf)) {
+        FMTLogDebug(@"Close to half!");
+        return MakeAnchoredRect(rightThird, kRightDirection);
+    } else if (rectCloseTo(windowRect, rightThird)) {
+        FMTLogDebug(@"Close to third!");
+        rightHalf.origin.x = screenWidth - (screenWidth * 2.0 / 3.0);
+        rightHalf.size.width = floor(screenWidth * 2.0 / 3.0);
+    }
+
+    return MakeAnchoredRect(rightHalf, kRightDirection);
 };
 
 const SimpleWindowGeometryChangeBlock shiftItTop = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r = NSMakeRect(0, 0, 0, 0);
-
-    r.origin.x = 0;
-    r.origin.y = 0;
-
-    r.size.width = screenSize.width;
-    r.size.height = screenSize.height / 2;
-
-    double windowHeight = windowRect.size.height;
     double screenHeight = screenSize.height;
 
-    if (CloseTo(windowHeight, screenHeight / 2.0)) {
-      r.size.height = floor(screenHeight * 1.0 / 3.0);
-      r.origin.y = screenHeight * 1.0 / 3.0;
-    } else if (CloseTo(windowHeight, screenHeight / 3.0)) {
-      r.size.height = floor(screenHeight * 2.0 / 3.0);
-      r.origin.y = screenHeight * 2.0 / 3.0;
+    NSRect topHalf = NSMakeRect(0, 0, 0, 0);
+    topHalf.origin.x = 0;
+    topHalf.origin.y = 0;
+    topHalf.size.width = screenSize.width;
+    topHalf.size.height = screenSize.height / 2;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL cycle = [defaults boolForKey: kMutipleActionsCycleWindowSizes];
+    if(!cycle) {
+        return MakeAnchoredRect(topHalf, kTopDirection);
     }
 
-    return MakeAnchoredRect(r, kTopDirection);
+    NSRect topThird = NSMakeRect(0, 0, 0, 0);
+    topThird.origin.x = 0;
+    topThird.origin.y = 0;
+    topThird.size.width = screenSize.width;
+    topThird.size.height = floor(screenHeight * 1.0 / 3.0);
+
+    if(rectCloseTo(windowRect, topHalf)) {
+        return MakeAnchoredRect(topThird, kTopDirection);
+    } else if (rectCloseTo(windowRect, topThird)) {
+        topHalf.size.height = floor(screenHeight * 2.0 / 3.0);
+    }
+
+    return MakeAnchoredRect(topHalf, kTopDirection);
 };
 
 const SimpleWindowGeometryChangeBlock shiftItBottom = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
-    NSRect r = NSMakeRect(0, 0, 0, 0);
-
-    r.origin.x = 0;
-    r.origin.y = screenSize.height / 2;
-
-    r.size.width = screenSize.width;
-    r.size.height = screenSize.height / 2;
-
-    double windowHeight = windowRect.size.height;
     double screenHeight = screenSize.height;
 
-    if (CloseTo(windowHeight, screenHeight / 2.0)) {
-      r.size.height = floor(screenHeight * 1.0 / 3.0);
-      r.origin.y = screenHeight - (screenHeight * 1.0 / 3.0);
-    } else if (CloseTo(windowHeight, screenHeight / 3.0)) {
-      r.size.height = floor(screenHeight * 2.0 / 3.0);
-      r.origin.y = screenHeight - (screenHeight * 2.0 / 3.0);
+    NSRect bottomHalf = NSMakeRect(0, 0, 0, 0);
+    bottomHalf.origin.x = 0;
+    bottomHalf.origin.y = screenSize.height / 2;
+    bottomHalf.size.width = screenSize.width;
+    bottomHalf.size.height = screenSize.height / 2;
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    BOOL cycle = [defaults boolForKey: kMutipleActionsCycleWindowSizes];
+    if(!cycle) {
+        return MakeAnchoredRect(bottomHalf, kBottomDirection);
     }
 
-    return MakeAnchoredRect(r, kBottomDirection);
+    NSRect bottomThird = NSMakeRect(0, 0, 0, 0);
+    bottomThird.origin.x = 0;
+    bottomThird.origin.y = screenHeight - (screenHeight * 1.0 / 3.0);
+    bottomThird.size.width = screenSize.width;
+    bottomThird.size.height = floor(screenHeight * 1.0 / 3.0);
+
+    if(rectCloseTo(windowRect, bottomHalf)) {
+        return MakeAnchoredRect(bottomThird, kBottomDirection);
+    } else if (rectCloseTo(windowRect, bottomThird)) {
+        bottomHalf.size.height = floor(screenHeight * 2.0 / 3.0);
+        bottomHalf.origin.y = screenHeight - (screenHeight * 2.0 / 3.0);
+    }
+
+    return MakeAnchoredRect(bottomHalf, kBottomDirection);
 };
 
 const SimpleWindowGeometryChangeBlock shiftItTopLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
@@ -189,13 +231,13 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 @implementation IncreaseReduceShiftItAction
 
 - (id)initWithMode:(BOOL)increase {
-    
+
     if (![self init]) {
         return nil;
     }
 
     increase_ = increase;
-    
+
     return self;
 }
 
@@ -240,7 +282,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
     Margins margins;
 
     [windowContext getAnchorMargins:&margins];
-    
+
     // target window rect
     NSRect r = windowRect;
     // 1: increase, -1: reduce
@@ -276,7 +318,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
     // directions at the same time we do half to each
     int khorz = (int) (inc * kw);
     if (directions & kLeftDirection
-            && directions & kRightDirection) {
+        && directions & kRightDirection) {
         khorz /= 2;
     }
 
@@ -284,7 +326,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
     // directions at the same time we do half to each
     int kvert = (int) (inc * kh);
     if (directions & kTopDirection
-            && directions & kBottomDirection) {
+        && directions & kBottomDirection) {
         kvert /= 2;
     }
 
@@ -335,16 +377,16 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 
     if (![windowContext getFocusedWindow:&window error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
-        cause,
-        @"Unable to get active window");
+                                        cause,
+                                        @"Unable to get active window");
         return NO;
     }
 
     BOOL flag = NO;
     if (![window canZoom:&flag error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
-        cause,
-        @"Unable to find out if window can zoom");
+                                        cause,
+                                        @"Unable to find out if window can zoom");
     }
     if (!flag) {
         *error = SICreateError(kShiftItActionFailureErrorCode, @"Window cannot zoom");
@@ -371,16 +413,16 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 
     if (![windowContext getFocusedWindow:&window error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
-        cause,
-        @"Unable to get active window");
+                                        cause,
+                                        @"Unable to get active window");
         return NO;
     }
 
     BOOL flag = NO;
     if (![window canEnterFullScreen:&flag error:&cause]) {
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
-        cause,
-        @"Unable to find out if window can enter fullscreen");
+                                        cause,
+                                        @"Unable to find out if window can enter fullscreen");
     }
     if (!flag) {
         *error = SICreateError(kShiftItActionFailureErrorCode, @"Window cannot enter fullscreen");
@@ -414,7 +456,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 - (BOOL)execute:(id <SIWindowContext>)windowContext error:(NSError **)error {
     FMTAssertNotNil(windowContext);
     FMTAssertNotNil(error);
-    
+
     NSError *cause = nil;
     id<SIWindow> window = nil;
     BOOL flag = NO;
@@ -444,7 +486,7 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
         *error = SICreateErrorWithCause(kShiftItActionFailureErrorCode,
                                         cause,
                                         @"Unable to get window geometry");
-        return NO;        
+        return NO;
     }
 
     FMTLogInfo(@"Current window geometry: %@ screen: %@", RECT_STR(currentGeometry), currentScreen);
@@ -461,10 +503,10 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
 
     CGFloat kw = screenSize.width / currentScreenSize.width;
     CGFloat kh = screenSize.height / currentScreenSize.height;
-    
+
     NSRect geometry = {
-            { currentGeometry.origin.x * kw , currentGeometry.origin.y * kh },
-            { currentGeometry.size.width * kw , currentGeometry.size.height * kh }
+        { currentGeometry.origin.x * kw , currentGeometry.origin.y * kh },
+        { currentGeometry.size.width * kw , currentGeometry.size.height * kh }
     };
 
     FMTLogInfo(@"New window geometry: %@ screen %@", RECT_STR(geometry), screen);
@@ -482,9 +524,9 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
                                         @"Unable to anchor window");
         return NO;
     }
-    
+
     // TODO: make sure window is always visible
-    
+
     return YES;
 }
 

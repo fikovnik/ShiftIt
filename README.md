@@ -37,6 +37,20 @@ If you find any problem not mentioned there, please submit an issue.
 The primary development is done on OSX 10.10, but it should be running under OSX 10.7 as well.
 
 ## FAQ
+##### How do I turn on/off windows cycling sizes with multiple hotkey presses?
+
+If this feature is on, snapping to the left side of the screen (and top, bottom, and right sides) will resize the window to half of the screen.  If window is then snapped to the same side of the screen, it will resize to one third of the screen, and then two thirds of the screen.
+
+If the feature is off, additional snappings will have no effect and the window will remain at half of the screen.
+
+Currently, the only way to accomplish this is by running commands on the command line.  To turn the feature on, run:
+```
+defaults write org.shiftitapp.ShiftIt multipleActionsCycleWindowSizes YES
+```
+To turn it off, run:
+```
+defaults write org.shiftitapp.ShiftIt multipleActionsCycleWindowSizes NO
+```
 
 ##### I disabled the _Show Icon in Menu Bar_ in the preferences, how can I get it back?
 

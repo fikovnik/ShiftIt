@@ -85,14 +85,16 @@
 	<key>zoomKeyCode</key>
 	<integer>6</integer>
 	<key>zoomModifiers</key>
-    <integer>1835008</integer>
-   	<key>nextscreenKeyCode</key>
-   	<integer>45</integer>
-   	<key>nextscreenModifiers</key>
+	<integer>1835008</integer>
+	<key>nextscreenKeyCode</key>
+	<integer>45</integer>
+	<key>nextscreenModifiers</key>
 	<integer>1835008</integer>
 	<key>previousscreenKeyCode</key>
 	<integer>35</integer>
 	<key>previousscreenModifiers</key>
 	<real>1835008</real>
+	<key>mutipleActionsCycleWindowSizes</key>
+	<true/>
 </dict>
 </plist>
