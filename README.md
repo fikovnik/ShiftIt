@@ -17,6 +17,10 @@ Change logs: change logs are versioned in the [repository](https://github.com/fi
 
 A binary build for OSX 10.7+ is available in [releases](https://github.com/fikovnik/ShiftIt/releases).
 
+## Installation
+
+Please note, because the binary is not signed, you'll have to "right click" on the application, click "Open", and subsequently click "Open" in the dialog that appears.  You only have to do this the first time you launch the newly-downloaded application.
+
 ## User guide
 
 ShiftIt installs itself in the menu bar (optionally it can be completely hidden).
