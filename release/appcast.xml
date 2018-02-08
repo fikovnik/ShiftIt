@@ -10,7 +10,7 @@
                     http://htmlpreview.github.com/?https://raw.github.com/fikovnik/ShiftIt/master/release/release-notes-1.6.5.html
                 </sparkle:releaseNotesLink>
             <pubDate>Wed, 07 Feb 2018 08:49:01 </pubDate>
-            <enclosure url="https://github.com/fikovnik/ShiftIt/releases/download/version-1.6.5/ShiftIt-1.6.5.zip" sparkle:version="1.6.5" length="831610" type="application/octet-stream" sparkle:dsaSignature="MC0CFBNxzUGUKmss+ufYQolF1f2d6H40AhUAyHTl6P32ydT7wPPRj5+26DvZ1Fs=" />
+            <enclosure url="https://github.com/fikovnik/ShiftIt/releases/download/1.6.5/ShiftIt-1.6.5.zip" sparkle:version="1.6.5" length="831610" type="application/octet-stream" sparkle:dsaSignature="MC0CFBNxzUGUKmss+ufYQolF1f2d6H40AhUAyHTl6P32ydT7wPPRj5+26DvZ1Fs=" />
          </item>
    </channel>
 </rss>
