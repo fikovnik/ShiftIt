@@ -115,7 +115,8 @@ $ brew cask install shiftit
 
 ### Making a release
 
-First, update the release version in [ShiftIt/ShiftIt-Info.plist](ShiftIt/ShiftIt-Info.plist).
+First, update the release version in [ShiftIt/ShiftIt-Info.plist](ShiftIt/ShiftIt-Info.plist). *NOTE* the version is in the file twice;
+once under `<key>CFBundleShortVersionString</key>` and again under `<key>CFBundleVersion</key>`.  Make sure you update both!
 
 Releases are handled using [fabric](http://docs.fabfile.org/en/1.5/). There are some dependencies that can be easily obtained using `pip`:
 
