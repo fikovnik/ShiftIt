@@ -127,22 +127,40 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     [super dealloc];
 }
 
-- (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error {
-    // get all windows order front to back
-    NSArray *allWindowsInfoList = (NSArray *) CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly + kCGWindowListExcludeDesktopElements, 
-                                                                      kCGNullWindowID);
-    // filter only real windows - layer 0
-    NSArray *windowInfoList = [allWindowsInfoList filter:^BOOL(NSDictionary *item) {
-        return [[item objectForKey:(id)kCGWindowLayer] integerValue] == 0;
-    }];
+// credits to https://gist.github.com/ljos/3040846
+- (NSDictionary *) getRunningAppFocusedWindowInfo {
+    for (NSRunningApplication *rapp in [[NSWorkspace sharedWorkspace] runningApplications]) {
+        if ([rapp isActive]) {
+            NSArray *allWindowsInfoList = (NSArray *) CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly | kCGWindowListExcludeDesktopElements, kCGNullWindowID);
+            
+            NSArray *windowInfoList = [allWindowsInfoList filter:^BOOL(NSDictionary *item) {
+                CFStringRef cfStringOwnerName = (CFStringRef)[item objectForKey:(id)kCGWindowOwnerName];
+                // https://stackoverflow.com/questions/17227348/nsstring-to-cfstringref-and-cfstringref-to-nsstring-in-arc/17256947#17256947
+                NSString *ownerName = (__bridge NSString *)cfStringOwnerName;
+                
+                return [ownerName isEqualToString:[rapp localizedName]];
+            }];
+            
+            // get the first one - the front most window
+            if ([windowInfoList count] > 0) {
+                return windowInfoList[0];
+            }
+        }
+    }
     
-    // get the first one - the front most window
-    if ([windowInfoList count] == 0) {
+    return nil;
+}
+
+- (BOOL) getFocusedWindow:(id<SIWindow> *)window error:(NSError **)error {
+    NSDictionary *cgWindowInfo = [self getRunningAppFocusedWindowInfo];
+    
+    if (cgWindowInfo == nil) {
         *error = SICreateError(kWindowManagerFailureErrorCode, @"Unable to find front window");
         return NO;        
     }
-    SIWindowInfo *frontWindowInfo = [SIWindowInfo windowInfoFromCGWindowInfoDictionary:[windowInfoList objectAtIndex:0]];
     
+    SIWindowInfo *frontWindowInfo = [SIWindowInfo windowInfoFromCGWindowInfoDictionary:cgWindowInfo];
+
     // extract properties
     
     FMTLogDebug(@"Found front window: %@", [frontWindowInfo description]);
@@ -164,8 +182,6 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     } else {
         FMTLogDebug(@"Driver mapped window: %@", [w description]);
     }
-    
-    [allWindowsInfoList release];
     
     *window = w;
     [windows_ addObject:[*window retain]];
