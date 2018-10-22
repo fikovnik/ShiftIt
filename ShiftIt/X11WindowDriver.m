@@ -345,7 +345,7 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     Window __block * windowRef;
 
     // find the focused window
-    execWithDisplay_(^BOOL(Display *dpy, NSError **nestedError) {
+    BOOL result = execWithDisplay_(^BOOL(Display *dpy, NSError **nestedError) {
         Window root = DefaultRootWindow(dpy);
 
         // following are for the params that are not used
@@ -372,6 +372,9 @@ static BOOL execWithDisplay_(ExecWithDisplayBlock block, NSError ** error) {
     }, error);
 
     // verify that this is the window that we were asked to find
+    if (!result) {
+        return NO;
+    }
 
 
     *window = [[[X11Window alloc] initWithRef:windowRef driver:self] autorelease];
