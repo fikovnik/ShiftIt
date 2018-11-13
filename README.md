@@ -2,6 +2,8 @@
 
 *Managing window size and position in OSX*
 
+### Looking for a new maintainer #296.
+
 # About
 
 ShiftIt is an application for OSX that allows you to quickly manipulate window position and size using keyboard shortcuts.
