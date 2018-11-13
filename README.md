@@ -2,7 +2,7 @@
 
 *Managing window size and position in OSX*
 
-### Looking for a new maintainer #296.
+### Looking for a new maintainer #[296](https://github.com/fikovnik/ShiftIt/issues/296).
 
 # About
 
