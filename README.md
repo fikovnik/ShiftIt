@@ -161,3 +161,7 @@ The releases are fully automatic which hopefully will help to release more often
 After `fab release` instructions about how to create the actual release at github are printed.
 
 Thanks [JetBrains](http://www.jetbrains.com/) for kindly supporting this open source project by providing [AppCode](http://www.jetbrains.com/objc/) IDE.
+
+## Alternatives
+
+There is an alternative to ShiftIt that can be implemented using [Hammerspoon](http://hammerspoon.org). You can find the details [in this wiki article](https://github.com/fikovnik/ShiftIt/wiki/The-Hammerspoon-Alternative)
