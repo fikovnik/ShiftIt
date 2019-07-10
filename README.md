@@ -2,9 +2,18 @@
 
 *Managing window size and position in OSX*
 
-### Looking for a new maintainer #[296](https://github.com/fikovnik/ShiftIt/issues/296).
+# Looking for a new maintainer #[296](https://github.com/fikovnik/ShiftIt/issues/296).
+
+This project is looking for a new maintainer. Until that transition is completed, **there will likely not be further development on this project**. 
+
+A highly recommended alternative to ShiftIt that can be implemented using [Hammerspoon](http://hammerspoon.org).
+
+Here is a step-by-step guide to replicating ShiftIt's features using Hammerspoon: https://github.com/fikovnik/ShiftIt/wiki/The-Hammerspoon-Alternative
+
 
 # About
+
+**Looking for a new maintainer #[296](https://github.com/fikovnik/ShiftIt/issues/296).**
 
 ShiftIt is an application for OSX that allows you to quickly manipulate window position and size using keyboard shortcuts.
 It intends to become a full featured window organizer for OSX.
@@ -14,6 +23,7 @@ For discussing any sort of stuff about this app, please create a [new issue](htt
 License: [GNU General Public License v3](http://www.gnu.org/licenses/gpl.html)
 
 Change logs: change logs are versioned in the [repository](https://github.com/fikovnik/ShiftIt/tree/develop/release) as well.
+
 
 ## Download
 
@@ -161,7 +171,3 @@ The releases are fully automatic which hopefully will help to release more often
 After `fab release` instructions about how to create the actual release at github are printed.
 
 Thanks [JetBrains](http://www.jetbrains.com/) for kindly supporting this open source project by providing [AppCode](http://www.jetbrains.com/objc/) IDE.
-
-## Alternatives
-
-There is an alternative to ShiftIt that can be implemented using [Hammerspoon](http://hammerspoon.org). You can find the details [in this wiki article](https://github.com/fikovnik/ShiftIt/wiki/The-Hammerspoon-Alternative)
