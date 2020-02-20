@@ -6,9 +6,13 @@
 
 This project is looking for a new maintainer. Until that transition is completed, **there will likely not be further development on this project**. 
 
+## Alternatives
+
 A highly recommended alternative to ShiftIt that can be implemented using [Hammerspoon](http://hammerspoon.org).
 
-Here is a step-by-step guide to replicating ShiftIt's features using Hammerspoon: https://github.com/fikovnik/ShiftIt/wiki/The-Hammerspoon-Alternative
+You can use the <img src="https://raw.githubusercontent.com/Hammerspoon/hammerspoon/master/Hammerspoon/Images.xcassets/AppIcon.appiconset/icon_16x16%402x.png" height="18" valign="middle" /> [ShiftIt Spoon](https://github.com/peterklijn/hammerspoon-shiftit) which implements the ShiftIt functionality in Hammerspoon.
+
+Additionally there is a step-by-step guide to replicating ShiftIt's features using Hammerspoon yourself: https://github.com/fikovnik/ShiftIt/wiki/The-Hammerspoon-Alternative
 
 
 # About
