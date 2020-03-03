@@ -198,6 +198,7 @@ static NSString *hotkeyIdentifiers[] = {
     @"zoom",
     @"maximize",
     @"fullScreen",
+    @"fullHeight",
     NULL,
     @"increase",
     @"reduce",
