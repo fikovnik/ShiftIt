@@ -131,9 +131,11 @@ NSInteger const kShiftItManagerFailureErrorCode = 2014;
     // get all windows order front to back
     NSArray *allWindowsInfoList = (NSArray *) CGWindowListCopyWindowInfo(kCGWindowListOptionOnScreenOnly + kCGWindowListExcludeDesktopElements, 
                                                                       kCGNullWindowID);
-    // filter only real windows - layer 0
+    // filter only real windows - layer 0 && alpha != 0
     NSArray *windowInfoList = [allWindowsInfoList filter:^BOOL(NSDictionary *item) {
-        return [[item objectForKey:(id)kCGWindowLayer] integerValue] == 0;
+        long layer = [[item objectForKey:(id)kCGWindowLayer] integerValue];
+        double alpha = [[item objectForKey:(id)kCGWindowAlpha] doubleValue];
+        return layer == 0 && alpha != 0;
     }];
     
     // get the first one - the front most window
