@@ -194,6 +194,17 @@ static NSString *hotkeyIdentifiers[] = {
     @"bl",
     @"br",
     NULL,
+    @"ltt",
+    @"ltb",
+    @"ctt",
+    @"ctb",
+    @"rtt",
+    @"rtb",
+    NULL,
+    @"lt",
+    @"ct",
+    @"rt",
+    NULL,
     @"center",
     @"zoom",
     @"maximize",
@@ -203,7 +214,7 @@ static NSString *hotkeyIdentifiers[] = {
     @"reduce",
     NULL,
     @"nextscreen",
-    @"previousscreen",
+    @"previousscreen"
 };
 
 - (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView {

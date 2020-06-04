@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1070" identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="5056"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication">
@@ -11,7 +11,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customObject id="494" customClass="ShiftItAppDelegate">
             <connections>
                 <outlet property="statusMenu_" destination="535" id="789"/>
@@ -45,31 +45,60 @@
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="780"/>
-                <menuItem title="Center" tag="2009" keyEquivalent="c" id="537">
+                <menuItem title="Left Third Top" tag="2009" keyEquivalent="u" id="bYc-Bv-i87" userLabel="Left Third Top">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
-                <menuItem title="Toggle Zoom" tag="2010" keyEquivalent="z" id="791">
+                <menuItem title="Left Third Bottom" tag="2010" keyEquivalent="j" id="rsR-hX-aGC" userLabel="Left Third Bottom">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
-                <menuItem title="Maximize" tag="2011" keyEquivalent="m" id="792">
+                <menuItem title="Center Third Top" tag="2011" keyEquivalent="i" id="Kde-dw-26m" userLabel="Center Third Top">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
-                <menuItem title="Toggle Full Screen" tag="2012" keyEquivalent="f" id="545">
+                <menuItem title="Center Third Bottom" tag="2012" keyEquivalent="k" id="UKu-YS-Z99" userLabel="Center Third Bottom">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="Right Third Top" tag="2013" keyEquivalent="o" id="jxH-mM-wG5" userLabel="Right Third Top">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="Right Third Bottom" tag="2014" keyEquivalent="l" id="GEI-WN-flk" userLabel="Right Third Bottom">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="qWg-NF-P0c"/>
+                <menuItem title="Left Third" tag="2015" keyEquivalent="q" id="WF1-Yp-cEQ" userLabel="Left Third">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="Center Third" tag="2016" keyEquivalent="w" id="5Af-dm-SQu" userLabel="Center Third">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="Right Third" tag="2017" keyEquivalent="e" id="1Dg-Ca-mPq" userLabel="Right Third">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem isSeparatorItem="YES" id="lzs-6S-vAY"/>
+                <menuItem title="Center" tag="2018" keyEquivalent="c" id="537">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="Toggle Zoom" tag="2019" keyEquivalent="z" id="791">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="Maximize" tag="2020" keyEquivalent="m" id="792">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
+                </menuItem>
+                <menuItem title="Toggle Full Screen" tag="2021" keyEquivalent="f" id="545">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="538"/>
-                <menuItem title="Increase" tag="2013" keyEquivalent="=" id="786">
+                <menuItem title="Increase" tag="2022" keyEquivalent="=" id="786">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
-                <menuItem title="Reduce" tag="2014" keyEquivalent="-" id="787">
+                <menuItem title="Reduce" tag="2023" keyEquivalent="-" id="787">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="788"/>
-                <menuItem title="Next Screen" tag="2015" keyEquivalent="n" id="794">
+                <menuItem title="Next Screen" tag="2024" keyEquivalent="n" id="794">
                     <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
-                <menuItem title="Previous Screen" tag="2016" id="URi-Kh-uDb">
-                    <modifierMask key="keyEquivalentModifierMask"/>
+                <menuItem title="Previous Screen" tag="2025" keyEquivalent="p" id="URi-Kh-uDb">
+                    <modifierMask key="keyEquivalentModifierMask" control="YES" option="YES" command="YES"/>
                 </menuItem>
                 <menuItem isSeparatorItem="YES" id="793"/>
                 <menuItem title="Preferences" keyEquivalent="," id="558">
@@ -89,6 +118,7 @@
                     </connections>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="0.0" y="17"/>
         </menu>
         <customObject id="670" customClass="SUUpdater">
             <connections>
