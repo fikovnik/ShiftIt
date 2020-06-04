@@ -228,6 +228,114 @@ const SimpleWindowGeometryChangeBlock shiftItCenter = ^AnchoredRect(NSRect windo
     return MakeAnchoredRect(r, 0);
 };
 
+const SimpleWindowGeometryChangeBlock shiftItThirdTopLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
+
+    r.origin.x = 0;
+    r.origin.y = 0;
+
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height / 2;
+
+    return MakeAnchoredRect(r, kTopDirection | kLeftDirection);
+};
+
+const SimpleWindowGeometryChangeBlock shiftItThirdBottomLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
+
+    r.origin.x = 0;
+    r.origin.y = screenSize.height / 2;
+
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height / 2;
+
+    return MakeAnchoredRect(r, kBottomDirection | kLeftDirection);
+};
+
+const SimpleWindowGeometryChangeBlock shiftItThirdTopCenter = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
+    
+    r.origin.x = screenSize.width - ((screenSize.width / 3) * 2);
+    r.origin.y = 0;
+    
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height / 2;
+    
+    return MakeAnchoredRect(r, kTopDirection);
+};
+
+const SimpleWindowGeometryChangeBlock shiftItThirdBottomCenter = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
+
+    r.origin.x = screenSize.width - ((screenSize.width / 3) * 2);
+    r.origin.y = screenSize.height / 2;
+
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height / 2;
+
+    return MakeAnchoredRect(r, kBottomDirection);
+};
+
+const SimpleWindowGeometryChangeBlock shiftItThirdTopRight = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+    NSRect r = NSMakeRect(0, 0, 0, 0);
+
+    r.origin.x = screenSize.width - ((screenSize.width / 3) * 1);
+    r.origin.y = 0;
+
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height / 2;
+
+    return MakeAnchoredRect(r, kTopDirection);
+};
+
+const SimpleWindowGeometryChangeBlock shiftItThirdBottomRight = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+       NSRect r = NSMakeRect(0, 0, 0, 0);
+
+    r.origin.x = screenSize.width - (screenSize.width / 3);
+    r.origin.y = screenSize.height / 2;
+
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height / 2;
+
+    return MakeAnchoredRect(r, kBottomDirection);
+};
+
+const SimpleWindowGeometryChangeBlock shiftItThirdLeft = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+       NSRect r = NSMakeRect(0, 0, 0, 0);
+
+    r.origin.x = 0;
+    r.origin.y = 0;
+
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height;
+
+    return MakeAnchoredRect(r, kLeftDirection);
+};
+
+const SimpleWindowGeometryChangeBlock shiftItThirdCenter = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+       NSRect r = NSMakeRect(0, 0, 0, 0);
+
+    r.origin.x = screenSize.width - ((screenSize.width / 3) * 2);
+    r.origin.y = 0;
+
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height;
+
+    return MakeAnchoredRect(r, kTopDirection);
+};
+
+const SimpleWindowGeometryChangeBlock shiftItThirdRight = ^AnchoredRect(NSRect windowRect, NSSize screenSize) {
+       NSRect r = NSMakeRect(0, 0, 0, 0);
+
+    r.origin.x = screenSize.width - (screenSize.width / 3);
+    r.origin.y = 0;
+
+    r.size.width = screenSize.width / 3;
+    r.size.height = screenSize.height;
+
+    return MakeAnchoredRect(r, kTopDirection);
+};
+
 @implementation IncreaseReduceShiftItAction
 
 - (id)initWithMode:(BOOL)increase {

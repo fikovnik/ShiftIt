@@ -584,14 +584,23 @@ NSDictionary *allShiftActions = nil;
     REGISTER_ACTION(dict, @"tr", NSLocalizedString(@"Top Right", nil), 6, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItTopRight] autorelease]);
     REGISTER_ACTION(dict, @"bl", NSLocalizedString(@"Bottom Left", nil), 7, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomLeft] autorelease]);
     REGISTER_ACTION(dict, @"br", NSLocalizedString(@"Bottom Right", nil), 8, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItBottomRight] autorelease]);
-    REGISTER_ACTION(dict, @"center", NSLocalizedString(@"Center", nil), 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
-    REGISTER_ACTION(dict, @"zoom", NSLocalizedString(@"Toggle Zoom", nil), 10, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
-    REGISTER_ACTION(dict, @"maximize", NSLocalizedString(@"Maximize", nil), 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
-    REGISTER_ACTION(dict, @"fullScreen", NSLocalizedString(@"Toggle Full Screen", nil), 12, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
-    REGISTER_ACTION(dict, @"increase", NSLocalizedString(@"Increase", nil), 13, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
-    REGISTER_ACTION(dict, @"reduce", NSLocalizedString(@"Reduce", nil), 14, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
-    REGISTER_ACTION(dict, @"nextscreen", NSLocalizedString(@"Next Screen", nil), 15, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
-    REGISTER_ACTION(dict, @"previousscreen", NSLocalizedString(@"Previous Screen", nil), 16, [[[ScreenChangeShiftItAction alloc] initWithMode:NO] autorelease]);
+    REGISTER_ACTION(dict, @"ltt", NSLocalizedString(@"Left Third Top", nil), 9, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdTopLeft] autorelease]);
+    REGISTER_ACTION(dict, @"ltb", NSLocalizedString(@"Left Third Bottom", nil), 10, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdBottomLeft] autorelease]);
+    REGISTER_ACTION(dict, @"ctt", NSLocalizedString(@"Center Third Top", nil), 11, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdTopCenter] autorelease]);
+    REGISTER_ACTION(dict, @"ctb", NSLocalizedString(@"Center Third Bottom", nil), 12, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdBottomCenter] autorelease]);
+    REGISTER_ACTION(dict, @"rtt", NSLocalizedString(@"Right Third Top", nil), 13, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdTopRight] autorelease]);
+    REGISTER_ACTION(dict, @"rtb", NSLocalizedString(@"Right Third Bottom", nil), 14, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdBottomRight] autorelease]);
+    REGISTER_ACTION(dict, @"lt", NSLocalizedString(@"Left Third", nil), 15, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdLeft] autorelease]);
+    REGISTER_ACTION(dict, @"ct", NSLocalizedString(@"Center Third", nil), 16, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdCenter] autorelease]);
+    REGISTER_ACTION(dict, @"rt", NSLocalizedString(@"Right Third", nil), 17, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItThirdRight] autorelease]);
+    REGISTER_ACTION(dict, @"center", NSLocalizedString(@"Center", nil), 18, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItCenter] autorelease]);
+    REGISTER_ACTION(dict, @"zoom", NSLocalizedString(@"Toggle Zoom", nil), 19, [[[ToggleZoomShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"maximize", NSLocalizedString(@"Maximize", nil), 20, [[[WindowGeometryShiftItAction alloc] initWithBlock:shiftItFullScreen] autorelease]);
+    REGISTER_ACTION(dict, @"fullScreen", NSLocalizedString(@"Toggle Full Screen", nil), 21, [[[ToggleFullScreenShiftItAction alloc] init] autorelease]);
+    REGISTER_ACTION(dict, @"increase", NSLocalizedString(@"Increase", nil), 22, [[[IncreaseReduceShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"reduce", NSLocalizedString(@"Reduce", nil), 23, [[[IncreaseReduceShiftItAction alloc] initWithMode:NO] autorelease]);
+    REGISTER_ACTION(dict, @"nextscreen", NSLocalizedString(@"Next Screen", nil), 24, [[[ScreenChangeShiftItAction alloc] initWithMode:YES] autorelease]);
+    REGISTER_ACTION(dict, @"previousscreen", NSLocalizedString(@"Previous Screen", nil), 25, [[[ScreenChangeShiftItAction alloc] initWithMode:NO] autorelease]);
 
 #undef REGISTER_ACTION
 
