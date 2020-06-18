@@ -63,14 +63,7 @@ If this feature is on, snapping to the left side of the screen (and top, bottom,
 
 If the feature is off, additional snappings will have no effect and the window will remain at half of the screen.
 
-Currently, the only way to accomplish this is by running commands on the command line.  To turn the feature on, run:
-```
-defaults write org.shiftitapp.ShiftIt multipleActionsCycleWindowSizes YES
-```
-To turn it off, run:
-```
-defaults write org.shiftitapp.ShiftIt multipleActionsCycleWindowSizes NO
-```
+The feature can be turned on/off in General Preferences - `Cycle 1/2-1/3-2/3`.
 
 ##### I disabled the _Show Icon in Menu Bar_ in the preferences, how can I get it back?
 
