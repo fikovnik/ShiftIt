@@ -48,24 +48,6 @@
                                                 <action selector="checkForUpdates:" target="69" id="255"/>
                                             </connections>
                                         </button>
-                                        <textField verticalHuggingPriority="750" id="582">
-                                            <rect key="frame" x="125" y="400" width="127" height="29"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ShiftIt App" id="583">
-                                                <font key="font" metaFont="system" size="24"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
-                                        <textField verticalHuggingPriority="750" id="584">
-                                            <rect key="frame" x="152" y="387" width="73" height="17"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="version" id="585">
-                                                <font key="font" metaFont="system"/>
-                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            </textFieldCell>
-                                        </textField>
                                         <button verticalHuggingPriority="750" id="813">
                                             <rect key="frame" x="92" y="25" width="136" height="32"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -77,21 +59,17 @@
                                                 <action selector="terminate:" target="-3" id="816"/>
                                             </connections>
                                         </button>
-                                        <imageView id="817">
-                                            <rect key="frame" x="35" y="369" width="80" height="80"/>
+                                        <imageView misplaced="YES" id="817">
+                                            <rect key="frame" x="50" y="394" width="80" height="80"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyUpOrDown" image="ShiftIt" id="818"/>
                                         </imageView>
                                         <matrix verticalHuggingPriority="750" mode="highlight" allowsEmptySelection="NO" autosizesCells="NO" id="823">
-                                            <rect key="frame" x="26" y="259" width="274" height="102"/>
+                                            <rect key="frame" x="26" y="239" width="274" height="154"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                            <size key="cellSize" width="233" height="21"/>
+                                            <size key="cellSize" width="274" height="26"/>
                                             <size key="intercellSpacing" width="0.0" height="6"/>
-                                            <buttonCell key="prototype" type="check" title="Show Icon In Menu Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="828">
-                                                <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
                                             <cells>
                                                 <column>
                                                     <buttonCell type="check" title="Show Icon In Menu Bar" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="257">
@@ -116,6 +94,13 @@
                                                             <binding destination="69" name="value" keyPath="automaticallyChecksForUpdates" id="73"/>
                                                         </connections>
                                                     </buttonCell>
+                                                    <buttonCell type="check" title="Cycle 1/2-1/3-2/3" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="7ir-qk-YNR">
+                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                                        <font key="font" metaFont="system"/>
+                                                        <connections>
+                                                            <binding destination="191" name="value" keyPath="values.multipleActionsCycleWindowSizes" id="835"/>
+                                                        </connections>
+                                                    </buttonCell>
                                                     <buttonCell type="check" title="Include Window Drawers" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="820">
                                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                         <font key="font" metaFont="system"/>
@@ -126,8 +111,8 @@
                                                 </column>
                                             </cells>
                                         </matrix>
-                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" id="1827">
-                                            <rect key="frame" x="44" y="181" width="259" height="70"/>
+                                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" misplaced="YES" id="1827">
+                                            <rect key="frame" x="43" y="150" width="259" height="70"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <textFieldCell key="cell" controlSize="small" sendsActionOnEndEditing="YES" id="1828">
                                                 <font key="font" metaFont="smallSystem"/>
@@ -147,6 +132,24 @@
                                                 <action selector="reportIssue:" target="-2" id="1834"/>
                                             </connections>
                                         </button>
+                                        <textField verticalHuggingPriority="750" misplaced="YES" id="582">
+                                            <rect key="frame" x="138" y="426" width="127" height="29"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="ShiftIt App" id="583">
+                                                <font key="font" metaFont="system" size="24"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                        <textField verticalHuggingPriority="750" misplaced="YES" id="584">
+                                            <rect key="frame" x="165" y="413" width="73" height="17"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="version" id="585">
+                                                <font key="font" metaFont="system"/>
+                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
                                     </subviews>
                                 </view>
                             </tabViewItem>
