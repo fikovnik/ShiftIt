@@ -126,7 +126,7 @@ $ xcodebuild -target "ShiftIt NoX11" -configuration Release
 To install  ShiftIt using brew you can use the cask.
 
 ```
-$ brew cask install shiftit
+$ brew install shiftit --cask
 ```
 
 ### Making a release
