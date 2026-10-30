@@ -1,17 +1,18 @@
 //
-//  ShortcutRecorder.h
-//  ShortcutRecorder
-//  - 10.5 version only; master framework header
+//  Copyright 2006 ShortcutRecorder Contributors
+//  CC BY 4.0
 //
-//  Copyright 2007 Contributors. All rights reserved.
-//
-//  License: BSD
-//
-//  Contributors to this file:
-//      Jesper
 
 #import <ShortcutRecorder/SRCommon.h>
 #import <ShortcutRecorder/SRKeyCodeTransformer.h>
-#import <ShortcutRecorder/SRValidator.h>
-#import <ShortcutRecorder/SRRecorderCell.h>
+#import <ShortcutRecorder/SRKeyEquivalentModifierMaskTransformer.h>
+#import <ShortcutRecorder/SRKeyEquivalentTransformer.h>
+#import <ShortcutRecorder/SRModifierFlagsTransformer.h>
 #import <ShortcutRecorder/SRRecorderControl.h>
+#import <ShortcutRecorder/SRRecorderControlStyle.h>
+#import <ShortcutRecorder/SRShortcut.h>
+#import <ShortcutRecorder/SRShortcutController.h>
+#import <ShortcutRecorder/SRShortcutValidator.h>
+#import <ShortcutRecorder/SRShortcutFormatter.h>
+#import <ShortcutRecorder/SRKeyBindingTransformer.h>
+#import <ShortcutRecorder/SRShortcutAction.h>

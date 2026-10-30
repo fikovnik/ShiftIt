@@ -3,34 +3,46 @@
 <plist version="1.0">
 <dict>
 	<key>BuildMachineOSBuild</key>
-	<string>11B26</string>
+	<string>26A434</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
 	<string>ShortcutRecorder</string>
 	<key>CFBundleIdentifier</key>
-	<string>net.wafflesoftware.ShortcutRecorder.framework.Leopard</string>
+	<string>com.kulakov.ShortcutRecorder</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundlePackageType</key>
 	<string>FMWK</string>
+	<key>CFBundleShortVersionString</key>
+	<string>3.4.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleSupportedPlatforms</key>
+	<array>
+		<string>MacOSX</string>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>3.4.0</string>
 	<key>DTCompiler</key>
-	<string>4.2</string>
+	<string>com.apple.compilers.llvm.clang.1_0</string>
 	<key>DTPlatformBuild</key>
-	<string>4B110</string>
+	<string>25F70</string>
+	<key>DTPlatformName</key>
+	<string>macosx</string>
 	<key>DTPlatformVersion</key>
-	<string>GM</string>
+	<string>26.5</string>
 	<key>DTSDKBuild</key>
-	<string>10J567</string>
+	<string>25F70</string>
 	<key>DTSDKName</key>
-	<string>macosx10.6</string>
+	<string>macosx26.5</string>
 	<key>DTXcode</key>
-	<string>0410</string>
+	<string>2660</string>
 	<key>DTXcodeBuild</key>
-	<string>4B110</string>
+	<string>17F113</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.13</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2019 ShortcutRecorder attributors</string>
 </dict>
 </plist>

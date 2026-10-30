@@ -106,12 +106,6 @@
                         <action selector="showPreferences:" target="494" id="760"/>
                     </connections>
                 </menuItem>
-                <menuItem title="Check for Updates" id="761">
-                    <modifierMask key="keyEquivalentModifierMask"/>
-                    <connections>
-                        <action selector="checkForUpdates:" target="670" id="763"/>
-                    </connections>
-                </menuItem>
                 <menuItem title="Quit ShiftIt" keyEquivalent="q" id="546">
                     <connections>
                         <action selector="terminate:" target="-3" id="628"/>
@@ -120,10 +114,5 @@
             </items>
             <point key="canvasLocation" x="0.0" y="17"/>
         </menu>
-        <customObject id="670" customClass="SUUpdater">
-            <connections>
-                <outlet property="delegate" destination="494" id="795"/>
-            </connections>
-        </customObject>
     </objects>
 </document>

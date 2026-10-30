@@ -17,7 +17,6 @@
  
  */
 
-#import <Sparkle/Sparkle.h>
 #import "SBSystemPreferences.h"
 #import "ShiftItAppDelegate.h"
 #import "ShiftItApp.h"
@@ -93,8 +92,6 @@ NSDictionary *allShiftActions = nil;
 
 - (void)saveToFile:(NSString *)path;
 
-- (NSArray *)toSparkle;
-
 @end
 
 @implementation SIUsageStatistics
@@ -168,15 +165,6 @@ NSDictionary *allShiftActions = nil;
 }
 
 
-- (NSArray *)toSparkle {
-    NSMutableArray *a = [NSMutableArray array];
-
-    [statistics_ enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
-        [a addObject:FMTEncodeForSparkle(key, value, key, value)];
-    }];
-
-    return [NSArray arrayWithArray:a];
-}
 @end
 
 @implementation ShiftItAction
@@ -551,7 +539,7 @@ NSDictionary *allShiftActions = nil;
     [menuItem setAction:@selector(shiftItMenuAction_:)];
 
     if (keyCode != -1) {
-        NSString *keyCodeString = SRStringForKeyCode(keyCode);
+        NSString *keyCodeString = [[SRKeyCodeTransformer sharedTransformer] transformedValue:@(keyCode)];
         if (!keyCodeString) {
             FMTLogInfo(@"Unable to get string representation for a key code: %ld", keyCode);
             keyCodeString = @"";
@@ -723,28 +711,6 @@ NSDictionary *allShiftActions = nil;
     FMTLogDebug(@"ShitIt action activated from menu: %@", identifier);
 
     [self invokeShiftItActionByIdentifier_:identifier];
-}
-
-// This method allows you to add extra parameters to the appcast URL,
-// potentially based on whether or not Sparkle will also be sending along
-// the system profile. This method should return an array of dictionaries
-// with keys: "key", "value", "displayKey", "displayValue", the latter two
-// being human-readable variants of the former two.
-- (NSArray *)feedParametersForUpdater:(SUUpdater *)updater
-                 sendingSystemProfile:(BOOL)sendingProfile {
-    NSMutableArray *a = [NSMutableArray arrayWithArray:[usageStatistics_ toSparkle]];
-
-    // get display information
-    NSArray *screens = [NSScreen screens];
-    NSInteger nScreen = [screens count];
-    [a addObject:FMTEncodeForSparkle(@"n_screens", FMTStr(@"%d", nScreen), @"Number of screens", FMTStr(@"%d", nScreen))];
-
-    for (NSUInteger i = 0; i < nScreen; i++) {
-        NSString *resolution = RECT_STR([[screens objectAtIndex:i] frame]);
-        [a addObject:FMTEncodeForSparkle(FMTStr(@"screen_%d", i), resolution, FMTStr(@"Screen #%d resolution", i), resolution)];
-    }
-
-    return [NSArray arrayWithArray:a];
 }
 
 
