@@ -110,16 +110,18 @@ The repository is based on the git flow model. The development therefore happens
 
 ### Local build
 
-To build ShiftIt locally just clone the repository or get the latest snapshot and execute following command in the `ShiftIt` directory:
+This fork builds natively for Apple Silicon (arm64). Requirements: Xcode with the macOS 10.13+ SDK (deployment target is 10.13). Sparkle auto-update was removed; the bundled `ShortcutRecorder.framework` is an arm64 build of [ShortcutRecorder](https://github.com/Kentzo/ShortcutRecorder).
 
-```sh
-$ xcodebuild -target ShiftIt -configuration Release
-```
-
-To make a build without X11 support execute following:
+To build ShiftIt locally just clone the repository and execute following command in the `ShiftIt` directory:
 
 ```sh
 $ xcodebuild -target "ShiftIt NoX11" -configuration Release
+```
+
+The `ShiftIt NoX11` target is the recommended one: it is pure Cocoa and needs no extra dependencies. The `ShiftIt` target additionally builds the X11 driver, which requires XQuartz headers (`/opt/X11/include`) and is loaded via `dlopen` at runtime:
+
+```sh
+$ xcodebuild -target ShiftIt -configuration Release
 ```
 
 ### Brew Cask
