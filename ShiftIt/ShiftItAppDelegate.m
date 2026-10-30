@@ -316,13 +316,11 @@ NSDictionary *allShiftActions = nil;
                                              defaultButton:NSLocalizedString(@"Recheck", nil)
                                            alternateButton:NSLocalizedString(@"Open System Preferences", nil)
                                                otherButton:NSLocalizedString(@"Quit", nil)
-                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_9", nil)
+                                 informativeTextWithFormat:@"%@", @"ShiftIt needs accessibility access to move and resize your windows.\n\n"
+            @"1. Click \"Open System Preferences\" below - it takes you straight to Privacy & Security > Accessibility.\n"
+            @"2. Turn ON the switch next to ShiftIt.\n"
+            @"3. Come back here and click \"Recheck\"."
             ];
-
-            NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
-            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettingsMaverick"]];
-            [accessory setImageFrameStyle:NSImageFrameGrayBezel];
-            [alert setAccessoryView:accessory];
 
             BOOL recheck = true;
             while (recheck) {
@@ -334,22 +332,8 @@ NSDictionary *allShiftActions = nil;
                         [NSApp terminate:self];
                         break;
                     case NSAlertAlternateReturn: {
-
-                        // this should hopefully add it to the list so user can only click on the checkbox
-                        NSDictionary *options = @{(id) kAXTrustedCheckOptionPrompt : @NO};
-                        AXIsProcessTrustedWithOptions((CFDictionaryRef) options);
-
-                        SBSystemPreferencesApplication *prefs = [SBApplication applicationWithBundleIdentifier:@"com.apple.systempreferences"];
-                        [prefs activate];
-
-                        SBSystemPreferencesPane *pane = [[prefs panes] find:^BOOL(SBSystemPreferencesPane *elem) {
-                            return [[elem id] isEqualToString:@"com.apple.preference.security"];
-                        }];
-                        SBSystemPreferencesAnchor *anchor = [[pane anchors] find:^BOOL(SBSystemPreferencesAnchor *elem) {
-                            return [[elem name] isEqualToString:@"Privacy_Accessibility"];
-                        }];
-
-                        [anchor reveal];
+                        [[NSWorkspace sharedWorkspace] openURL:
+                         [NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"]];
                     }
                         break;
                     default:
