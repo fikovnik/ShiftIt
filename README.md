@@ -1,17 +1,19 @@
 <h1><img src="artwork/ShiftIt.png" width="72" height="72" valign="middle"/>ShiftIt</h1>
 
-*Managing window size and position in macOS*
+*Managing window size and position in macOS and Windows*
 
 # About
 
 This is a fork of [fikovnik/ShiftIt](https://github.com/fikovnik/ShiftIt) that
 builds **natively for Apple Silicon (arm64)**. The upstream project is no
 longer maintained and its latest release is Intel-only; this fork updates the
-build and code so ShiftIt keeps working on modern macOS.
+build and code so ShiftIt keeps working on modern macOS. It also contains a
+**Windows port** (see [Windows version](#windows-version)) with the same core
+actions.
 
-ShiftIt is an application for macOS that allows you to quickly manipulate
-window position and size using keyboard shortcuts. It is a complete rewrite of
-the original [ShiftIt](http://code.google.com/p/shiftit/) by Aravindkumar
+ShiftIt is an application that allows you to quickly manipulate window
+position and size using keyboard shortcuts. It is a complete rewrite of the
+original [ShiftIt](http://code.google.com/p/shiftit/) by Aravindkumar
 Rajendiran which is no longer under development.
 
 License: [GNU General Public License v3](http://www.gnu.org/licenses/gpl.html)
@@ -20,7 +22,8 @@ License: [GNU General Public License v3](http://www.gnu.org/licenses/gpl.html)
 
 Build it yourself (see [Local build](#local-build)) — the result is a single
 arch `arm64` app. There is no signed release, so no pre-built download is
-offered.
+offered. For Windows, see [Windows version](#windows-version) — one command,
+no toolchain required.
 
 ## Installation
 
@@ -52,6 +55,7 @@ in the upstream wiki.
 ## Requirements
 
 * macOS 10.13+, Apple Silicon (arm64)
+* Windows 10 1703+ (for the Windows port in `windows/`)
 
 ## FAQ
 
@@ -96,6 +100,80 @@ $ tccutil reset Accessibility org.shiftitapp.ShiftIt
 
 then relaunch ShiftIt and turn the switch ON once more. Day-to-day use (without
 rebuilding) is unaffected — authorization persists.
+
+# Windows version
+
+The `windows/` directory contains a native Windows port of ShiftIt's core
+functionality: a system tray application (C#, WinForms) that snaps, moves and
+resizes the focused window with global keyboard shortcuts. It is a behavioral
+port of the macOS geometry engine (`DefaultShiftItActions`), not shared source
+code — the macOS app is built on Cocoa/Carbon/Accessibility APIs that do not
+exist on Windows.
+
+## Build
+
+No SDK or Visual Studio needed — the build uses the .NET Framework C# compiler
+that ships with Windows itself:
+
+```bat
+cd windows
+build.cmd
+```
+
+This produces `windows\ShiftIt.exe` (requires .NET Framework 4.x, present on
+every Windows 10/11 installation). Double-click it to run; no installation
+step. Use the tray menu's *Run at startup* to auto-start at logon.
+
+## Using it on Windows
+
+`ShiftIt.exe` is a **tray application**: launching it shows no window — only a
+notification-area icon (and a balloon confirming it is running, with the main
+shortcuts). Keep it running; use *Run at startup* in its tray menu to have it
+start at logon. Launching a second copy does not start another instance: the
+running one pops its balloon again and the new process exits. To quit,
+right-click the tray icon and choose *Exit*.
+
+| Shortcut | Action |
+|---|---|
+| `Ctrl+Alt+←` / `→` / `↑` / `↓` | snap to left / right / top / bottom half |
+| `Ctrl+Alt+Home` / `PgUp` / `End` / `PgDn` | snap to top-left / top-right / bottom-left / bottom-right quarter |
+| `Ctrl+Alt+M` | maximize (fill the work area) |
+| `Ctrl+Alt+Shift+M` | toggle native maximize/restore |
+| `Ctrl+Alt+C` | center the window |
+| `Ctrl+Alt+Shift+→` / `←` | move to next / previous screen |
+
+Note the shortcuts do **not** include the Windows key: `Win+Arrows` is
+reserved by the OS snap feature. If a shortcut does nothing, another
+application may have claimed it first (Intel display drivers famously use
+`Ctrl+Alt+Arrows` for screen rotation) — the startup balloon lists any
+conflicts, and every action remains available from the tray menu. When a
+window cannot be moved at all (e.g. it belongs to an elevated/administrator
+application), ShiftIt shows a warning balloon explaining why instead of
+failing silently.
+
+All actions are also available from the tray menu. With *Cycle window sizes*
+enabled (default, toggle in the tray menu), snapping repeatedly to the same
+edge cycles the window between 1/2, 1/3 and 2/3 of the screen — the port of
+the macOS `multipleActionsCycleWindowSizes` setting.
+
+Settings are stored in `%APPDATA%\ShiftIt\settings.ini`. Moving between
+screens rescales the window proportionally to the target screen's work area,
+like on macOS. Windows of elevated (administrator) applications cannot be
+moved by a non-elevated ShiftIt — the same kind of restriction as macOS
+accessibility authorization. Snap targets use the screen work area (taskbar
+excluded) and are aligned to the *visible* window frame, so borders overlap
+screen edges exactly on Windows 10/11.
+
+## Scripting / testing
+
+`ShiftIt.exe --once <action> [hwnd]` runs a single action on the focused
+window (or the given window handle) and exits; `ShiftIt.exe --help` lists
+action ids. A functional smoke test lives in
+[windows/test/smoke-test.ps1](windows/test/smoke-test.ps1):
+
+```powershell
+powershell -ExecutionPolicy Bypass -File windows\test\smoke-test.ps1
+```
 
 ## Development
 
