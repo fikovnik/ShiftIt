@@ -17,7 +17,6 @@
  
  */
 
-#import <Sparkle/Sparkle.h>
 #import "SBSystemPreferences.h"
 #import "ShiftItAppDelegate.h"
 #import "ShiftItApp.h"
@@ -93,8 +92,6 @@ NSDictionary *allShiftActions = nil;
 
 - (void)saveToFile:(NSString *)path;
 
-- (NSArray *)toSparkle;
-
 @end
 
 @implementation SIUsageStatistics
@@ -168,15 +165,6 @@ NSDictionary *allShiftActions = nil;
 }
 
 
-- (NSArray *)toSparkle {
-    NSMutableArray *a = [NSMutableArray array];
-
-    [statistics_ enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
-        [a addObject:FMTEncodeForSparkle(key, value, key, value)];
-    }];
-
-    return [NSArray arrayWithArray:a];
-}
 @end
 
 @implementation ShiftItAction
@@ -328,13 +316,11 @@ NSDictionary *allShiftActions = nil;
                                              defaultButton:NSLocalizedString(@"Recheck", nil)
                                            alternateButton:NSLocalizedString(@"Open System Preferences", nil)
                                                otherButton:NSLocalizedString(@"Quit", nil)
-                                 informativeTextWithFormat:NSLocalizedString(@"AUTHORIZATION_INFORMATIVE_TEXT_10_9", nil)
+                                 informativeTextWithFormat:@"%@", @"ShiftIt needs accessibility access to move and resize your windows.\n\n"
+            @"1. Click \"Open System Preferences\" below - it takes you straight to Privacy & Security > Accessibility.\n"
+            @"2. Turn ON the switch next to ShiftIt.\n"
+            @"3. Come back here and click \"Recheck\"."
             ];
-
-            NSImageView *accessory = [[[NSImageView alloc] initWithFrame:NSMakeRect(0, 0, 300, 234)] autorelease];
-            [accessory setImage:[NSImage imageNamed:@"AccessibilitySettingsMaverick"]];
-            [accessory setImageFrameStyle:NSImageFrameGrayBezel];
-            [alert setAccessoryView:accessory];
 
             BOOL recheck = true;
             while (recheck) {
@@ -346,22 +332,8 @@ NSDictionary *allShiftActions = nil;
                         [NSApp terminate:self];
                         break;
                     case NSAlertAlternateReturn: {
-
-                        // this should hopefully add it to the list so user can only click on the checkbox
-                        NSDictionary *options = @{(id) kAXTrustedCheckOptionPrompt : @NO};
-                        AXIsProcessTrustedWithOptions((CFDictionaryRef) options);
-
-                        SBSystemPreferencesApplication *prefs = [SBApplication applicationWithBundleIdentifier:@"com.apple.systempreferences"];
-                        [prefs activate];
-
-                        SBSystemPreferencesPane *pane = [[prefs panes] find:^BOOL(SBSystemPreferencesPane *elem) {
-                            return [[elem id] isEqualToString:@"com.apple.preference.security"];
-                        }];
-                        SBSystemPreferencesAnchor *anchor = [[pane anchors] find:^BOOL(SBSystemPreferencesAnchor *elem) {
-                            return [[elem name] isEqualToString:@"Privacy_Accessibility"];
-                        }];
-
-                        [anchor reveal];
+                        [[NSWorkspace sharedWorkspace] openURL:
+                         [NSURL URLWithString:@"x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"]];
                     }
                         break;
                     default:
@@ -551,7 +523,7 @@ NSDictionary *allShiftActions = nil;
     [menuItem setAction:@selector(shiftItMenuAction_:)];
 
     if (keyCode != -1) {
-        NSString *keyCodeString = SRStringForKeyCode(keyCode);
+        NSString *keyCodeString = [[SRKeyCodeTransformer sharedTransformer] transformedValue:@(keyCode)];
         if (!keyCodeString) {
             FMTLogInfo(@"Unable to get string representation for a key code: %ld", keyCode);
             keyCodeString = @"";
@@ -723,28 +695,6 @@ NSDictionary *allShiftActions = nil;
     FMTLogDebug(@"ShitIt action activated from menu: %@", identifier);
 
     [self invokeShiftItActionByIdentifier_:identifier];
-}
-
-// This method allows you to add extra parameters to the appcast URL,
-// potentially based on whether or not Sparkle will also be sending along
-// the system profile. This method should return an array of dictionaries
-// with keys: "key", "value", "displayKey", "displayValue", the latter two
-// being human-readable variants of the former two.
-- (NSArray *)feedParametersForUpdater:(SUUpdater *)updater
-                 sendingSystemProfile:(BOOL)sendingProfile {
-    NSMutableArray *a = [NSMutableArray arrayWithArray:[usageStatistics_ toSparkle]];
-
-    // get display information
-    NSArray *screens = [NSScreen screens];
-    NSInteger nScreen = [screens count];
-    [a addObject:FMTEncodeForSparkle(@"n_screens", FMTStr(@"%d", nScreen), @"Number of screens", FMTStr(@"%d", nScreen))];
-
-    for (NSUInteger i = 0; i < nScreen; i++) {
-        NSString *resolution = RECT_STR([[screens objectAtIndex:i] frame]);
-        [a addObject:FMTEncodeForSparkle(FMTStr(@"screen_%d", i), resolution, FMTStr(@"Screen #%d resolution", i), resolution)];
-    }
-
-    return [NSArray arrayWithArray:a];
 }
 
 

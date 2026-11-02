@@ -21,7 +21,6 @@
  */
 
 #import "FMTDefines.h"
-#import "FMTHotKey+SRKeyCombo.h"
 #import "FMTHotKey.h"
 #import "FMTHotKeyManager.h"
 #import "FMTLoginItems.h"

@@ -36,5 +36,3 @@ NSInteger FMTNumberOfRunningProcessesWithBundleId(NSString *bundleId);
 
 NSError* FMTCreateError(NSString *erroDomain, NSInteger errorCode, NSString *fmt, ...);
 NSError* FMTCreateErrorWithCause(NSString *errorDomain, NSInteger errorCode, NSError *cause, NSString *fmt, ...);
-
-NSDictionary *FMTEncodeForSparkle(NSString *key, NSString *value, NSString *displayKey, NSString *displayValue);

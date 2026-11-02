@@ -104,14 +104,3 @@ NSInteger FMTNumberOfRunningProcessesWithBundleId(NSString *bundleId) {
 BOOL FMTIsProcessWithBundleIdRunning(NSString *bundleId) {
 	return FMTNumberOfRunningProcessesWithBundleId(bundleId) >= 1;
 }
-
-NSDictionary *FMTEncodeForSparkle(NSString *key, NSString *value, NSString *displayKey, NSString *displayValue) {
-    NSMutableDictionary *d = [NSMutableDictionary dictionary];
-
-    [d setObject:key forKey:@"key"];
-    [d setObject:value forKey:@"value"];
-    [d setObject:displayKey forKey:@"displayKey"];
-    [d setObject:displayValue forKey:@"displayValue"];
-
-    return [NSDictionary dictionaryWithDictionary:d];
-}

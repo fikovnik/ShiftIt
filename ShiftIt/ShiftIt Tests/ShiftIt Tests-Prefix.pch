@@ -1,7 +1,0 @@
-//
-// Prefix header for all source files of the 'ShiftIt Tests' target in the 'ShiftIt Tests' project
-//
-
-#ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
-#endif

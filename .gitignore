@@ -2,3 +2,5 @@ ShiftIt-*.zip
 misc
 fabfile.pyc
 ._build
+windows/ShiftIt.exe
+windows/bin/

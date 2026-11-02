@@ -37,17 +37,6 @@
                                     <rect key="frame" x="32" y="7" width="340" height="476"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
-                                        <button verticalHuggingPriority="750" id="66">
-                                            <rect key="frame" x="64" y="57" width="190" height="32"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                            <buttonCell key="cell" type="push" title="Check For Updates Now" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="67">
-                                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                                <font key="font" metaFont="system"/>
-                                            </buttonCell>
-                                            <connections>
-                                                <action selector="checkForUpdates:" target="69" id="255"/>
-                                            </connections>
-                                        </button>
                                         <textField verticalHuggingPriority="750" id="582">
                                             <rect key="frame" x="125" y="400" width="127" height="29"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -107,13 +96,6 @@
                                                         <font key="font" metaFont="system"/>
                                                         <connections>
                                                             <binding destination="-2" name="value" keyPath="shouldStartAtLogin" id="834"/>
-                                                        </connections>
-                                                    </buttonCell>
-                                                    <buttonCell type="check" title="Automatically Check For Updates" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="65">
-                                                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                        <font key="font" metaFont="system"/>
-                                                        <connections>
-                                                            <binding destination="69" name="value" keyPath="automaticallyChecksForUpdates" id="73"/>
                                                         </connections>
                                                     </buttonCell>
                                                     <buttonCell type="check" title="Include Window Drawers" bezelStyle="regularSquare" imagePosition="left" alignment="left" state="on" inset="2" id="820">
@@ -712,7 +694,6 @@
                 <outlet property="initialFirstResponder" destination="2" id="327"/>
             </connections>
         </window>
-        <customObject id="69" customClass="SUUpdater"/>
         <userDefaultsController representsSharedInstance="YES" id="191"/>
     </objects>
     <resources>
